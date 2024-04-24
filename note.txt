@@ -1,0 +1,38 @@
+CREATE TABLE `role` (
+  `role_id` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL
+);
+
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
+  `username` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+   FOREIGN KEY role_id REFERENCES role(role_id),
+  `token` varchar(255) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `users_detail_id` int(11) DEFAULT NULL,
+  `created_by` varchar(100) DEFAULT NULL,
+  `created_date` varchar(100) DEFAULT NULL,
+  `updated_by` varchar(100) DEFAULT NULL,
+  `updated_date` varchar(100) DEFAULT NULL
+);
+
+CREATE TABLE `users_detail` (
+  `users_detail_id` int(11) NOT NULL,
+  `full_name` varchar(100) DEFAULT NULL,
+  `Phone` varchar(50) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `gender` varchar(50) DEFAULT NULL,
+  `date_of_birth` varchar(100) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `login_time` datetime DEFAULT NULL,
+  `logout_time` datetime DEFAULT NULL,
+  `created_by` varchar(100) DEFAULT NULL,
+  `created_date` varchar(100) DEFAULT NULL,
+  `updated_by` varchar(100) DEFAULT NULL,
+  `updated_date` varchar(100) DEFAULT NULL
+)
+
