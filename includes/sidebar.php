@@ -119,7 +119,7 @@ if($row['image']==''){
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" href="./pages/transaction.html">
+                                <a class="sub-menu-link" href="./penaltyCharges.php">
                                     <span class="d2c_icon">
                                         <i class="fas fa-list-alt"></i>
                                     </span>
@@ -129,15 +129,39 @@ if($row['image']==''){
                                 </a>
                             </li>
                             <!-- End:Sub Menu Item -->
+                             <!-- Sub Menu Item -->
+                             <li class="nav-item">
+                                <a class="sub-menu-link" href="./servants.php">
+                                    <span class="d2c_icon">
+                                        <i class="fas fa-wallet"></i>
+                                    </span>
+                                    <span>
+                                        Servants
+                                    </span>
+                                </a>
+                            </li>
+                            <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" href="./pages/wallet.html">
+                                <a class="sub-menu-link" href="./events.php">
                                     <span class="d2c_icon">
                                         <i class="fas fa-wallet"></i>
                                     </span>
                                     <span>
                                         Event Booking
+                                    </span>
+                                </a>
+                            </li>
+                            <!-- End:Sub Menu Item -->
+                            <!-- Sub Menu Item -->
+                            <li class="nav-item">
+                                <a class="sub-menu-link" href="./eGate.php">
+                                    <span class="d2c_icon">
+                                        <i class="fas fa-wallet"></i>
+                                    </span>
+                                    <span>
+                                        E-Gate Pass
                                     </span>
                                 </a>
                             </li>
