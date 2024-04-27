@@ -37,7 +37,7 @@ deleteHouse();
 <body class="d2c_theme_light">
     <!-- Preloader Start -->
     <div class="preloader">
-        <img src="assets/images/logo/KDA.png" alt="DesignToCodes">
+        <!-- <img src="assets/images/logo/KDA.png" alt="DesignToCodes"> -->
     </div>
     <!-- Preloader End -->
 
