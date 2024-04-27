@@ -1,11 +1,13 @@
 <?php
 session_start();
-include_once("includes/config.php");
+include_once ("includes/config.php");
+include "includes/function.php";
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
 }
+addHouse();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,10 +18,12 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
     <title>Add House</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <meta name="og:description"
+        content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
-    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <meta property="og:image"
+        content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
     <!-- bootstrap css link -->
     <link rel="stylesheet" href="lib/bootstrap_5/bootstrap.min.css">
     <!-- Font Awesome CDN -->
@@ -42,8 +46,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
         <!-- Main sidebar -->
         <?php
-        include("includes/sidebar.php");
-       ?>
+        include ("includes/sidebar.php");
+        ?>
         <!-- End:Sidebar -->
 
         <!-- Main Body-->
@@ -55,102 +59,104 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
             <div class="card h-auto">
                 <div class="card-body">
-                    <form action="#">
+                    <form action="" method="post">
                         <div class="row">
-                        <div class="col-md-6 col-xl-4">
+                            <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
                                     <label class="form-label">House/Unit Number</label>
-                                    <input type="number" class="form-control" placeholder="Enter House/Unit Number" required>
+                                    <input type="number" name="house-number"class="form-control" placeholder="Enter House/Unit Number"
+                                        required>
                                 </div>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
                                     <label class="form-label">Owner's Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter Owner's Name" required>
+                                    <input type="text" name="owner-name" class="form-control" placeholder="Enter Owner's Name" required>
                                 </div>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
                                     <label class="form-label">Owner's Contact Information</label>
-                                    <input type="number" class="form-control" placeholder="Enter Owner's Contact Information" required>
+                                    <input type="number" name="owner-contact" class="form-control"
+                                        placeholder="Enter Owner's Contact Information" required>
                                 </div>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
-                                    <label for="Group" class="form-label">Occupancy Status</label>
-                                    <select id="Group" class="form-select form-control">
-                                        <option selected>Owned</option>
-                                        <option>Rented</option>
+                                    <label for="owner" class="form-label">Occupancy Status</label>
+                                    <select id="owner" name="occupance-status" class="form-select form-control">
+                                        <option>-----</option>
+                                        <option value="owned">Owned</option>
+                                        <option value="rented">Rented</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
                                     <label class="form-label">Tenant's Name (if applicable)</label>
-                                    <input type="text" class="form-control" placeholder="Enter Tenant's Name">
+                                    <input type="text" name="tenants-name" class="form-control" placeholder="Enter Tenant's Name">
                                 </div>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
                                     <label class="form-label">Tenant's Contact Information (if applicable)</label>
-                                    <input type="text" class="form-control" placeholder="Enter Tenant's Contact Information">
+                                    <input type="text" name="tenant-contact" class="form-control"
+                                        placeholder="Enter Tenant's Contact Information">
                                 </div>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
-                                    <label for="Status" class="form-label">Type of Property</label>
-                                    <select id="Status" class="form-select form-control">
-                                        <option selected>Apartment</option>
-                                        <option>Duplex</option>
+                                    <label for="floor" class="form-label">Floor</label>
+                                    <select id="floor" name="floor" class="form-select form-control">
+                                        <option>-----</option>
+                                        <option value="ground">Ground</option>
+                                        <option value="floor1">Floor 1</option>
+                                        <option value="floor2">Floor 2</option>
+                                        <option value="floor3">Floor 3</option>
+                                        <option value="floor4">Floor 4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                                <div class="mb-4">
+                                    <label for="property-type" class="form-label">Type of Property</label>
+                                    <select id="property-type" name="property-type"class="form-select form-control">
+                                        <option>-----</option>
+                                        <option value="Apartment">Apartment</option>
+                                        <option value="Duplex">Duplex</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
                                     <label class="form-label">Size/Area of the Property</label>
-                                    <input type="number" class="form-control" placeholder="Enter Size/Area of the Property" required>
+                                    <select id="size" name="property-size" class="form-select form-control">
+                                        <option>-----</option>
+                                        <option value="60 sq yards">60 sq yards</option>
+                                        <option value="120 sq yards">120 sq yards</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="mb-4">
-                                    <label class="form-label">Number of Bedrooms/Bathrooms</label>
-                                    <input type="number" class="form-control" placeholder="Enter Number of Bedrooms/Bathrooms" required>
-                                </div>
-                            </div>
-                    
-                            <div class="col-md-6 col-xl-4">
-                                <div class="mb-4">
-                                    <label class="form-label">Parking Space</label>
-                                    <input type="text" class="form-control" placeholder="Enter Parking Space" required>
-                                </div>
-                            </div>
+
+
                             <div class="col-md-6 col-xl-4">
                                 <div class="mb-4">
                                     <label class="form-label">Monthly Maintenance Fee</label>
-                                    <input type="number" class="form-control" placeholder="Enter Monthly Maintenance Fee" required>
+                                    <input name="maintenance-charges" type="number" class="form-control"
+                                        placeholder="Enter Monthly Maintenance Fee" required>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="mb-4">
-                                    <label class="form-label">Outstanding Dues</label>
-                                    <input type="number" class="form-control" placeholder="Enter Outstanding Dues" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="mb-4">
-                                    <label class="form-label">Utilities Information</label>
-                                    <input type="text" class="form-control" placeholder="Enter Utilities Information" required>
-                                </div>
-                            </div>
-                        
-                            <div class="col-12">
+
+
+                            <div class="col-8">
                                 <div class="mb-4">
                                     <label class="form-label">Additional Notes/Comments</label>
-                                    <textarea cols="30" rows="4" class="form-control" placeholder="Write Additional Notes" required></textarea>
+                                    <textarea cols="30" rows="4" class="form-control"
+                                        placeholder="Write Additional Notes" name="notes"></textarea>
                                 </div>
                             </div>
                             <div>
-                                <button class="btn btn-primary">Add Now</button>
+                                <button class="btn btn-primary" type="submit" name="submit">Add Now</button>
                             </div>
                         </div>
                     </form>
@@ -161,7 +167,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     </div>
 
     <!-- Offcanvas Toggler -->
-    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
+    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
         <i class="far fa-hand-point-right"></i>
     </button>
     <!-- End:Offcanvas Toggler -->
@@ -173,4 +180,5 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <!-- custom js -->
     <script src="assets/js/main.js"></script>
 </body>
+
 </html>

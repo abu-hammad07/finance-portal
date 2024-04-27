@@ -116,6 +116,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                         </tr>
                                     </thead>
                                     <tbody id="userDetails">
+                                    
                                     </tbody>
                                 </table>
                             </div>
