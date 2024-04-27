@@ -77,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function () {
 // JavaScript validation code
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('add_user_form');
+    const passwordInput = document.getElementById('password');
+    const passwordError = document.getElementById('password_error');
 
     // Function to validate form
     function validateForm(event) {
@@ -149,6 +151,13 @@ document.addEventListener('DOMContentLoaded', function () {
             isValid = false;
         }
 
+        // Check password strength
+        if (!isPasswordStrong(passwordInput.value.trim())) {
+            passwordError.textContent = 'Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
+            passwordInput.classList.add('is-invalid');
+            isValid = false;
+        }
+
         // Check if any field is empty
         if (!isValidInput()) {
             isValid = false;
@@ -186,6 +195,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         return true;
+    }
+
+    // Function to check password strength
+    function isPasswordStrong(password) {
+        // Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character
+        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return strongRegex.test(password);
     }
 });
 
