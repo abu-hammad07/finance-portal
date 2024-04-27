@@ -1,3 +1,12 @@
+<?php
+session_start();
+include_once("includes/config.php");
+
+if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
+    // Redirect to login page
+    header('location: login');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +34,7 @@
 <body class="d2c_theme_light">
     <!-- Preloader Start -->
     <div class="preloader">
-        <!-- <img src="assets/images/logo/logo.png" alt="DesignToCodes"> -->
+        <img src="assets/images/logo/logo.png" alt="DesignToCodes">
     </div>
     <!-- Preloader End -->
 
