@@ -47,7 +47,7 @@ function userEdit()
         $image = '';
         if (!empty($_FILES['image']['name'])) {
             $image = mysqli_real_escape_string($conn, rand(111111111, 999999999) . '_' . $_FILES['image']['name']);
-            move_uploaded_file($_FILES['image']['tmp_name'], '../media/images/' . $image);
+            move_uploaded_file($_FILES['image']['tmp_name'], 'media/images/' . $image);
         }
 
         // Update the user's data in the database
@@ -71,7 +71,7 @@ function userEdit()
             $updateUserDetail_res = mysqli_query($conn, $updateUserDetail);
 
             if ($updateUserDetail_res) {
-                $_SESSION['success_updated_user'] = "$username User updated successfully";
+                $_SESSION['success_updated_user'] = "$username updated successfully";
                 header("location: userDetails");
                 exit();
             } else {
@@ -123,7 +123,7 @@ function userDelete()
             $deleteUserDetail_res = mysqli_query($conn, $deleteUserDetail);
 
             if ($deleteUserDetail_res) {
-                $_SESSION['success_updated_user'] = "$username User deleted successfully";
+                $_SESSION['success_updated_user'] = "$username deleted successfully";
                 header("location: userDetails");
                 exit();
             } else {
@@ -138,3 +138,55 @@ function userDelete()
         }
     }
 }
+// End of Users Deleted Data
+
+
+// Update profile data
+function updateProfile()
+{
+    global $conn;
+
+    if (isset($_POST['updateProfile'])) {
+        $usersDetailId = mysqli_real_escape_string($conn, $_POST['usersDetailId']);
+        $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
+        $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+        $date_of_birth = mysqli_real_escape_string($conn, $_POST['date_of_birth']);
+        $gender = mysqli_real_escape_string($conn, $_POST['gender']);
+        $address = mysqli_real_escape_string($conn, $_POST['address']);
+
+        // image upload
+        $image = '';
+        if (!empty($_FILES['image']['name'])) {
+            $image = mysqli_real_escape_string($conn, rand(111111111, 999999999) . '_' . $_FILES['image']['name']);
+            move_uploaded_file($_FILES['image']['tmp_name'], 'media/images/' . $image);
+        }
+
+        // Get the current date and time
+        $updated_date = date('Y-m-d');
+        // Get the user's ID and name
+        $updated_by = $_SESSION['username'];
+
+        // Update the user's details in the database
+        $updateUserDetail = "UPDATE `users_detail` SET `full_name`= '$full_name', `phone`= '$phone', 
+        `date_of_birth`= '$date_of_birth', `gender`= '$gender', `address`= '$address'";
+        if (!empty($image)) {
+            $updateUserDetail .= ", `image`= '$image'";
+        }
+
+        $updateUserDetail .= ", `updated_date`= '$updated_date', `updated_by`= '$updated_by'
+        WHERE `users_detail_id` = '$usersDetailId'";
+        $updateUserDetail_res = mysqli_query($conn, $updateUserDetail);
+
+        if ($updateUserDetail_res) {
+            $_SESSION['success_updated_profile'] = "Profile updated successfully";
+            header("location: profile");
+            exit();
+        } else {
+            $_SESSION['error_updated_profile'] = "Error updating profile";
+            header("location: profile");
+            exit();
+        }
+
+    }
+}
+// End of Update profile data

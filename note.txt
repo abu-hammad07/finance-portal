@@ -36,3 +36,19 @@ CREATE TABLE `users_detail` (
   `updated_date` varchar(100) DEFAULT NULL
 )
 
+
+CREATE TABLE servants(
+	servant_id INT PRIMARY KEY AUTO_INCREMENT,
+    fullName varchar(100) DEFAULT NULL,
+  	email varchar(100) DEFAULT NULL UNIQUE,
+    phone varchar(100) DEFAULT NULL,
+  	gender varchar(100) DEFAULT NULL,
+    address varchar(255) DEFAULT NULL,
+    status varchar(100) DEFAULT NULL,
+    image varchar(100) DEFAULT NULL,
+    created_by varchar(100) DEFAULT NULL,
+  	created_date varchar(100) DEFAULT NULL,
+  	updated_by varchar(100) DEFAULT NULL,
+  	updated_date varchar(100) DEFAULT NULL
+)
+

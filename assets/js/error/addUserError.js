@@ -1,207 +1,98 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Function to validate numeric input fields
-    function validateNumericInput(inputElement, errorElement) {
-        inputElement.addEventListener('input', function () {
-            const inputValue = inputElement.value.trim();
-            const numericValue = inputValue.replace(/\D/g, ''); // Remove non-numeric characters
+    const form = document.getElementById('add_user_form');
 
-            if (inputValue !== numericValue) { // If non-numeric characters are present
-                errorElement.textContent = 'Type only numbers';
+    // Validate input fields
+    function validateInput(inputElement, errorElement, validationRegex, errorMessage) {
+        inputElement.addEventListener('input', function () {
+            let inputValue = inputElement.value.trim();
+            const isValid = validationRegex.test(inputValue);
+
+            if (!isValid) {
+                errorElement.textContent = errorMessage;
                 errorElement.style.display = 'block';
                 inputElement.classList.add('is-invalid');
             } else {
-                errorElement.textContent = ''; // Clear error message
+                errorElement.textContent = '';
                 errorElement.style.display = 'none';
                 inputElement.classList.remove('is-invalid');
             }
-
-            // Update the input value with the cleaned numeric value
-            inputElement.value = numericValue;
         });
-
-        // Ensure error message is displayed on initial load if there's an invalid value
-        if (inputElement.value.trim() !== inputElement.value.replace(/\D/g, '')) {
-            errorElement.textContent = '';
-            errorElement.style.display = 'block';
-            inputElement.classList.add('is-invalid');
-        }
     }
 
-    // Validate phone number input
-    const phoneInput = document.getElementById('phone');
-    const phoneError = document.getElementById('phone_error');
-    validateNumericInput(phoneInput, phoneError);
-});
-
-
-
-// ======================== username lowercase only  ======================
-document.addEventListener('DOMContentLoaded', function () {
-    const usernameInput = document.getElementById('username');
-    const usernameError = document.getElementById('username_error');
-
-    usernameInput.addEventListener('input', function () {
-        let inputValue = usernameInput.value.trim();
-
-        // Convert input value to lowercase
-        inputValue = inputValue.toLowerCase();
-        usernameInput.value = inputValue;
-
-        // Check if input value is empty
-        if (inputValue === '') {
-            usernameError.textContent = '';
-            usernameError.style.display = 'block';
-            usernameInput.classList.add('is-invalid');
+    // Validation regex patterns and error messages
+    const validationRules = {
+        full_name: {
+            regex: /^.{1,}$/, // At least one character
+            errorMessage: 'Please enter your full name.'
+        },
+        phone: {
+            regex: /^\d{11}$/, // 15 digits only
+            errorMessage: 'Please enter a valid phone number.'
+        },
+        date_of_birth: {
+            regex: /^.{1,}$/, // At least one character
+            errorMessage: 'Please enter your date of birth.'
+        },
+        gender: {
+            regex: /^(?=.*[a-z]).{1,}$/, // At least one character
+            errorMessage: 'Please select gender.'
+        },
+        address: {
+            regex: /^.{1,}$/, // At least one character
+            errorMessage: 'Please enter your address.'
+        },
+        user_type: {
+            regex: /^(?=.*[a-z]).{1,}$/, // At least one character
+            errorMessage: 'Please select user type.'
+        },
+        username: {
+            regex: /^[a-z._-]+$/, // Lowercase letters, '.', '-', '_'
+            errorMessage: 'Username should contain only lowercase letters, ".", "-", or "_".'
+        },
+        email: {
+            regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Email pattern
+            errorMessage: 'Please enter a valid email address.'
+        },
+        password: {
+            regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, // Password strength criteria
+            errorMessage: 'Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
         }
-        // Check if input value contains characters other than lowercase letters, '.', '-', '_'
-        else if (!/^[a-z._-]+$/.test(inputValue)) {
-            usernameError.textContent = 'Username should contain only lowercase letters, ".", "-", or "_".';
-            usernameError.style.display = 'block';
-            usernameInput.classList.add('is-invalid');
-        } else {
-            usernameError.textContent = '';
-            usernameError.style.display = 'none';
-            usernameInput.classList.remove('is-invalid');
-        }
+    };
+
+    // Loop through each input field and attach validation
+    Object.keys(validationRules).forEach(key => {
+        const inputElement = document.getElementById(key);
+        const errorElement = document.getElementById(`${key}_error`);
+        validateInput(inputElement, errorElement, validationRules[key].regex, validationRules[key].errorMessage);
     });
-});
 
-
-
-
-
-
-
-// ========================================================================
-
-// JavaScript validation code
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('add_user_form');
-    const passwordInput = document.getElementById('password');
-    const passwordError = document.getElementById('password_error');
-
-    // Function to validate form
+    // Function to validate form submission
     function validateForm(event) {
         event.preventDefault(); // Prevent form submission
 
-        // Reset error messages and borders
-        const errorSpans = form.querySelectorAll('.text-danger');
-        errorSpans.forEach(span => {
-            span.textContent = '';
-        });
-        const inputFields = form.querySelectorAll('.form-control');
-        inputFields.forEach(field => {
-            field.classList.remove('is-invalid');
-        });
-
         let isValid = true;
 
-        // Validate each input field
-        if (!full_name.value.trim()) {
-            document.getElementById('full_name_error').textContent = 'Please enter your full name.';
-            full_name.classList.add('is-invalid');
-            isValid = false;
-        }
+        // Check if any input field is empty
+        Object.keys(validationRules).forEach(key => {
+            const inputElement = document.getElementById(key);
+            const errorElement = document.getElementById(`${key}_error`);
+            const inputValue = inputElement.value.trim();
+            const isValidField = validationRules[key].regex.test(inputValue);
 
-        if (!phone.value.trim()) {
-            document.getElementById('phone_error').textContent = 'Please enter your phone number.';
-            phone.classList.add('is-invalid');
-            isValid = false;
-        }
+            if (!isValidField) {
+                errorElement.textContent = validationRules[key].errorMessage;
+                errorElement.style.display = 'block';
+                inputElement.classList.add('is-invalid');
+                isValid = false;
+            }
+        });
 
-        if (!date_of_birth.value.trim()) {
-            document.getElementById('date_of_birth_error').textContent = 'Please enter your date of birth.';
-            date_of_birth.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        if (gender.value === '') {
-            document.getElementById('gender_error').textContent = 'Please select gender.';
-            gender.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        if (!address.value.trim()) {
-            document.getElementById('address_error').textContent = 'Please enter your address.';
-            address.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        if (user_type.value === '') {
-            document.getElementById('user_type_error').textContent = 'Please select user type.';
-            user_type.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        if (!username.value.trim()) {
-            document.getElementById('username_error').textContent = 'Please enter your username.';
-            username.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        if (!email.value.trim()) {
-            document.getElementById('email_error').textContent = 'Please enter your email.';
-            email.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        if (!password.value.trim()) {
-            document.getElementById('password_error').textContent = 'Please enter your password.';
-            password.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        // Check password strength
-        if (!isPasswordStrong(passwordInput.value.trim())) {
-            passwordError.textContent = 'Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
-            passwordInput.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        // Check if any field is empty
-        if (!isValidInput()) {
-            isValid = false;
-        }
-
+        // Submit the form if all inputs are valid
         if (isValid) {
-            form.submit(); // Submit the form if all inputs are valid
+            form.submit();
         }
     }
 
     // Event listener for form submission
     document.getElementById('submit_btn').addEventListener('click', validateForm);
-
-    // Event listener for toggling password visibility
-    document.getElementById('toggle_password').addEventListener('click', function () {
-        const passwordInput = document.getElementById('password');
-        const eyeIcon = document.getElementById('eye_icon');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            eyeIcon.classList.remove('fa-eye-slash');
-            eyeIcon.classList.add('fa-eye');
-        } else {
-            passwordInput.type = 'password';
-            eyeIcon.classList.remove('fa-eye');
-            eyeIcon.classList.add('fa-eye-slash');
-        }
-    });
-
-    // Function to check if any input field is empty
-    function isValidInput() {
-        const inputFields = form.querySelectorAll('.form-control');
-        for (let i = 0; i < inputFields.length; i++) {
-            if (!inputFields[i].value.trim()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Function to check password strength
-    function isPasswordStrong(password) {
-        // Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character
-        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return strongRegex.test(password);
-    }
 });
-
