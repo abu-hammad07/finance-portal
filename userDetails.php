@@ -1,10 +1,12 @@
 <?php
 session_start();
 include_once("includes/config.php");
+include_once("includes/function2.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
 }
+userDelete();
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +55,6 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
             <h4 class="mb-4 text-capitalize">Users</h4>
             <!-- End:Title -->
 
-
             <div class="row">
                 <div class="col-lg-12 mb-4">
                     <div class="card card-body h-auto d2c_projects_datatable">
@@ -71,6 +72,26 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                     </div>
                 </div>
             </div>
+
+            <!-- Alert -->
+            <?php
+            if (isset($_SESSION['success_updated_user'])) {
+                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    ' . $_SESSION['success_updated_user'] . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                unset($_SESSION['success_updated_user']);
+            }
+            if (isset($_SESSION['error_updated_user'])) {
+                echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ' . $_SESSION['error_updated_user'] . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                unset($_SESSION['error_updated_user']);
+            }
+            ?>
+            <!-- / Alert -->
+
 
             <div class="row">
                 <div class="col-lg-12">
@@ -116,7 +137,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                         </tr>
                                     </thead>
                                     <tbody id="userDetails">
-                                    
+
                                     </tbody>
                                 </table>
                             </div>

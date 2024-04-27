@@ -144,8 +144,8 @@ if (mysqli_num_rows($result) > 0) {
         $role_names[] = $role['name'];
     }
     // Store role IDs and names in session variables
-    $_SESSION['get_role_id'] = $role_ids;
-    $_SESSION['get_role_name'] = $role_names;
+    $get_role_id = $role_ids;
+    $get_role_name = $role_names;
 }
 
 ?>
@@ -259,11 +259,11 @@ if (mysqli_num_rows($result) > 0) {
                                         <option value="">-----</option>
                                         <?php
                                         // Check if session variables containing role IDs and names are set and are arrays
-                                        if (isset($_SESSION['get_role_id']) && isset($_SESSION['get_role_name']) && is_array($_SESSION['get_role_id']) && is_array($_SESSION['get_role_name'])) {
+                                        if (isset($get_role_id) && isset($get_role_name) && is_array($get_role_id) && is_array($get_role_name)) {
                                             // Iterate over the arrays to generate options
-                                            for ($i = 0; $i < count($_SESSION['get_role_id']); $i++) {
-                                                $role_id = $_SESSION['get_role_id'][$i];
-                                                $role_name = $_SESSION['get_role_name'][$i];
+                                            for ($i = 0; $i < count($get_role_id); $i++) {
+                                                $role_id = $get_role_id[$i];
+                                                $role_name = $get_role_name[$i];
                                                 echo "<option value='$role_id'>$role_name</option>";
                                             }
                                         }
