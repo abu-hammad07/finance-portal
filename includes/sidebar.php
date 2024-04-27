@@ -67,7 +67,7 @@ if($row['image']==''){
                         <ul class="sub-menu collapse show">
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" href="./index.php">
+                                <a class="sub-menu-link" href="index">
                                     <span class="d2c_icon">
                                         <i class="fas fa-home"></i>
                                     </span>
@@ -80,13 +80,12 @@ if($row['image']==''){
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" href="./houses.php">
+                                <a class="sub-menu-link" href="houses">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
                                     <span>
                                         Society Houses
-
                                     </span>
                                 </a>
                             </li>
@@ -94,7 +93,7 @@ if($row['image']==''){
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" href="./expense.php">
+                                <a class="sub-menu-link" href="expense">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
@@ -107,7 +106,7 @@ if($row['image']==''){
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" href="./maintenanceCharges.php">
+                                <a class="sub-menu-link" href="maintenanceCharges">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
