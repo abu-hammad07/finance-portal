@@ -126,7 +126,7 @@ userDelete();
                                 <table class="table" id="d2c_advanced_table_2">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th>S.No</th>
                                             <th>Username</th>
                                             <th>Email</th>
                                             <th>Phone</th>

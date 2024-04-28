@@ -4,6 +4,7 @@ include "config.php";
 // Add Houses
 function addHouse()
 {
+    global $conn;
     if (isset($_POST['submit'])) {
         $houseNumber = $_POST['house-number'];
         $ownerName = $_POST['owner-name'];
@@ -16,9 +17,8 @@ function addHouse()
         $propertySize = $_POST['property-size'];
         $maintenanceCharges = $_POST['maintenance-charges'];
         $notes = $_POST['notes'];
-        global $conn;
-        $added_on = date('d-m-y');
-        $added_by = $_SESSION['UID'];
+
+        $added_by = $_SESSION['username'];
 
         $insertQuery = "INSERT INTO `houses`(`house_number`, `owner_name`, `owner_contact`,
          `occupancy_status`, `tenants_name`, `tenants_contact`, `property_size`, 
@@ -27,7 +27,7 @@ function addHouse()
           '{$occupanceStatus}',
           '{$tenantsName}','{$tenantContact}','{$propertySize}','{$floor}',
           '{$propertyType}','{$maintenanceCharges}',
-          '{$notes}','{$added_on}','{$added_by}')";
+          '{$notes}',NOW(),'{$added_by}')";
 
         $query = mysqli_query($conn, $insertQuery);
         if ($query) {
@@ -294,4 +294,3 @@ function eventBookingUpdate()
     }
 }
 // ========================= End Event Booking Update  =========================
-

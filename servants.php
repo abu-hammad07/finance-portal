@@ -124,7 +124,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                 <table class="table" id="d2c_advanced_table_2">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th>S.No</th>
                                             <th>Servant Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>

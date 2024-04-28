@@ -126,7 +126,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                 <table class="table" id="d2c_advanced_table_2">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th>S.No</th>
                                             <th>Event Name</th>
                                             <th>Location</th>
                                             <th>Date Time</th>
@@ -209,7 +209,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'search-user-Data',
+                    action: 'search-events_booking-Data',
                     eventsSearch: eventsSearch
                 },
                 success: function(response) {
