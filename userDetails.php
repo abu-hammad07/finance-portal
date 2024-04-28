@@ -55,24 +55,6 @@ userDelete();
             <h4 class="mb-4 text-capitalize">Users</h4>
             <!-- End:Title -->
 
-            <div class="row">
-                <div class="col-lg-12 mb-4">
-                    <div class="card card-body h-auto d2c_projects_datatable">
-                        <div class="row">
-                            <div class="col-md-4 col-xl-3">
-                                <form class="position-relative">
-                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="userSearch" onkeyup="search_user_Data()" placeholder="Search &nbsp;..." />
-                                    <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                                </form>
-                            </div>
-                            <div class="col-md-8 col-xl-9 text-end">
-                                <a href="addUser" class="btn btn-primary"><i class="fas fa-plus"></i> Add User</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Alert -->
             <?php
             if (isset($_SESSION['success_updated_user'])) {
@@ -92,6 +74,23 @@ userDelete();
             ?>
             <!-- / Alert -->
 
+            <div class="row">
+                <div class="col-lg-12 mb-4">
+                    <div class="card card-body h-auto d2c_projects_datatable">
+                        <div class="row">
+                            <div class="col-md-4 col-xl-3">
+                                <form class="position-relative">
+                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="userSearch" onkeyup="search_user_Data()" placeholder="Search &nbsp;..." />
+                                    <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                                </form>
+                            </div>
+                            <div class="col-md-8 col-xl-9 text-end">
+                                <a href="addUser" class="btn btn-primary"><i class="fas fa-plus"></i> User</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-lg-12">
@@ -176,7 +175,7 @@ userDelete();
             let userOrder = $("#user-order").val();
 
             $.ajax({
-                url: 'filter_fetch_data.php',
+                url: 'admin-index.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -204,7 +203,7 @@ userDelete();
             let userSearch = document.getElementById('userSearch').value;
 
             $.ajax({
-                url: 'filter_fetch_data.php',
+                url: 'admin-index.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {

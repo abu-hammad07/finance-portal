@@ -37,18 +37,17 @@ CREATE TABLE `users_detail` (
 )
 
 
+
 CREATE TABLE servants(
 	servant_id INT PRIMARY KEY AUTO_INCREMENT,
-    fullName varchar(100) DEFAULT NULL,
-  	email varchar(100) DEFAULT NULL UNIQUE,
-    phone varchar(100) DEFAULT NULL,
-  	gender varchar(100) DEFAULT NULL,
-    address varchar(255) DEFAULT NULL,
-    status varchar(100) DEFAULT NULL,
-    image varchar(100) DEFAULT NULL,
-    created_by varchar(100) DEFAULT NULL,
-  	created_date varchar(100) DEFAULT NULL,
-  	updated_by varchar(100) DEFAULT NULL,
-  	updated_date varchar(100) DEFAULT NULL
+    servant_name varchar(100) DEFAULT NULL,
+	phone varchar(50) DEFAULT NULL,
+	address varchar(255) DEFAULT NULL,
+	gender varchar(50) DEFAULT NULL,
+	email varchar(100) DEFAULT NULL UNIQUE,
+	image varchar(100) DEFAULT NULL,
+	added_by varchar(100),
+	added_on varchar(100),
+    updated_by varchar(100),
+    updated_on varchar(100)
 )
-

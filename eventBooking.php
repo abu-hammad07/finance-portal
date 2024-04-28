@@ -7,7 +7,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     header('location: login');
 }
 
-servantSubmit();
+// insert Function
+eventBookingInsert();
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +19,7 @@ servantSubmit();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
-    <title>Add Servants</title>
+    <title>Event Booking</title>
     <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
@@ -52,87 +53,86 @@ servantSubmit();
         <!-- Main Body-->
         <div class="d2c_main p-4 ps-lg-3">
             <!-- Title -->
-            <h4 class="mb-4 text-capitalize">Add Servant</h4>
+            <h4 class="mb-4 text-capitalize">Event</h4>
             <!-- End:Title -->
 
             <!-- Alert -->
             <?php
-            if (isset($_SESSION['success_message_servant'])) {
+            if (isset($_SESSION['success_message_eventBooking'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_servant'] . '
+                    ' . $_SESSION['success_message_eventBooking'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['success_message_servant']);
+                unset($_SESSION['success_message_eventBooking']);
             }
-            if (isset($_SESSION['error_message_servant'])) {
+            if (isset($_SESSION['error_message_eventBooking'])) {
                 echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error_message_servant'] . '
+                    ' . $_SESSION['error_message_eventBooking'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['error_message_servant']);
+                unset($_SESSION['error_message_eventBooking']);
             }
             ?>
             <!-- / Alert -->
 
 
-            <form action="" method="POST" id="add_servant_form" enctype="multipart/form-data">
+            <form action="" method="POST" id="event_booking_form" enctype="multipart/form-data">
                 <div class="card h-auto">
                     <div class="card-body">
-                        <h3 class="card-header">Information</h3>
+                        <h3 class="card-header">Booking</h3>
                         <hr class="my-4">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter Full Name" >
-                                <span class="text-danger" id="full_name_error"></span>
+                                <label class="form-label">Event Name</label>
+                                <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter Event Name">
+                                <span class="text-danger" id="eventName_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="Enter Location">
+                                <span class="text-danger" id="location_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date Time</label>
+                                <input type="datetime-local" class="form-control" id="dateTime" name="dateTime">
+                                <span class="text-danger" id="dateTime_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">No Of Servant</label>
+                                <input type="text" class="form-control" id="noOfServant" name="noOfServant" placeholder="Enter No Of Servant">
+                                <span class="text-danger" id="noOfServant_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Servant Name</label>
+                                <select id="servantName" name="servantID" class="form-select form-control">
+                                    <!-- <option value="">-----</option> -->
+                                </select>
+                                <span class="text-danger" id="servantName_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" >
-                                <span class="text-danger" id="email_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" >
-                                <span class="text-danger" id="phone_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Gender</label>
-                                <div class="input-group">
-                                    <select id="gender" name="gender" class="form-select form-control">
-                                        <option value="">-----</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                                <span class="text-danger" id="gender_error"></span>
+                                <select id="servantEmail" class="form-control">
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" >
-                                <span class="text-danger" id="address_error"></span>
+                                <select id="servantAddress" class="form-control">
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Status</label>
                                 <div class="input-group">
-                                    <select id="status" name="status" class="form-select form-control">
-                                        <option value="">-----</option>
-                                        <option value="Active">Active</option>
-                                        <option value="Not Active">Not Active</option>
+                                    <select id="servantStatus" class="form-control">
                                     </select>
                                 </div>
-                                <span class="text-danger" id="status_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Image</label>
-                                <input type="file" class="form-control" id="image" name="image">
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- submit btn -->
                 <div class="mt-3">
-                    <button type="submit" id="submit_btn" name="servant_submit" class="btn btn-primary">Add</button>
+                    <button type="submit" id="submit_btn" class="btn btn-primary">Add</button>
                 </div>
             </form>
 
@@ -148,10 +148,9 @@ servantSubmit();
     </button>
     <!-- End:Offcanvas Toggler -->
 
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('add_servant_form');
+            const form = document.getElementById('event_booking_form');
 
             // Validate input fields
             function validateInput(inputElement, errorElement, validationRegex, errorMessage) {
@@ -173,30 +172,26 @@ servantSubmit();
 
             // Validation regex patterns and error messages
             const validationRules = {
-                full_name: {
+                eventName: {
                     regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter your full name.'
+                    errorMessage: 'Please enter an event name.'
                 },
-                phone: {
-                    regex: /^\d{11}$/, // 15 digits only
-                    errorMessage: 'Please enter a valid phone number.'
-                },
-                gender: {
-                    regex: /^(?=.*[a-z]).{1,}$/, // At least one character
-                    errorMessage: 'Please select gender.'
-                },
-                address: {
+                location: {
                     regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter your address.'
+                    errorMessage: 'Please enter a location.'
                 },
-                status: {
-                    regex: /^(?=.*[a-z]).{1,}$/, // At least one character
-                    errorMessage: 'Please select user type.'
+                dateTime: {
+                    regex: /^.{1,}$/, // At least one character
+                    errorMessage: 'Please select a date and time.'
                 },
-                email: {
-                    regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Email pattern
-                    errorMessage: 'Please enter a valid email address.'
+                noOfServant: {
+                    regex: /^\d*$/, // Allow any number of digits
+                    errorMessage: 'Please enter a valid number for the number of servants.'
                 },
+                servantName: {
+                    regex: /^.{1,}$/, // At least one character
+                    errorMessage: 'Please select servant name.'
+                }
             };
 
             // Loop through each input field and attach validation
@@ -224,6 +219,10 @@ servantSubmit();
                         errorElement.style.display = 'block';
                         inputElement.classList.add('is-invalid');
                         isValid = false;
+                    } else {
+                        errorElement.textContent = '';
+                        errorElement.style.display = 'none';
+                        inputElement.classList.remove('is-invalid');
                     }
                 });
 
@@ -234,9 +233,10 @@ servantSubmit();
             }
 
             // Event listener for form submission
-            document.getElementById('submit_btn').addEventListener('click', validateForm);
+            form.addEventListener('submit', validateForm);
         });
     </script>
+
     <!-- Initial  Javascript -->
     <script src="lib/jQuery/jquery-3.5.1.min.js"></script>
     <script src="lib/bootstrap_5/bootstrap.bundle.min.js"></script>
@@ -246,3 +246,46 @@ servantSubmit();
 </body>
 
 </html>
+
+
+<script>
+    $(document).ready(function() {
+        function loadData(type, id) {
+            $.ajax({
+                url: 'ajax.php',
+                type: 'POST',
+                data: {
+                    type: type,
+                    id: id
+                },
+                dataType: 'html',
+                success: function(data) {
+                    if (type === "servantName_Data") {
+                        $('#servantName').html('<option value="">-----</option>' + data);
+                    } else if (type === "servantEmail_Data") {
+                        $('#servantEmail').html(data);
+                    } else if (type === "servantAddress_Data") {
+                        $('#servantAddress').html(data);
+                    } else if (type === "servantStatus_Data") {
+                        $('#servantStatus').html(data);
+                    }
+                }
+            });
+        }
+
+        loadData("servantName_Data");
+
+        $("#servantName").on("change", function() {
+            var stNameData = $("#servantName").val();
+            if (stNameData != "") {
+                loadData("servantEmail_Data", stNameData);
+                loadData("servantAddress_Data", stNameData);
+                loadData("servantStatus_Data", stNameData);
+            } else {
+                $('#servantEmail').html("");
+                $('#servantAddress').html("");
+                $('#servantStatus').html("");
+            }
+        });
+    });
+</script>

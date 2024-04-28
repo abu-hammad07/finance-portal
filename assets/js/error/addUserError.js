@@ -1,9 +1,9 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('add_user_form');
 
     // Validate input fields
     function validateInput(inputElement, errorElement, validationRegex, errorMessage) {
-        inputElement.addEventListener('input', function () {
+        inputElement.addEventListener('input', function() {
             let inputValue = inputElement.value.trim();
             const isValid = validationRegex.test(inputValue);
 
@@ -18,6 +18,21 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Toggle password visibility
+    document.getElementById('toggle_password').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye_icon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        }
+    });
 
     // Validation regex patterns and error messages
     const validationRules = {

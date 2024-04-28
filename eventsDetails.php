@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once("includes/config.php");
+// include_once("includes/function2.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -15,8 +16,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
-    <title>Servants Details</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and servant-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <title>Events Details</title>
+    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
     <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
@@ -50,27 +51,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
         <div class="d2c_main p-4 ps-lg-3">
 
             <!-- Title -->
-            <h4 class="mb-4 text-capitalize">Servants</h4>
+            <h4 class="mb-4 text-capitalize">Events Booking</h4>
             <!-- End:Title -->
-
-            <!-- Alert -->
-            <?php
-            if (isset($_SESSION['success_updated_servant'])) {
-                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_updated_servant'] . '
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-                unset($_SESSION['success_updated_servant']);
-            }
-            if (isset($_SESSION['error_updated_servant'])) {
-                echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error_updated_servant'] . '
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-                unset($_SESSION['error_updated_servant']);
-            }
-            ?>
-            <!-- / Alert -->
 
             <div class="row">
                 <div class="col-lg-12 mb-4">
@@ -78,17 +60,37 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                         <div class="row">
                             <div class="col-md-4 col-xl-3">
                                 <form class="position-relative">
-                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="servantSearch" onkeyup="search_servant_Data()" placeholder="Search &nbsp;..." />
+                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="eventsSearch" onkeyup="search_events_Data()" placeholder="Search &nbsp;..." />
                                     <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
                                 </form>
                             </div>
                             <div class="col-md-8 col-xl-9 text-end">
-                                <a href="addServant" class="btn btn-primary"><i class="fas fa-plus"></i> Add Servant</a>
+                                <a href="eventBooking" class="btn btn-primary"><i class="fas fa-plus"></i> Events Booking</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Alert -->
+            <?php
+            if (isset($_SESSION['success_updated_events'])) {
+                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    ' . $_SESSION['success_updated_events'] . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                unset($_SESSION['success_updated_events']);
+            }
+            if (isset($_SESSION['error_updated_events'])) {
+                echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ' . $_SESSION['error_updated_events'] . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                unset($_SESSION['error_updated_events']);
+            }
+            ?>
+            <!-- / Alert -->
+
 
             <div class="row">
                 <div class="col-lg-12">
@@ -102,7 +104,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="servant-limit" class="form-select" onchange="load_servant_Data()">
+                                        <select id="events-limit" class="form-select" onchange="load_events_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -111,7 +113,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                         </select>
                                     </div>
                                     <div class="div">
-                                        <select id="servant-order" class="form-select" onchange="load_servant_Data()">
+                                        <select id="events-order" class="form-select" onchange="load_events_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -125,15 +127,18 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Event Name</th>
+                                            <th>Location</th>
+                                            <th>Date Time</th>
+                                            <th>No Of Servant</th>
                                             <th>Servant Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Gender</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="servantDetails">
+                                    <tbody id="eventsDetails">
+                                        <!-- <tr>
+                                            <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database.()</td>
+                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
@@ -162,28 +167,28 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
-            load_servant_Data();
+            load_events_Data();
 
         });
 
-        function load_servant_Data() {
+        function load_events_Data() {
 
-            let servantLimited = $("#servant-limit").val();
-            let servantOrder = $("#servant-order").val();
+            let eventsLimited = $("#events-limit").val();
+            let eventsOrder = $("#events-order").val();
 
             $.ajax({
-                url: 'filter_fetch_servant_data.php',
+                url: 'admin-index.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'load-servant-Data',
-                    servantLimited: servantLimited,
-                    servantOrder: servantOrder
+                    action: 'load-events_booking-Data',
+                    eventsLimited: eventsLimited,
+                    eventsOrder: eventsOrder
                 },
                 success: function(response) {
                     console.log(response);
                     // Update the result div with the loaded data
-                    $("#servantDetails").html(response.data);
+                    $("#eventsDetails").html(response.data);
                 },
             });
         }
@@ -191,26 +196,26 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
-            search_servant_Data();
+            search_events_Data();
 
         });
 
-        function search_servant_Data() {
+        function search_events_Data() {
 
-            let servantSearch = document.getElementById('servantSearch').value;
+            let eventsSearch = document.getElementById('eventsSearch').value;
 
             $.ajax({
-                url: 'filter_fetch_servant_data.php',
+                url: 'admin-index.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'search-servant-Data',
-                    servantSearch: servantSearch
+                    action: 'search-user-Data',
+                    eventsSearch: eventsSearch
                 },
                 success: function(response) {
                     console.log(response);
                     // Update the result div with the loaded data
-                    $("#servantDetails").html(response.data);
+                    $("#eventsDetails").html(response.data);
                 },
             });
         }

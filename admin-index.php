@@ -1,8 +1,8 @@
 <?php
 include_once('includes/config.php');
 
-// Feature Function to filter and display data in the table based on user input or database data depending on your database structure and requirements  
 
+// Feature Function to filter and display data in the table based on user input or database data depending on your database structure and requirements  
 
 function filter_user_data_In_Database($userLimited, $userOrder)
 {
@@ -20,6 +20,7 @@ function filter_user_data_In_Database($userLimited, $userOrder)
     $data = '';
     $count = 1;
     while ($row = mysqli_fetch_assoc($result)) {
+
         $data .= '
 
         <tr>
@@ -153,6 +154,83 @@ function search_user_data_In_Database($userSearch)
     return $data;
 }
 
+function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
+{
+    global $conn;
+
+    // Modify the query based on your database structure
+    $eventsQuery = "SELECT event_id, eventName, location, dateTime, noOfServant, servants.servant_name
+    FROM events_booking
+    LEFT JOIN servants ON events_booking.servant_id = servants.servant_id
+    ORDER BY events_booking.event_id $eventsOrder LIMIT $eventsLimited";
+
+    $eventsResult = mysqli_query($conn, $eventsQuery);
+
+    $data = '';
+    $count = 1;
+    while ($row = mysqli_fetch_assoc($eventsResult)) {
+
+        // Modify date & time format
+        $date_time = $row['dateTime'];
+        $date = substr($date_time, 0, 10);
+        $time = date("h:i A", strtotime(substr($date_time, 11, 5)));
+
+        $data .= '
+
+        <tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['eventName'] . '</td>
+            <td>' . $row['location'] . '</td>
+            <td>' . $date . '<br>' . $time . '</td>
+            <td>' . $row['noOfServant'] . '</td>
+            <td>' . $row['servant_name'] . '</td>
+            <td>
+                <a href="eventEdit.php?event_edit_id=' . $row['event_id'] . '">
+                    <span>
+                        <i class="fas fa-pencil-alt me-1 text-success"></i>
+                    </span>
+                </a>
+                <a class="" href="eventView.php?event_view_id=' . $row['event_id'] . '">
+                    <i class="fas fa-eye me-1 text-info"></i>
+                </a>
+                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteUsers' . $row['event_id'] . '" data-bs-placement="top" title="Delete">
+                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
+                </button>
+                <div class="modal fade" id="deleteUsers' . $row['event_id'] . '" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['eventName'] . '</span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <p>Please confirm that you want to delete your Incometion. <br>
+                                    Once deleted, you won\'t be able to recover it. <br>
+                                    Please proceed with caution.
+                                </p>
+                            </div>
+                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                <a href="?event_delete_id=' . $row['event_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        ';
+    }
+    // Check if $data is empty
+    if (empty($data)) {
+        $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database.</td>
+                </tr>';
+    }
+
+    return $data;
+}
+
 
 
 
@@ -176,6 +254,17 @@ if (isset($_POST['action'])) {
         $userSearch = $_POST['userSearch'];
 
         $result = search_user_data_In_Database($userSearch);
+
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+    // filter events booking
+    if ($action == 'load-events_booking-Data') {
+        $eventsLimited = $_POST['eventsLimited'];
+        $eventsOrder = $_POST['eventsOrder'];
+
+        $result = filter_events_booking_data_In_Database($eventsLimited, $eventsOrder);
 
         $response = array('data' => $result);
         echo json_encode($response);

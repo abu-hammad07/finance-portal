@@ -1,12 +1,14 @@
 <?php
 session_start();
 include_once("includes/config.php");
-include_once("includes/function2.php");
+include_once("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
 }
-userEdit();
+
+// Update Servants
+serventUpdate(); 
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +19,7 @@ userEdit();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
-    <title>Edit User</title>
+    <title>Edit Servants</title>
     <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
@@ -51,58 +53,50 @@ userEdit();
         <!-- Main Body-->
         <div class="d2c_main p-4 ps-lg-3">
             <!-- Title -->
-            <h4 class="mb-4 text-capitalize">Edit User</h4>
+            <h4 class="mb-4 text-capitalize">Edit Servant</h4>
             <!-- End:Title -->
 
             <?php
-            if (isset($_GET['user_edit_id'])) {
+            if (isset($_GET['servant_edit_id'])) {
 
-                $user_view_id = mysqli_real_escape_string($conn, $_GET['user_edit_id']);
+                $servant_edit_id = mysqli_real_escape_string($conn, $_GET['servant_edit_id']);
 
-                $query = "SELECT user_id, username, email, users_detail.users_detail_id, users_detail.full_name, 
-                users_detail.Phone, users_detail.address, users_detail.gender, users_detail.date_of_birth, 
-                role.name as role, role.role_id
-                    FROM users 
-                    LEFT JOIN users_detail ON users_detail.users_detail_id = users.users_detail_id
-                    LEFT JOIN role ON users.role_id = role.role_id
-                    WHERE users.user_id = '$user_view_id'";
+                $query = "SELECT * FROM servants
+                    WHERE servant_id = '$servant_edit_id'";
                 $result = mysqli_query($conn, $query);
 
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
-
-
-
             ?>
-                        <form action="" method="POST" id="add_user_form" enctype="multipart/form-data">
+                        <form action="" method="POST" id="add_servant_form" enctype="multipart/form-data">
                             <div class="card h-auto">
                                 <div class="card-body">
                                     <h3 class="card-header">Information</h3>
                                     <hr class="my-4">
+                                    <input type="text" name="servant_id" value="<?= $row['servant_id'] ?>" hidden>
                                     <div class="row g-3">
-                                        <input type="text" hidden name="users_detail_id" value="<?= $row['users_detail_id'] ?>">
-                                        <input type="text" hidden name="user_id" value="<?= $row['user_id'] ?>">
                                         <div class="col-md-6">
                                             <label class="form-label">Full Name</label>
-                                            <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter Full Name" value="<?= $row['full_name'] ?>">
+                                            <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter Full Name" value="<?= $row['servant_name'] ?>">
                                             <span class="text-danger" id="full_name_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Phone Number</label>
-                                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" value="<?= $row['Phone'] ?>">
-                                            <span class="text-danger" id="phone_error"></span>
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" value="<?= $row['email'] ?>">
+                                            <span class="text-danger" id="email_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Date Of Birth</label>
-                                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" placeholder="Enter Date Of Birth" value="<?= $row['date_of_birth'] ?>">
-                                            <span class="text-danger" id="date_of_birth_error"></span>
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" value="<?= $row['phone'] ?>">
+                                            <span class="text-danger" id="phone_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Gender</label>
                                             <div class="input-group">
                                                 <select id="gender" name="gender" class="form-select form-control">
-                                                    <option value="Male" <?php if ($row['gender'] == "Male") echo "selected"; ?>>Male</option>
-                                                    <option value="Female" <?php if ($row['gender'] == "Female") echo "selected"; ?>>Female</option>
+                                                    <option value="" <?php if ($row['gender'] == '') echo "selected"; ?>>-----</option>
+                                                    <option value="Male" <?php if ($row['gender'] == 'Male') echo "selected"; ?>>Male</option>
+                                                    <option value="Female" <?php if ($row['gender'] == 'Female') echo "selected"; ?>>Female</option>
                                                 </select>
                                             </div>
                                             <span class="text-danger" id="gender_error"></span>
@@ -113,32 +107,15 @@ userEdit();
                                             <span class="text-danger" id="address_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">User Type</label>
+                                            <label class="form-label">Status</label>
                                             <div class="input-group">
-                                                <select id="user_type" name="user_type" class="form-select form-control">
-                                                    <option value="<?= $row['role_id'] ?>"><?= $row['role'] ?></option>
+                                                <select id="status" name="status" class="form-select form-control">
+                                                    <option value="" <?php if ($row['status'] == '') echo "selected"; ?>>-----</option>
+                                                    <option value="Active" <?php if ($row['status'] == 'Active') echo "selected"; ?>>Active</option>
+                                                    <option value="Not Active" <?php if ($row['status'] == 'Not Active') echo "selected"; ?>>Not Active</option>
                                                 </select>
                                             </div>
-                                            <span class="text-danger" id="user_type_error"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Login -->
-                            <div class="card h-auto mt-4">
-                                <div class="card-body">
-                                    <h3 class="card-header">Login</h3>
-                                    <hr class="my-4">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" value="<?= $row['username'] ?>">
-                                            <span class="text-danger" id="username_error"></span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" value="<?= $row['email'] ?>">
-                                            <span class="text-danger" id="email_error"></span>
+                                            <span class="text-danger" id="status_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Image</label>
@@ -147,12 +124,14 @@ userEdit();
                                     </div>
                                 </div>
                             </div>
+
                             <!-- submit btn -->
                             <div class="mt-3">
-                                <button type="submit" id="submit_btn" name="userUpdate" class="btn btn-primary">Update</button>
-                                <a href="userDetails" class="btn btn-danger">Back</a>
+                                <button type="submit" id="submit_btn" name="servantUpdate" class="btn btn-primary">Update</button>
+                                <a href="servants" class="btn btn-danger">Back</a>
                             </div>
                         </form>
+
             <?php
                     }
                 } else {
@@ -168,8 +147,6 @@ userEdit();
         <!-- End:Main Body -->
     </div>
 
-
-
     <!-- Offcanvas Toggler -->
     <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
         <i class="far fa-hand-point-right"></i>
@@ -178,7 +155,7 @@ userEdit();
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('add_user_form');
+            const form = document.getElementById('add_servant_form');
 
             // Validate input fields
             function validateInput(inputElement, errorElement, validationRegex, errorMessage) {
@@ -198,21 +175,6 @@ userEdit();
                 });
             }
 
-            // Toggle password visibility
-            document.getElementById('toggle_password').addEventListener('click', function() {
-                const passwordInput = document.getElementById('password');
-                const eyeIcon = document.getElementById('eye_icon');
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    eyeIcon.classList.remove('fa-eye-slash');
-                    eyeIcon.classList.add('fa-eye');
-                } else {
-                    passwordInput.type = 'password';
-                    eyeIcon.classList.remove('fa-eye');
-                    eyeIcon.classList.add('fa-eye-slash');
-                }
-            });
-
             // Validation regex patterns and error messages
             const validationRules = {
                 full_name: {
@@ -223,10 +185,6 @@ userEdit();
                     regex: /^\d{11}$/, // 15 digits only
                     errorMessage: 'Please enter a valid phone number.'
                 },
-                date_of_birth: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter your date of birth.'
-                },
                 gender: {
                     regex: /^(?=.*[a-z]).{1,}$/, // At least one character
                     errorMessage: 'Please select gender.'
@@ -235,22 +193,14 @@ userEdit();
                     regex: /^.{1,}$/, // At least one character
                     errorMessage: 'Please enter your address.'
                 },
-                user_type: {
+                status: {
                     regex: /^(?=.*[a-z]).{1,}$/, // At least one character
                     errorMessage: 'Please select user type.'
-                },
-                username: {
-                    regex: /^[a-z._-]+$/, // Lowercase letters, '.', '-', '_'
-                    errorMessage: 'Username should contain only lowercase letters, ".", "-", or "_".'
                 },
                 email: {
                     regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Email pattern
                     errorMessage: 'Please enter a valid email address.'
                 },
-                password: {
-                    regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, // Password strength criteria
-                    errorMessage: 'Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
-                }
             };
 
             // Loop through each input field and attach validation

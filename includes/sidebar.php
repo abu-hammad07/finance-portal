@@ -130,7 +130,7 @@ if($row['image']==''){
                             </li>
                             <!-- End:Sub Menu Item -->
                              <!-- Sub Menu Item -->
-                             <li class="nav-item">
+                             <li class="nav-item <?php if($page == 'servants.php' || $page == 'addServant.php' || $page == 'servantEdit.php' || $page == 'servantView.php'){echo 'active';} ?>">
                                 <a class="sub-menu-link" href="./servants.php">
                                     <span class="d2c_icon">
                                         <i class="fas fa-wallet"></i>
@@ -143,8 +143,9 @@ if($row['image']==''){
                             <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
-                            <li class="nav-item">
-                                <a class="sub-menu-link" href="./events.php">
+                            <li class="nav-item  <?php if ($page == "eventsDetails.php" || $page == "eventBooking.php" ||
+                                    $page == "eventEdit.php" || $page == "eventView.php") echo "active"; ?>">
+                                <a class="sub-menu-link" href="eventsDetails">
                                     <span class="d2c_icon">
                                         <i class="fas fa-wallet"></i>
                                     </span>
