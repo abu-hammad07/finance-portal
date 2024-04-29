@@ -11,8 +11,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^/]+)/([^/]+)/?$ $1/$2.php [L]
 
 # If you have a 404.php page, you can redirect to it here
-ErrorDocument 404 /gym0.1/404.php
-ErrorDocument 500 /includes/404.php
+ErrorDocument 404 /finance-portal/includes/404.php
+ErrorDocument 500 /finance-portal/includes/404.php
 
 
 # php -- BEGIN cPanel-generated handler, do not edit

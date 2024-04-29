@@ -5,7 +5,7 @@ include "config.php";
 function addHouse()
 {
     global $conn;
-    if (isset($_POST['submit'])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $houseNumber = $_POST['house-number'];
         $ownerName = $_POST['owner-name'];
         $ownerContact = $_POST['owner-contact'];

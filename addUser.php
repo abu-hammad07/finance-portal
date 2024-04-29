@@ -192,7 +192,7 @@ if (mysqli_num_rows($result) > 0) {
         <!-- Main Body-->
         <div class="d2c_main p-4 ps-lg-3">
             <!-- Title -->
-            <h4 class="mb-4 text-capitalize">Add Users</h4>
+            <h4 class="mb-4 text-capitalize">Add User</h4>
             <!-- End:Title -->
 
             <!-- Alert -->

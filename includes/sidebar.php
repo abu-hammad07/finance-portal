@@ -38,10 +38,9 @@ if($row['image']==''){
                 <ul class="list-inline">
                     <!-- Profile -->
                     <li class="list-inline-item position-relative me-3">
-                        <a class="dropdown-item d-flex align-items-center py-2" href="./profile.php">
+                        <a class="dropdown-item d-flex align-items-center py-2" href="profile">
                             <i class="fas fa-user-cog"></i>
                             <p class="mb-0">&nbsp View Profile</p>
-
                         </a>
 
                     </li>
@@ -60,13 +59,13 @@ if($row['image']==''){
                 <ul class="navbar-nav flex-grow-1">
                     <!-- Menu Item -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="javascript:void(0)">
                             <span>Menu</span>
                         </a>
                         <!-- Sub Menu -->
                         <ul class="sub-menu collapse show">
                             <!-- Sub Menu Item -->
-                            <li class="nav-item">
+                            <li class="nav-item <?php if($page == 'index.php') echo('active'); ?>">
                                 <a class="sub-menu-link" href="index">
                                     <span class="d2c_icon">
                                         <i class="fas fa-home"></i>
@@ -79,7 +78,8 @@ if($row['image']==''){
                             <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
-                            <li class="nav-item">
+                            <li class="nav-item <?php if($page == 'houses.php' || $page == 'addHouse.php' ||
+                            $page == 'houseView.php' || $page == 'houseEdit.php') echo('active'); ?>">
                                 <a class="sub-menu-link" href="houses">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>

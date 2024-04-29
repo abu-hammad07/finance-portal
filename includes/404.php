@@ -5,28 +5,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../../assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
+    <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
     <title>Error</title>
     <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
     <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
     <!-- bootstrap css link -->
-    <link rel="stylesheet" href="../../lib/bootstrap_5/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/bootstrap_5/bootstrap.min.css">
     <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="../../lib/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="lib/fontawesome/css/all.min.css">
     <!-- main css -->
-    <link rel="stylesheet" href="../../assets/css/global.css">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <!-- responsive css -->
-    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
 
 <body class="d2c_theme_light">
 
     <!-- Preloader Start -->
     <div class="preloader">
-        <img src="../../assets/images/logo/logo.png" alt="DesignToCodes">
+        <img src="assets/images/logo/logo.png" alt="DesignToCodes">
     </div>
     <!-- Preloader End -->
 
@@ -38,7 +38,7 @@
                         <h1 class="text-primary fw-semibold">404</h1>
                         <h3 class="text-danger text-capitalize">Page Not Found</h3>
                         <p class="text-capitalize text-muted">Sorry! The page you are looking for Doesn’t exists!</p>
-                        <a href="../../index.html" class="btn btn-primary">Back to Home</a>
+                        <a href="index" class="btn btn-primary">Back to Home</a>
                     </div>
                 </div>
             </div>
@@ -46,11 +46,11 @@
     </section>
 
     <!-- Initial  Javascript -->
-    <script src="../../lib/jQuery/jquery-3.5.1.min.js"></script>
-    <script src="../../lib/bootstrap_5/bootstrap.bundle.min.js"></script>
+    <script src="lib/jQuery/jquery-3.5.1.min.js"></script>
+    <script src="lib/bootstrap_5/bootstrap.bundle.min.js"></script>
 
     <!-- custom js -->
-    <script src="../../assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
 
