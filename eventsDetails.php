@@ -131,7 +131,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <th>Location</th>
                                             <th>Date Time</th>
                                             <th>No Of Servant</th>
-                                            <th>Servant Name</th>
+                                            <th>Booking Name</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

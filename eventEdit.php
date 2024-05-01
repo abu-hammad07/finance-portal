@@ -61,11 +61,7 @@ eventBookingUpdate();
 
                 $servant_view_id = mysqli_real_escape_string($conn, $_GET['event_edit_id']);
 
-                $query = "SELECT event_id, eventName, location, dateTime, noOfServant, 
-                servants.servant_id, servants.servant_name, servants.email, servants.address, servants.status 
-                FROM events_booking
-                LEFT JOIN servants ON events_booking.servant_id = servants.servant_id
-                WHERE event_id = '$servant_view_id'";
+                $query = "SELECT * FROM events_booking WHERE event_id = '$servant_view_id'";
                 $result = mysqli_query($conn, $query);
 
                 if (mysqli_num_rows($result) > 0) {
@@ -99,31 +95,24 @@ eventBookingUpdate();
                                             <span class="text-danger" id="noOfServant_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Servant Name</label>
-                                            <select id="servantName" name="servantID" class="form-control">
-                                                <option value="<?= $row['servant_id'] ?>"><?= $row['servant_name'] ?></option>
-                                            </select>
-                                            <span class="text-danger" id="servantName_error"></span>
+                                            <label class="form-label">Booking Name</label>
+                                            <input type="text" class="form-control" id="bookingName" name="bookingName" placeholder="Enter Booking Name" value="<?= $row['bookingName'] ?>">
+                                            <span class="text-danger" id="bookingName_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Email</label>
-                                            <select id="servantEmail" class="form-control">
-                                                <option value="<?= $row['email'] ?>"><?= $row['email']; ?></option>
-                                            </select>
+                                            <input type="text" class="form-control" id="bookingEmail" name="bookingEmail" placeholder="Enter Email" value="<?= $row['bookingEmail'] ?>">
+                                            <span class="text-danger" id="bookingEmail_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Address</label>
-                                            <select id="servantAddress" class="form-control">
-                                                <option value="<?= $row['address'] ?>"><?= $row['address']; ?></option>
-                                            </select>
+                                            <label class="form-label">Contact</label>
+                                            <input type="text" class="form-control" id="bookingContact" name="bookingContact" placeholder="Enter Contact" value="<?= $row['bookingContact'] ?>">
+                                            <span class="text-danger" id="bookingContact_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Status</label>
-                                            <div class="input-group">
-                                                <select id="servantStatus" class="form-control">
-                                                    <option value="<?= $row['status'] ?>"><?= $row['status']; ?></option>
-                                                </select>
-                                            </div>
+                                            <label class="form-label">Payment</label>
+                                            <input type="text" class="form-control" id="bookingPayment" name="bookingPayment" placeholder="Enter Payment" value="<?= $row['bookingPayment'] ?>">
+                                            <span class="text-danger" id="bookingPayment_error"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +120,7 @@ eventBookingUpdate();
 
                             <!-- submit btn -->
                             <div class="mt-3">
-                            <button type="submit" id="submit_btn" name="eventBookingUpdate" class="btn btn-primary">Update</button>
+                                <button type="submit" id="submit_btn" name="eventBookingUpdate" class="btn btn-primary">Update</button>
                                 <a href="eventsDetails" class="btn btn-danger">Back</a>
                             </div>
                         </form>
@@ -139,8 +128,9 @@ eventBookingUpdate();
             <?php
                     }
                 } else {
-                    header('location: 404');
-                    exit();
+                    echo '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database.</td>
+                </tr>';
                 }
             }
             ?>
@@ -197,9 +187,21 @@ eventBookingUpdate();
                     regex: /^\d*$/, // Allow any number of digits
                     errorMessage: 'Please enter a valid number for the number of servants.'
                 },
-                servantName: {
+                bookingName: {
                     regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please select servant name.'
+                    errorMessage: 'Please enter a booking name.'
+                },
+                bookingEmail: {
+                    regex: /^.{1,}$/, // At least one character
+                    errorMessage: 'Please enter a booking name.'
+                },
+                bookingContact: {
+                    regex: /^\d*$/, // Allow any number of digits
+                    errorMessage: 'Please enter a valid number for the contact.'
+                },
+                bookingPayment: {
+                    regex: /^\d*$/, // Allow any number of digits
+                    errorMessage: 'Please enter a valid number for the payment.'
                 }
             };
 
@@ -246,7 +248,6 @@ eventBookingUpdate();
         });
     </script>
 
-
     <!-- Initial  Javascript -->
     <script src="lib/jQuery/jquery-3.5.1.min.js"></script>
     <script src="lib/bootstrap_5/bootstrap.bundle.min.js"></script>
@@ -256,3 +257,39 @@ eventBookingUpdate();
 </body>
 
 </html>
+
+<!-- JavaScript code -->
+<script>
+    $(document).ready(function() {
+        // Function to fetch servants count and update input field
+        function updateServantsCount() {
+            $.ajax({
+                url: 'get_servants_count.php', // PHP script to get total servants count
+                type: 'GET',
+                success: function(response) {
+                    var totalServants = parseInt(response);
+                    var enteredValue = parseInt($('#noOfServant').val());
+                    $('#noOfServant').attr('placeholder', 'Enter No Of Servant (Total: ' + totalServants + ')');
+
+                    // Check if entered value exceeds total servants count
+                    if (enteredValue > totalServants) {
+                        $('#noOfServant_error').text('Error: Cannot exceed total servants count');
+                    } else {
+                        $('#noOfServant_error').text('');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        // Call the function whenever the input field value changes
+        $('#noOfServant').on('input', function() {
+            updateServantsCount();
+        });
+
+        // Call the function when the page loads
+        updateServantsCount();
+    });
+</script>

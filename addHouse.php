@@ -55,6 +55,25 @@ addHouse();
             <h4 class="mb-4 text-capitalize">Add House</h4>
             <!-- End:Title -->
 
+            <!-- Alert -->
+            <?php
+            if (isset($_SESSION['success_message_house'])) {
+                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    ' . $_SESSION['success_message_house'] . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                unset($_SESSION['success_message_house']);
+            }
+            if (isset($_SESSION['error_message_house'])) {
+                echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ' . $_SESSION['error_message_house'] . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                unset($_SESSION['error_message_house']);
+            }
+            ?>
+            <!-- / Alert -->
+
             <form action="" method="post" id="add_houses_form">
                 <div class="card h-auto">
                     <div class="card-body">
@@ -63,7 +82,7 @@ addHouse();
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">House/Unit Number</label>
-                                <input type="text" name="house-number" class="form-control" placeholder="Enter House/Unit Number" required>
+                                <input type="number" name="house-number" class="form-control" placeholder="Enter House/Unit Number" required>
                                 <span class="text-danger" id="house-number_error"></span>
                             </div>
                             <div class="col-md-6">
@@ -73,7 +92,7 @@ addHouse();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Owner's Contact Information</label>
-                                <input type="text" name="owner-contact" class="form-control" placeholder="Enter Owner's Contact Information" required>
+                                <input type="number" name="owner-contact" class="form-control" placeholder="Enter Owner's Contact Information" required>
                                 <span class="text-danger" id="owner-contact_error"></span>
                             </div>
                             <div class="col-md-6">
@@ -92,7 +111,7 @@ addHouse();
                             </div>
                             <div class="col-md-6 ">
                                 <label class="form-label">Tenant's Contact Information (if applicable)</label>
-                                <input type="text" id="tenant-contact" name="tenant-contact" class="form-control" placeholder="Enter Tenant's Contact Information">
+                                <input type="number" id="tenant-contact" name="tenant-contact" class="form-control" placeholder="Enter Tenant's Contact Information">
                                 <span class="text-danger" id="tenant-contact_error"></span>
                             </div>
                             <div class="col-md-6 ">
@@ -127,7 +146,7 @@ addHouse();
                             </div>
                             <div class="col-md-6 ">
                                 <label class="form-label">Monthly Maintenance Fee</label>
-                                <input name="maintenance-charges" type="text" class="form-control" placeholder="Enter Monthly Maintenance Fee" required>
+                                <input name="maintenance-charges" type="number" class="form-control" placeholder="Enter Monthly Maintenance Fee" required>
                                 <span class="text-danger" id="maintenance-charges_error"></span>
                             </div>
                             <div class="col-md-6">

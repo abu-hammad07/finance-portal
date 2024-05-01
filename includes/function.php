@@ -6,17 +6,17 @@ function addHouse()
 {
     global $conn;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $houseNumber = $_POST['house-number'];
-        $ownerName = $_POST['owner-name'];
-        $ownerContact = $_POST['owner-contact'];
-        $occupanceStatus = $_POST['occupance-status'];
-        $tenantsName = $_POST['tenants-name'];
-        $tenantContact = $_POST['tenant-contact'];
-        $floor = $_POST['floor'];
-        $propertyType = $_POST['property-type'];
-        $propertySize = $_POST['property-size'];
-        $maintenanceCharges = $_POST['maintenance-charges'];
-        $notes = $_POST['notes'];
+        $houseNumber = mysqli_real_escape_string($conn, $_POST['house-number']);
+        $ownerName = mysqli_real_escape_string($conn, $_POST['owner-name']);
+        $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
+        $occupanceStatus = mysqli_real_escape_string($conn, $_POST['occupance-status']);
+        $tenantsName = mysqli_real_escape_string($conn, $_POST['tenants-name']);
+        $tenantContact = mysqli_real_escape_string($conn, $_POST['tenant-contact']);
+        $floor = mysqli_real_escape_string($conn, $_POST['floor']);
+        $propertyType = mysqli_real_escape_string($conn, $_POST['property-type']);
+        $propertySize = mysqli_real_escape_string($conn, $_POST['property-size']);
+        $maintenanceCharges = mysqli_real_escape_string($conn, $_POST['maintenance-charges']);
+        $notes = mysqli_real_escape_string($conn, $_POST['notes']);
 
         $added_by = $_SESSION['username'];
 
@@ -31,15 +31,56 @@ function addHouse()
 
         $query = mysqli_query($conn, $insertQuery);
         if ($query) {
-            echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
-            <strong>Data Inserted Successfully!</strong>.
-            <button type='button' class='btn-close'- data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>";
+            $_SESSION['success_message_house'] = "$houseNumber Added Successfully";
+            header('location: addHouse');
+            exit();
         } else {
-            echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-            <strong>Failed to add at the moment.</strong>.
-            <button type='button' class='btn-close'- data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>";
+            $_SESSION['error_message_house'] = "Something went wrong. Please try again.";
+            header('location: addHouse');
+            exit();
+        }
+    }
+}
+
+// update House
+function updateHouse()
+{
+    global $conn;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
+        $houseNumber = mysqli_real_escape_string($conn, $_POST['house-number']);
+        $ownerName = mysqli_real_escape_string($conn, $_POST['owner-name']);
+        $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
+        $occupanceStatus = mysqli_real_escape_string($conn, $_POST['occupance-status']);
+        $tenantsName = mysqli_real_escape_string($conn, $_POST['tenants-name']);
+        $tenantContact = mysqli_real_escape_string($conn, $_POST['tenant-contact']);
+        $floor = mysqli_real_escape_string($conn, $_POST['floor']);
+        $propertyType = mysqli_real_escape_string($conn, $_POST['property-type']);
+        $propertySize = mysqli_real_escape_string($conn, $_POST['property-size']);
+        $maintenanceCharges = mysqli_real_escape_string($conn, $_POST['maintenance-charges']);
+        $notes = mysqli_real_escape_string($conn, $_POST['notes']);
+
+        $added_by = $_SESSION['username'];
+
+        $insertQuery = "
+        UPDATE `houses` SET `house_number` = '{$houseNumber}',
+        `owner_name` = '{$ownerName}', `owner_contact` = '{$ownerContact}',
+        `occupancy_status` = '{$occupanceStatus}', `tenants_name` = '{$tenantsName}',
+        `tenants_contact` = '{$tenantContact}', `property_size` = '{$propertySize}',
+        `floor` = '{$floor}', `property_type` = '{$propertyType}',
+        `maintenance_charges` = '{$maintenanceCharges}', `notes` = '{$notes}',
+        `added_on` = NOW(), `added_by` = '{$added_by}'
+        WHERE `house_id` = '{$house_id}'";
+
+        $query = mysqli_query($conn, $insertQuery);
+        if ($query) {
+            $_SESSION['success_updated_house'] = "$houseNumber updated Successfully";
+            header('location: houses');
+            exit();
+        } else {
+            $_SESSION['error_updated_house'] = "Something went wrong. Please try again.";
+            header('location: houses');
+            exit();
         }
     }
 }
@@ -202,12 +243,27 @@ function eventBookingInsert()
         $location = mysqli_real_escape_string($conn, $_POST['location']);
         $dateTime = mysqli_real_escape_string($conn, $_POST['dateTime']);
         $noOfServant = mysqli_real_escape_string($conn, $_POST['noOfServant']);
-        $servantID = mysqli_real_escape_string($conn, $_POST['servantID']);
+        // $servantID = mysqli_real_escape_string($conn, $_POST['servantID']);
+        $bookingName = mysqli_real_escape_string($conn, $_POST['bookingName']);
+        $bookingEmail = mysqli_real_escape_string($conn, $_POST['bookingEmail']);
+        $bookingContact = mysqli_real_escape_string($conn, $_POST['bookingContact']);
+        $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
 
 
         // Get the current date and time
         $added_on = date('Y-m-d');
         $added_by = $_SESSION['username'];
+
+        // check if no of servant is greater than total servatant count in database
+
+        $check_noOfServant = "SELECT * FROM `servants`";
+        $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
+        $total_servant = mysqli_num_rows($check_noOfServant_res);
+        if ($noOfServant > $total_servant) {
+            $_SESSION['error_message_eventBooking'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
+            header("location: eventBooking");
+            exit();
+        }
 
         // check duplicate location
         $check_location = "SELECT * FROM `events_booking` WHERE `location` = '$location'";
@@ -221,8 +277,11 @@ function eventBookingInsert()
 
         // insert data into event_booking table
         $insertEventBooking = "INSERT INTO `events_booking` (
-        `servant_id`, `eventName`, `location`, `dateTime`, `noOfServant`, `added_on`, `added_by`) 
-    VALUES ('$servantID', '$eventName', '$location', '$dateTime', '$noOfServant', '$added_on', '$added_by')";
+            `eventName`, `location`, `dateTime`, `noOfServant`, `bookingName`, `bookingEmail`,
+            `bookingContact`, `bookingPayment`, `added_on`, `added_by`) 
+        VALUES ('$eventName', '$location', '$dateTime', '$noOfServant', '$bookingName',
+            '$bookingEmail', '$bookingContact', '$bookingPayment', '$added_on', '$added_by')";
+
 
         $insertEventBooking_res = mysqli_query($conn, $insertEventBooking);
 
@@ -252,7 +311,11 @@ function eventBookingUpdate()
         $location = mysqli_real_escape_string($conn, $_POST['location']);
         $dateTime = mysqli_real_escape_string($conn, $_POST['dateTime']);
         $noOfServant = mysqli_real_escape_string($conn, $_POST['noOfServant']);
-        $servantID = mysqli_real_escape_string($conn, $_POST['servantID']);
+        // $servantID = mysqli_real_escape_string($conn, $_POST['servantID']);
+        $bookingName = mysqli_real_escape_string($conn, $_POST['bookingName']);
+        $bookingEmail = mysqli_real_escape_string($conn, $_POST['bookingEmail']);
+        $bookingContact = mysqli_real_escape_string($conn, $_POST['bookingContact']);
+        $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
 
 
         // Get the current date and time
@@ -271,11 +334,14 @@ function eventBookingUpdate()
 
         // insert data into event_booking table
         $updateEventBooking = "UPDATE `events_booking` SET
-        `servant_id` = '$servantID',
         `eventName` = '$eventName',
         `location` = '$location',
         `dateTime` = '$dateTime',
         `noOfServant` = '$noOfServant',
+        `bookingName` = '$bookingName',
+        `bookingEmail` = '$bookingEmail',
+        `bookingContact` = '$bookingContact',
+        `bookingPayment` = '$bookingPayment',
         `updated_on` = '$updated_on',
         `updated_by` = '$updated_by'
         WHERE `event_id` = '$event_id'";

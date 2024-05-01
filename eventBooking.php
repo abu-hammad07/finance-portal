@@ -102,29 +102,26 @@ eventBookingInsert();
                                 <input type="text" class="form-control" id="noOfServant" name="noOfServant" placeholder="Enter No Of Servant">
                                 <span class="text-danger" id="noOfServant_error"></span>
                             </div>
+
                             <div class="col-md-6">
-                                <label class="form-label">Servant Name</label>
-                                <select id="servantName" name="servantID" class="form-select form-control">
-                                    <!-- <option value="">-----</option> -->
-                                </select>
-                                <span class="text-danger" id="servantName_error"></span>
+                                <label class="form-label">Booking Name</label>
+                                <input type="text" class="form-control" id="bookingName" name="bookingName" placeholder="Enter Booking Name">
+                                <span class="text-danger" id="bookingName_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Email</label>
-                                <select id="servantEmail" class="form-control">
-                                </select>
+                                <input type="text" class="form-control" id="bookingEmail" name="bookingEmail" placeholder="Enter Email">
+                                <span class="text-danger" id="bookingEmail_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Address</label>
-                                <select id="servantAddress" class="form-control">
-                                </select>
+                                <label class="form-label">Contact</label>
+                                <input type="text" class="form-control" id="bookingContact" name="bookingContact" placeholder="Enter Contact">
+                                <span class="text-danger" id="bookingContact_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Status</label>
-                                <div class="input-group">
-                                    <select id="servantStatus" class="form-control">
-                                    </select>
-                                </div>
+                                <label class="form-label">Payment</label>
+                                <input type="text" class="form-control" id="bookingPayment" name="bookingPayment" placeholder="Enter Payment">
+                                <span class="text-danger" id="bookingPayment_error"></span>
                             </div>
                         </div>
                     </div>
@@ -188,9 +185,21 @@ eventBookingInsert();
                     regex: /^\d*$/, // Allow any number of digits
                     errorMessage: 'Please enter a valid number for the number of servants.'
                 },
-                servantName: {
+                bookingName: {
                     regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please select servant name.'
+                    errorMessage: 'Please enter a booking name.'
+                },
+                bookingEmail: {
+                    regex: /^.{1,}$/, // At least one character
+                    errorMessage: 'Please enter a booking name.'
+                },
+                bookingContact: {
+                    regex: /^\d*$/, // Allow any number of digits
+                    errorMessage: 'Please enter a valid number for the contact.'
+                },
+                bookingPayment: {
+                    regex: /^\d*$/, // Allow any number of digits
+                    errorMessage: 'Please enter a valid number for the payment.'
                 }
             };
 
@@ -247,45 +256,39 @@ eventBookingInsert();
 
 </html>
 
-
+<!-- JavaScript code -->
 <script>
     $(document).ready(function() {
-        function loadData(type, id) {
+        // Function to fetch servants count and update input field
+        function updateServantsCount() {
             $.ajax({
-                url: 'ajax.php',
-                type: 'POST',
-                data: {
-                    type: type,
-                    id: id
-                },
-                dataType: 'html',
-                success: function(data) {
-                    if (type === "servantName_Data") {
-                        $('#servantName').html('<option value="">-----</option>' + data);
-                    } else if (type === "servantEmail_Data") {
-                        $('#servantEmail').html(data);
-                    } else if (type === "servantAddress_Data") {
-                        $('#servantAddress').html(data);
-                    } else if (type === "servantStatus_Data") {
-                        $('#servantStatus').html(data);
+                url: 'get_servants_count.php', // PHP script to get total servants count
+                type: 'GET',
+                success: function(response) {
+                    var totalServants = parseInt(response);
+                    var enteredValue = parseInt($('#noOfServant').val());
+                    $('#noOfServant').attr('placeholder', 'Enter No Of Servant (Total: ' + totalServants + ')');
+
+                    // Check if entered value exceeds total servants count
+                    if (enteredValue > totalServants) {
+                        $('#noOfServant_error').text('Error: Cannot exceed total servants count');
+                    } else {
+                        $('#noOfServant_error').text('');
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
                 }
             });
         }
 
-        loadData("servantName_Data");
-
-        $("#servantName").on("change", function() {
-            var stNameData = $("#servantName").val();
-            if (stNameData != "") {
-                loadData("servantEmail_Data", stNameData);
-                loadData("servantAddress_Data", stNameData);
-                loadData("servantStatus_Data", stNameData);
-            } else {
-                $('#servantEmail').html("");
-                $('#servantAddress').html("");
-                $('#servantStatus').html("");
-            }
+        // Call the function whenever the input field value changes
+        $('#noOfServant').on('input', function() {
+            updateServantsCount();
         });
+
+        // Call the function when the page loads
+        updateServantsCount();
     });
 </script>
+

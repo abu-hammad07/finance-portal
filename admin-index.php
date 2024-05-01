@@ -159,10 +159,8 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
     global $conn;
 
     // Modify the query based on your database structure
-    $eventsQuery = "SELECT event_id, eventName, location, dateTime, noOfServant, servants.servant_name
-    FROM events_booking
-    LEFT JOIN servants ON events_booking.servant_id = servants.servant_id
-    ORDER BY events_booking.event_id $eventsOrder LIMIT $eventsLimited";
+    $eventsQuery = "SELECT * FROM events_booking
+    ORDER BY event_id $eventsOrder LIMIT $eventsLimited";
 
     $eventsResult = mysqli_query($conn, $eventsQuery);
 
@@ -183,7 +181,7 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
             <td>' . $row['location'] . '</td>
             <td>' . $date . '<br>' . $time . '</td>
             <td>' . $row['noOfServant'] . '</td>
-            <td>' . $row['servant_name'] . '</td>
+            <td>' . $row['bookingName'] . '</td>
             <td>
                 <a href="eventEdit.php?event_edit_id=' . $row['event_id'] . '">
                     <span>
@@ -239,9 +237,7 @@ function search_events_booking_data_In_Database($eventsSearch)
     $eventsSearch = mysqli_real_escape_string($conn, $eventsSearch);
 
     // Modify the query based on your database structure
-    $eventsQuery = "SELECT event_id, eventName, location, dateTime, noOfServant, servants.servant_name
-    FROM events_booking
-    LEFT JOIN servants ON events_booking.servant_id = servants.servant_id";
+    $eventsQuery = "SELECT * FROM events_booking";
 
     if (!empty($eventsSearch)) {
         $eventsQuery .= " WHERE eventName LIKE '%" . $eventsSearch . "%' 
@@ -269,7 +265,7 @@ function search_events_booking_data_In_Database($eventsSearch)
             <td>' . $row['location'] . '</td>
             <td>' . $date . '<br>' . $time . '</td>
             <td>' . $row['noOfServant'] . '</td>
-            <td>' . $row['servant_name'] . '</td>
+            <td>' . $row['bookingName'] . '</td>
             <td>
                 <a href="eventEdit.php?event_edit_id=' . $row['event_id'] . '">
                     <span>

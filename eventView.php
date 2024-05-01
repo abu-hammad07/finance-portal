@@ -57,9 +57,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
                 $servant_view_id = mysqli_real_escape_string($conn, $_GET['event_view_id']);
 
-                $query = "SELECT event_id, eventName, location, dateTime, noOfServant, servants.*
-                FROM events_booking
-                LEFT JOIN servants ON events_booking.servant_id = servants.servant_id
+                $query = "SELECT * FROM events_booking
                 WHERE event_id = '$servant_view_id'";
                 $result = mysqli_query($conn, $query);
 
@@ -74,74 +72,43 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">Event Name</label>
-                                            <input type="text" class="form-control" id="eventName" name="eventName" readonly
-                                            placeholder="Enter Event Name" value="<?= $row['eventName'] ?>">
+                                            <input type="text" class="form-control" id="eventName" name="eventName" readonly placeholder="Enter Event Name" value="<?= $row['eventName'] ?>">
                                             <span class="text-danger" id="eventName_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Location</label>
-                                            <input type="text" class="form-control" id="location" name="location" readonly
-                                            placeholder="Enter Location" value="<?= $row['location'] ?>">
+                                            <input type="text" class="form-control" id="location" name="location" readonly placeholder="Enter Location" value="<?= $row['location'] ?>">
                                             <span class="text-danger" id="location_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Date Time</label>
-                                            <input type="datetime-local" class="form-control" id="dateTime" name="dateTime" readonly
-                                            value="<?= $row['dateTime'] ?>">
+                                            <input type="datetime-local" class="form-control" id="dateTime" name="dateTime" readonly value="<?= $row['dateTime'] ?>">
                                             <span class="text-danger" id="dateTime_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">No Of Servant</label>
-                                            <input type="text" class="form-control" id="noOfServant" name="noOfServant" readonly
-                                            placeholder="Enter No Of Servant" value="<?= $row['noOfServant'] ?>">
+                                            <input type="text" class="form-control" id="noOfServant" name="noOfServant" readonly placeholder="Enter No Of Servant" value="<?= $row['noOfServant'] ?>">
                                             <span class="text-danger" id="noOfServant_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Servant Name</label>
-                                            <select id="servantName" name="servantID" class="form-control">
-                                                <option value="<?= $row['servant_id'] ?>"><?= $row['servant_name'] ?></option>
-                                            </select>
-                                            <span class="text-danger" id="servantName_error"></span>
+                                            <label class="form-label">Booking Name</label>
+                                            <input type="text" class="form-control" id="bookingName" name="bookingName" readonly placeholder="Enter Booking Name" value="<?= $row['bookingName'] ?>">
+                                            <span class="text-danger" id="bookingName_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Email</label>
-                                            <select id="servantEmail" class="form-control">
-                                                <option value="<?= $row['email'] ?>"><?= $row['email']; ?></option>
-                                            </select>
+                                            <input type="text" class="form-control" id="bookingEmail" name="bookingEmail" readonly placeholder="Enter Email" value="<?= $row['bookingEmail'] ?>">
+                                            <span class="text-danger" id="bookingEmail_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Phone Number</label>
-                                            <select id="servantPhone" class="form-control">
-                                                <option value="<?= $row['phone'] ?>"><?= $row['phone']; ?></option>
-                                            </select>
+                                            <label class="form-label">Contact</label>
+                                            <input type="text" class="form-control" id="bookingContact" name="bookingContact" readonly placeholder="Enter Contact" value="<?= $row['bookingContact'] ?>">
+                                            <span class="text-danger" id="bookingContact_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Gender</label>
-                                            <div class="input-group">
-                                                <select id="servantGender" class="form-control">
-                                                    <option value="<?= $row['gender']; ?>"><?= $row['gender'] ?></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Address</label>
-                                            <select id="servantAddress" class="form-control">
-                                                <option value="<?= $row['address'] ?>"><?= $row['address']; ?></option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Status</label>
-                                            <div class="input-group">
-                                                <select id="servantStatus" class="form-control">
-                                                    <option value="<?= $row['status'] ?>"><?= $row['status']; ?></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 py-3">
-                                        <div class="col-md-6 py-3">
-                                            <label class="form-label">Image</label>
-                                            <img src="media/images/<?= $row['image']; ?>" height="100" alt="<?= $row['servant_name']; ?>">
+                                            <label class="form-label">Payment</label>
+                                            <input type="text" class="form-control" id="bookingPayment" name="bookingPayment" readonly placeholder="Enter Payment" value="<?= $row['bookingPayment'] ?>">
+                                            <span class="text-danger" id="bookingPayment_error"></span>
                                         </div>
                                     </div>
                                 </div>
