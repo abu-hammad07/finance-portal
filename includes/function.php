@@ -255,7 +255,6 @@ function eventBookingInsert()
         $added_by = $_SESSION['username'];
 
         // check if no of servant is greater than total servatant count in database
-
         $check_noOfServant = "SELECT * FROM `servants`";
         $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
         $total_servant = mysqli_num_rows($check_noOfServant_res);
@@ -321,6 +320,16 @@ function eventBookingUpdate()
         // Get the current date and time
         $updated_on = date('Y-m-d');
         $updated_by = $_SESSION['username'];
+
+        // check if no of servant is greater than total servatant count in database
+        $check_noOfServant = "SELECT * FROM `servants`";
+        $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
+        $total_servant = mysqli_num_rows($check_noOfServant_res);
+        if ($noOfServant > $total_servant) {
+            $_SESSION['error_message_eventBooking'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
+            header("location: eventBooking");
+            exit();
+        }
 
         // check duplicate location
         $check_location = "SELECT * FROM `events_booking` WHERE `location` = '$location' AND `location` != '$location'";
