@@ -51,7 +51,7 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder)
                                 </p>
                             </div>
                             <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                <a href="?id=' . $row['servant_id'] . '" class="btn btn-danger" name="delete_servant">Delete</a>
+                                <a href="?servant_delete_id=' . $row['servant_id'] . '" class="btn btn-danger" name="delete_servant">Delete</a>
                                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
@@ -125,7 +125,7 @@ function search_servant_data_In_Database($servantSearch)
                                 </p>
                             </div>
                             <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                <a href="?income_delete_id=' . $row['servant_id'].'" class="btn btn-danger" name="delete_Income">Delete</a>
+                                <a href="?servant_delete_id=' . $row['servant_id'].'" class="btn btn-danger" name="delete_Income">Delete</a>
                                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>

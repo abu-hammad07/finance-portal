@@ -89,13 +89,18 @@ function updateHouse()
 function deleteHouse()
 {
     global $conn;
-    if (isset($_GET['delete'])) {
-        $delete_id = $_GET['delete'];
+    if (isset($_GET['house_delete_id'])) {
+        $delete_id = $_GET['house_delete_id'];
         $deleteQuery = "DELETE FROM houses where house_id = ('{$delete_id}')";
         $deleteSQL = mysqli_query($conn, $deleteQuery);
-        if (!$deleteSQL) {
-            die("QUERY FAILED" . mysqli_error($conn));
+        if ($deleteSQL) {
+            $_SESSION['success_updated_house'] = "House deleted successfully";
+            header('location: houses');
+            exit();
         } else {
+            $_SESSION['error_updated_house'] = "House not deleted";
+            header('location: houses');
+            exit();
         }
     }
 }
@@ -230,7 +235,24 @@ function serventUpdate()
     }
 }
 // ========================= End servent Update =========================
-
+function deleteServants()
+{
+    global $conn;
+    if (isset($_GET['servant_delete_id'])) {
+        $delete_id = mysqli_real_escape_string($conn, $_GET['servant_delete_id']);
+        $deleteQuery = "DELETE FROM servants where servant_id = ('{$delete_id}')";
+        $deleteSQL = mysqli_query($conn, $deleteQuery);
+        if ($deleteSQL) {
+            $_SESSION['success_updated_servant'] = "Servant Deleted Successfully";
+            header('location: servants');
+            exit();
+        } else {
+            $_SESSION['error_updated_servant'] = "Servant Not Deleted";
+            header('location: servants');
+            exit();
+        }
+    }
+}
 
 
 // ========================= Start Event Booking Insert  =========================
@@ -334,7 +356,6 @@ function eventBookingUpdate()
         // check duplicate location
         $check_location = "SELECT * FROM `events_booking` WHERE `location` = '$location' AND `location` != '$location'";
         $check_location_res = mysqli_query($conn, $check_location);
-
         if (mysqli_num_rows($check_location_res) > 0) {
             $_SESSION['error_updated_events'] = "Location already exists ($location)";
             header("location: eventsDetails");
@@ -369,3 +390,22 @@ function eventBookingUpdate()
     }
 }
 // ========================= End Event Booking Update  =========================
+
+function deleteBookingEvents()
+{
+    global $conn;
+    if (isset($_GET['booking_delete_id'])) {
+        $delete_id = mysqli_real_escape_string($conn, $_GET['booking_delete_id']);
+        $deleteQuery = "DELETE FROM events_booking where event_id = ('{$delete_id}')";
+        $deleteSQL = mysqli_query($conn, $deleteQuery);
+        if ($deleteSQL) {
+            $_SESSION['success_updated_events'] = "Booking Deleted Successfully";
+            header('location: eventsDetails');
+            exit();
+        } else {
+            $_SESSION['error_updated_events'] = "Booking Not Deleted";
+            header('location: eventsDetails');
+            exit();
+        }
+    }
+}

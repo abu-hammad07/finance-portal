@@ -208,7 +208,7 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
                                 </p>
                             </div>
                             <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                <a href="?event_delete_id=' . $row['event_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                                <a href="?booking_delete_id=' . $row['event_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
                                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
@@ -292,7 +292,7 @@ function search_events_booking_data_In_Database($eventsSearch)
                                 </p>
                             </div>
                             <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                <a href="?event_delete_id=' . $row['event_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                                <a href="?booking_delete_id=' . $row['event_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
                                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
