@@ -271,7 +271,7 @@ eventBookingInsert();
 
                     // Check if entered value exceeds total servants count
                     if (enteredValue > totalServants) {
-                        $('#noOfServant_error').text('Error: Cannot exceed total servants count');
+                        $('#noOfServant_error').text('Error: Cannot exceed total servants count (' + totalServants + ')');
                     } else {
                         $('#noOfServant_error').text('');
                     }
