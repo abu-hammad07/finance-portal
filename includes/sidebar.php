@@ -18,7 +18,7 @@ if($row['image']==''){
 <div class="d2c_sidebar offcanvas-lg offcanvas-start p-4 pe-lg-2" tabindex="-1" id="d2c_sidebar">
     <div class="d-flex flex-column">
         <!-- Logo -->
-        <a href="./index.php" class="mb-5 brand-icon">
+        <a href="index" class="mb-5 brand-icon">
             <img class="navbar-brand" src="./assets/images/logo/KDA.png" alt="logo">
            
         </a>
@@ -27,7 +27,7 @@ if($row['image']==''){
         <!-- Profile -->
         <div class="card d2c_profile_card text-center mb-4">
             <!-- Profile Image -->
-            <a href="./pages/elements/profile.html">
+            <a href="profile">
                 <img class="rounded-circle d2c_profile_image position-absolute top-0 start-50 translate-middle mb-2" src="<?= $row['image']; ?>" alt="d2c Profile Image">
             </a>
             <!-- End:Profile Image-->

@@ -174,7 +174,7 @@ deleteServants();
             let servantOrder = $("#servant-order").val();
 
             $.ajax({
-                url: 'filter_fetch_servant_data.php',
+                url: 'admin-index.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -202,7 +202,7 @@ deleteServants();
             let servantSearch = document.getElementById('servantSearch').value;
 
             $.ajax({
-                url: 'filter_fetch_servant_data.php',
+                url: 'admin-index.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
