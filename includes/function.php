@@ -326,8 +326,8 @@ function eventBookingUpdate()
         $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
         $total_servant = mysqli_num_rows($check_noOfServant_res);
         if ($noOfServant > $total_servant) {
-            $_SESSION['error_message_eventBooking'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
-            header("location: eventBooking");
+            $_SESSION['error_updated_events'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
+            header("location: eventsDetails");
             exit();
         }
 
