@@ -263,9 +263,10 @@ function eventBookingInsert()
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
         $location = mysqli_real_escape_string($conn, $_POST['location']);
-        $dateTime = mysqli_real_escape_string($conn, $_POST['dateTime']);
+        $date = mysqli_real_escape_string($conn, $_POST['date']);
+        $startTiming = mysqli_real_escape_string($conn, $_POST['startTiming']);
+        $endTiming = mysqli_real_escape_string($conn, $_POST['endTiming']);
         $noOfServant = mysqli_real_escape_string($conn, $_POST['noOfServant']);
-        // $servantID = mysqli_real_escape_string($conn, $_POST['servantID']);
         $bookingName = mysqli_real_escape_string($conn, $_POST['bookingName']);
         $bookingEmail = mysqli_real_escape_string($conn, $_POST['bookingEmail']);
         $bookingContact = mysqli_real_escape_string($conn, $_POST['bookingContact']);
@@ -286,6 +287,21 @@ function eventBookingInsert()
             exit();
         }
 
+        // check duplicate date and timing overlap
+        $check_overlap = "SELECT * FROM `events_booking`
+            (('{$startTiming}' BETWEEN `startTiming` AND `endTiming`) OR 
+            ('{$endTiming}' BETWEEN `startTiming` AND `endTiming`) OR 
+            (`startTiming` BETWEEN '{$startTiming}' AND '{$endTiming}') OR 
+            (`endTiming` BETWEEN '{$startTiming}' AND '{$endTiming}'))";
+        $check_overlap_res = mysqli_query($conn, $check_overlap);
+        if (mysqli_num_rows($check_overlap_res) > 0) {
+            $_SESSION['error_message_eventBooking'] = "Time overlap with existing event for date: $date";
+            header("location: eventBooking");
+            exit();
+        }
+
+
+
         // check duplicate location
         $check_location = "SELECT * FROM `events_booking` WHERE `location` = '$location'";
         $check_location_res = mysqli_query($conn, $check_location);
@@ -298,9 +314,9 @@ function eventBookingInsert()
 
         // insert data into event_booking table
         $insertEventBooking = "INSERT INTO `events_booking` (
-            `eventName`, `location`, `dateTime`, `noOfServant`, `bookingName`, `bookingEmail`,
+            `eventName`, `location`, `date`,`startTiming`,`endTiming`, `noOfServant`, `bookingName`, `bookingEmail`,
             `bookingContact`, `bookingPayment`, `added_on`, `added_by`) 
-        VALUES ('$eventName', '$location', '$dateTime', '$noOfServant', '$bookingName',
+        VALUES ('$eventName', '$location', '$date','$startTiming','$endTiming', '$noOfServant', '$bookingName',
             '$bookingEmail', '$bookingContact', '$bookingPayment', '$added_on', '$added_by')";
 
 
@@ -330,9 +346,10 @@ function eventBookingUpdate()
         $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
         $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
         $location = mysqli_real_escape_string($conn, $_POST['location']);
-        $dateTime = mysqli_real_escape_string($conn, $_POST['dateTime']);
+        $date = mysqli_real_escape_string($conn, $_POST['date']);
+        $startTiming = mysqli_real_escape_string($conn, $_POST['startTiming']);
+        $endTiming = mysqli_real_escape_string($conn, $_POST['endTiming']);
         $noOfServant = mysqli_real_escape_string($conn, $_POST['noOfServant']);
-        // $servantID = mysqli_real_escape_string($conn, $_POST['servantID']);
         $bookingName = mysqli_real_escape_string($conn, $_POST['bookingName']);
         $bookingEmail = mysqli_real_escape_string($conn, $_POST['bookingEmail']);
         $bookingContact = mysqli_real_escape_string($conn, $_POST['bookingContact']);
@@ -353,6 +370,19 @@ function eventBookingUpdate()
             exit();
         }
 
+        // check duplicate date and timing overlap
+        $check_overlap = "SELECT * FROM `events_booking` WHERE
+            (('{$startTiming}' BETWEEN `startTiming` AND `endTiming`) OR 
+            ('{$endTiming}' BETWEEN `startTiming` AND `endTiming`) OR 
+            (`startTiming` BETWEEN '{$startTiming}' AND '{$endTiming}') OR 
+            (`endTiming` BETWEEN '{$startTiming}' AND '{$endTiming}')) AND `event_id` != '$event_id'";
+        $check_overlap_res = mysqli_query($conn, $check_overlap);
+        if (mysqli_num_rows($check_overlap_res) > 0) {
+            $_SESSION['error_updated_events'] = "Time overlap with existing event for date: $date and time: $startTiming - $endTiming";
+            header("location: eventsDetails");
+            exit();
+        }
+
         // check duplicate location
         $check_location = "SELECT * FROM `events_booking` WHERE `location` = '$location' AND `location` != '$location'";
         $check_location_res = mysqli_query($conn, $check_location);
@@ -366,7 +396,9 @@ function eventBookingUpdate()
         $updateEventBooking = "UPDATE `events_booking` SET
         `eventName` = '$eventName',
         `location` = '$location',
-        `dateTime` = '$dateTime',
+        `date` = '$date',
+        `startTiming` = '$startTiming',
+        `endTiming` = '$endTiming',
         `noOfServant` = '$noOfServant',
         `bookingName` = '$bookingName',
         `bookingEmail` = '$bookingEmail',

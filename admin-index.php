@@ -169,17 +169,14 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
     while ($row = mysqli_fetch_assoc($eventsResult)) {
 
         // Modify date & time format
-        $date_time = $row['dateTime'];
-        $date = substr($date_time, 0, 10);
-        $time = date("h:i A", strtotime(substr($date_time, 11, 5)));
-
+        $date = date("jS F Y", strtotime($row['date']));
         $data .= '
 
         <tr>
             <td>' . $count++ . '</td>
             <td>' . $row['eventName'] . '</td>
             <td>' . $row['location'] . '</td>
-            <td>' . $date . '<br>' . $time . '</td>
+            <td>' . $date . '<br>' . $row['startTiming'] . '</td>
             <td>' . $row['noOfServant'] . '</td>
             <td>' . $row['bookingName'] . '</td>
             <td>
@@ -253,9 +250,7 @@ function search_events_booking_data_In_Database($eventsSearch)
     while ($row = mysqli_fetch_assoc($eventsResult)) {
 
         // Modify date & time format
-        $date_time = $row['dateTime'];
-        $date = substr($date_time, 0, 10);
-        $time = date("h:i A", strtotime(substr($date_time, 11, 5)));
+        $date = date("j-F-Y", strtotime($row['date']));
 
         $data .= '
 
@@ -263,7 +258,7 @@ function search_events_booking_data_In_Database($eventsSearch)
             <td>' . $count++ . '</td>
             <td>' . $row['eventName'] . '</td>
             <td>' . $row['location'] . '</td>
-            <td>' . $date . '<br>' . $time . '</td>
+            <td>' . $date . '<br>' . $row['startTiming'] . ' To '. $row['endTiming'] . '</td>
             <td>' . $row['noOfServant'] . '</td>
             <td>' . $row['bookingName'] . '</td>
             <td>
@@ -306,7 +301,7 @@ function search_events_booking_data_In_Database($eventsSearch)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database. '.$eventsSearch.'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database. ' . $eventsSearch . '</td>
                 </tr>';
     }
 
@@ -453,7 +448,7 @@ function search_houses_data_In_Database($housesSearch)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database. '. $housesSearch .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database. ' . $housesSearch . '</td>
                 </tr>';
     }
 
@@ -527,5 +522,4 @@ if (isset($_POST['action'])) {
         $response = array('data' => $result);
         echo json_encode($response);
     }
-
 }

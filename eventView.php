@@ -81,9 +81,18 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <span class="text-danger" id="location_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Date Time</label>
-                                            <input type="datetime-local" class="form-control" id="dateTime" name="dateTime" readonly value="<?= $row['dateTime'] ?>">
-                                            <span class="text-danger" id="dateTime_error"></span>
+                                            <label class="form-label">Date</label>
+                                            <input type="date" class="form-control" id="date" readonly name="date" value="<?= $row['date'] ?>">
+                                            <span class="text-danger" id="date_error"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Timing</label>
+                                            <div class="input-group input-daterange">
+                                                <input type="time" id="startTiming" readonly name="startTiming" placeholder="MM/DD/YYYY" class="form-control" value="<?= $row['startTiming'] ?>" />
+                                                <span class="input-group-text">to</span>
+                                                <input type="time" id="endTiming" readonly name="endTiming" placeholder="MM/DD/YYYY" class="form-control" value="<?= $row['endTiming'] ?>" />
+                                            </div>
+                                            <span class="text-danger" id="startTiming_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">No Of Servant</label>
