@@ -9,25 +9,25 @@ function addHouse()
         $houseNumber = mysqli_real_escape_string($conn, $_POST['house-number']);
         $ownerName = mysqli_real_escape_string($conn, $_POST['owner-name']);
         $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
+        $ownerCNIC = mysqli_real_escape_string($conn, $_POST['owner-cinc']);
         $occupanceStatus = mysqli_real_escape_string($conn, $_POST['occupance-status']);
-        $tenantsName = mysqli_real_escape_string($conn, $_POST['tenants-name']);
-        $tenantContact = mysqli_real_escape_string($conn, $_POST['tenant-contact']);
+        // $tenantsName = mysqli_real_escape_string($conn, $_POST['tenants-name']);
+        // $tenantContact = mysqli_real_escape_string($conn, $_POST['tenant-contact']);
         $floor = mysqli_real_escape_string($conn, $_POST['floor']);
         $propertyType = mysqli_real_escape_string($conn, $_POST['property-type']);
         $propertySize = mysqli_real_escape_string($conn, $_POST['property-size']);
         $maintenanceCharges = mysqli_real_escape_string($conn, $_POST['maintenance-charges']);
-        $notes = mysqli_real_escape_string($conn, $_POST['notes']);
+        // $notes = mysqli_real_escape_string($conn, $_POST['notes']);
 
         $added_by = $_SESSION['username'];
+        $added_on = date("Y-m-d");
 
-        $insertQuery = "INSERT INTO `houses`(`house_number`, `owner_name`, `owner_contact`,
-         `occupancy_status`, `tenants_name`, `tenants_contact`, `property_size`, 
-         `floor`, `property_type`, `maintenance_charges`, `notes`, `added_on`,
-          `added_by`) VALUES ('{$houseNumber}','{$ownerName}','{$ownerContact}',
-          '{$occupanceStatus}',
-          '{$tenantsName}','{$tenantContact}','{$propertySize}','{$floor}',
-          '{$propertyType}','{$maintenanceCharges}',
-          '{$notes}',NOW(),'{$added_by}')";
+        $insertQuery = "INSERT INTO `houses`(`house_number`, `owner_name`, `owner_contact`, `owner_cnic`,
+         `occupancy_status`, `property_size`, `floor`, `property_type`, `maintenance_charges`,`added_on`,
+          `added_by`) VALUES ('$houseNumber','$ownerName','$ownerContact', '$ownerCNIC',
+          '$occupanceStatus','$propertySize','$floor',
+          '$propertyType','$maintenanceCharges',
+          '$added_on','$added_by')";
 
         $query = mysqli_query($conn, $insertQuery);
         if ($query) {
@@ -286,7 +286,6 @@ function updateProfile()
             header("location: profile");
             exit();
         }
-
     }
 }
 // End of Update profile data
@@ -626,3 +625,75 @@ function deleteBookingEvents()
         }
     }
 }
+
+
+function addTenants()
+{
+    global $conn;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
+        $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
+        $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
+        $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
+    
+
+        // image upload
+        $upload_directory = 'media/images/';
+
+        if (!file_exists($upload_directory)) {
+            if (!mkdir($upload_directory, 0777, true)) {
+                // die("Failed to create directory: $upload_directory");
+                $_SESSION['error_message_Tenant'] = "Failed to create directory: $upload_directory";
+                header('location: addTenant');
+                exit();
+            }
+        } elseif (!is_writable($upload_directory)) {
+            // die("Error: Directory '$upload_directory' is not writable.");
+            $_SESSION['error_message_Tenant'] = "Error: Directory '$upload_directory' is not writable.";
+            header('location: addTenant');
+            exit();
+        }
+
+        // Image upload
+        function upload_image($file, $upload_directory)
+        {
+            $filename = rand(111111111, 999999999) . '_' . $file['name'];
+            $destination = $upload_directory . $filename;
+
+            if (move_uploaded_file($file['tmp_name'], $destination)) {
+                return $filename;
+            } else {
+                // die("Failed to move uploaded file: $filename");
+                $_SESSION['error_message_Tenant'] = "Failed to move uploaded file: $filename";
+                header('location: addTenant');
+                exit();
+            }
+        }
+
+        // Call the function for each image upload
+        $tenant_image = upload_image($_FILES['tenant_image'], $upload_directory);
+
+
+        // added_by & added_on
+        $added_by = $_SESSION['username'];
+        $added_on = date("Y-m-d");
+
+        // Insert data into tenants table
+        $insertTenants = "INSERT INTO tenants (
+            house_id, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on) VALUES
+        ('$house_id', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', '$added_by', '$added_on')";
+        $insertTenants_res = mysqli_query($conn, $insertTenants);
+
+        if ($insertTenants_res) {
+            $_SESSION['success_message_Tenant'] = "($tenant_name) Successfully Added.";
+            header('location: addTenant');
+            exit();
+        } else {
+            $_SESSION['error_message_Tenant'] = "($tenant_name) not Added.";
+            header('location: addTenant');
+            exit();
+        }
+    }
+}
+

@@ -329,9 +329,8 @@ function filter_houses_data_In_Database($housesLimited, $housesOrder)
             <td>' . $row['house_number'] . '</td>
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['owner_contact'] . '</td>
-            <td>' . $row['occupancy_status']  . '</td>
-            <td>' . $row['tenants_name'] . '</td>
-            <td>' . $row['tenants_contact'] . '</td>
+            <td>' . $row['owner_cnic']  . '</td>
+            <td>' . $row['occupancy_status'] . '</td>
             <td>
                 <a href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">
                     <span>

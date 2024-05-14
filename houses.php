@@ -65,7 +65,10 @@ deleteHouse();
                                 </form>
                             </div>
                             <div class="col-md-8 col-xl-9 text-end">
-                                <a href="addHouse" class="btn btn-primary"><i class="fas fa-plus"></i> House</a>
+                                <div class="btn-group">
+                                    <a href="addTenant" class="btn btn-primary me-2"><i class="fas fa-plus"></i> Tenant</a>
+                                    <a href="addHouse" class="btn btn-primary"><i class="fas fa-plus"></i> House</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -126,9 +129,8 @@ deleteHouse();
                                             <th>House Number</th>
                                             <th>Owner's Name</th>
                                             <th>Owner's Contact</th>
+                                            <th>Owner's CNIC</th>
                                             <th>Occupancy Status</th>
-                                            <th>Tenant's Name</th>
-                                            <th>Tenant's Contact</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

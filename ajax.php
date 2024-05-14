@@ -4,6 +4,7 @@ include_once("includes/config.php");
 
 // ==================== fetch multi input ========================
 $fetch_servant_data = '';
+$fetchHousesData = '';
 
 if (isset($_POST['type'])) {
     $type = $_POST['type'];
@@ -58,3 +59,44 @@ if (isset($_POST['type'])) {
     $fetch_servant_data = 'Type parameter not set';
 }
 echo $fetch_servant_data;
+
+
+
+
+// =================== Start damage_product_id_Data ===================
+if (isset($_POST['type'])) {
+    if ($_POST['type'] == "house_id_Data") {
+        $sql = "SELECT house_id, house_number FROM houses";
+        $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        $fetchHousesData = '---';
+        while ($row = mysqli_fetch_assoc($query)) {
+            $fetchHousesData .= "<option value='{$row['house_id']}'>{$row['house_number']}</option>";
+        }
+    } elseif ($_POST['type'] == "owner_name_Data") {
+        if (isset($_POST['id'])) {
+            $batchId = $_POST['id'];
+            $query = mysqli_query($conn, "SELECT owner_name FROM houses WHERE house_id = $batchId");
+            $fetchHousesData = '';
+            while ($row = mysqli_fetch_assoc($query)) {
+                $fetchHousesData .= "<option value='{$row['owner_name']}'>{$row['owner_name']}</option>";
+            }
+        } else {
+            $fetchHousesData = 'ID not provided for batch Data';
+        }
+    } elseif ($_POST['type'] == "owner_contact_Data") {
+        if (isset($_POST['id'])) {
+            $batchId = $_POST['id'];
+            $query = mysqli_query($conn, "SELECT owner_contact FROM houses WHERE house_id = $batchId");
+            $fetchHousesData = '';
+            while ($row = mysqli_fetch_assoc($query)) {
+                $fetchHousesData .= "<option value='{$row['owner_contact']}'>{$row['owner_contact']}</option>";
+            }
+        } else {
+            $fetchHousesData = 'ID not provided for batch Data';
+        }
+    }
+} else {
+    $fetchHousesData = 'Type parameter not set';
+}
+
+echo $fetchHousesData;

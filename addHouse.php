@@ -91,9 +91,14 @@ addHouse();
                                 <span class="text-danger" id="owner-name_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Owner's Contact Information</label>
-                                <input type="number" name="owner-contact" class="form-control" placeholder="Enter Owner's Contact Information" required>
+                                <label class="form-label">Owner's Contact Number</label>
+                                <input type="number" name="owner-contact" class="form-control" placeholder="03XXXXXXXXX" required>
                                 <span class="text-danger" id="owner-contact_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Owner's CINC</label>
+                                <input type="number" name="owner-cinc" class="form-control" placeholder="XXXXX-XXXXXXX-X" required>
+                                <span class="text-danger" id="owner-cinc_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label for="owner" class="form-label">Occupancy Status</label>
@@ -103,16 +108,6 @@ addHouse();
                                     <option value="rented">Rented</option>
                                 </select>
                                 <span class="text-danger" id="occupance-status_error"></span>
-                            </div>
-                            <div class="col-md-6 ">
-                                <label class="form-label">Tenant's Name (if applicable)</label>
-                                <input type="text" id="tenants-name" name="tenants-name" class="form-control" placeholder="Enter Tenant's Name">
-                                <span class="text-danger" id="tenants-name_error"></span>
-                            </div>
-                            <div class="col-md-6 ">
-                                <label class="form-label">Tenant's Contact Information (if applicable)</label>
-                                <input type="number" id="tenant-contact" name="tenant-contact" class="form-control" placeholder="Enter Tenant's Contact Information">
-                                <span class="text-danger" id="tenant-contact_error"></span>
                             </div>
                             <div class="col-md-6 ">
                                 <label for="floor" class="form-label">Floor</label>
@@ -148,10 +143,6 @@ addHouse();
                                 <label class="form-label">Monthly Maintenance Fee</label>
                                 <input name="maintenance-charges" type="number" class="form-control" placeholder="Enter Monthly Maintenance Fee" required>
                                 <span class="text-danger" id="maintenance-charges_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Additional Notes/Comments</label>
-                                <textarea cols="30" rows="4" class="form-control" placeholder="Write Additional Notes" name="notes"></textarea>
                             </div>
 
                             <!-- Button -->
