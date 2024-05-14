@@ -65,3 +65,5 @@ CREATE TABLE events_booking(
     updated_by varchar(100),
     updated_on varchar(100)
 )
+
+

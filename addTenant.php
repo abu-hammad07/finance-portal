@@ -31,7 +31,15 @@ addTenants();
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- responsive css -->
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <!--  -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
+<!-- <style>
+    .house-id {
+        height: 37px;
+        padding: 5px;
+    }
+</style> -->
 
 <body class="d2c_theme_light">
     <!-- Preloader Start -->
@@ -82,7 +90,7 @@ addTenants();
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">House/Unit Number</label>
-                                <select name="house_id" id="house_id" class="form-select form-control" required>
+                                <select name="house_id" id="house_id" class="form-select form-control house-id" required>
                                     <option value="">--- Select House No ---</option>
                                 </select>
                                 <!-- <span class="text-danger" id="house_id_error"></span> -->
@@ -143,6 +151,13 @@ addTenants();
     <!-- Initial  Javascript -->
     <script src="lib/jQuery/jquery-3.5.1.min.js"></script>
     <script src="lib/bootstrap_5/bootstrap.bundle.min.js"></script>
+    <!--  -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#house_id").select2();
+        });
+    </script>
 
     <!-- custom js -->
     <script src="assets/js/main.js"></script>
