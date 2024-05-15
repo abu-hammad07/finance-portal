@@ -89,7 +89,11 @@ eventBookingInsert();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Location</label>
-                                <input type="text" class="form-control" id="location" name="location" placeholder="Enter Location">
+                                <select name="location" id="location" class="form-control form-select">
+                                    <option value="">--- Select Location ---</option>
+                                    <option value="Shadi Hall">Shadi Hall</option>
+                                    <option value="Sports Centre">Sports Centre</option>
+                                </select>
                                 <span class="text-danger" id="location_error"></span>
                             </div>
                             <div class="col-md-6">
@@ -107,29 +111,34 @@ eventBookingInsert();
                                 <span class="text-danger" id="startTiming_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">No Of Servant</label>
-                                <input type="text" class="form-control" id="noOfServant" name="noOfServant" placeholder="Enter No Of Servant">
-                                <span class="text-danger" id="noOfServant_error"></span>
+                                <label class="form-label">No Of Persons</label>
+                                <input type="text" class="form-control" id="noOfPersons" name="noOfPersons" placeholder="50">
+                                <span class="text-danger" id="noOfPersons_error"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Booking Name</label>
-                                <input type="text" class="form-control" id="bookingName" name="bookingName" placeholder="Enter Booking Name">
-                                <span class="text-danger" id="bookingName_error"></span>
+                                <label class="form-label">Customer Name</label>
+                                <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Enter Booking Name">
+                                <span class="text-danger" id="customerName_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" id="bookingEmail" name="bookingEmail" placeholder="Enter Email">
-                                <span class="text-danger" id="bookingEmail_error"></span>
+                                <label class="form-label">Customer Contact</label>
+                                <input type="number" class="form-control" id="customerContact" name="customerContact" placeholder="03XXXXXXXXX">
+                                <span class="text-danger" id="customerContact_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Contact</label>
-                                <input type="text" class="form-control" id="bookingContact" name="bookingContact" placeholder="Enter Contact">
-                                <span class="text-danger" id="bookingContact_error"></span>
+                                <label class="form-label">Customer CNIC</label>
+                                <input type="number" class="form-control" id="customerCnic" name="customerCnic" placeholder="XXXXXXXXXXXXX">
+                                <span class="text-danger" id="customerCnic_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Event Type</label>
+                                <input type="text" class="form-control" id="eventType" name="eventType" placeholder="Enter Contact">
+                                <span class="text-danger" id="eventType_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Payment</label>
-                                <input type="text" class="form-control" id="bookingPayment" name="bookingPayment" placeholder="Enter Payment">
+                                <input type="number" class="form-control" id="bookingPayment" name="bookingPayment" placeholder="999">
                                 <span class="text-danger" id="bookingPayment_error"></span>
                             </div>
                         </div>
@@ -194,7 +203,7 @@ eventBookingInsert();
                     regex: /^.{1,}$/, // At least one character
                     errorMessage: 'Please select a start Time.'
                 },
-                noOfServant: {
+                noOfPersons: {
                     regex: /^\d*$/, // Allow any number of digits
                     errorMessage: 'Please enter a valid number for the number of servants.'
                 },
@@ -270,7 +279,7 @@ eventBookingInsert();
 </html>
 
 <!-- JavaScript code -->
-<script>
+<!-- <script>
     $(document).ready(function() {
         // Function to fetch servants count and update input field
         function updateServantsCount() {
@@ -303,4 +312,4 @@ eventBookingInsert();
         // Call the function when the page loads
         updateServantsCount();
     });
-</script>
+</script> -->

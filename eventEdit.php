@@ -73,7 +73,7 @@ eventBookingUpdate();
                                     <h3 class="card-header">Booking</h3>
                                     <hr class="my-4">
                                     <div class="row g-3">
-                                        <input type="text" name="event_id" hidden value="<?= $row['event_id'] ?>">
+                                        <input type="text" class="form-control" hidden name="event_id" value="<?= $row['event_id'] ?>">
                                         <div class="col-md-6">
                                             <label class="form-label">Event Name</label>
                                             <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter Event Name" value="<?= $row['eventName'] ?>">
@@ -81,7 +81,11 @@ eventBookingUpdate();
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Location</label>
-                                            <input type="text" class="form-control" id="location" name="location" placeholder="Enter Location" value="<?= $row['location'] ?>">
+                                            <select name="location" id="location" class="form-control form-select">
+                                                <!-- <option value="">--- Select Location ---</option> -->
+                                                <option value="Shadi Hall" <?php if ($row['location'] == 'Shadi Hall') echo "selected"; ?>>Shadi Hall</option>
+                                                <option value="Sports Centre" <?php if ($row['location'] == 'Sports Centre') echo "selected"; ?>>Sports Centre</option>
+                                            </select>
                                             <span class="text-danger" id="location_error"></span>
                                         </div>
                                         <div class="col-md-6">
@@ -92,35 +96,41 @@ eventBookingUpdate();
                                         <div class="col-md-6">
                                             <label class="form-label">Timing</label>
                                             <div class="input-group input-daterange">
-                                                <input type="time" id="startTiming" name="startTiming" placeholder="MM/DD/YYYY" class="form-control" value="<?= $row['startTiming'] ?>" />
+                                                <input type="time" id="startTiming" name="startTiming" placeholder="MM/DD/YYYY" class="form-control" value="<?= $row['startTiming'] ?>"/>
                                                 <span class="input-group-text">to</span>
-                                                <input type="time" id="endTiming" name="endTiming" placeholder="MM/DD/YYYY" class="form-control" value="<?= $row['endTiming'] ?>" />
+                                                <input type="time" id="endTiming" name="endTiming" placeholder="MM/DD/YYYY" class="form-control" value="<?= $row['endTiming'] ?>"/>
                                             </div>
                                             <span class="text-danger" id="startTiming_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">No Of Servant</label>
-                                            <input type="text" class="form-control" id="noOfServant" name="noOfServant" placeholder="Enter No Of Servant" value="<?= $row['noOfServant'] ?>">
-                                            <span class="text-danger" id="noOfServant_error"></span>
+                                            <label class="form-label">No Of Persons</label>
+                                            <input type="text" class="form-control" id="noOfPersons" name="noOfPersons" placeholder="50" value="<?= $row['noOfPersons'] ?>">
+                                            <span class="text-danger" id="noOfPersons_error"></span>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Customer Name</label>
+                                            <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Enter Booking Name" value="<?= $row['customerName'] ?>">
+                                            <span class="text-danger" id="customerName_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Booking Name</label>
-                                            <input type="text" class="form-control" id="bookingName" name="bookingName" placeholder="Enter Booking Name" value="<?= $row['bookingName'] ?>">
-                                            <span class="text-danger" id="bookingName_error"></span>
+                                            <label class="form-label">Customer Contact</label>
+                                            <input type="number" class="form-control" id="customerContact" name="customerContact" placeholder="03XXXXXXXXX" value="<?= $row['customerContact'] ?>">
+                                            <span class="text-danger" id="customerContact_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Email</label>
-                                            <input type="text" class="form-control" id="bookingEmail" name="bookingEmail" placeholder="Enter Email" value="<?= $row['bookingEmail'] ?>">
-                                            <span class="text-danger" id="bookingEmail_error"></span>
+                                            <label class="form-label">Customer CNIC</label>
+                                            <input type="number" class="form-control" id="customerCnic" name="customerCnic" placeholder="XXXXXXXXXXXXX" value="<?= $row['customerCnic'] ?>">
+                                            <span class="text-danger" id="customerCnic_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Contact</label>
-                                            <input type="text" class="form-control" id="bookingContact" name="bookingContact" placeholder="Enter Contact" value="<?= $row['bookingContact'] ?>">
-                                            <span class="text-danger" id="bookingContact_error"></span>
+                                            <label class="form-label">Event Type</label>
+                                            <input type="text" class="form-control" id="eventType" name="eventType" placeholder="Enter Contact" value="<?= $row['eventType'] ?>">
+                                            <span class="text-danger" id="eventType_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Payment</label>
-                                            <input type="text" class="form-control" id="bookingPayment" name="bookingPayment" placeholder="Enter Payment" value="<?= $row['bookingPayment'] ?>">
+                                            <input type="number" class="form-control" id="bookingPayment" name="bookingPayment" placeholder="999" value="<?= $row['bookingPayment'] ?>">
                                             <span class="text-danger" id="bookingPayment_error"></span>
                                         </div>
                                     </div>
@@ -130,7 +140,7 @@ eventBookingUpdate();
                             <!-- submit btn -->
                             <div class="mt-3">
                                 <button type="submit" id="submit_btn" name="eventBookingUpdate" class="btn btn-primary">Update</button>
-                                <a href="eventsDetails" class="btn btn-danger">Back</a>
+                                <a href="eventsDetails" class="btn btn-outline-danger">Back</a>
                             </div>
                         </form>
 

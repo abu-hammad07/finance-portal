@@ -22,9 +22,9 @@ function addHouse()
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
 
-        $insertQuery = "INSERT INTO `houses`(`house_number`, `owner_name`, `owner_contact`, `owner_cnic`,
-         `occupancy_status`, `property_size`, `floor`, `property_type`, `maintenance_charges`,`added_on`,
-          `added_by`) VALUES ('$houseNumber','$ownerName','$ownerContact', '$ownerCNIC',
+        $insertQuery = "INSERT INTO houses(house_number, owner_name, owner_contact, owner_cnic,
+         occupancy_status, property_size, floor, property_type, maintenance_charges,added_on,
+          added_by) VALUES ('$houseNumber','$ownerName','$ownerContact', '$ownerCNIC',
           '$occupanceStatus','$propertySize','$floor',
           '$propertyType','$maintenanceCharges',
           '$added_on','$added_by')";
@@ -63,14 +63,14 @@ function updateHouse()
         $added_by = $_SESSION['username'];
 
         $insertQuery = "
-        UPDATE `houses` SET `house_number` = '{$houseNumber}',
-        `owner_name` = '{$ownerName}', `owner_contact` = '{$ownerContact}',
-        `occupancy_status` = '{$occupanceStatus}', `tenants_name` = '{$tenantsName}',
-        `tenants_contact` = '{$tenantContact}', `property_size` = '{$propertySize}',
-        `floor` = '{$floor}', `property_type` = '{$propertyType}',
-        `maintenance_charges` = '{$maintenanceCharges}', `notes` = '{$notes}',
-        `added_on` = NOW(), `added_by` = '{$added_by}'
-        WHERE `house_id` = '{$house_id}'";
+        UPDATE houses SET house_number = '{$houseNumber}',
+        owner_name = '{$ownerName}', owner_contact = '{$ownerContact}',
+        occupancy_status = '{$occupanceStatus}', tenants_name = '{$tenantsName}',
+        tenants_contact = '{$tenantContact}', property_size = '{$propertySize}',
+        floor = '{$floor}', property_type = '{$propertyType}',
+        maintenance_charges = '{$maintenanceCharges}', notes = '{$notes}',
+        added_on = NOW(), added_by = '{$added_by}'
+        WHERE house_id = '{$house_id}'";
 
         $query = mysqli_query($conn, $insertQuery);
         if ($query) {
@@ -129,7 +129,7 @@ function userEdit()
         $updated_by = $_SESSION['username'];
 
         // check duplicate username
-        $check_username = "SELECT * FROM `users` WHERE `username` = '$username' AND `user_id` != '$userId'";
+        $check_username = "SELECT * FROM users WHERE username = '$username' AND user_id != '$userId'";
         $check_username_res = mysqli_query($conn, $check_username);
 
         if (mysqli_num_rows($check_username_res) > 0) {
@@ -139,7 +139,7 @@ function userEdit()
         }
 
         // check duplicate email
-        $check_email = "SELECT * FROM `users` WHERE `email` = '$email' AND `email` != '$email'";
+        $check_email = "SELECT * FROM users WHERE email = '$email' AND email != '$email'";
         $check_email_res = mysqli_query($conn, $check_email);
 
         if (mysqli_num_rows($check_email_res) > 0) {
@@ -156,23 +156,23 @@ function userEdit()
         }
 
         // Update the user's data in the database
-        $updateUser = "UPDATE `users` SET `username` = '$username', `email` = '$email', `role_id` = '$roleId', 
-        `updated_date` = '$updated_date', `updated_by` = '$updated_by' 
-        WHERE `user_id` = '$userId'";
+        $updateUser = "UPDATE users SET username = '$username', email = '$email', role_id = '$roleId', 
+        updated_date = '$updated_date', updated_by = '$updated_by' 
+        WHERE user_id = '$userId'";
         $updateUser_res = mysqli_query($conn, $updateUser);
 
         if ($updateUser_res) {
 
             // Update the user's details in the database
-            $updateUserDetail = "UPDATE `users_detail` SET `full_name`= '$fullName', `phone`= '$phone', 
-            `date_of_birth`= '$dateOfBirth', `gender`= '$gender', `address`= '$address'";
+            $updateUserDetail = "UPDATE users_detail SET full_name= '$fullName', phone= '$phone', 
+            date_of_birth= '$dateOfBirth', gender= '$gender', address= '$address'";
 
             if (!empty($image)) {
-                $updateUserDetail .= ", `image`= '$image'";
+                $updateUserDetail .= ", image= '$image'";
             }
 
-            $updateUserDetail .= ", `updated_date`= '$updated_date', `updated_by`= '$updated_by'
-            WHERE `users_detail_id` = '$usersDetailId'";
+            $updateUserDetail .= ", updated_date= '$updated_date', updated_by= '$updated_by'
+            WHERE users_detail_id = '$usersDetailId'";
             $updateUserDetail_res = mysqli_query($conn, $updateUserDetail);
 
             if ($updateUserDetail_res) {
@@ -204,7 +204,7 @@ function userDelete()
         $userId = mysqli_real_escape_string($conn, $_GET['user_delete_id']);
 
         // select user details
-        $selectUser = "SELECT username, users_detail_id FROM `users` WHERE `user_id` = '$userId'";
+        $selectUser = "SELECT username, users_detail_id FROM users WHERE user_id = '$userId'";
         $selectUser_res = mysqli_query($conn, $selectUser);
         if (mysqli_num_rows($selectUser_res) > 0) {
             $row = mysqli_fetch_assoc($selectUser_res);
@@ -213,13 +213,13 @@ function userDelete()
         }
 
         // Delete the user
-        $deleteUser = "DELETE FROM `users` WHERE `user_id` = '$userId'";
+        $deleteUser = "DELETE FROM users WHERE user_id = '$userId'";
         $deleteUser_res = mysqli_query($conn, $deleteUser);
 
         if ($deleteUser_res) {
 
             // Delete the user's details
-            $deleteUserDetail = "DELETE FROM `users_detail` WHERE `users_detail_id` = '$usersDetailId'";
+            $deleteUserDetail = "DELETE FROM users_detail WHERE users_detail_id = '$usersDetailId'";
             $deleteUserDetail_res = mysqli_query($conn, $deleteUserDetail);
 
             if ($deleteUserDetail_res) {
@@ -267,18 +267,18 @@ function updateProfile()
         $updated_by = $_SESSION['username'];
 
         // Update the user's details in the database
-        $updateUserDetail = "UPDATE `users_detail` SET `full_name`= '$full_name', `phone`= '$phone', 
-        `date_of_birth`= '$date_of_birth', `gender`= '$gender', `address`= '$address'";
+        $updateUserDetail = "UPDATE users_detail SET full_name= '$full_name', phone= '$phone', 
+        date_of_birth= '$date_of_birth', gender= '$gender', address= '$address'";
         if (!empty($image)) {
-            $updateUserDetail .= ", `image`= '$image'";
+            $updateUserDetail .= ", image= '$image'";
         }
 
-        $updateUserDetail .= ", `updated_date`= '$updated_date', `updated_by`= '$updated_by'
-        WHERE `users_detail_id` = '$usersDetailId'";
+        $updateUserDetail .= ", updated_date= '$updated_date', updated_by= '$updated_by'
+        WHERE users_detail_id = '$usersDetailId'";
         $updateUserDetail_res = mysqli_query($conn, $updateUserDetail);
 
         if ($updateUserDetail_res) {
-            $_SESSION['success_updated_profile'] = "Profile updated successfully";
+            $_SESSION['success_updated_profile'] = "Profile has been updated successfully";
             header("location: profile");
             exit();
         } else {
@@ -297,54 +297,46 @@ function servantSubmit()
     global $conn;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
-        $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-        $gender = mysqli_real_escape_string($conn, $_POST['gender']);
-        $address = mysqli_real_escape_string($conn, $_POST['address']);
-        $status = mysqli_real_escape_string($conn, $_POST['status']);
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
+        $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
+        $designation = mysqli_real_escape_string($conn, $_POST['designation']);
+        $servant_fees = mysqli_real_escape_string($conn, $_POST['servant_fees']);
+
+        // select house details
+        $selectHouse = "SELECT house_number FROM houses WHERE house_id = '$house_id'";
+        $selectHouse_res = mysqli_query($conn, $selectHouse);
+        if (mysqli_num_rows($selectHouse_res) > 0) {
+            $row = mysqli_fetch_assoc($selectHouse_res);
+            $house_number = $row['house_number'];
+        }
 
         // Get the current date and time
-        $created_date = date('Y-m-d');
+        $added_on = date('Y-m-d');
         // Get the user's ID and name
-        $created_by = $_SESSION['UID'];
+        $added_by = $_SESSION['UID'];
 
 
-        // check duplicate email
-        $check_email = "SELECT * FROM `servants` WHERE `email` = '$email'";
-        $check_username_res = mysqli_query($conn, $check_email);
+        // Insert data into user_details table first
+        $insert_details = "INSERT INTO servants(
+            house_id, servantDesignation, servantFees, added_by, added_on) 
+        VALUES (
+            '$house_id', '$designation', '$servant_fees', '$added_by', '$added_on'
+        )";
 
-        if (mysqli_num_rows($check_username_res) > 0) {
-            $_SESSION['error_message_servant'] = "Email already exists $full_name, ($email)";
-            header("location: addServant");
+        $insert_udetails_res = mysqli_query($conn, $insert_details);
+
+        if ($insert_udetails_res) {
+
+            $_SESSION['success_message_servant'] = "($house_number) servant has been added.";
+            header('location: addServant');
             exit();
         } else {
-
-            // Upload image
-            $image = rand(111111111, 999999999) . '_' . $_FILES['image']['name'];
-            move_uploaded_file($_FILES['image']['tmp_name'], 'media/images/' . $image);
-
-            // Insert data into user_details table first
-            $insert_details = "INSERT INTO `servants`(`servant_name`, `phone`, `address`, `gender`, `status`, `email`, `image`, `added_by`, `added_on`
-            ) VALUES (
-                '$full_name', '$phone', '$address', '$gender', '$status', '$email', '$image', '$created_by', '$created_date'
-            )";
-
-            $insert_udetails_res = mysqli_query($conn, $insert_details);
-
-            if ($insert_udetails_res) {
-
-                $_SESSION['success_message_servant'] = "$full_name Successfully Added";
-                header('location: addServant');
-                exit();
-            } else {
-                $_SESSION['error_message_servant'] = "$full_name not added";
-                header('location: addServant');
-                exit();
-            }
+            $_SESSION['error_message_servant'] = "$house_number not added";
+            header('location: addServant');
+            exit();
         }
     }
 }
+
 // ========================= end of servant =========================
 
 
@@ -356,68 +348,48 @@ function serventUpdate()
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $servant_id = mysqli_real_escape_string($conn, $_POST['servant_id']);
-        $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
-        $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-        $gender = mysqli_real_escape_string($conn, $_POST['gender']);
-        $address = mysqli_real_escape_string($conn, $_POST['address']);
-        $status = mysqli_real_escape_string($conn, $_POST['status']);
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
+        $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
+        $designation = mysqli_real_escape_string($conn, $_POST['designation']);
+        $servant_fees = mysqli_real_escape_string($conn, $_POST['servant_fees']);
+
+        // select house details
+        $selectHouse = "SELECT house_number FROM houses WHERE house_id = '$house_id'";
+        $selectHouse_res = mysqli_query($conn, $selectHouse);
+        if (mysqli_num_rows($selectHouse_res) > 0) {
+            $row = mysqli_fetch_assoc($selectHouse_res);
+            $house_number = $row['house_number'];
+        }
 
         // Get the current date and time
-        $updated_date = date('Y-m-d');
-        // Get the user's ID and name
-        $updated_by = $_SESSION['UID'];
+        $updated_on = date('Y-m-d');
+        $updated_by = $_SESSION['username'];
 
 
-        // check duplicate email
-        $check_email = "SELECT * FROM `servants` WHERE `email` = '$email' AND `servant_id` != '$servant_id'";
-        $check_username_res = mysqli_query($conn, $check_email);
 
-        if (mysqli_num_rows($check_username_res) > 0) {
-            $_SESSION['error_updated_servant'] = "Email already exists $full_name, ($email)";
-            header("location: servants");
+        // Update data into servants table
+        $servant_update = "UPDATE servants SET
+            house_id = '$house_id',
+            servantDesignation = '$designation',
+            servantFees = '$servant_fees',
+            updated_by = '$updated_by',
+            updated_on = '$updated_on'
+            WHERE servant_id = '$servant_id'";
+
+        $servant_udetails_res = mysqli_query($conn, $servant_update);
+
+        if ($servant_udetails_res) {
+
+            $_SESSION['success_updated_servant'] = "($house_number) has been Updated.";
+            header('location: servants');
             exit();
         } else {
-
-            // Upload image empty
-            $image = '';
-            if (!empty($_FILES['image']['name'])) {
-                $image = rand(111111111, 999999999) . '_' . $_FILES['image']['name'];
-                move_uploaded_file($_FILES['image']['tmp_name'], 'media/images/' . $image);
-            }
-
-            // Update data into servants table
-            $servant_update = "UPDATE `servants` SET
-            `servant_name` = '$full_name',
-            `phone` = '$phone',
-            `address` = '$address',
-            `gender` = '$gender',
-            `status` = '$status',
-            `email` = '$email',
-            `updated_by` = '$updated_by',
-            `updated_on` = '$updated_date'";
-
-            if (!empty($image)) {
-                $servant_update .= ", `image` = '$image'";
-            }
-
-            $servant_update .= " WHERE `servant_id` = '$servant_id'";
-
-            $servant_udetails_res = mysqli_query($conn, $servant_update);
-
-            if ($servant_udetails_res) {
-
-                $_SESSION['success_updated_servant'] = "$full_name Successfully Updated";
-                header('location: servants');
-                exit();
-            } else {
-                $_SESSION['error_updated_servant'] = "$full_name not updated";
-                header('location: servants');
-                exit();
-            }
+            $_SESSION['error_updated_servant'] = "($house_number) not updated";
+            header('location: servants');
+            exit();
         }
     }
 }
+
 // ========================= End servent Update =========================
 function deleteServants()
 {
@@ -450,10 +422,11 @@ function eventBookingInsert()
         $date = mysqli_real_escape_string($conn, $_POST['date']);
         $startTiming = mysqli_real_escape_string($conn, $_POST['startTiming']);
         $endTiming = mysqli_real_escape_string($conn, $_POST['endTiming']);
-        $noOfServant = mysqli_real_escape_string($conn, $_POST['noOfServant']);
-        $bookingName = mysqli_real_escape_string($conn, $_POST['bookingName']);
-        $bookingEmail = mysqli_real_escape_string($conn, $_POST['bookingEmail']);
-        $bookingContact = mysqli_real_escape_string($conn, $_POST['bookingContact']);
+        $noOfPersons = mysqli_real_escape_string($conn, $_POST['noOfPersons']);
+        $customerName = mysqli_real_escape_string($conn, $_POST['customerName']);
+        $customerContact = mysqli_real_escape_string($conn, $_POST['customerContact']);
+        $customerCnic = mysqli_real_escape_string($conn, $_POST['customerCnic']);
+        $eventType = mysqli_real_escape_string($conn, $_POST['eventType']);
         $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
 
 
@@ -461,53 +434,53 @@ function eventBookingInsert()
         $added_on = date('Y-m-d');
         $added_by = $_SESSION['username'];
 
-        // check if no of servant is greater than total servatant count in database
-        $check_noOfServant = "SELECT * FROM `servants`";
-        $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
-        $total_servant = mysqli_num_rows($check_noOfServant_res);
-        if ($noOfServant > $total_servant) {
-            $_SESSION['error_message_eventBooking'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
-            header("location: eventBooking");
-            exit();
-        }
-
-        // check duplicate date and timing overlap
-        $check_overlap = "SELECT * FROM `events_booking`
-            (('{$startTiming}' BETWEEN `startTiming` AND `endTiming`) OR 
-            ('{$endTiming}' BETWEEN `startTiming` AND `endTiming`) OR 
-            (`startTiming` BETWEEN '{$startTiming}' AND '{$endTiming}') OR 
-            (`endTiming` BETWEEN '{$startTiming}' AND '{$endTiming}'))";
-        $check_overlap_res = mysqli_query($conn, $check_overlap);
-        if (mysqli_num_rows($check_overlap_res) > 0) {
-            $_SESSION['error_message_eventBooking'] = "Time overlap with existing event for date: $date";
-            header("location: eventBooking");
-            exit();
-        }
-
-
+        // // check if no of servant is greater than total servatant count in database
+        // $check_noOfServant = "SELECT * FROM servants";
+        // $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
+        // $total_servant = mysqli_num_rows($check_noOfServant_res);
+        // if ($noOfServant > $total_servant) {
+        //     $_SESSION['error_message_eventBooking'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
+        //     header("location: eventBooking");
+        //     exit();
+        // }
+        // // check duplicate date and timing overlap
+        // $check_overlap = "SELECT * FROM events_booking
+        //     (('{$startTiming}' BETWEEN startTiming AND endTiming) OR 
+        //     ('{$endTiming}' BETWEEN startTiming AND endTiming) OR 
+        //     (startTiming BETWEEN '{$startTiming}' AND '{$endTiming}') OR 
+        //     (endTiming BETWEEN '{$startTiming}' AND '{$endTiming}'))";
+        // $check_overlap_res = mysqli_query($conn, $check_overlap);
+        // if (mysqli_num_rows($check_overlap_res) > 0) {
+        //     $_SESSION['error_message_eventBooking'] = "Time overlap with existing event for date: $date";
+        //     header("location: eventBooking");
+        //     exit();
+        // }
 
         // check duplicate location
-        $check_location = "SELECT * FROM `events_booking` WHERE `location` = '$location'";
-        $check_location_res = mysqli_query($conn, $check_location);
+        // $check_location = "SELECT * FROM events_booking WHERE location = '$location'";
+        // $check_location_res = mysqli_query($conn, $check_location);
 
-        if (mysqli_num_rows($check_location_res) > 0) {
-            $_SESSION['error_message_eventBooking'] = "Location already exists ($location)";
-            header("location: eventBooking");
-            exit();
-        }
+        // if (mysqli_num_rows($check_location_res) > 0) {
+        //     $_SESSION['error_message_eventBooking'] = "Location already exists ($location)";
+        //     header("location: eventBooking");
+        //     exit();
+        // }
 
         // insert data into event_booking table
-        $insertEventBooking = "INSERT INTO `events_booking` (
-            `eventName`, `location`, `date`,`startTiming`,`endTiming`, `noOfServant`, `bookingName`, `bookingEmail`,
-            `bookingContact`, `bookingPayment`, `added_on`, `added_by`) 
-        VALUES ('$eventName', '$location', '$date','$startTiming','$endTiming', '$noOfServant', '$bookingName',
-            '$bookingEmail', '$bookingContact', '$bookingPayment', '$added_on', '$added_by')";
+        $insertEventBooking = "INSERT INTO `events_booking`(
+            `eventName`, `location`, `date`, `startTiming`, `endTiming`, `noOfPersons`, 
+            `eventType`, `customerCnic`, `customerContact`, `customerName`, 
+            `bookingPayment`, `added_by`, `added_on`) 
+        VALUES(
+            '{$eventName}', '{$location}', '{$date}', '{$startTiming}', '{$endTiming}', '{$noOfPersons}',
+            '{$eventType}', '{$customerCnic}', '{$customerContact}', '{$customerName}', '{$bookingPayment}', '{$added_by}', '{$added_on}'
+        )";
 
 
         $insertEventBooking_res = mysqli_query($conn, $insertEventBooking);
 
         if ($insertEventBooking_res) {
-            $_SESSION['success_message_eventBooking'] = "($eventName) Successfully Added.";
+            $_SESSION['success_message_eventBooking'] = "($eventName) has been Added.";
             header('location: eventBooking');
             exit();
         } else {
@@ -533,10 +506,11 @@ function eventBookingUpdate()
         $date = mysqli_real_escape_string($conn, $_POST['date']);
         $startTiming = mysqli_real_escape_string($conn, $_POST['startTiming']);
         $endTiming = mysqli_real_escape_string($conn, $_POST['endTiming']);
-        $noOfServant = mysqli_real_escape_string($conn, $_POST['noOfServant']);
-        $bookingName = mysqli_real_escape_string($conn, $_POST['bookingName']);
-        $bookingEmail = mysqli_real_escape_string($conn, $_POST['bookingEmail']);
-        $bookingContact = mysqli_real_escape_string($conn, $_POST['bookingContact']);
+        $noOfPersons = mysqli_real_escape_string($conn, $_POST['noOfPersons']);
+        $customerName = mysqli_real_escape_string($conn, $_POST['customerName']);
+        $customerContact = mysqli_real_escape_string($conn, $_POST['customerContact']);
+        $customerCnic = mysqli_real_escape_string($conn, $_POST['customerCnic']);
+        $eventType = mysqli_real_escape_string($conn, $_POST['eventType']);
         $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
 
 
@@ -544,37 +518,37 @@ function eventBookingUpdate()
         $updated_on = date('Y-m-d');
         $updated_by = $_SESSION['username'];
 
-        // check if no of servant is greater than total servatant count in database
-        $check_noOfServant = "SELECT * FROM `servants`";
-        $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
-        $total_servant = mysqli_num_rows($check_noOfServant_res);
-        if ($noOfServant > $total_servant) {
-            $_SESSION['error_updated_events'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
-            header("location: eventsDetails");
-            exit();
-        }
+        // // check if no of servant is greater than total servatant count in database
+        // $check_noOfServant = "SELECT * FROM servants";
+        // $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
+        // $total_servant = mysqli_num_rows($check_noOfServant_res);
+        // if ($noOfServant > $total_servant) {
+        //     $_SESSION['error_updated_events'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
+        //     header("location: eventsDetails");
+        //     exit();
+        // }
 
-        // check duplicate date and timing overlap
-        $check_overlap = "SELECT * FROM `events_booking` WHERE
-            (('{$startTiming}' BETWEEN `startTiming` AND `endTiming`) OR 
-            ('{$endTiming}' BETWEEN `startTiming` AND `endTiming`) OR 
-            (`startTiming` BETWEEN '{$startTiming}' AND '{$endTiming}') OR 
-            (`endTiming` BETWEEN '{$startTiming}' AND '{$endTiming}')) AND `event_id` != '$event_id'";
-        $check_overlap_res = mysqli_query($conn, $check_overlap);
-        if (mysqli_num_rows($check_overlap_res) > 0) {
-            $_SESSION['error_updated_events'] = "Time overlap with existing event for date: $date and time: $startTiming - $endTiming";
-            header("location: eventsDetails");
-            exit();
-        }
+        // // check duplicate date and timing overlap
+        // $check_overlap = "SELECT * FROM events_booking WHERE
+        //     (('{$startTiming}' BETWEEN startTiming AND endTiming) OR 
+        //     ('{$endTiming}' BETWEEN startTiming AND endTiming) OR 
+        //     (startTiming BETWEEN '{$startTiming}' AND '{$endTiming}') OR 
+        //     (endTiming BETWEEN '{$startTiming}' AND '{$endTiming}')) AND event_id != '$event_id'";
+        // $check_overlap_res = mysqli_query($conn, $check_overlap);
+        // if (mysqli_num_rows($check_overlap_res) > 0) {
+        //     $_SESSION['error_updated_events'] = "Time overlap with existing event for date: $date and time: $startTiming - $endTiming";
+        //     header("location: eventsDetails");
+        //     exit();
+        // }
 
-        // check duplicate location
-        $check_location = "SELECT * FROM `events_booking` WHERE `location` = '$location' AND `location` != '$location'";
-        $check_location_res = mysqli_query($conn, $check_location);
-        if (mysqli_num_rows($check_location_res) > 0) {
-            $_SESSION['error_updated_events'] = "Location already exists ($location)";
-            header("location: eventsDetails");
-            exit();
-        }
+        // // check duplicate location
+        // $check_location = "SELECT * FROM events_booking WHERE location = '$location' AND location != '$location'";
+        // $check_location_res = mysqli_query($conn, $check_location);
+        // if (mysqli_num_rows($check_location_res) > 0) {
+        //     $_SESSION['error_updated_events'] = "Location already exists ($location)";
+        //     header("location: eventsDetails");
+        //     exit();
+        // }
 
         // insert data into event_booking table
         $updateEventBooking = "UPDATE `events_booking` SET
@@ -583,14 +557,15 @@ function eventBookingUpdate()
         `date` = '$date',
         `startTiming` = '$startTiming',
         `endTiming` = '$endTiming',
-        `noOfServant` = '$noOfServant',
-        `bookingName` = '$bookingName',
-        `bookingEmail` = '$bookingEmail',
-        `bookingContact` = '$bookingContact',
+        `noOfPersons` = '$noOfPersons',
+        `customerName` = '$customerName',
+        `customerContact` = '$customerContact',
+        `customerCnic` = '$customerCnic',
+        `eventType` = '$eventType',
         `bookingPayment` = '$bookingPayment',
         `updated_on` = '$updated_on',
         `updated_by` = '$updated_by'
-        WHERE `event_id` = '$event_id'";
+        WHERE event_id = '$event_id'";
 
         $updateEventBooking_res = mysqli_query($conn, $updateEventBooking);
 
@@ -636,7 +611,7 @@ function addTenants()
         $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
         $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
         $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
-    
+
 
         // image upload
         $upload_directory = 'media/images/';
@@ -697,3 +672,54 @@ function addTenants()
     }
 }
 
+function updateTenants()
+{
+    global $conn;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $tenant_id = mysqli_real_escape_string($conn, $_POST['tenant_id']);
+        $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
+        $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
+        $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
+        $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
+
+
+        // image upload
+        $tenant_image = '';
+        if (!empty($_FILES['tenant_image']['name'])) {
+            $tenant_image = mysqli_real_escape_string($conn, rand(111111111, 999999999) . '_' . $_FILES['tenant_image']['name']);
+            move_uploaded_file($_FILES['tenant_image']['tmp_name'], 'media/images/' . $tenant_image);
+        }
+
+        // updated_by & updated_on
+        $updated_by = $_SESSION['username'];
+        $updated_on = date("Y-m-d");
+
+        // update data into tenants table
+        $updateTenants = "UPDATE tenants SET 
+        house_id='$house_id',
+        tenant_name='$tenant_name',
+        tenant_contact_no='$tenant_contact',
+        tenant_cnic='$tenant_cnic',
+        updated_by='$updated_by',
+        updated_on='$updated_on'";
+
+        if (!empty($tenant_image)) {
+            $updateTenants .= ", tenant_image='$tenant_image'";
+        }
+
+        $updateTenants .= " WHERE tenant_id = '$tenant_id'";
+
+        $updateTenants_res = mysqli_query($conn, $updateTenants);
+
+        if ($updateTenants_res) {
+            $_SESSION['success_updated_tenant'] = "($tenant_name) tenant has been updated.";
+            header('location: tenants');
+            exit();
+        } else {
+            $_SESSION['error_updated_tenant'] = "($tenant_name) not updated.";
+            header('location: tenants');
+            exit();
+        }
+    }
+}

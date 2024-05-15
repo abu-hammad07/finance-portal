@@ -8,7 +8,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 }
 
 // Update Servants
-serventUpdate(); 
+serventUpdate();
 ?>
 
 <!DOCTYPE html>
@@ -61,74 +61,58 @@ serventUpdate();
 
                 $servant_edit_id = mysqli_real_escape_string($conn, $_GET['servant_edit_id']);
 
-                $query = "SELECT * FROM servants
-                    WHERE servant_id = '$servant_edit_id'";
+                $query = "SELECT servants.*, houses.house_id, houses.house_number, houses.owner_name, houses.owner_contact
+                    FROM servants
+                    INNER JOIN houses ON servants.house_id = houses.house_id
+                    WHERE servants.servant_id = '$servant_edit_id'";
                 $result = mysqli_query($conn, $query);
 
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
             ?>
-                        <form action="" method="POST" id="add_servant_form" enctype="multipart/form-data">
+                        <form action="" method="post" id="add_servant_form" enctype="multipart/form-data">
                             <div class="card h-auto">
                                 <div class="card-body">
                                     <h3 class="card-header">Information</h3>
                                     <hr class="my-4">
-                                    <input type="text" name="servant_id" value="<?= $row['servant_id'] ?>" hidden>
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <label class="form-label">Full Name</label>
-                                            <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter Full Name" value="<?= $row['servant_name'] ?>">
-                                            <span class="text-danger" id="full_name_error"></span>
+                                            <label class="form-label">House/Unit Number</label>
+                                            <select name="house_id" id="house_id" class="form-select form-control house-id" required>
+                                                <option value="<?= $row['house_id'] ?>"><?= $row['house_number'] ?></option>
+                                            </select>
+                                            <span class="text-danger" id="house_id_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" value="<?= $row['email'] ?>">
-                                            <span class="text-danger" id="email_error"></span>
+                                            <label class="form-label">Owner's Name</label>
+                                            <select id="owner_name" class="form-select form-control">
+                                                <option value="<?= $row['owner_name'] ?>"><?= $row['owner_name'] ?></option>
+                                            </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Phone Number</label>
-                                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" value="<?= $row['phone'] ?>">
-                                            <span class="text-danger" id="phone_error"></span>
+                                            <label class="form-label">Owner's Contact</label>
+                                            <select id="owner_contact" class="form-select form-control">
+                                                <option value="<?= $row['owner_contact'] ?>"><?= $row['owner_contact'] ?></option>
+                                            </select>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Gender</label>
-                                            <div class="input-group">
-                                                <select id="gender" name="gender" class="form-select form-control">
-                                                    <option value="" <?php if ($row['gender'] == '') echo "selected"; ?>>-----</option>
-                                                    <option value="Male" <?php if ($row['gender'] == 'Male') echo "selected"; ?>>Male</option>
-                                                    <option value="Female" <?php if ($row['gender'] == 'Female') echo "selected"; ?>>Female</option>
-                                                </select>
-                                            </div>
-                                            <span class="text-danger" id="gender_error"></span>
+                                        <div class="col-md-6 ">
+                                            <label class="form-label">Designation</label>
+                                            <input type="text" id="designation" name="designation" class="form-control" placeholder="Enter Designation" value="<?= $row['servantDesignation'] ?>" required>
+                                            <span class="text-danger" id="designation_error"></span>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Address</label>
-                                            <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" value="<?= $row['address'] ?>">
-                                            <span class="text-danger" id="address_error"></span>
+                                        <div class="col-md-6 ">
+                                            <label class="form-label">Fees</label>
+                                            <input type="text" id="servant_fees" name="servant_fees" class="form-control" placeholder="999" value="<?= $row['servantFees'] ?>" required>
+                                            <span class="text-danger" id="servant_fees_error"></span>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Status</label>
-                                            <div class="input-group">
-                                                <select id="status" name="status" class="form-select form-control">
-                                                    <option value="" <?php if ($row['status'] == '') echo "selected"; ?>>-----</option>
-                                                    <option value="Active" <?php if ($row['status'] == 'Active') echo "selected"; ?>>Active</option>
-                                                    <option value="Not Active" <?php if ($row['status'] == 'Not Active') echo "selected"; ?>>Not Active</option>
-                                                </select>
-                                            </div>
-                                            <span class="text-danger" id="status_error"></span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Image</label>
-                                            <input type="file" class="form-control" id="image" name="image">
+
+                                        <!-- Button -->
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary" id="servant_btn" type="submit" name="serventUpdate">Update</button>
+                                            <a href="servants" class="btn btn-outline-danger">Back</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- submit btn -->
-                            <div class="mt-3">
-                                <button type="submit" id="submit_btn" name="servantUpdate" class="btn btn-primary">Update</button>
-                                <a href="servants" class="btn btn-danger">Back</a>
                             </div>
                         </form>
 
@@ -153,94 +137,6 @@ serventUpdate();
     </button>
     <!-- End:Offcanvas Toggler -->
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('add_servant_form');
-
-            // Validate input fields
-            function validateInput(inputElement, errorElement, validationRegex, errorMessage) {
-                inputElement.addEventListener('input', function() {
-                    let inputValue = inputElement.value.trim();
-                    const isValid = validationRegex.test(inputValue);
-
-                    if (!isValid) {
-                        errorElement.textContent = errorMessage;
-                        errorElement.style.display = 'block';
-                        inputElement.classList.add('is-invalid');
-                    } else {
-                        errorElement.textContent = '';
-                        errorElement.style.display = 'none';
-                        inputElement.classList.remove('is-invalid');
-                    }
-                });
-            }
-
-            // Validation regex patterns and error messages
-            const validationRules = {
-                full_name: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter your full name.'
-                },
-                phone: {
-                    regex: /^\d{11}$/, // 15 digits only
-                    errorMessage: 'Please enter a valid phone number.'
-                },
-                gender: {
-                    regex: /^(?=.*[a-z]).{1,}$/, // At least one character
-                    errorMessage: 'Please select gender.'
-                },
-                address: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter your address.'
-                },
-                status: {
-                    regex: /^(?=.*[a-z]).{1,}$/, // At least one character
-                    errorMessage: 'Please select user type.'
-                },
-                email: {
-                    regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Email pattern
-                    errorMessage: 'Please enter a valid email address.'
-                },
-            };
-
-            // Loop through each input field and attach validation
-            Object.keys(validationRules).forEach(key => {
-                const inputElement = document.getElementById(key);
-                const errorElement = document.getElementById(`${key}_error`);
-                validateInput(inputElement, errorElement, validationRules[key].regex, validationRules[key].errorMessage);
-            });
-
-            // Function to validate form submission
-            function validateForm(event) {
-                event.preventDefault(); // Prevent form submission
-
-                let isValid = true;
-
-                // Check if any input field is empty
-                Object.keys(validationRules).forEach(key => {
-                    const inputElement = document.getElementById(key);
-                    const errorElement = document.getElementById(`${key}_error`);
-                    const inputValue = inputElement.value.trim();
-                    const isValidField = validationRules[key].regex.test(inputValue);
-
-                    if (!isValidField) {
-                        errorElement.textContent = validationRules[key].errorMessage;
-                        errorElement.style.display = 'block';
-                        inputElement.classList.add('is-invalid');
-                        isValid = false;
-                    }
-                });
-
-                // Submit the form if all inputs are valid
-                if (isValid) {
-                    form.submit();
-                }
-            }
-
-            // Event listener for form submission
-            document.getElementById('submit_btn').addEventListener('click', validateForm);
-        });
-    </script>
     <!-- Initial  Javascript -->
     <script src="lib/jQuery/jquery-3.5.1.min.js"></script>
     <script src="lib/bootstrap_5/bootstrap.bundle.min.js"></script>

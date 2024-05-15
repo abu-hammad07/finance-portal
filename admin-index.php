@@ -169,16 +169,18 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
     while ($row = mysqli_fetch_assoc($eventsResult)) {
 
         // Modify date & time format
-        $date = date("jS F Y", strtotime($row['date']));
+        $date = date("d-F-Y", strtotime($row['date']));
+        $startTime = date("h:i A", strtotime($row['startTiming']));
+        $endTime = date("h:i A", strtotime($row['endTiming']));
         $data .= '
 
         <tr>
             <td>' . $count++ . '</td>
             <td>' . $row['eventName'] . '</td>
-            <td>' . $row['location'] . '</td>
-            <td>' . $date . '<br>' . $row['startTiming'] . '</td>
-            <td>' . $row['noOfServant'] . '</td>
-            <td>' . $row['bookingName'] . '</td>
+            <td>' . $row['customerName'] . '</td>
+            <td>' . $row['customerCnic'] . '</td>
+            <td>' . $date . '<br>' . $startTime . ' To ' . $endTime . '</td>
+            <td>' . $row['bookingPayment'] . '</td>
             <td>
                 <a href="eventEdit.php?event_edit_id=' . $row['event_id'] . '">
                     <span>
@@ -238,9 +240,9 @@ function search_events_booking_data_In_Database($eventsSearch)
 
     if (!empty($eventsSearch)) {
         $eventsQuery .= " WHERE eventName LIKE '%" . $eventsSearch . "%' 
-        OR location LIKE '%" . $eventsSearch . "%'
-        OR noOfServant LIKE '%" . $eventsSearch . "%'
-        OR servant_name LIKE '%" . $eventsSearch . "%'";
+        OR customerName LIKE '%" . $eventsSearch . "%'
+        OR customerCnic LIKE '%" . $eventsSearch . "%'
+        OR bookingPayment LIKE '%" . $eventsSearch . "%'";
     }
 
     $eventsResult = mysqli_query($conn, $eventsQuery);
@@ -250,17 +252,18 @@ function search_events_booking_data_In_Database($eventsSearch)
     while ($row = mysqli_fetch_assoc($eventsResult)) {
 
         // Modify date & time format
-        $date = date("j-F-Y", strtotime($row['date']));
-
+        $date = date("d-F-Y", strtotime($row['date']));
+        $startTime = date("h:i A", strtotime($row['startTiming']));
+        $endTime = date("h:i A", strtotime($row['endTiming']));
         $data .= '
 
         <tr>
             <td>' . $count++ . '</td>
             <td>' . $row['eventName'] . '</td>
-            <td>' . $row['location'] . '</td>
-            <td>' . $date . '<br>' . $row['startTiming'] . ' To ' . $row['endTiming'] . '</td>
-            <td>' . $row['noOfServant'] . '</td>
-            <td>' . $row['bookingName'] . '</td>
+            <td>' . $row['customerName'] . '</td>
+            <td>' . $row['customerCnic'] . '</td>
+            <td>' . $date . '<br>' . $startTime . ' To ' . $endTime . '</td>
+            <td>' . $row['bookingPayment'] . '</td>
             <td>
                 <a href="eventEdit.php?event_edit_id=' . $row['event_id'] . '">
                     <span>
@@ -388,7 +391,8 @@ function search_houses_data_In_Database($housesSearch)
     if (!empty($housesSearch)) {
         $houseQuery .= " WHERE house_number LIKE '%" . $housesSearch . "%'
         OR owner_name LIKE '%" . $housesSearch . "%'
-        OR owner_contact LIKE '%" . $housesSearch . "%'";
+        OR owner_contact LIKE '%" . $housesSearch . "%'
+        OR owner_cnic LIKE '%" . $housesSearch . "%'";
     }
 
     $houseResult = mysqli_query($conn, $houseQuery);
@@ -404,9 +408,8 @@ function search_houses_data_In_Database($housesSearch)
             <td>' . $row['house_number'] . '</td>
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['owner_contact'] . '</td>
-            <td>' . $row['occupancy_status']  . '</td>
-            <td>' . $row['tenants_name'] . '</td>
-            <td>' . $row['tenants_contact'] . '</td>
+            <td>' . $row['owner_cnic']  . '</td>
+            <td>' . $row['occupancy_status'] . '</td>
             <td>
                 <a href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">
                     <span>
@@ -460,7 +463,9 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder)
     global $conn;
 
     // Modify the query based on your database structure
-    $query = "SELECT *From servants ORDER BY servant_id $servantOrder LIMIT $servantLimited;
+    $query = "SELECT servants.*, houses.house_number, houses.owner_name From servants
+    INNER JOIN houses ON houses.house_id = servants.house_id 
+    ORDER BY servants.servant_id $servantOrder LIMIT $servantLimited;
     ";
     $result = mysqli_query($conn, $query);
 
@@ -471,11 +476,10 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder)
 
         <tr>
             <td>' . $count++ . '</td>
-            <td>' . $row['servant_name'] . '</td>
-            <td>' . $row['email'] . '</td>
-            <td>' . $row['phone'] . '</td>
-            <td>' . $row['gender'] . '</td>
-            <td>' . $row['status'] . '</td>
+            <td>' . $row['house_number'] . '</td>
+            <td>' . $row['owner_name'] . '</td>
+            <td>' . $row['servantDesignation'] . '</td>
+            <td>' . $row['servantFees'] . '</td>
             <td>
                 <a href="servantEdit.php?servant_edit_id=' . $row['servant_id'] . '">
                     <span>
@@ -492,7 +496,7 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder)
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['servant_name'] . '</span></h5>
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['house_number'] . '</span></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-start">
@@ -529,11 +533,14 @@ function search_servant_data_In_Database($servantSearch)
     $servantSearch = mysqli_real_escape_string($conn, $servantSearch);
 
     // Modify the query based on your database structure
-    $query = "SELECT * FROM servants";
+    $query = "SELECT servants.*, houses.house_number, houses.owner_name From servants
+    INNER JOIN houses ON houses.house_id = servants.house_id ";
 
     // empty search
     if (!empty($servantSearch)) {
-        $query .= " WHERE servant_name LIKE '%" . $servantSearch . "%' OR email LIKE '%" . $servantSearch . "%' OR phone LIKE '%" . $servantSearch . "%'";
+        $query .= " WHERE house_number LIKE '%" . $servantSearch . "%' 
+        OR owner_name LIKE '%" . $servantSearch . "%' 
+        OR servantDesignation LIKE '%" . $servantSearch . "%'";
     }
 
     $result = mysqli_query($conn, $query);
@@ -545,11 +552,10 @@ function search_servant_data_In_Database($servantSearch)
 
         <tr>
             <td>' . $count++ . '</td>
-            <td>' . $row['servant_name'] . '</td>
-            <td>' . $row['email'] . '</td>
-            <td>' . $row['phone'] . '</td>
-            <td>' . $row['gender'] . '</td>
-            <td>' . $row['status'] . '</td>
+            <td>' . $row['house_number'] . '</td>
+            <td>' . $row['owner_name'] . '</td>
+            <td>' . $row['servantDesignation'] . '</td>
+            <td>' . $row['servantFees'] . '</td>
             <td>
             <a href="servantEdit.php?servant_edit_id=' . $row['servant_id'] . '">
                     <span>
@@ -566,7 +572,7 @@ function search_servant_data_In_Database($servantSearch)
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['servant_name'] . '</span></h5>
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['house_number'] . '</span></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-start">
@@ -596,6 +602,159 @@ function search_servant_data_In_Database($servantSearch)
 
     return $data;
 }
+
+
+function filter_tenant_data_In_Database($tenantLimited, $tenantOrder)
+{
+    global $conn;
+
+    // Modify the query based on your database structure
+    $query = "SELECT tenants.*, houses.house_number From tenants
+    INNER JOIN houses ON tenants.house_id = houses.house_id 
+    ORDER BY tenants.tenant_id $tenantOrder LIMIT $tenantLimited;
+    ";
+    $result = mysqli_query($conn, $query);
+
+    $data = '';
+    $count = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data .= '
+
+        <tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['house_number'] . '</td>
+            <td>' . $row['tenant_name'] . '</td>
+            <td>' . $row['tenant_contact_no'] . '</td>
+            <td>' . $row['tenant_cnic'] . '</td>
+            <td>
+                <a href="tenantEdit.php?tenant_edit_id=' . $row['tenant_id'] . '">
+                    <span>
+                        <i class="fas fa-pencil-alt me-1 text-success"></i>
+                    </span>
+                </a>
+                <a class="" href="tenantView.php?tenant_view_id=' . $row['tenant_id'] . '">
+                    <i class="fas fa-eye me-1 text-info"></i>
+                </a>
+                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteTenant' . $row['tenant_id'] . '" data-bs-placement="top" title="Delete">
+                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
+                </button>
+                <div class="modal fade" id="deleteTenant' . $row['tenant_id'] . '" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['house_number'] . '</span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <p>Please confirm that you want to delete your Incometion. <br>
+                                    Once deleted, you won\'t be able to recover it. <br>
+                                    Please proceed with caution.
+                                </p>
+                            </div>
+                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                <a href="?tenant_delete_id=' . $row['tenant_id'] . '" class="btn btn-danger" name="delete_tenant">Delete</a>
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        ';
+    }
+    // Check if $data is empty
+    if (empty($data)) {
+        $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database.</td>
+                </tr>';
+    }
+
+    return $data;
+}
+
+function search_tenant_data_In_Database($tenantSearch)
+{
+    global $conn;
+
+    $tenantSearch = mysqli_real_escape_string($conn, $tenantSearch);
+
+    // Modify the query based on your database structure
+    $query = "SELECT tenants.*, houses.house_number From tenants
+    INNER JOIN houses ON tenants.house_id = houses.house_id";
+
+    if (!empty($tenantSearch)) {
+        $query .= " WHERE houses.house_number LIKE '%" . $tenantSearch . "%'
+        OR tenants.tenant_name LIKE '%" . $tenantSearch . "%'
+        OR tenants.tenant_contact_no LIKE '%" . $tenantSearch . "%'
+        OR tenants.tenant_cnic LIKE '%" . $tenantSearch . "%'";
+    }
+
+
+    $result = mysqli_query($conn, $query);
+
+    $data = '';
+    $count = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data .= '
+
+        <tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['house_number'] . '</td>
+            <td>' . $row['tenant_name'] . '</td>
+            <td>' . $row['tenant_contact_no'] . '</td>
+            <td>' . $row['tenant_cnic'] . '</td>
+            <td>
+                <a href="tenantEdit.php?tenant_edit_id=' . $row['tenant_id'] . '">
+                    <span>
+                        <i class="fas fa-pencil-alt me-1 text-success"></i>
+                    </span>
+                </a>
+                <a class="" href="tenantView.php?tenant_view_id=' . $row['tenant_id'] . '">
+                    <i class="fas fa-eye me-1 text-info"></i>
+                </a>
+                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteTenant' . $row['tenant_id'] . '" data-bs-placement="top" title="Delete">
+                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
+                </button>
+                <div class="modal fade" id="deleteTenant' . $row['tenant_id'] . '" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['house_number'] . '</span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <p>Please confirm that you want to delete your Incometion. <br>
+                                    Once deleted, you won\'t be able to recover it. <br>
+                                    Please proceed with caution.
+                                </p>
+                            </div>
+                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                <a href="?tenant_delete_id=' . $row['tenant_id'] . '" class="btn btn-danger" name="delete_tenant">Delete</a>
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        ';
+    }
+    // Check if $data is empty
+    if (empty($data)) {
+        $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database.</td>
+                </tr>';
+    }
+
+    return $data;
+}
+
+
+
+
+
 
 
 
@@ -679,6 +838,27 @@ if (isset($_POST['action'])) {
         $servantSearch = $_POST['servantSearch'];
 
         $result = search_servant_data_In_Database($servantSearch);
+
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+    // Filter tenants load
+    if ($action == 'load-tenant-Data') {
+        $tenantLimited = $_POST['tenantLimited'];
+        $tenantOrder = $_POST['tenantOrder'];
+
+        $result = filter_tenant_data_In_Database($tenantLimited, $tenantOrder);
+
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+    // Filter tenant search
+    if ($action == 'search-tenant-Data') {
+        $tenantSearch = $_POST['tenantSearch'];
+
+        $result = search_tenant_data_In_Database($tenantSearch);
 
         $response = array('data' => $result);
         echo json_encode($response);

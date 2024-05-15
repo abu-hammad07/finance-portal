@@ -235,7 +235,11 @@ updateProfile();
     <script src="assets/js/main.js"></script>
     <script>
         document.getElementById("edit_btn").addEventListener('click', () => {
-            document.getElementById('editForm').style.visibility = "visible";
+            // toggle edit button
+            document.getElementById("edit_btn").style.display = "none";
+            document.getElementById("submit_btn").style.display = "block";
+            document.getElementById("editForm").style.visibility = "visible";
+            document.getElementById("editForm").style.display = "block";
         });
     </script>
 </body>

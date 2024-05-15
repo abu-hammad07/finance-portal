@@ -127,11 +127,10 @@ deleteServants();
                                     <thead>
                                         <tr>
                                             <th>S.No</th>
-                                            <th>Servant Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Gender</th>
-                                            <th>Status</th>
+                                            <th>House Number</th>
+                                            <th>Owner Name</th>
+                                            <th>Designation</th>
+                                            <th>Fees</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

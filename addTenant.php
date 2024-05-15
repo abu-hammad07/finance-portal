@@ -31,13 +31,29 @@ addTenants();
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- responsive css -->
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <!--  -->
+    <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <!-- <style>
-    .house-id {
-        height: 37px;
-        padding: 5px;
+    .loader {
+        border: 4px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 4px solid #3498db;
+        width: 30px;
+        height: 30px;
+        -webkit-animation: spin 2s linear infinite;
+        /* Safari */
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
     }
 </style> -->
 
@@ -151,7 +167,7 @@ addTenants();
     <!-- Initial  Javascript -->
     <script src="lib/jQuery/jquery-3.5.1.min.js"></script>
     <script src="lib/bootstrap_5/bootstrap.bundle.min.js"></script>
-    <!--  -->
+    <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -208,4 +224,71 @@ addTenants();
             }
         });
     });
+</script>
+
+
+<script>
+    //     document.getElementById("submit_btn").addEventListener("click", function(event) {
+    //     event.preventDefault(); // Prevent default form submission behavior
+
+    //     // Show loader and hide button
+    //     document.getElementById("submit_btn").style.display = "none";
+    //     document.getElementById("loader").style.display = "block";
+
+    //     // Submit the form
+    //     var form = document.getElementById("add_houses_form");
+    //     var formData = new FormData(form);
+
+    //     fetch(form.action, {
+    //         method: "POST",
+    //         body: formData
+    //     })
+    //     .then(response => {
+    //         // Handle the response, for now, let's just show the button again
+    //         document.getElementById("submit_btn").style.display = "block";
+    //         document.getElementById("loader").style.display = "none";
+    //     })
+    //     .catch(error => {
+    //         console.error('Error:', error);
+    //         // Handle errors if any
+    //     });
+    // });
+
+
+    // $(document).ready(function() {
+    //     $("#submit_btn").click(function() {
+    //         submitForm();
+    //     });
+    // });
+
+    // function submitForm() {
+    //     // Show loader and hide button
+    //     $("#submit_btn").hide();
+    //     $("#loader").show();
+
+    //     // Get form data
+    //     var formData = new FormData($("#add_houses_form")[0]);
+
+    //     // Submit form via AJAX
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "submit_form.php",
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false,
+    //         success: function(response) {
+    //             // Handle success
+    //             $("#submit_btn").show();
+    //             $("#loader").hide();
+    //             alert("Form submitted successfully!");
+    //         },
+    //         error: function(xhr, status, error) {
+    //             // Handle errors
+    //             console.error(xhr.responseText);
+    //             alert("Error occurred while submitting the form.");
+    //             $("#submit_btn").show();
+    //             $("#loader").hide();
+    //         }
+    //     });
+    // }
 </script>

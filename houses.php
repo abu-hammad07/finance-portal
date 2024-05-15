@@ -66,7 +66,7 @@ deleteHouse();
                             </div>
                             <div class="col-md-8 col-xl-9 text-end">
                                 <div class="btn-group">
-                                    <a href="addTenant" class="btn btn-primary me-2"><i class="fas fa-plus"></i> Tenant</a>
+                                    <!-- <a href="addTenant" class="btn btn-primary me-2"><i class="fas fa-plus"></i> Tenant</a> -->
                                     <a href="addHouse" class="btn btn-primary"><i class="fas fa-plus"></i> House</a>
                                 </div>
                             </div>

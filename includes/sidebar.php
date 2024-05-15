@@ -92,6 +92,20 @@ if($row['image']==''){
                             <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
+                            <li class="nav-item <?php if($page == 'tenants.php' || $page == 'addTenant.php' ||
+                            $page == 'tenantView.php' || $page == 'tenantEdit.php') echo('active'); ?>">
+                                <a class="sub-menu-link" href="tenants">
+                                    <span class="d2c_icon">
+                                        <i class="fas fa-money-check-alt"></i>
+                                    </span>
+                                    <span>
+                                        Tenents
+                                    </span>
+                                </a>
+                            </li>
+                            <!-- End:Sub Menu Item -->
+
+                            <!-- Sub Menu Item -->
                             <li class="nav-item">
                                 <a class="sub-menu-link" href="expense">
                                     <span class="d2c_icon">

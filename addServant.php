@@ -32,6 +32,9 @@ servantSubmit();
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- responsive css -->
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 </head>
 
 <body class="d2c_theme_light">
@@ -75,64 +78,48 @@ servantSubmit();
             <!-- / Alert -->
 
 
-            <form action="" method="POST" id="add_servant_form" enctype="multipart/form-data">
+            <form action="" method="post" id="add_servant_form" enctype="multipart/form-data">
                 <div class="card h-auto">
                     <div class="card-body">
                         <h3 class="card-header">Information</h3>
                         <hr class="my-4">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter Full Name" >
-                                <span class="text-danger" id="full_name_error"></span>
+                                <label class="form-label">House/Unit Number</label>
+                                <select name="house_id" id="house_id" class="form-select form-control house-id" required>
+                                    <option value="">--- Select House No ---</option>
+                                </select>
+                                <span class="text-danger" id="house_id_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" >
-                                <span class="text-danger" id="email_error"></span>
+                                <label class="form-label">Owner's Name</label>
+                                <select id="owner_name" class="form-select form-control">
+                                    <!-- <option value="">--- Select House No ---</option> -->
+                                </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" >
-                                <span class="text-danger" id="phone_error"></span>
+                                <label class="form-label">Owner's Contact</label>
+                                <select id="owner_contact" class="form-select form-control">
+                                    <!-- <option value="">--- Select House No ---</option> -->
+                                </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Gender</label>
-                                <div class="input-group">
-                                    <select id="gender" name="gender" class="form-select form-control">
-                                        <option value="">-----</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                                <span class="text-danger" id="gender_error"></span>
+                            <div class="col-md-6 ">
+                                <label class="form-label">Designation</label>
+                                <input type="text" id="designation" name="designation" class="form-control" placeholder="Enter Designation" required>
+                                <span class="text-danger" id="designation_error"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" >
-                                <span class="text-danger" id="address_error"></span>
+                            <div class="col-md-6 ">
+                                <label class="form-label">Fees</label>
+                                <input type="number" id="servant_fees" name="servant_fees" class="form-control" placeholder="999" required>
+                                <span class="text-danger" id="servant_fees_error"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Status</label>
-                                <div class="input-group">
-                                    <select id="status" name="status" class="form-select form-control">
-                                        <option value="">-----</option>
-                                        <option value="Active">Active</option>
-                                        <option value="Not Active">Not Active</option>
-                                    </select>
-                                </div>
-                                <span class="text-danger" id="status_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Image</label>
-                                <input type="file" class="form-control" id="image" name="image">
+
+                            <!-- Button -->
+                            <div class="col-md-12">
+                                <button class="btn btn-primary" id="servant_btn" type="submit" name="submit">Add Now</button>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- submit btn -->
-                <div class="mt-3">
-                    <button type="submit" id="submit_btn" name="servant_submit" class="btn btn-primary">Add</button>
                 </div>
             </form>
 
@@ -148,101 +135,64 @@ servantSubmit();
     </button>
     <!-- End:Offcanvas Toggler -->
 
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('add_servant_form');
-
-            // Validate input fields
-            function validateInput(inputElement, errorElement, validationRegex, errorMessage) {
-                inputElement.addEventListener('input', function() {
-                    let inputValue = inputElement.value.trim();
-                    const isValid = validationRegex.test(inputValue);
-
-                    if (!isValid) {
-                        errorElement.textContent = errorMessage;
-                        errorElement.style.display = 'block';
-                        inputElement.classList.add('is-invalid');
-                    } else {
-                        errorElement.textContent = '';
-                        errorElement.style.display = 'none';
-                        inputElement.classList.remove('is-invalid');
-                    }
-                });
-            }
-
-            // Validation regex patterns and error messages
-            const validationRules = {
-                full_name: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter your full name.'
-                },
-                phone: {
-                    regex: /^\d{11}$/, // 15 digits only
-                    errorMessage: 'Please enter a valid phone number.'
-                },
-                gender: {
-                    regex: /^(?=.*[a-z]).{1,}$/, // At least one character
-                    errorMessage: 'Please select gender.'
-                },
-                address: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter your address.'
-                },
-                status: {
-                    regex: /^(?=.*[a-z]).{1,}$/, // At least one character
-                    errorMessage: 'Please select user type.'
-                },
-                email: {
-                    regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Email pattern
-                    errorMessage: 'Please enter a valid email address.'
-                },
-            };
-
-            // Loop through each input field and attach validation
-            Object.keys(validationRules).forEach(key => {
-                const inputElement = document.getElementById(key);
-                const errorElement = document.getElementById(`${key}_error`);
-                validateInput(inputElement, errorElement, validationRules[key].regex, validationRules[key].errorMessage);
-            });
-
-            // Function to validate form submission
-            function validateForm(event) {
-                event.preventDefault(); // Prevent form submission
-
-                let isValid = true;
-
-                // Check if any input field is empty
-                Object.keys(validationRules).forEach(key => {
-                    const inputElement = document.getElementById(key);
-                    const errorElement = document.getElementById(`${key}_error`);
-                    const inputValue = inputElement.value.trim();
-                    const isValidField = validationRules[key].regex.test(inputValue);
-
-                    if (!isValidField) {
-                        errorElement.textContent = validationRules[key].errorMessage;
-                        errorElement.style.display = 'block';
-                        inputElement.classList.add('is-invalid');
-                        isValid = false;
-                    }
-                });
-
-                // Submit the form if all inputs are valid
-                if (isValid) {
-                    form.submit();
-                }
-            }
-
-            // Event listener for form submission
-            document.getElementById('submit_btn').addEventListener('click', validateForm);
-        });
-    </script>
     <!-- Initial  Javascript -->
     <script src="lib/jQuery/jquery-3.5.1.min.js"></script>
     <script src="lib/bootstrap_5/bootstrap.bundle.min.js"></script>
-
     <!-- custom js -->
     <script src="assets/js/main.js"></script>
+
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#house_id").select2();
+        });
+    </script>
+    <!-- <script src="./assets/js/error/servant.js"></script> -->
 </body>
 
 </html>
+
+<script>
+    $(document).ready(function() {
+        function loadData(type, id) {
+            $.ajax({
+                url: 'ajax.php',
+                type: 'POST',
+                data: {
+                    type: type,
+                    id: id
+                },
+                dataType: 'html',
+                success: function(data) {
+                    if (type === "house_id_Data") {
+                        $('#house_id').append(data);
+                    } else if (type === "owner_name_Data") {
+                        $('#owner_name').html(data);
+                    } else if (type === "owner_contact_Data") {
+                        $('#owner_contact').html(data);
+                    }
+                }
+            });
+        }
+
+        loadData("house_id_Data");
+
+        $("#house_id").on("change", function() {
+            var customer = $("#house_id").val();
+            if (customer != "") {
+                loadData("owner_name_Data", customer);
+            } else {
+                $('#owner_name').html("");
+            }
+        });
+        $("#house_id").on("change", function() {
+            var customer = $("#house_id").val();
+            if (customer != "") {
+                loadData("owner_contact_Data", customer);
+            } else {
+                $('#owner_contact').html("");
+            }
+        });
+    });
+</script>
