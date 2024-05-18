@@ -434,38 +434,6 @@ function eventBookingInsert()
         $added_on = date('Y-m-d');
         $added_by = $_SESSION['username'];
 
-        // // check if no of servant is greater than total servatant count in database
-        // $check_noOfServant = "SELECT * FROM servants";
-        // $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
-        // $total_servant = mysqli_num_rows($check_noOfServant_res);
-        // if ($noOfServant > $total_servant) {
-        //     $_SESSION['error_message_eventBooking'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
-        //     header("location: eventBooking");
-        //     exit();
-        // }
-        // // check duplicate date and timing overlap
-        // $check_overlap = "SELECT * FROM events_booking
-        //     (('{$startTiming}' BETWEEN startTiming AND endTiming) OR 
-        //     ('{$endTiming}' BETWEEN startTiming AND endTiming) OR 
-        //     (startTiming BETWEEN '{$startTiming}' AND '{$endTiming}') OR 
-        //     (endTiming BETWEEN '{$startTiming}' AND '{$endTiming}'))";
-        // $check_overlap_res = mysqli_query($conn, $check_overlap);
-        // if (mysqli_num_rows($check_overlap_res) > 0) {
-        //     $_SESSION['error_message_eventBooking'] = "Time overlap with existing event for date: $date";
-        //     header("location: eventBooking");
-        //     exit();
-        // }
-
-        // check duplicate location
-        // $check_location = "SELECT * FROM events_booking WHERE location = '$location'";
-        // $check_location_res = mysqli_query($conn, $check_location);
-
-        // if (mysqli_num_rows($check_location_res) > 0) {
-        //     $_SESSION['error_message_eventBooking'] = "Location already exists ($location)";
-        //     header("location: eventBooking");
-        //     exit();
-        // }
-
         // insert data into event_booking table
         $insertEventBooking = "INSERT INTO `events_booking`(
             `eventName`, `location`, `date`, `startTiming`, `endTiming`, `noOfPersons`, 
@@ -517,38 +485,6 @@ function eventBookingUpdate()
         // Get the current date and time
         $updated_on = date('Y-m-d');
         $updated_by = $_SESSION['username'];
-
-        // // check if no of servant is greater than total servatant count in database
-        // $check_noOfServant = "SELECT * FROM servants";
-        // $check_noOfServant_res = mysqli_query($conn, $check_noOfServant);
-        // $total_servant = mysqli_num_rows($check_noOfServant_res);
-        // if ($noOfServant > $total_servant) {
-        //     $_SESSION['error_updated_events'] = "No. of Servant ($noOfServant) is greater than total Servant ($total_servant)";
-        //     header("location: eventsDetails");
-        //     exit();
-        // }
-
-        // // check duplicate date and timing overlap
-        // $check_overlap = "SELECT * FROM events_booking WHERE
-        //     (('{$startTiming}' BETWEEN startTiming AND endTiming) OR 
-        //     ('{$endTiming}' BETWEEN startTiming AND endTiming) OR 
-        //     (startTiming BETWEEN '{$startTiming}' AND '{$endTiming}') OR 
-        //     (endTiming BETWEEN '{$startTiming}' AND '{$endTiming}')) AND event_id != '$event_id'";
-        // $check_overlap_res = mysqli_query($conn, $check_overlap);
-        // if (mysqli_num_rows($check_overlap_res) > 0) {
-        //     $_SESSION['error_updated_events'] = "Time overlap with existing event for date: $date and time: $startTiming - $endTiming";
-        //     header("location: eventsDetails");
-        //     exit();
-        // }
-
-        // // check duplicate location
-        // $check_location = "SELECT * FROM events_booking WHERE location = '$location' AND location != '$location'";
-        // $check_location_res = mysqli_query($conn, $check_location);
-        // if (mysqli_num_rows($check_location_res) > 0) {
-        //     $_SESSION['error_updated_events'] = "Location already exists ($location)";
-        //     header("location: eventsDetails");
-        //     exit();
-        // }
 
         // insert data into event_booking table
         $updateEventBooking = "UPDATE `events_booking` SET
@@ -719,6 +655,354 @@ function updateTenants()
         } else {
             $_SESSION['error_updated_tenant'] = "($tenant_name) not updated.";
             header('location: tenants');
+            exit();
+        }
+    }
+}
+
+
+
+function addShopInsert()
+{
+    global $conn;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $shop_number = mysqli_real_escape_string($conn, $_POST['shop_number']);
+        $owner_name = mysqli_real_escape_string($conn, $_POST['owner_name']);
+        $owner_contact = mysqli_real_escape_string($conn, $_POST['owner_contact']);
+        $owner_cinc = mysqli_real_escape_string($conn, $_POST['owner_cinc']);
+        $occupance_status = mysqli_real_escape_string($conn, $_POST['occupance_status']);
+        $floor = mysqli_real_escape_string($conn, $_POST['floor']);
+        $property_type = mysqli_real_escape_string($conn, $_POST['property_type']);
+        $property_size = mysqli_real_escape_string($conn, $_POST['property_size']);
+        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenance_charges']);
+
+        // check unique shop number
+        $checkShopNumber = "SELECT * FROM shops WHERE shop_number = '$shop_number'";
+        $checkShopNumber_res = mysqli_query($conn, $checkShopNumber);
+        if (mysqli_num_rows($checkShopNumber_res) > 0) {
+            $_SESSION['error_added_shop'] = "Shop Number ($shop_number) Already Exists.";
+            header('location: addShop');
+            exit();
+        }
+
+        // added_on & added_by
+        $added_by = $_SESSION['username'];
+        $added_on = date("Y-m-d");
+
+        // Insert data into shops table
+        $insertShops = "INSERT INTO `shops`(
+            `shop_number`, `owner_name`, `owner_contact`, `owner_cnic`, 
+            `occupancy_status`, `property_size`, `floor`, `property_type`, 
+            `maintenance_charges`, `added_on`, `added_by`) 
+        VALUES (
+            '$shop_number', '$owner_name', '$owner_contact', '$owner_cinc', 
+            '$occupance_status', '$floor', '$property_type', '$property_size', 
+            '$maintenance_charges', '$added_by', '$added_on')";
+        
+        $insertShops_res = mysqli_query($conn, $insertShops);
+
+        if ($insertShops_res) {
+            $_SESSION['success_added_shop'] = "($shop_number) shop has been added.";
+            header('location: addShop');
+            exit();
+        } else {
+            $_SESSION['error_added_shop'] = "($shop_number) not added.";
+            header('location: addShop');
+            exit();
+        }
+    }
+}
+
+
+
+function addShopupdate()
+{
+    global $conn;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $shop_id = mysqli_real_escape_string($conn, $_POST['shop_id']);
+        $shop_number = mysqli_real_escape_string($conn, $_POST['shop_number']);
+        $owner_name = mysqli_real_escape_string($conn, $_POST['owner_name']);
+        $owner_contact = mysqli_real_escape_string($conn, $_POST['owner_contact']);
+        $owner_cinc = mysqli_real_escape_string($conn, $_POST['owner_cinc']);
+        $occupance_status = mysqli_real_escape_string($conn, $_POST['occupance_status']);
+        $floor = mysqli_real_escape_string($conn, $_POST['floor']);
+        $property_type = mysqli_real_escape_string($conn, $_POST['property_type']);
+        $property_size = mysqli_real_escape_string($conn, $_POST['property_size']);
+        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenance_charges']);
+
+        // check unique shop number
+        $checkShopNumber = "SELECT * FROM shops WHERE shop_number = '$shop_number' AND shop_id != '$shop_id'";
+        $checkShopNumber_res = mysqli_query($conn, $checkShopNumber);
+        if (mysqli_num_rows($checkShopNumber_res) > 0) {
+            $_SESSION['error_updated_shop'] = "Shop Number ($shop_number) Already Exists.";
+            header('location: shops');
+            exit();
+        }
+
+        // updated_by & updated_on
+        $updated_by = $_SESSION['username'];
+        $updated_on = date("Y-m-d");
+
+        // update data into shops table
+        $updateShops = "UPDATE `shops` SET
+            `shop_number` = '$shop_number',
+            `owner_name` = '$owner_name',
+            `owner_contact` = '$owner_contact',
+            `owner_cnic` = '$owner_cinc',
+            `occupancy_status` = '$occupance_status',
+            `floor` = '$floor',
+            `property_type` = '$property_type',
+            `property_size` = '$property_size',
+            `maintenance_charges` = '$maintenance_charges',
+            `updated_by` = '$updated_by',
+            `updated_on` = '$updated_on'
+        WHERE `shop_id` = '$shop_id'";
+        
+        $updateShops_res = mysqli_query($conn, $updateShops);
+
+        if ($updateShops_res) {
+            $_SESSION['success_updated_shop'] = "($shop_number) shop has been updated.";
+            header('location: shops');
+            exit();
+        } else {
+            $_SESSION['error_updated_shop'] = "($shop_number) not updated.";
+            header('location: shops');
+            exit();
+        }
+    }
+}
+
+
+
+// function eGateInsert() {
+//     global $conn;
+
+//     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+//         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
+//         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
+//         $vehicle_name = mysqli_real_escape_string($conn, $_POST['vehicle_name']);
+//         $vehicle_number = mysqli_real_escape_string($conn, $_POST['vehicle_number']);
+//         $vehicle_color = mysqli_real_escape_string($conn, $_POST['vehicle_color']);
+//         $person_name = mysqli_real_escape_string($conn, $_POST['person_name']);
+//         $cnic_number = mysqli_real_escape_string($conn, $_POST['cnic_number']);
+//         $charges_type = mysqli_real_escape_string($conn, $_POST['charges_type']);
+//         $charges = mysqli_real_escape_string($conn, $_POST['charges']);
+
+//         // Validate house_shop_id against the correct table
+//         // $valid_id = false;
+//         // if ($house_or_shop === 'house') {
+//         //     $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
+//         // } elseif ($house_or_shop === 'shop') {
+//         //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
+//         // } else {
+//         //     $_SESSION['error_insert_egate'] = "Invalid house_or_shop value.";
+//         //     header('location: addeGate');
+//         //     exit();
+//         // }
+
+//         // $checkResult = mysqli_query($conn, $checkQuery);
+//         // if (mysqli_num_rows($checkResult) > 0) {
+//         //     $valid_id = true;
+//         // }
+
+//         // if (!$valid_id) {
+//         //     $_SESSION['error_insert_egate'] = "Invalid house_shop_id for the given house_or_shop.";
+//         //     header('location: addeGate');
+//         //     exit();
+//         // }
+
+//         // added_by & added_on
+//         $added_by = $_SESSION['username'];
+//         $added_on = date("Y-m-d");
+
+//         // Insert data into e-gate table
+//         $insertEGate = "INSERT INTO egate (
+//             house_id, shop_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
+//             eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
+//             added_on, added_by
+//         ) VALUES (
+//             '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$vehicle_color', 
+//             '$person_name', '$cnic_number', '$charges_type', '$charges', 
+//             '$added_on', '$added_by'
+//         )";
+
+//         $insertEGate_res = mysqli_query($conn, $insertEGate);
+
+//         if ($insertEGate_res) {
+//             $_SESSION['success_insert_egate'] = "($vehicle_number) vehicle has been added.";
+//             header('location: addeGate');
+//             exit();
+//         } else {
+//             error_log("Error executing insert query: " . mysqli_error($conn));
+//             $_SESSION['error_insert_egate'] = "($vehicle_number) not Added.";
+//             header('location: addeGate');
+//             exit();
+//         }
+//     }
+// }
+
+function eGateInsert() {
+    global $conn;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
+        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
+        $vehicle_name = mysqli_real_escape_string($conn, $_POST['vehicle_name']);
+        $vehicle_number = mysqli_real_escape_string($conn, $_POST['vehicle_number']);
+        $vehicle_color = mysqli_real_escape_string($conn, $_POST['vehicle_color']);
+        $person_name = mysqli_real_escape_string($conn, $_POST['person_name']);
+        $cnic_number = mysqli_real_escape_string($conn, $_POST['cnic_number']);
+        $charges_type = mysqli_real_escape_string($conn, $_POST['charges_type']);
+        $charges = mysqli_real_escape_string($conn, $_POST['charges']);
+
+        // Validate house_shop_id against the correct table
+        $valid_id = false;
+        if ($house_or_shop === 'house') {
+            $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
+        } elseif ($house_or_shop === 'shop') {
+            $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
+        } else {
+            $_SESSION['error_insert_egate'] = "Invalid house_or_shop value.";
+            header('location: addeGate');
+            exit();
+        }
+
+        $checkResult = mysqli_query($conn, $checkQuery);
+        if (!$checkResult) {
+            error_log("Error executing check query: " . mysqli_error($conn));
+        }
+
+        if (mysqli_num_rows($checkResult) > 0) {
+            $valid_id = true;
+        }
+
+        if (!$valid_id) {
+            $_SESSION['error_insert_egate'] = "Invalid house_shop_id for the given house_or_shop.";
+            header('location: addeGate');
+            exit();
+        }
+
+        // added_by & added_on
+        $added_by = $_SESSION['username'];
+        $added_on = date("Y-m-d");
+
+        // Build insert query dynamically based on house_or_shop
+        if ($house_or_shop === 'house') {
+            $insertEGate = "INSERT INTO egate (
+                house_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
+                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
+                added_on, added_by
+            ) VALUES (
+                '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$vehicle_color', 
+                '$person_name', '$cnic_number', '$charges_type', '$charges', 
+                '$added_on', '$added_by'
+            )";
+        } elseif ($house_or_shop === 'shop') {
+            $insertEGate = "INSERT INTO egate (
+                shop_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
+                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
+                added_on, added_by
+            ) VALUES (
+                '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$vehicle_color', 
+                '$person_name', '$cnic_number', '$charges_type', '$charges', 
+                '$added_on', '$added_by'
+            )";
+        }
+
+        $insertEGate_res = mysqli_query($conn, $insertEGate);
+
+        if ($insertEGate_res) {
+            $_SESSION['success_insert_egate'] = "($vehicle_number) vehicle has been added.";
+            header('location: addeGate');
+            exit();
+        } else {
+            error_log("Error executing insert query: " . mysqli_error($conn));
+            $_SESSION['error_insert_egate'] = "($vehicle_number) not Added.";
+            header('location: addeGate');
+            exit();
+        }
+    }
+}
+
+
+
+
+
+
+function eGateUpdate()
+{
+    global $conn;
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $eGate_id = mysqli_real_escape_string($conn, $_POST['eGate_id']);
+        $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
+        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
+        $vehicle_name = mysqli_real_escape_string($conn, $_POST['vehicle_name']);
+        $vehicle_number = mysqli_real_escape_string($conn, $_POST['vehicle_number']);
+        $vehicle_color = mysqli_real_escape_string($conn, $_POST['vehicle_color']);
+        $person_name = mysqli_real_escape_string($conn, $_POST['person_name']);
+        $cnic_number = mysqli_real_escape_string($conn, $_POST['cnic_number']);
+        $charges_type = mysqli_real_escape_string($conn, $_POST['charges_type']);
+        $charges = mysqli_real_escape_string($conn, $_POST['charges']);
+
+        // Validate house_id against the correct table
+        $valid_id = false;
+        if ($house_or_shop === 'house') {
+            $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_id'";
+        } elseif ($house_or_shop === 'shop') {
+            $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_id'";
+        } else {
+            $_SESSION['error_updated_eGate'] = "Invalid house_or_shop value.";
+            header('location: eGate');
+            exit();
+        }
+
+        $checkResult = mysqli_query($conn, $checkQuery);
+        if (mysqli_num_rows($checkResult) > 0) {
+            $valid_id = true;
+        }
+
+        if (!$valid_id) {
+            $_SESSION['error_updated_eGate'] = "Invalid house_id or shop_id for the given house_or_shop.";
+            header('location: eGate');
+            exit();
+        }
+
+        // updated_by & updated_on
+        $updated_by = $_SESSION['username'];
+        $updated_on = date("Y-m-d");
+
+        // Build the update query based on house_or_shop
+        if ($house_or_shop === 'house') {
+            $updateField = "`house_id` = '$house_id', `shop_id` = NULL";
+        } elseif ($house_or_shop === 'shop') {
+            $updateField = "`shop_id` = '$house_id', `house_id` = NULL";
+        }
+
+        // updated data into e-gate table
+        $updatedEGate = "UPDATE `egate` SET
+            $updateField,
+            `vehicle_number` = '$vehicle_number',
+            `vehicle_name` = '$vehicle_name',
+            `vehicle_color` = '$vehicle_color',
+            `eGateperson_name` = '$person_name',
+            `eGate_cnic` = '$cnic_number',
+            `eGate_charges_type` = '$charges_type',
+            `eGate_charges` = '$charges',
+            `updated_by` = '$updated_by',
+            `updated_on` = '$updated_on'
+            WHERE `eGate_id` = '$eGate_id'";
+        
+        $updatedEGate_res = mysqli_query($conn, $updatedEGate);
+
+        if ($updatedEGate_res) {
+            $_SESSION['success_updated_eGate'] = "($vehicle_number) vehicle has been updated.";
+            header('location: eGate');
+            exit();
+        } else {
+            $_SESSION['error_updated_eGate'] = "($vehicle_number) not updated.";
+            header('location: eGate');
             exit();
         }
     }

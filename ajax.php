@@ -5,6 +5,9 @@ include_once("includes/config.php");
 // ==================== fetch multi input ========================
 $fetch_servant_data = '';
 $fetchHousesData = '';
+// $eGateData = '';
+$houseOptions = '';
+$shopOptions = '';
 
 if (isset($_POST['type'])) {
     $type = $_POST['type'];
@@ -63,7 +66,7 @@ echo $fetch_servant_data;
 
 
 
-// =================== Start damage_product_id_Data ===================
+// =================== Start house_id_Data ===================
 if (isset($_POST['type'])) {
     if ($_POST['type'] == "house_id_Data") {
         $sql = "SELECT house_id, house_number FROM houses";
@@ -100,3 +103,67 @@ if (isset($_POST['type'])) {
 }
 
 echo $fetchHousesData;
+
+
+
+// =================== Start eGate_id_Data ===================
+
+
+// if (isset($_POST['type'])) {
+//     if ($_POST['type'] == "eGate_id_Data") {
+//         // Fetch house data
+//         $sql = "SELECT house_id, house_number FROM houses";
+//         $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+//         while ($row = mysqli_fetch_assoc($query)) {
+//             $houseOptions .= "<option value='{$row['house_id']}'>{$row['house_number']}</option>";
+//         }
+
+//         // Fetch shop data
+//         $sql = "SELECT shop_id, shop_number FROM shops";
+//         $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+//         while ($row = mysqli_fetch_assoc($query)) {
+//             $shopOptions .= "<option value='{$row['shop_id']}'>{$row['shop_number']}</option>";
+//         }
+
+//         // Prepare the final output
+//         $eGateData = "<optgroup label='House Number'>{$houseOptions}</optgroup>";
+//         $eGateData .= "<optgroup label='Shop Number'>{$shopOptions}</optgroup>";
+//     } else {
+//         $eGateData = 'Type parameter value is invalid';
+//     }
+// } else {
+//     $eGateData = 'Type parameter not set';
+// }
+
+// echo $eGateData;
+
+
+
+if (isset($_POST['type'])) {
+    if ($_POST['type'] == "eGate_id_Data") {
+        // Fetch house data
+        $sql = "SELECT house_id, house_number FROM houses";
+        $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($query)) {
+            $houseOptions .= "<option value='{$row['house_id']}'>{$row['house_number']}</option>";
+        }
+
+        // Fetch shop data
+        $sql = "SELECT shop_id, shop_number FROM shops";
+        $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($query)) {
+            $shopOptions .= "<option value='{$row['shop_id']}'>{$row['shop_number']}</option>";
+        }
+
+        // Prepare the final output
+        $eGateData = "<option value=''>--- Select House/Shop No ---</option>";
+        $eGateData .= "<optgroup label='House Number'>{$houseOptions}</optgroup>";
+        $eGateData .= "<optgroup label='Shop Number'>{$shopOptions}</optgroup>";
+    } else {
+        $eGateData = 'Type parameter value is invalid';
+    }
+} else {
+    $eGateData = 'Type parameter not set';
+}
+
+echo $eGateData;
