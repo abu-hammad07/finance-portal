@@ -7,7 +7,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     // Redirect to login page
     header('location: login');
 }
-addMaintenance();
+updateMaintenance();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,7 +94,7 @@ addMaintenance();
                                 while ($row = mysqli_fetch_assoc($edit_result)) {
                         ?>
                                     <div class="row g-3">
-                                        <input type="text" hidden name="maintenace_charges" value="<?= $row['maintenance_id'] ?>" class="form-control" placeholder="Penalty Charges" required>
+                                        <input type="text" hidden name="maintenace_edit_id" value="<?= $row['maintenance_id'] ?>" class="form-control" placeholder="Penalty Charges" required>
 
                                         <div class="col-md-6" style="display:none">
                                             <label class="form-label">House or Shop</label>

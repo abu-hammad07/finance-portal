@@ -1,12 +1,14 @@
 <?php
 session_start();
 include_once("includes/config.php");
-
+include_once("includes/function2.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
 }
+MaintenanceDelete();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,8 +17,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
-    <title>Maintenance Charges</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <title>Maintenance Details</title>
+    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and penalty-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
     <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
@@ -43,66 +45,96 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
         <!-- Main sidebar -->
         <?php
         include("includes/sidebar.php");
-       ?>
+        ?>
         <!-- End:Sidebar -->
 
         <!-- Main Body-->
         <div class="d2c_main p-4 ps-lg-3">
 
             <!-- Title -->
-            <h4 class="mb-4 text-capitalize">Maintenance Charges</h4>
+            <h4 class="mb-4 text-capitalize">Maintenance</h4>
             <!-- End:Title -->
 
-            <a href="addMaintenanceCharges.php" class="btn btn-primary mb-4"><i class="fas fa-plus"></i> Add Maintenance Charges</a>
+            <!-- Alert -->
+            <?php
+            if (isset($_SESSION['success_updated_Maintenance'])) {
+                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    ' . $_SESSION['success_updated_Maintenance'] . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                unset($_SESSION['success_updated_Maintenance']);
+            }
+            if (isset($_SESSION['error_message_Maintenance'])) {
+                echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ' . $_SESSION['error_message_Maintenance'] . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                unset($_SESSION['error_message_Maintenance']);
+            }
+            ?>
+            <!-- / Alert -->
+
+            <div class="row">
+                <div class="col-lg-12 mb-4">
+                    <div class="card card-body h-auto d2c_projects_datatable">
+                        <div class="row">
+                            <div class="col-md-4 col-xl-3">
+                                <form class="position-relative">
+                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="maintenaceSearch" onkeyup="search_maintenace_Data()" placeholder="Search &nbsp;..." />
+                                    <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                                </form>
+                            </div>
+                            <div class="col-md-8 col-xl-9 text-end">
+                                <a href="addMaintenance" class="btn btn-primary"><i class="fas fa-plus"></i> Add Maintenace</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card h-auto d2c_projects_datatable">
-                        <div class="card-header">
-                            <h6>Maintenance Charges Data</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="card-header">
+                                    Details
+                                </h4>
+                            </div>
+                            <div class="col-md-6 text-end card-header">
+                                <div class="btn-group">
+                                    <div class="me-2">
+                                        <select id="maintenace-limit" class="form-select" onchange="load_maintenace_Data()">
+                                            <option value="15">15</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="75">75</option>
+                                            <option value="10000000000">All</option>
+                                        </select>
+                                    </div>
+                                    <div class="div">
+                                        <select id="maintenace-order" class="form-select" onchange="load_maintenace_Data()">
+                                            <option value="ASC">Old</option>
+                                            <option value="DESC">New</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive table-responsive">
                                 <table class="table" id="d2c_advanced_table_2">
                                     <thead>
                                         <tr>
-                                            <th style="min-width: 150px;">House/Unit Number</th>
-                                            <th style="min-width: 150px;">Owner's Name</th>
-                                            <th style="min-width: 130px;">Maintenance Charges</th>
-                                            <th style="min-width: 130px;">Maintenance Period</th>
-                                            <th style="min-width: 130px;">Break Down of Charges</th>
-                                            <th style="min-width: 130px;">Additional Notes/Comments</th>
-                                            <th style="min-width: 130px;">Added on</th>
-                                            <th style="min-width: 130px;">Added By</th>
-                                            <th style="min-width: 130px;">Updated on</th>
-                                            <th style="min-width: 130px;">Updated By</th>
-                                            <th style="min-width: 130px;">Action</th>
+                                            <th>S.No</th>
+                                            <th>House Number / Shop Number</th>
+                                            <th>House / Shop</th>
+                                            <th>Maintenance Month</th>
+                                            <th>Maintenance Charges</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>20 Mar 2023</td>
-                                            <td>Jane Cooper</td>
-                                            <td>Supplier</td>
-                                            <td>58755</td>
-                                            <td>Cash</td>
-                                            <td>$4,582.39</td>
-                                            <td>Supplier</td>
-                                            <td>58755</td>
-                                            <td>Cash</td>
-                                            <td>$4,582.39</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Action
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="maintenanceDetails">
                                     </tbody>
                                 </table>
                             </div>
@@ -126,5 +158,65 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
     <!-- custom js -->
     <script src="assets/js/main.js"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Load data on page load with default value (10)
+            load_maintenace_Data();
+
+        });
+
+        function load_maintenace_Data() {
+
+            let maintenaiceLimited = $("#maintenace-limit").val();
+            let maintenaceOrder = $("#maintenace-order").val();
+
+            $.ajax({
+                url: 'admin-index2.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    action: 'load-maintenance-Data',
+                    maintenaiceLimited: maintenaiceLimited,
+                    maintenaceOrder: maintenaceOrder
+                },
+                success: function(response) {
+                    console.log(response);
+                    // Update the result div with the loaded data
+                    $("#maintenanceDetails").html(response.data);
+                },
+            });
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Load data on page load with default value (10)
+            search_maintenace_Data();
+
+        });
+
+        function search_maintenace_Data() {
+
+            let maintenaceSearch = document.getElementById('maintenaceSearch').value;
+
+            $.ajax({
+                url: 'admin-index2.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    action: 'search-maintenance-Data',
+                    maintenaceSearch: maintenaceSearch
+                },
+                success: function(response) {
+                    console.log(response);
+                    // Update the result div with the loaded data
+                    $("#maintenanceDetails").html(response.data);
+                },
+            });
+        }
+    </script>
+
 </body>
+
 </html>

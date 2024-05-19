@@ -127,11 +127,11 @@ function updateMaintenance()
 {
     global $conn;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $edit_id = mysqli_real_escape_string($conn, $_POST['edit_id']);
+        $edit_id = mysqli_real_escape_string($conn, $_POST['maintenace_edit_id']);
         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
-        $maintenance_month = mysqli_real_escape_string($conn, $_POST['maintenance_month']);
-        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenance_charges']);
+        $maintenance_month = mysqli_real_escape_string($conn, $_POST['maintenace_month']);
+        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenace_charges']);
 
         $updated_by = $_SESSION['username'];
         $updated_on = date("Y-m-d");
@@ -155,8 +155,8 @@ function updateMaintenance()
                                 updated_by = '$updated_by'
                             WHERE maintenance_id = '$edit_id'";
         } else {
-            $_SESSION['error_message_house'] = "Invalid house or shop selection.";
-            header('location: updateMaintenance');
+            $_SESSION['error_message_Maintenance'] = "Invalid house or shop selection.";
+            header('location: maintenanceCharges');
             exit();
         }
 
@@ -164,17 +164,17 @@ function updateMaintenance()
         if (isset($updateQuery)) {
             $query = mysqli_query($conn, $updateQuery);
             if ($query) {
-                $_SESSION['success_message_house'] = "Maintenance record updated successfully.";
-                header('location: updateMaintenance');
+                $_SESSION['success_updated_Maintenance'] = "Maintenance record updated successfully.";
+                header('location: maintenanceCharges');
                 exit();
             } else {
-                $_SESSION['error_message_house'] = "Something went wrong. Please try again.";
-                header('location: updateMaintenance');
+                $_SESSION['error_message_Maintenance'] = "Something went wrong. Please try again.";
+                header('location: maintenanceCharges');
                 exit();
             }
         } else {
-            $_SESSION['error_message_house'] = "Update query not set. Please check your input.";
-            header('location: updateMaintenance');
+            $_SESSION['error_message_Maintenance'] = "Update query not set. Please check your input.";
+            header('location: maintenanceCharges');
             exit();
         }
     }
@@ -186,15 +186,15 @@ function MaintenanceDelete()
     global $conn;
     if (isset($_GET['Maintenance_delete_id'])) {
         $delete_id = mysqli_real_escape_string($conn, $_GET['Maintenance_delete_id']);
-        $deleteQuery = "DELETE FROM Maintenance where maintenance_id = ('{$delete_id}')";
+        $deleteQuery = "DELETE FROM maintenance_payments where maintenance_id = ('{$delete_id}')";
         $deleteSQL = mysqli_query($conn, $deleteQuery);
         if ($deleteSQL) {
             $_SESSION['success_updated_Maintenance'] = "Servant Deleted Successfully";
-            header('location: Maintenance');
+            header('location: maintenanceCharges');
             exit();
         } else {
             $_SESSION['success_updated_Maintenance'] = "Servant Not Deleted";
-            header('location: Maintenance');
+            header('location: maintenanceCharges');
             exit();
         }
     }
