@@ -1,4 +1,10 @@
-<div class="content-wrapper d-none" id="printable-content">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
@@ -18,12 +24,13 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ccc; /* Added border */
         }
 
-        .table_div{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .container > * {
+            border-bottom: 2px solid #ccc; /* Added border between sections */
+            padding-bottom: 20px; /* Added padding between sections */
+            margin-bottom: 20px; /* Added margin between sections */
         }
 
         .header {
@@ -35,7 +42,6 @@
 
         .header img {
             max-width: 150px;
-            /* Increased the logo size */
         }
 
         .header h3 {
@@ -44,21 +50,22 @@
             color: #333;
             flex: 1;
             text-align: center;
-            /* Centering the header text */
         }
 
         .contact-info {
             font-size: 0.9em;
             color: #555;
             text-align: right;
-            /* Aligning contact info to the right */
         }
 
         .invoice-title {
-            font-size: 1.5em;
+            font-size: 1.2em;
             font-weight: 700;
-            color: #555;
+            color: white;
             margin: 20px 0;
+            padding: 5px;
+            text-align: center;
+            background-color: #04bd62;
         }
 
         .terms {
@@ -71,30 +78,17 @@
             font-weight: 800;
         }
 
-
-        .right-info {
+        .table_div {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            /* Align items to pe top */
             width: 100%;
-            /* Making the right-info take full width */
-            margin-top: 20px;
         }
 
-        .right-info p {
-            margin: 5px 0;
-            font-weight: 600;
-        }
-
-        table {
-            border: 1px solid black;
-            border-collapse: collapse;
-
-        }
-
-        th,
-        td {
-            border: 1px solid black;
-            padding: 5px;
-            text-align: left;
-            width: fit-content;
+        .table_div > div {
+            width: 48%; /* Adjusted width to accommodate borders */
+            padding: 10px; /* Added padding for better spacing */
         }
 
         .footer {
@@ -104,7 +98,9 @@
             color: #777;
         }
     </style>
+</head>
 
+<body>
     <div class="container">
         <div class="header">
             <img src="./assets/images/logo/KDA.png" alt="KDA Logo">
@@ -126,64 +122,44 @@
             <h2 class="invoice-title">Property Details</h2>
             <div class="table_div">
                 <div>
-                    <table>
-                        <tr>
-                            <th>House/Unit Number:</th>
-                            <td>0002</td>
-                        </tr>
-                        <tr>
-                            <th>Owner's Name:</th>
-                            <td>Abu Hammad</td>
-                        </tr>
-                        <tr>
-                            <th>Owner's Contact Number:</th>
-                            <td>0334234234</td>
-                        </tr>
-                        <tr>
-                            <th>Owner's CNIC:</th>
-                            <td>42501-3445563-6</td>
-                        </tr>
-                        <tr>
-                            <th>Occupancy Status:</th>
-                            <td>Occupied</td>
-                        </tr>
-                        <tr>
-                            <th>Floor:</th>
-                            <td>4</td>
-                        </tr>
-                        <tr>
-                            <th>Type of Property:</th>
-                            <td>House</td>
-                        </tr>
-                        <tr>
-                            <th>Size/Area of the Property:</th>
-                            <td>
-                                1000 sqft
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Monthly Maintenance Fee:</th>
-                            <td>
-                                5000 PKR
-                            </td>
-                        </tr>
-                    </table>
+                    <p><span>House/Unit Number:</span> 0002</p>
+                    <p><span>Owner's Name:</span> Abu Hammad</p>
+                    <p><span>Owner's Contact Number: </span>0334234234</p>
+                    <p><span>Owner's CNIC: </span>42501-3445563-6</p>
+                    <p><span>Occupancy Status: </span>Occupied</p>
                 </div>
-                <div class="right-info">
-                    <p>1. Additional Info</p>
-                    <p>2. More Details</p>
-                    <p>3. Some Info</p>
-                    <p>4. Important Note</p>
-                    <p>5. Final Remark</p>
+                <div>
+                    <p><span>Floor: </span>4</p>
+                    <p><span>Type of Property: </span>House</p>
+                    <p><span>Size/Area of pe Property: </span>1000 sqft</p>
+                    <p><span>Monthly Maintenance Fee: </span>5000 PKR</p>
                 </div>
             </div>
+        </div>
 
-
-
+        <div class="main-content">
+            <h2 class="invoice-title">Property Details</h2>
+            <div class="table_div">
+                <div>
+                    <p><span>House/Unit Number:</span> 0002</p>
+                    <p><span>Owner's Name:</span> Abu Hammad</p>
+                    <p><span>Owner's Contact Number: </span>0334234234</p>
+                    <p><span>Owner's CNIC: </span>42501-3445563-6</p>
+                    <p><span>Occupancy Status: </span>Occupied</p>
+                </div>
+                <div>
+                    <p><span>Floor: </span>4</p>
+                    <p><span>Type of Property: </span>House</p>
+                    <p><span>Size/Area of pe Property: </span>1000 sqft</p>
+                    <p><span>Monthly Maintenance Fee: </span>5000 PKR</p>
+                </div>
+            </div>
         </div>
 
         <div class="footer">
             <p>Thank you for your cooperation.</p>
         </div>
     </div>
-</div>
+</body>
+
+</html>
