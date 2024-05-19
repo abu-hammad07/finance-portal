@@ -11,13 +11,10 @@ function addHouse()
         $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
         $ownerCNIC = mysqli_real_escape_string($conn, $_POST['owner-cinc']);
         $occupanceStatus = mysqli_real_escape_string($conn, $_POST['occupance-status']);
-        // $tenantsName = mysqli_real_escape_string($conn, $_POST['tenants-name']);
-        // $tenantContact = mysqli_real_escape_string($conn, $_POST['tenant-contact']);
         $floor = mysqli_real_escape_string($conn, $_POST['floor']);
         $propertyType = mysqli_real_escape_string($conn, $_POST['property-type']);
         $propertySize = mysqli_real_escape_string($conn, $_POST['property-size']);
         $maintenanceCharges = mysqli_real_escape_string($conn, $_POST['maintenance-charges']);
-        // $notes = mysqli_real_escape_string($conn, $_POST['notes']);
 
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
@@ -51,25 +48,29 @@ function updateHouse()
         $houseNumber = mysqli_real_escape_string($conn, $_POST['house-number']);
         $ownerName = mysqli_real_escape_string($conn, $_POST['owner-name']);
         $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
+        $ownerCNIC = mysqli_real_escape_string($conn, $_POST['owner-cinc']);
         $occupanceStatus = mysqli_real_escape_string($conn, $_POST['occupance-status']);
-        $tenantsName = mysqli_real_escape_string($conn, $_POST['tenants-name']);
-        $tenantContact = mysqli_real_escape_string($conn, $_POST['tenant-contact']);
         $floor = mysqli_real_escape_string($conn, $_POST['floor']);
         $propertyType = mysqli_real_escape_string($conn, $_POST['property-type']);
         $propertySize = mysqli_real_escape_string($conn, $_POST['property-size']);
         $maintenanceCharges = mysqli_real_escape_string($conn, $_POST['maintenance-charges']);
-        $notes = mysqli_real_escape_string($conn, $_POST['notes']);
 
-        $added_by = $_SESSION['username'];
+        $updated_by = $_SESSION['username'];
+        $updated_on = date("Y-m-d");
 
         $insertQuery = "
-        UPDATE houses SET house_number = '{$houseNumber}',
-        owner_name = '{$ownerName}', owner_contact = '{$ownerContact}',
-        occupancy_status = '{$occupanceStatus}', tenants_name = '{$tenantsName}',
-        tenants_contact = '{$tenantContact}', property_size = '{$propertySize}',
-        floor = '{$floor}', property_type = '{$propertyType}',
-        maintenance_charges = '{$maintenanceCharges}', notes = '{$notes}',
-        added_on = NOW(), added_by = '{$added_by}'
+        UPDATE houses SET 
+        house_number = '{$houseNumber}',
+        owner_name = '{$ownerName}', 
+        owner_contact = '{$ownerContact}',
+        owner_cnic = '{$ownerCNIC}',
+        occupancy_status = '{$occupanceStatus}',
+        property_size = '{$propertySize}',
+        floor = '{$floor}', 
+        property_type = '{$propertyType}',
+        maintenance_charges = '{$maintenanceCharges}', 
+        updated_on = NOW(), 
+        updated_by = '{$updated_by}'
         WHERE house_id = '{$house_id}'";
 
         $query = mysqli_query($conn, $insertQuery);

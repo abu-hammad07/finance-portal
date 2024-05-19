@@ -8,10 +8,10 @@ LEFT JOIN role ON role.role_id = users.role_id
 WHERE users.user_id = '{$_SESSION['UID']}'");
 
 $row = mysqli_fetch_assoc($select);
-if($row['image']==''){
-    $row['image']="./assets/images/user-default.png";
-}else{
-    $row['image']="./media/images/".$row['image'];
+if ($row['image'] == '') {
+    $row['image'] = "./assets/images/user-default.png";
+} else {
+    $row['image'] = "./media/images/" . $row['image'];
 }
 ?>
 
@@ -20,7 +20,7 @@ if($row['image']==''){
         <!-- Logo -->
         <a href="index" class="mb-5 brand-icon">
             <img class="navbar-brand" src="./assets/images/logo/KDA.png" alt="logo">
-           
+
         </a>
         <!-- End:Logo -->
 
@@ -65,7 +65,7 @@ if($row['image']==''){
                         <!-- Sub Menu -->
                         <ul class="sub-menu collapse show">
                             <!-- Sub Menu Item -->
-                            <li class="nav-item <?php if($page == 'index.php') echo('active'); ?>">
+                            <li class="nav-item <?php if ($page == 'index.php') echo ('active'); ?>">
                                 <a class="sub-menu-link" href="index">
                                     <span class="d2c_icon">
                                         <i class="fas fa-home"></i>
@@ -78,122 +78,146 @@ if($row['image']==''){
                             <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
-                            <li class="nav-item <?php if($page == 'houses.php' || $page == 'addHouse.php' ||
-                            $page == 'houseView.php' || $page == 'houseEdit.php') echo('active'); ?>">
-                                <a class="sub-menu-link" href="houses">
+                            <li class="nav-item <?php if ($page == 'houses.php' || $page == 'addHouse.php' || $page == 'houseView.php' || $page == 'houseEdit.php')
+                                                    echo ('open active') ?>">
+                                <a class="sub-menu-link" data-bs-toggle="collapse" data-bs-target="#income" aria-expanded="false" href="#">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
-                                    <span>
-                                        Society Houses
-                                    </span>
+                                    <span>Income</span>
+                                    <span class="fas fa-chevron-right ms-auto text-end"></span>
                                 </a>
+                                <!-- Child Sub Menu -->
+                                <ul class="sub-menu collapse" id="income">
+                                    <li class="nav-item <?php if ($page == 'houses.php' || $page == 'addHouse.php' || $page == 'houseView.php' || $page == 'houseEdit.php') echo ('active') ?>">
+                                        <a class="nav-link" href="houses">
+                                            <span>Society Houses</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item <?php if ($page == 'tenants.php' || $page == 'addTenant.php' || $page == 'tenantView.php' || $page == 'tenantEdit.php') echo ('active'); ?>">
+                                        <a class="nav-link" href="tenants">
+                                            <span>Tenents</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item <?php if ($page == 'shops.php' || $page == 'addShop.php' || $page == 'shopView.php' || $page == 'shopEdit.php') echo ('active'); ?>">
+                                        <a class="nav-link" href="shops">
+                                            <span>Shops</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item <?php if ($page == 'eGate.php' || $page == 'addeGate.php' || $page == 'eGateView.php' || $page == 'eGateEdit.php') echo ('active'); ?>">
+                                        <a class="nav-link" href="eGate">
+                                            <span>E-Gate Pass</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item <?php if ($page == 'servants.php' || $page == 'addServant.php' || $page == 'servantView.php' || $page == 'servantEdit.php') echo ('active'); ?>">
+                                        <a class="nav-link" href="servants">
+                                            <span>Servants</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item <?php if ($page == 'eventsDetails.php' || $page == 'eventBooking.php' || $page == 'eventView.php' || $page == 'eventEdit.php') echo ('active'); ?>">
+                                        <a class="nav-link" href="eventsDetails">
+                                            <span>Events Booking</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="maintenanceCharges.php">
+                                            <span>Maintenance Charges</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="penaltyCharges.php">
+                                            <span>Penalty Charges</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="viewIncomeReports">
+                                            <span>View Income Reports</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- End:Child Sub Menu -->
                             </li>
                             <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
-                            <li class="nav-item <?php if($page == 'tenants.php' || $page == 'addTenant.php' ||
-                            $page == 'tenantView.php' || $page == 'tenantEdit.php') echo('active'); ?>">
-                                <a class="sub-menu-link" href="tenants">
+                            <li class="nav-item">
+                                <a class="sub-menu-link" data-bs-toggle="collapse" data-bs-target="#expenses" aria-expanded="false" href="#">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
-                                    <span>
-                                        Tenents
-                                    </span>
+                                    <span>Expenses</span>
+                                    <span class="fas fa-chevron-right ms-auto text-end"></span>
                                 </a>
+                                <!-- Child Sub Menu -->
+                                <ul class="sub-menu collapse" id="expenses">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">
+                                            <span>Utility Charges</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">
+                                            <span>Society Maintenance</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="viewIncomeReports">
+                                            <span>View Income Reports</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- End:Child Sub Menu -->
                             </li>
                             <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" href="expense">
+                                <a class="sub-menu-link" data-bs-toggle="collapse" data-bs-target="#employeeManagementSystem" aria-expanded="false" href="#">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
-                                    <span>
-                                        Expenses
-                                    </span>
+                                    <span>Employee & Salary</span>
+                                    <span class="fas fa-chevron-right ms-auto text-end"></span>
                                 </a>
+                                <!-- Child Sub Menu -->
+                                <ul class="sub-menu collapse" id="employeeManagementSystem">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">
+                                            <span>Employee</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">
+                                            <span>Salary</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- End:Child Sub Menu -->
                             </li>
                             <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" href="maintenanceCharges">
+                                <a class="sub-menu-link" data-bs-toggle="collapse" data-bs-target="#reconcilation" aria-expanded="false" href="#">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
-                                    <span>
-                                        Maintenance Charges
-                                    </span>
+                                    <span>Reconcilation</span>
+                                    <span class="fas fa-chevron-right ms-auto text-end"></span>
                                 </a>
+                                <!-- Child Sub Menu -->
+                                <ul class="sub-menu collapse" id="reconcilation">
+                                    <li class="nav-item">
+                                        <a class="sub-menu-link" href="./pages/investment.html">
+                                            <span>Reports</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- End:Child Sub Menu -->
                             </li>
                             <!-- End:Sub Menu Item -->
 
-                            <!-- Sub Menu Item -->
-                            <li class="nav-item">
-                                <a class="sub-menu-link" href="./penaltyCharges.php">
-                                    <span class="d2c_icon">
-                                        <i class="fas fa-list-alt"></i>
-                                    </span>
-                                    <span>
-                                        Penalty Charges
-                                    </span>
-                                </a>
-                            </li>
-                            <!-- End:Sub Menu Item -->
-                             <!-- Sub Menu Item -->
-                             <li class="nav-item <?php if($page == 'servants.php' || $page == 'addServant.php' || $page == 'servantEdit.php' || $page == 'servantView.php'){echo 'active';} ?>">
-                                <a class="sub-menu-link" href="./servants.php">
-                                    <span class="d2c_icon">
-                                        <i class="fas fa-wallet"></i>
-                                    </span>
-                                    <span>
-                                        Servants
-                                    </span>
-                                </a>
-                            </li>
-                            <!-- End:Sub Menu Item -->
 
-                            <!-- Sub Menu Item -->
-                            <li class="nav-item  <?php if ($page == "eventsDetails.php" || $page == "eventBooking.php" ||
-                                    $page == "eventEdit.php" || $page == "eventView.php") echo "active"; ?>">
-                                <a class="sub-menu-link" href="eventsDetails">
-                                    <span class="d2c_icon">
-                                        <i class="fas fa-wallet"></i>
-                                    </span>
-                                    <span>
-                                        Event Booking
-                                    </span>
-                                </a>
-                            </li>
-                            <!-- End:Sub Menu Item -->
-                            <!-- Sub Menu Item -->
-                            <li class="nav-item">
-                                <a class="sub-menu-link" href="./eGate.php">
-                                    <span class="d2c_icon">
-                                        <i class="fas fa-wallet"></i>
-                                    </span>
-                                    <span>
-                                        E-Gate Pass
-                                    </span>
-                                </a>
-                            </li>
-                            <!-- End:Sub Menu Item -->
-
-                            <!-- Sub Menu Item -->
-                            <li class="nav-item">
-                                <a class="sub-menu-link" href="./pages/investment.html">
-                                    <span class="d2c_icon">
-                                        <i class="fas fa-network-wired"></i>
-                                    </span>
-                                    <span>
-                                        Reconcilation Reports
-                                    </span>
-                                </a>
-                            </li>
-                            <!-- End:Sub Menu Item -->
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item <?php if ($page == "userDetails.php" || $page == "addUser.php") echo "active"; ?>">
@@ -201,10 +225,7 @@ if($row['image']==''){
                                     <span class="d2c_icon">
                                         <i class="fas fa-network-wired"></i>
                                     </span>
-                                    <span>
-                                        Users
-
-                                    </span>
+                                    <span>Users</span>
                                 </a>
                             </li>
                             <!-- End:Sub Menu Item -->
