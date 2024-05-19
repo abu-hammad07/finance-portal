@@ -79,40 +79,70 @@ addMaintenance();
                     <div class="card-body">
                         <h3 class="card-header">Information</h3>
                         <hr class="my-4">
-                        <div class="row g-3">
-                            <div class="col-md-6" style="display:none">
-                                <label class="form-label">House or Shop</label>
-                                <select name="house_or_shop" id="house_or_shop" class="form-select form-control house-id" >
-                                    <option value="">--- Select House/Shop ---</option>
-                                    <option value="house">House</option>
-                                    <option value="shop">Shop</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">House Number / Shop Number</label>
-                                <select name="house_shop_id" id="house_shop_id" class="form-select form-control house-id" >
-                                    <option value="">--- Select House/Shop No ---</option>
-                                    <!-- Options will be loaded here via AJAX -->
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Maintenance Month</label>
-                                <select class="form-select" id="monthData" required name="maintenace_month">
-                                    <option value="">Select Month</option>
-                                    <!-- Options will be loaded here via AJAX -->
-                                </select>
-                                <span class="text-danger" id="Penal-Cnic_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Maintenance Charges</label>
-                                <input type="text" required name="maintenace_charges" class="form-control" placeholder="Penalty Charges" required>
-                                <span class="text-danger" id="Penal-charges_error"></span>
-                            </div>
-                            <div class="col-md-12">
-                                <button class="btn btn-primary" id="submit_btn" type="submit" name="submit">Add Now</button>
-                            </div>
-                        </div>
+                        <?php
+                        if (isset($_GET['maintenance_edit_id'])) {
+                            $edit_id = mysqli_real_escape_string($conn, $_GET['maintenance_edit_id']);
+                            $edit_query = "SELECT maintenance_payments.*, houses.house_number, shops.shop_number 
+                            FROM maintenance_payments
+                            LEFT JOIN houses ON maintenance_payments.house_id = houses.house_id
+                            LEFT JOIN shops ON maintenance_payments.shop_id = shops.shop_id
+                            WHERE maintenance_payments.maintenance_id = '$edit_id'";
+                            $edit_result = mysqli_query($conn, $edit_query);
 
+                            if (mysqli_num_rows($edit_result) > 0) {
+                                $no = 1;
+                                while ($row = mysqli_fetch_assoc($edit_result)) {
+                        ?>
+                                    <div class="row g-3">
+                                        <input type="text" hidden name="maintenace_charges" value="<?= $row['maintenance_id'] ?>" class="form-control" placeholder="Penalty Charges" required>
+
+                                        <div class="col-md-6" style="display:none">
+                                            <label class="form-label">House or Shop</label>
+                                            <select name="house_or_shop" id="house_or_shop" class="form-select form-control house-id">
+                                                <option value="<?= $row['house_or_shop'] ?>"><?= $row['house_or_shop'] ?></option>
+                                                <option value="house">House</option>
+                                                <option value="shop">Shop</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">House Number / Shop Number</label>
+                                            <select name="house_shop_id" id="house_shop_id" class="form-select form-control house-id">
+                                                <?php
+                                                if ($row['house_or_shop'] == 'house') {
+                                                    echo '<option value="' . $row['house_id'] . '">' . $row['house_number'] . '</option>';
+                                                } elseif ($row['house_or_shop'] == 'shop') {
+                                                    echo '<option value="' . $row['shop_id'] . '">' . $row['shop_number'] . '</option>';
+                                                }
+                                                ?> <!-- Options will be loaded here via AJAX -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Maintenance Month</label>
+                                            <select class="form-select" id="monthData" required name="maintenace_month">
+                                                <option value="<?= $row['maintenance_month'] ?>"><?= $row['maintenance_month'] ?></option>
+                                                <!-- Options will be loaded here via AJAX -->
+                                            </select>
+                                            <span class="text-danger" id="Penal-Cnic_error"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Maintenance Charges</label>
+                                            <input type="text" name="maintenace_charges" class="form-control" value="<?= $row['maintenance_peyment'] ?>" placeholder="Penalty Charges" required>
+                                            <span class="text-danger" id="Penal-charges_error"></span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary" id="submit_btn" type="submit" name="submit">Update Now</button>
+                                        </div>
+                                    </div>
+                        <?php
+                                }
+                            } else {
+                                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    No House Found.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </form>
@@ -280,13 +310,13 @@ addMaintenance();
             });
 
             $('#house_shop_id').change(function() {
-            var selectedOption = $(this).find('option:selected').parent().attr('label');
-            if (selectedOption === 'House Number') {
-                $('#house_or_shop').val('house');
-            } else if (selectedOption === 'Shop Number') {
-                $('#house_or_shop').val('shop');
-            }
-        });
+                var selectedOption = $(this).find('option:selected').parent().attr('label');
+                if (selectedOption === 'House Number') {
+                    $('#house_or_shop').val('house');
+                } else if (selectedOption === 'Shop Number') {
+                    $('#house_or_shop').val('shop');
+                }
+            });
         });
     </script>
 

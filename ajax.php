@@ -167,3 +167,71 @@ if (isset($_POST['type'])) {
 }
 
 echo $eGateData;
+
+// =======================Maintenance page =======================
+if (isset($_POST['type'])) {
+    if ($_POST['type'] == "eGate_id_Data1") {
+        // Fetch house data
+        $houseOptions = '';
+        $shopOptions = '';
+
+        $sql = "SELECT house_id, house_number FROM houses";
+        $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($query)) {
+            $houseOptions .= "<option value='{$row['house_id']}'>{$row['house_number']}</option>";
+        }
+
+        // Fetch shop data
+        $sql = "SELECT shop_id, shop_number FROM shops";
+        $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($query)) {
+            $shopOptions .= "<option value='{$row['shop_id']}'>{$row['shop_number']}</option>";
+        }
+
+        // Prepare the final output
+        // $eGateData = "<option value=''>--- Select House/Shop No ---</option>";
+        $eGateData .= "<optgroup label='House Number'>{$houseOptions}</optgroup>";
+        $eGateData .= "<optgroup label='Shop Number'>{$shopOptions}</optgroup>";
+
+        echo $eGateData;
+    } elseif ($_POST['type'] == "month_data" && isset($_POST['id'])) {
+        $houseShopId = $_POST['id'];
+
+        // Fetch the added date of the selected house/shop
+        $sql = "SELECT * FROM houses WHERE  house_id = $houseShopId AND house_or_shop = 'house'
+                UNION
+                SELECT * FROM shops WHERE shop_id = $houseShopId AND house_or_shop = 'shop'";
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        $row = mysqli_fetch_assoc($result);
+        $added_date = $row['added_on'];
+
+        // Calculate unpaid months
+        $current_date = new DateTime();
+        $added_date = new DateTime($added_date);
+        $interval = $added_date->diff($current_date);
+        $months_since_added = ($interval->y * 12) + $interval->m;
+
+        $paid_months = [];
+            $sql = "SELECT maintenance_month FROM maintenance_payments WHERE house_id = $houseShopId or shop_id = $houseShopId";
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($result)) {
+            $paid_months[] = (new DateTime($row['maintenance_month']))->format('Y-m');
+        }
+
+        $monthOptions = "<option value=''>Select Month</option>";
+        for ($i = 0; $i <= $months_since_added; $i++) {
+            $month = clone $added_date;
+            $month->modify("+$i months");
+            $month_str = $month->format('Y-m');
+            if (!in_array($month_str, $paid_months)) {
+                $monthOptions .= "<option value='{$month_str}'>{$month->format('F Y')}</option>";
+            }
+        }
+
+        echo $monthOptions;
+    } else {
+        echo 'Invalid request';
+    }
+} else {
+    echo 'Type parameter not set';
+}
