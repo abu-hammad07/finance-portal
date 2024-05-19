@@ -83,38 +83,26 @@ updateHouse();
                                             <span class="text-danger" id="owner-name_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Owner's Contact Information</label>
+                                            <label class="form-label">Owner's Contact</label>
                                             <input type="number" readonly name="owner-contact" class="form-control" placeholder="Enter Owner's Contact Information" required value="<?= $row['owner_contact'] ?>">
                                             <span class="text-danger" id="owner-contact_error"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Owner's CINC</label>
+                                            <input type="number" readonly name="owner-cinc" class="form-control" placeholder="XXXXX-XXXXXXX-X" value="<?= $row['owner_cnic'] ?>" required>
+                                            <span class="text-danger" id="owner-cinc_error"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="owner" class="form-label">Occupancy Status</label>
                                             <select id="owner" name="occupance-status" class="form-select form-control">
                                                 <option value="<?= $row['occupancy_status'] ?>"><?= $row['occupancy_status'] ?></option>
-                                                <!-- <option value="owned" <?php //if ($row['occupancy_status'] == 'owned') echo 'selected' ?>>Owned</option>
-                                                <option value="rented" <?php //if ($row['occupancy_status'] == 'Rented') echo 'selected' ?>>Rented</option> -->
                                             </select>
                                             <span class="text-danger" id="occupance-status_error"></span>
-                                        </div>
-                                        <div class="col-md-6 ">
-                                            <label class="form-label">Tenant's Name (if applicable)</label>
-                                            <input type="text" readonly id="tenants-name" name="tenants-name" class="form-control" placeholder="Enter Tenant's Name" value="<?= $row['tenants_name'] ?>">
-                                            <span class="text-danger" id="tenants-name_error"></span>
-                                        </div>
-                                        <div class="col-md-6 ">
-                                            <label class="form-label">Tenant's Contact Information (if applicable)</label>
-                                            <input type="number" readonly id="tenant-contact" name="tenant-contact" class="form-control" placeholder="Enter Tenant's Contact Information" value="<?= $row['tenants_contact'] ?>">
-                                            <span class="text-danger" id="tenant-contact_error"></span>
                                         </div>
                                         <div class="col-md-6 ">
                                             <label for="floor" class="form-label">Floor</label>
                                             <select id="floor" name="floor" class="form-select form-control">
                                                 <option value="<?= $row['floor'] ?>"><?= $row['floor'] ?></option>
-                                                <!-- <option value="ground" <?php //if ($row['floor'] == 'ground') echo 'selected' ?>>Ground</option>
-                                                <option value="floor1" <?php //if ($row['floor'] == 'floor1') echo 'selected' ?>>Floor 1</option>
-                                                <option value="floor2" <?php //if ($row['floor'] == 'floor2') echo 'selected' ?>>Floor 2</option>
-                                                <option value="floor3" <?php //if ($row['floor'] == 'floor3') echo 'selected' ?>>Floor 3</option>
-                                                <option value="floor4" <?php //if ($row['floor'] == 'floor4') echo 'selected' ?>>Floor 4</option> -->
                                             </select>
                                             <span class="text-danger" id="floor_error"></span>
                                         </div>
@@ -122,8 +110,6 @@ updateHouse();
                                             <label for="property-type" class="form-label">Type of Property</label>
                                             <select id="property-type" name="property-type" class="form-select form-control">
                                                 <option value="<?= $row['property_type'] ?>"><?= $row['property_type'] ?></option>
-                                                <!-- <option value="Apartment" <?php //if ($row['property_type'] == 'Apartment') echo 'selected' ?>>Apartment</option>
-                                                <option value="Duplex" <?php //if ($row['property_type'] == 'Duplex') echo 'selected' ?>>Duplex</option> -->
                                             </select>
                                             <span class="text-danger" id="property-type_error"></span>
                                         </div>
@@ -131,8 +117,6 @@ updateHouse();
                                             <label class="form-label">Size/Area of the Property</label>
                                             <select id="size" name="property-size" class="form-select form-control">
                                                 <option value="<?= $row['property_size'] ?>"><?= $row['property_size'] ?></option>
-                                                <!-- <option value="60 sq yards" <?php //if ($row['property_size'] == '60 sq yards') echo 'selected' ?>>60 sq yards</option>
-                                                <option value="120 sq yards" <?php //if ($row['property_size'] == '120 sq yards') echo 'selected' ?>>120 sq yards</option> -->
                                             </select>
                                             <span class="text-danger" id="property-size_error"></span>
                                         </div>
@@ -140,10 +124,6 @@ updateHouse();
                                             <label class="form-label">Monthly Maintenance Fee</label>
                                             <input name="maintenance-charges" readonly type="number" class="form-control" placeholder="Enter Monthly Maintenance Fee" required value="<?= $row['maintenance_charges'] ?>">
                                             <span class="text-danger" id="maintenance-charges_error"></span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Additional Notes/Comments</label>
-                                            <textarea cols="30" rows="4" readonly class="form-control" placeholder="Write Additional Notes" name="notes"><?= $row['notes'] ?></textarea>
                                         </div>
                                     </div>
                                 </div>
