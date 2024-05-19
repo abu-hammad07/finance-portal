@@ -699,7 +699,7 @@ function addShopInsert()
         VALUES (
             '$shop_number', '$owner_name', '$owner_contact', '$owner_cinc', 
             '$occupance_status', '$floor', '$property_type', '$property_size', 
-            '$maintenance_charges', '$added_by', '$added_on')";
+            '$maintenance_charges', '$added_on', '$added_by')";
         
         $insertShops_res = mysqli_query($conn, $insertShops);
 
