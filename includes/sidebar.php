@@ -141,7 +141,7 @@ if ($row['image'] == '') {
 
                             <!-- Sub Menu Item -->
                             <li class="nav-item">
-                                <a class="sub-menu-link" data-bs-toggle="collapse" data-bs-target="#expenses" aria-expanded="false" href="#">
+                                <a class="sub-menu-link" data-bs-toggle="collapse" data-bs-target="#expenses" aria-expanded="false" href="javascript:void(0)">
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
@@ -182,7 +182,7 @@ if ($row['image'] == '') {
                                 <!-- Child Sub Menu -->
                                 <ul class="sub-menu collapse" id="employeeManagementSystem">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/">
+                                        <a class="nav-link" href="employee">
                                             <span>Employee</span>
                                         </a>
                                     </li>
