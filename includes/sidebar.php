@@ -151,12 +151,12 @@ if ($row['image'] == '') {
                                 <!-- Child Sub Menu -->
                                 <ul class="sub-menu collapse" id="expenses">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/">
+                                        <a class="nav-link" href="utilityCharges">
                                             <span>Utility Charges</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/">
+                                        <a class="nav-link" href="societyMaintenance">
                                             <span>Society Maintenance</span>
                                         </a>
                                     </li>
