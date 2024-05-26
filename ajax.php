@@ -178,18 +178,18 @@ if (isset($_POST['type'])) {
         $sql = "SELECT house_id, house_number FROM houses";
         $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
         while ($row = mysqli_fetch_assoc($query)) {
-            $houseOptions .= "<option value='{$row['house_id']}'>{$row['house_number']}</option>";
+            $houseOptions .= "<option value='{$row['house_number']}'>{$row['house_number']}</option>";
         }
 
         // Fetch shop data
         $sql = "SELECT shop_id, shop_number FROM shops";
         $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
         while ($row = mysqli_fetch_assoc($query)) {
-            $shopOptions .= "<option value='{$row['shop_id']}'>{$row['shop_number']}</option>";
+            $shopOptions .= "<option value='{$row['shop_number']}'>{$row['shop_number']}</option>";
         }
 
         // Prepare the final output
-        // $eGateData = "<option value=''>--- Select House/Shop No ---</option>";
+        $eGateData = "<option value=''>--- Select House/Shop No ---</option>";
         $eGateData .= "<optgroup label='House Number'>{$houseOptions}</optgroup>";
         $eGateData .= "<optgroup label='Shop Number'>{$shopOptions}</optgroup>";
 
@@ -198,9 +198,9 @@ if (isset($_POST['type'])) {
         $houseShopId = $_POST['id'];
 
         // Fetch the added date of the selected house/shop
-        $sql = "SELECT * FROM houses WHERE  house_id = $houseShopId AND house_or_shop = 'house'
+        $sql = "SELECT * FROM houses WHERE  house_number = $houseShopId 
                 UNION
-                SELECT * FROM shops WHERE shop_id = $houseShopId AND house_or_shop = 'shop'";
+                SELECT * FROM shops WHERE shop_number = $houseShopId ";
         $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
         $row = mysqli_fetch_assoc($result);
         $added_date = $row['added_on'];
