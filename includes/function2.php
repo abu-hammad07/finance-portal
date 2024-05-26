@@ -199,3 +199,51 @@ function MaintenanceDelete()
         }
     }
 }
+// ================add payroll=============
+function addPayroll()
+{
+    global $conn;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
+        $month_year = mysqli_real_escape_string($conn, $_POST['month_year']);
+        $total_working_days = mysqli_real_escape_string($conn, $_POST['total_working_days']);
+        $days_absent = mysqli_real_escape_string($conn, $_POST['days_absent']);
+        $days_leave = mysqli_real_escape_string($conn, $_POST['days_leave']);
+        $days_present = mysqli_real_escape_string($conn, $_POST['days_present']);
+        $total_salary = mysqli_real_escape_string($conn, $_POST['total_salary']);
+        $added_by = $_SESSION['username'];
+        $added_on = date("Y-m-d");
+
+        // check employee_id && month
+        $checkQuery = "SELECT * FROM Payroll WHERE employee_id = '$employee_id' AND month_year = '$month_year'";
+        $checkResult = mysqli_query($conn, $checkQuery);
+
+        if (mysqli_num_rows($checkResult) > 0) {
+            $_SESSION['error_message'] = "Payroll entry for this employee and month already exists.";
+            header('location: addPayroll'); // Adjust the redirect location as needed
+            exit();
+        } else {
+
+            $insertQuery = "INSERT INTO Payroll (employee_id, month_year, total_working_days, days_absent, days_leave, days_present, total_salary, added_on, added_by)
+                        VALUES ('$employee_id', '$month_year', '$total_working_days', '$days_absent', '$days_leave', '$days_present', '$total_salary', '$added_on', '$added_by')";
+
+            // Debugging: Check if $insertQuery is set properly
+            if (isset($insertQuery)) {
+                $query = mysqli_query($conn, $insertQuery);
+                if ($query) {
+                    $_SESSION['success_message'] = "$month_year Payroll Added Successfully";
+                    header('location: addPayroll'); // Adjust the redirect location as needed
+                    exit();
+                } else {
+                    $_SESSION['error_message'] = "Something went wrong. Please try again.";
+                    header('location: addPayroll'); // Adjust the redirect location as needed
+                    exit();
+                }
+            } else {
+                $_SESSION['error_message'] = "Insert query not set. Please check your input.";
+                header('location: addPayroll'); // Adjust the redirect location as needed
+                exit();
+            }
+        }
+    }
+}
