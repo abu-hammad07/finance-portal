@@ -700,7 +700,7 @@ function addShopInsert()
             '$shop_number', '$owner_name', '$owner_contact', '$owner_cinc', 
             '$occupance_status', '$floor', '$property_type', '$property_size', 
             '$maintenance_charges', '$added_on', '$added_by')";
-        
+
         $insertShops_res = mysqli_query($conn, $insertShops);
 
         if ($insertShops_res) {
@@ -760,7 +760,7 @@ function addShopupdate()
             `updated_by` = '$updated_by',
             `updated_on` = '$updated_on'
         WHERE `shop_id` = '$shop_id'";
-        
+
         $updateShops_res = mysqli_query($conn, $updateShops);
 
         if ($updateShops_res) {
@@ -844,7 +844,8 @@ function addShopupdate()
 //     }
 // }
 
-function eGateInsert() {
+function eGateInsert()
+{
     global $conn;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -994,7 +995,7 @@ function eGateUpdate()
             `updated_by` = '$updated_by',
             `updated_on` = '$updated_on'
             WHERE `eGate_id` = '$eGate_id'";
-        
+
         $updatedEGate_res = mysqli_query($conn, $updatedEGate);
 
         if ($updatedEGate_res) {
@@ -1005,6 +1006,92 @@ function eGateUpdate()
             $_SESSION['error_updated_eGate'] = "($vehicle_number) not updated.";
             header('location: eGate');
             exit();
+        }
+    }
+}
+
+
+
+// ========== addEmployee ==========
+function InsertEmployees()
+{
+    global $conn;
+    if (isset($_POST['submitEmployee'])) {
+
+        // $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
+        $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
+        $cnic = mysqli_real_escape_string($conn, $_POST['cnic']);
+        $qualification = mysqli_real_escape_string($conn, $_POST['qualification']);
+        $phone_number = mysqli_real_escape_string($conn, $_POST['phone_number']);
+        $email = mysqli_real_escape_string($conn, $_POST['email']);
+        $address = mysqli_real_escape_string($conn, $_POST['address']);
+        $appointment_date = mysqli_real_escape_string($conn, $_POST['appointment_date']);
+        $employee_type = mysqli_real_escape_string($conn, $_POST['employee_type']);
+        $department = mysqli_real_escape_string($conn, $_POST['department']);
+        $designation = mysqli_real_escape_string($conn, $_POST['designation']);
+        $employee_salary = mysqli_real_escape_string($conn, $_POST['employee_salary']);
+
+        // added_by & added_on
+        $added_by = $_SESSION['username'];
+        $added_on = date("Y-m-d");
+
+        // unique cnic
+        $cnic_check = "SELECT * FROM `employees` WHERE `employee_cnic` = '$cnic'";
+        $cnic_check_result = mysqli_query($conn, $cnic_check);
+        if (mysqli_num_rows($cnic_check_result) > 0) {
+            $_SESSION['error_added_employee'] = "($full_name) employee already exists.";
+            header('location: addEmployee');
+            // exit();
+        } else {
+
+            // unique email
+            $email_check = "SELECT * FROM `employees` WHERE `employee_email` = '$email'";
+            $email_check_result = mysqli_query($conn, $email_check);
+            if (mysqli_num_rows($email_check_result) > 0) {
+                $_SESSION['error_added_employee'] = "($full_name) employee already exists.";
+                header('location: addEmployee');
+                // exit();
+            } else {
+
+
+                // unique phone number
+                $phone_check = "SELECT * FROM `employees` WHERE `employee_contact` = '$phone_number'";
+                $phone_check_result = mysqli_query($conn, $phone_check);
+                if (mysqli_num_rows($phone_check_result) > 0) {
+                    $_SESSION['error_added_employee'] = "($full_name) employee already exists.";
+                    header('location: addEmployee');
+                    // exit();
+                } else {
+
+                    // Upload image
+                    $employee_image = rand(111111111, 999999999) . '_' . $_FILES['employee_image']['name'];
+                    move_uploaded_file($_FILES['employee_image']['tmp_name'], 'media/images/' . $employee_image);
+
+                    // insert data into employee table
+                    $insert_query = "INSERT INTO `employees`(
+                        `employee_full_name`, `employee_cnic`, `employee_qualification`, `employee_contact`, 
+                        `employee_email`, `employee_address`, `employee_image`, `appointment_date`, 
+                        `employement_type`, `department`, `designation`, `salary`, `added_on`, `added_by`) 
+                    VALUES (
+                        '$full_name', '$cnic', '$qualification', '$phone_number', 
+                        '$email', '$address', '$employee_image', '$appointment_date', 
+                        '$employee_type', '$department', '$designation', '$employee_salary', 
+                        '$added_on', '$added_by'
+                    )";
+
+                    $insert_query_res = mysqli_query($conn, $insert_query);
+
+                    if ($insert_query_res) {
+                        $_SESSION['success_added_employee'] = "($full_name) employee has been added.";
+                        header('location: addEmployee');
+                        exit();
+                    } else {
+                        $_SESSION['error_added_employee'] = "($full_name) employee not added.";
+                        header('location: addEmployee');
+                        exit();
+                    }
+                }
+            }
         }
     }
 }

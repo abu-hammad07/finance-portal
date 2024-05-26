@@ -1,13 +1,13 @@
 <?php
 session_start();
 include_once("includes/config.php");
-include "includes/function2.php";
+include_once("includes/function.php");
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
 }
-// addEmployee();
+InsertEmployees();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,104 +57,143 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
             <!-- Alert -->
             <?php
-            if (isset($_SESSION['success_message_employee'])) {
+            if (isset($_SESSION['success_added_employee'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_employee'] . '
+                    ' . $_SESSION['success_added_employee'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['success_message_employee']);
+                unset($_SESSION['success_added_employee']);
             }
-            if (isset($_SESSION['error_message_employee'])) {
+            if (isset($_SESSION['error_added_employee'])) {
                 echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error_message_employee'] . '
+                    ' . $_SESSION['error_added_employee'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['error_message_employee']);
+                unset($_SESSION['error_added_employee']);
             }
             ?>
             <!-- / Alert -->
 
-            <form action="" method="post" id="add_houses_form">
+            <?php
+            $gene_query = "SELECT `employee_id` FROM `employees` ORDER BY `employee_id` DESC";
+            $gene_result = mysqli_query($conn, $gene_query);
+            if (!$gene_result) {
+                die("Error in SQL query: " . mysqli_error($conn));
+            }
+            $gene_row = mysqli_fetch_array($gene_result);
+            $last_reg_no = isset($gene_row['employee_id']) ? $gene_row['employee_id'] : null;
+
+            if (empty($last_reg_no)) {
+                $auto_reg_no = "#-0001";
+            } else {
+                $idd = str_replace("#-", "", $last_reg_no);
+                $id = str_pad($idd + 1, 4, 0, STR_PAD_LEFT);
+                $auto_reg_no = "#-" . $id;
+            }
+            ?>
+
+            <form action="" method="post" id="add_houses_form" enctype="multipart/form-data">
                 <div class="card h-auto">
                     <div class="card-body">
                         <h3 class="card-header">Information</h3>
                         <hr class="my-4">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">Employee ID</label>
-                                <input type="text" name="employee_id" id="employee_id" class="form-control" placeholder="#EM001" required>
+                                <label class="form-label">Employee ID
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" readonly name="employee_id" id="employee_id" class="form-control" placeholder="#EM001" value="<?= $auto_reg_no ?>">
                                 <span class="text-danger" id="employee_id_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Full Name</label>
+                                <label class="form-label">Full Name
+                                    <span class="text-danger">*</span>
+                                </label>
                                 <input type="text" name="full_name" id="full_name" class="form-control" placeholder="Hammad Ali" required>
                                 <span class="text-danger" id="full_name_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Date of Birth</label>
-                                <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" required>
-                                <span class="text-danger" id="date_of_birth_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Gender</label>
-                                <select name="gender" id="gender" class="form-select form-control" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                                <span class="text-danger" id="gender_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Phone Number</label>
-                                <input type="number" name="phone_number" id="phone_number" class="form-control" placeholder="03XXXXXXXXX" required>
-                                <span class="text-danger" id="phone_number_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">CNIC</label>
+                                <label class="form-label">CNIC
+                                    <span class="text-danger">*</span>
+                                </label>
                                 <input type="number" name="cnic" id="cnic" class="form-control" placeholder="XXXXX-XXXXXXX-X" required>
                                 <span class="text-danger" id="cnic_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Address</label>
+                                <label class="form-label">Qualification
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="qualification" id="qualification" class="form-control" placeholder="MBA" required>
+                                <span class="text-danger" id="qualification_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone Number
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" name="phone_number" id="phone_number" class="form-control" placeholder="03XXXXXXXXX" required>
+                                <span class="text-danger" id="phone_number_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="email" id="email" class="form-control" placeholder="ep4rK@example.com" required>
+                                <span class="text-danger" id="email_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Address
+                                    <span class="text-danger">*</span>
+                                </label>
                                 <input type="text" name="address" id="address" class="form-control" placeholder="DHA Karachi" required>
                                 <span class="text-danger" id="address_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Date of Joinning</label>
-                                <input type="date" name="date_of_joinning" id="date_of_joinning" class="form-control" value="<?= date('Y-m-d') ?>">
-                                <span class="text-danger" id="date_of_joinning_error"></span>
+                                <label class="form-label">Appointment Date
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" name="appointment_date" id="appointment_date" class="form-control" value="<?= date('Y-m-d') ?>">
+                                <span class="text-danger" id="appointment_date_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Employee Type</label>
-                                <input type="text" name="employee_type" id="employee_type" class="form-control" placeholder="Permanent" required>
-                                <span class="text-danger" id="employee_type_error"></span>
+                                <label class="form-label">Employee Type
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select name="employee_type" id="employee_type" class="form-select form-control" required>
+                                    <option value="">Select Type</option>
+                                    <option value="permanent">permanent</option>
+                                    <option value="contract">contract</option>
+                                </select>
+                                <span class="text-danger" id="gender_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Employee Salary</label>
+                                <label class="form-label">Department
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="department" id="department" class="form-control" placeholder="IT" required>
+                                <span class="text-danger" id="department_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Designation
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="designation" id="designation" class="form-control" placeholder="Manager" required>
+                                <span class="text-danger" id="designation_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Salary
+                                    <span class="text-danger">*</span>
+                                </label>
                                 <input type="text" name="employee_salary" id="employee_salary" class="form-control" placeholder="45000" required>
                                 <span class="text-danger" id="employee_salary_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Employee Account Type</label>
-                                <input type="text" name="account_type" id="account_type" class="form-control" placeholder="Meezan Bank" required>
-                                <span class="text-danger" id="account_type_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Employee Account Detail</label>
-                                <input type="text" name="account_detail" id="account_detail" class="form-control" placeholder="XXXX XXXX XXXX" required>
-                                <span class="text-danger" id="account_detail_error"></span>
-                            </div>
-                            <div class="col-md-6">
                                 <label class="form-label">Employee Image</label>
-                                <input type="file" name="penalty_charges" class="form-control">
-                                <span class="text-danger" id="Penal-charges_error"></span>
+                                <input type="file" name="employee_image" id="employee_image" class="form-control">
                             </div>
-
-
 
                             <!-- Button -->
                             <div class="col-md-12">
-                                <button class="btn btn-primary" id="submit_btn" type="submit" name="submit">Add Now</button>
+                                <button class="btn btn-primary" id="submit_btn" type="submit" name="submitEmployee">Add Now</button>
                             </div>
                         </div>
                     </div>

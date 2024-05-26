@@ -176,7 +176,7 @@ if ($row['image'] == '') {
                                     <span class="d2c_icon">
                                         <i class="fas fa-money-check-alt"></i>
                                     </span>
-                                    <span>Employee & Salary</span>
+                                    <span>Employees & Payroll</span>
                                     <span class="fas fa-chevron-right ms-auto text-end"></span>
                                 </a>
                                 <!-- Child Sub Menu -->
@@ -187,8 +187,13 @@ if ($row['image'] == '') {
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/">
-                                            <span>Salary</span>
+                                        <a class="nav-link" href="payroll">
+                                            <span>Payroll</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="payrollPdfs">
+                                            <span>Payroll PDFs</span>
                                         </a>
                                     </li>
                                 </ul>
