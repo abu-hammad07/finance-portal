@@ -900,6 +900,7 @@ function search_shops_data_In_Database($shopsSearch)
     return $data;
 }
 
+
 function filter_eGate_data_In_Database($eGateLimited, $eGateOrder)
 {
     global $conn;
@@ -1072,6 +1073,158 @@ function search_eGate_data_In_Database($eGateSearch)
 }
 
 
+function filter_employee_data_In_Database($employeeLimited, $employeeOrder)
+{
+    global $conn;
+
+    // Modify the query based on your database structure
+    $houseQuery = "SELECT * FROM employees 
+                   ORDER BY employee_id $employeeOrder LIMIT $employeeLimited";
+
+    $houseResult = mysqli_query($conn, $houseQuery);
+
+    if (!$houseResult) {
+        // Debugging output for SQL errors
+        $_SESSION['error_updated_employee'] = ("Error executing query: " . mysqli_error($conn));
+        header("Location: employee");
+        exit();
+    }
+
+    $data = '';
+    $count = 1;
+    while ($row = mysqli_fetch_assoc($houseResult)) {
+        $data .= '
+        <tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['employee_full_name'] . '</td>
+            <td>' . $row['employee_cnic'] . '</td>
+            <td>' . $row['employement_type'] . '</td>
+            <td>' . $row['department'] . '</td>
+            <td>' . $row['designation'] . '</td>
+            <td>
+                      <a href="employeeEdit?employee_edit_id=' . $row['employee_id'] . '">
+                          <span>
+                              <i class="fas fa-pencil-alt me-1 text-success"></i>
+                          </span>
+                      </a>
+                      <a class="" href="employeeView?employee_view_id=' . $row['employee_id'] . '">
+                          <i class="fas fa-eye me-1 text-info"></i>
+                      </a>
+                      <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteEmployee' . $row['employee_id'] . '" data-bs-placement="top" title="Delete">
+                          <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
+                      </button>
+                      <div class="modal fade" id="deleteEmployee' . $row['employee_id'] . '" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? employee Person Name: <span class="text-danger">' . $row['employee_full_name'] . '</span></h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body text-start">
+                                      <p>Please confirm that you want to delete this entry. <br>
+                                          Once deleted, you won\'t be able to recover it. <br>
+                                          Please proceed with caution.
+                                      </p>
+                                  </div>
+                                  <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                      <a href="?employee_delete_id=' . $row['employee_full_name'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                                      <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </td>
+              </tr>';
+    }
+
+    // Check if $data is empty
+    if (empty($data)) {
+        $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database.</td>
+                </tr>';
+    }
+
+    return $data;
+}
+
+
+function search_employee_data_In_Database($employeeSearch)
+{
+    global $conn;
+
+    $employeeSearch = mysqli_real_escape_string($conn, $_POST['employeeSearch']);
+
+    // Modify the query based on your database structure
+    $houseQuery = "SELECT * FROM employees";
+
+    if (!empty($employeeSearch)) {
+        $houseQuery .= " WHERE employee_full_name LIKE '%" . $employeeSearch . "%'
+        OR employee_cnic LIKE '%" . $employeeSearch . "%'
+        OR employement_type LIKE '%" . $employeeSearch . "%'
+        OR department LIKE '%" . $employeeSearch . "%'
+        OR designation LIKE '%" . $employeeSearch . "%'";
+    }
+
+    $houseResult = mysqli_query($conn, $houseQuery);
+
+    $data = '';
+    $count = 1;
+    while ($row = mysqli_fetch_assoc($houseResult)) {
+
+        $data .= '
+        <tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['employee_full_name'] . '</td>
+            <td>' . $row['employee_cnic'] . '</td>
+            <td>' . $row['employement_type'] . '</td>
+            <td>' . $row['department'] . '</td>
+            <td>' . $row['designation'] . '</td>
+            <td>
+                      <a href="employeeEdit?employee_edit_id=' . $row['employee_id'] . '">
+                          <span>
+                              <i class="fas fa-pencil-alt me-1 text-success"></i>
+                          </span>
+                      </a>
+                      <a class="" href="employeeView?employee_view_id=' . $row['employee_id'] . '">
+                          <i class="fas fa-eye me-1 text-info"></i>
+                      </a>
+                      <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteEmployee' . $row['employee_id'] . '" data-bs-placement="top" title="Delete">
+                          <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
+                      </button>
+                      <div class="modal fade" id="deleteEmployee' . $row['employee_id'] . '" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? employee Person Name: <span class="text-danger">' . $row['employee_full_name'] . '</span></h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body text-start">
+                                      <p>Please confirm that you want to delete this entry. <br>
+                                          Once deleted, you won\'t be able to recover it. <br>
+                                          Please proceed with caution.
+                                      </p>
+                                  </div>
+                                  <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                      <a href="?employee_delete_id=' . $row['employee_full_name'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                                      <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </td>
+              </tr>';
+    }
+    // Check if $data is empty
+    if (empty($data)) {
+        $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database. ' . $employeeSearch . '</td>
+                </tr>';
+    }
+
+    return $data;
+}
+
+
 
 
 
@@ -1221,6 +1374,28 @@ if (isset($_POST['action'])) {
         $eGateSearch = $_POST['eGateSearch'];
 
         $result = search_eGate_data_In_Database($eGateSearch);
+
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+
+    // filter employee booking
+    if ($action == 'load-employee-Data') {
+        $employeeLimited = $_POST['employeeLimited'];
+        $employeeOrder = $_POST['employeeOrder'];
+
+        $result = filter_employee_data_In_Database($employeeLimited, $employeeOrder);
+
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+    // filter employee booking search
+    if ($action == 'search-employee-Data') {
+        $employeeSearch = $_POST['employeeSearch'];
+
+        $result = search_employee_data_In_Database($employeeSearch);
 
         $response = array('data' => $result);
         echo json_encode($response);

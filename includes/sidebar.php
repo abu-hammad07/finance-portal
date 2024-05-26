@@ -191,11 +191,6 @@ if ($row['image'] == '') {
                                             <span>Payroll</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="payrollPdfs">
-                                            <span>Payroll PDFs</span>
-                                        </a>
-                                    </li>
                                 </ul>
                                 <!-- End:Child Sub Menu -->
                             </li>
