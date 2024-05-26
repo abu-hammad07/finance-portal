@@ -133,7 +133,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <th>CNIC</th>
                                             <th>Employee Type</th>
                                             <th>Deparment</th>
-                                            <th>Salary</th>
+                                            <th>Designation</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -183,7 +183,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'load-employee_booking-Data',
+                    action: 'load-employee-Data',
                     employeeLimited: employeeLimited,
                     employeeOrder: employeeOrder
                 },
@@ -211,7 +211,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'search-employee_booking-Data',
+                    action: 'search-employee-Data',
                     employeeSearch: employeeSearch
                 },
                 success: function(response) {
