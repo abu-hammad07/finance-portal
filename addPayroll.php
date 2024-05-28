@@ -54,26 +54,12 @@ addPayroll()
             <!-- Title -->
             <h4 class="mb-4 text-capitalize">Add Payroll</h4>
             <!-- End:Title -->
-
             <!-- Alert -->
             <?php
-            if (isset($_SESSION['success_message_house'])) {
-                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_house'] . '
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-                unset($_SESSION['success_message_house']);
+            if (isset($_SESSION['alert_script'])) {
+                echo $_SESSION['alert_script'];
+                unset($_SESSION['alert_script']);
             }
-            if (isset($_SESSION['error_message_house'])) {
-                echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error_message_house'] . '
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-                unset($_SESSION['error_message_house']);
-            }
-            ?>
-            <!-- / Alert -->
-            <?php
             if (isset($_SESSION['success_message'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
                     ' . $_SESSION['success_message'] . '
@@ -89,8 +75,7 @@ addPayroll()
                 unset($_SESSION['error_message']);
             }
             ?>
-
-
+            
             <div class="card h-auto">
                 <div class="card-body">
                     <h3 class="card-header">Information</h3>
@@ -105,7 +90,7 @@ addPayroll()
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Employee Name</label>
-                                <select name="Employee_Name" id="Employee_Name" class="form-select form-control Employee_Name" >
+                                <select name="Employee_Name" id="Employee_Name" class="form-select form-control Employee_Name">
                                     <option value="">--- Employee Name ---</option>
                                 </select>
                             </div>
@@ -140,13 +125,12 @@ addPayroll()
                                 <input type="number" id="totalSalary" name="total_salary" class="form-control" placeholder="Total Salary" readonly>
                             </div>
                             <div class="col-md-12">
-                                <button class="btn btn-primary" type="submit">Add Salary</button>
+                                <button class="btn btn-primary" name="add_payroll" type="submit">Add Salary</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
         <!-- End:Main Body -->
     </div>
@@ -288,8 +272,7 @@ addPayroll()
                             $('#Employee_ID').append(data);
                         } else if (type === "Employee_Salary") {
                             $('#Employee_Salary').html(data);
-                        }
-                        else if (type === "Employee_Name") {
+                        } else if (type === "Employee_Name") {
                             $('#Employee_Name').html(data);
                         }
                     }
