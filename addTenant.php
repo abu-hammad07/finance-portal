@@ -34,28 +34,6 @@ addTenants();
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
-<!-- <style>
-    .loader {
-        border: 4px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 4px solid #3498db;
-        width: 30px;
-        height: 30px;
-        -webkit-animation: spin 2s linear infinite;
-        /* Safari */
-        animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style> -->
 
 <body class="d2c_theme_light">
     <!-- Preloader Start -->
@@ -104,25 +82,41 @@ addTenants();
                         <h3 class="card-header">Information</h3>
                         <hr class="my-4">
                         <div class="row g-3">
+
                             <div class="col-md-6">
-                                <label class="form-label">House/Unit Number</label>
+                                <label class="form-label">House/Shop Number</label>
+                                <select name="house_shop_id" id="house_shop_id" class="form-select form-control house-id" required>
+                                    <option value="">--- Select House/Shop No ---</option>
+                                    <!-- Add your house/shop options here -->
+                                </select>
+                            </div>
+                            <div class="col-md-6" style="display: none;">
+                                <label class="form-label">House or Shop</label>
+                                <select name="house_or_shop" id="house_or_shop" class="form-select form-control house-id" required>
+                                    <option value="">--- Select House/Shop ---</option>
+                                    <option value="house">House</option>
+                                    <option value="shop">Shop</option>
+                                </select>
+                            </div>
+
+                            <!-- <div class="col-md-6">
+                                <label class="form-label">House/Shop Number</label>
                                 <select name="house_id" id="house_id" class="form-select form-control house-id" required>
                                     <option value="">--- Select House No ---</option>
                                 </select>
-                                <!-- <span class="text-danger" id="house_id_error"></span> -->
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Owner's Name</label>
                                 <select id="owner_name" class="form-select form-control">
-                                    <!-- <option value="">--- Select House No ---</option> -->
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Owner's Contact</label>
                                 <select id="owner_contact" class="form-select form-control">
-                                    <!-- <option value="">--- Select House No ---</option> -->
                                 </select>
-                            </div>
+                            </div> -->
+
+
                             <div class="col-md-6 ">
                                 <label class="form-label">Tenant's Name</label>
                                 <input type="text" id="tenant-name" name="tenant_name" class="form-control" placeholder="Enter Tenant's Name" required>
@@ -171,7 +165,7 @@ addTenants();
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $("#house_id").select2();
+            $("#house_shop_id").select2();
         });
     </script>
 
@@ -183,8 +177,51 @@ addTenants();
 
 
 <script>
+    // $(document).ready(function() {
+    //     function loadData(type, id) {
+    //         $.ajax({
+    //             url: 'ajax.php',
+    //             type: 'POST',
+    //             data: {
+    //                 type: type,
+    //                 id: id
+    //             },
+    //             dataType: 'html',
+    //             success: function(data) {
+    //                 if (type === "house_id_Data") {
+    //                     $('#house_id').append(data);
+    //                 } else if (type === "owner_name_Data") {
+    //                     $('#owner_name').html(data);
+    //                 } else if (type === "owner_contact_Data") {
+    //                     $('#owner_contact').html(data);
+    //                 }
+    //             }
+    //         });
+    //     }
+
+    //     loadData("house_id_Data");
+
+    //     $("#house_id").on("change", function() {
+    //         var customer = $("#house_id").val();
+    //         if (customer != "") {
+    //             loadData("owner_name_Data", customer);
+    //         } else {
+    //             $('#owner_name').html("");
+    //         }
+    //     });
+    //     $("#house_id").on("change", function() {
+    //         var customer = $("#house_id").val();
+    //         if (customer != "") {
+    //             loadData("owner_contact_Data", customer);
+    //         } else {
+    //             $('#owner_contact').html("");
+    //         }
+    //     });
+    // });
+
+
     $(document).ready(function() {
-        function loadData(type, id) {
+        function loadData(type, id = null) {
             $.ajax({
                 url: 'ajax.php',
                 type: 'POST',
@@ -194,33 +231,24 @@ addTenants();
                 },
                 dataType: 'html',
                 success: function(data) {
-                    if (type === "house_id_Data") {
-                        $('#house_id').append(data);
-                    } else if (type === "owner_name_Data") {
-                        $('#owner_name').html(data);
-                    } else if (type === "owner_contact_Data") {
-                        $('#owner_contact').html(data);
+                    if (type === "eGate_id_Data") {
+                        $('#house_shop_id').html(data);
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
                 }
             });
         }
 
-        loadData("house_id_Data");
+        loadData("eGate_id_Data");
 
-        $("#house_id").on("change", function() {
-            var customer = $("#house_id").val();
-            if (customer != "") {
-                loadData("owner_name_Data", customer);
-            } else {
-                $('#owner_name').html("");
-            }
-        });
-        $("#house_id").on("change", function() {
-            var customer = $("#house_id").val();
-            if (customer != "") {
-                loadData("owner_contact_Data", customer);
-            } else {
-                $('#owner_contact').html("");
+        $('#house_shop_id').change(function() {
+            var selectedOption = $(this).find('option:selected').parent().attr('label');
+            if (selectedOption === 'House Number') {
+                $('#house_or_shop').val('house');
+            } else if (selectedOption === 'Shop Number') {
+                $('#house_or_shop').val('shop');
             }
         });
     });

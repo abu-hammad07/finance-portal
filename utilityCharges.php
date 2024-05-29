@@ -7,7 +7,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     header('location: login');
 }
 
-// deleteBookingEvents();
+deleteUtilityChargesID();
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +62,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                         <div class="row">
                             <div class="col-md-4 col-6 col-xl-3">
                                 <form class="position-relative">
-                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="eventsSearch" onkeyup="search_events_Data()" placeholder="Search &nbsp;..." />
+                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="Utility_chargesSearch" onkeyup="search_Utility_charges_Data()" placeholder="Search &nbsp;..." />
                                     <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
                                 </form>
                             </div>
@@ -76,19 +76,19 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
             <!-- Alert -->
             <?php
-            if (isset($_SESSION['success_updated_events'])) {
+            if (isset($_SESSION['success_updated_Utility_charges'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_updated_events'] . '
+                    ' . $_SESSION['success_updated_Utility_charges'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['success_updated_events']);
+                unset($_SESSION['success_updated_Utility_charges']);
             }
-            if (isset($_SESSION['error_updated_events'])) {
+            if (isset($_SESSION['error_updated_Utility_charges'])) {
                 echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error_updated_events'] . '
+                    ' . $_SESSION['error_updated_Utility_charges'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['error_updated_events']);
+                unset($_SESSION['error_updated_Utility_charges']);
             }
             ?>
             <!-- / Alert -->
@@ -106,7 +106,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="events-limit" class="form-select" onchange="load_events_Data()">
+                                        <select id="Utility_charges-limit" class="form-select" onchange="load_Utility_charges_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -115,7 +115,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                         </select>
                                     </div>
                                     <div class="div">
-                                        <select id="events-order" class="form-select" onchange="load_events_Data()">
+                                        <select id="Utility_charges-order" class="form-select" onchange="load_Utility_charges_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -129,17 +129,16 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                     <thead>
                                         <tr>
                                             <th>S.No</th>
-                                            <th>Event Name</th>
-                                            <th>Customer Name</th>
-                                            <th>Customer CNIC</th>
-                                            <th>Date Time</th>
-                                            <th>Booking Payment</th>
+                                            <th>Utility Type</th>
+                                            <th>Amount</th>
+                                            <th>Billing Month</th>
+                                            <th>Location</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="eventsDetails">
+                                    <tbody id="Utility_chargesDetails">
                                         <!-- <tr>
-                                            <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database.()</td>
+                                            <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Utility_charges Booking data in the database.()</td>
                                         </tr> -->
                                     </tbody>
                                 </table>
@@ -166,31 +165,31 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <script src="assets/js/main.js"></script>
 
 
-    <!-- <script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
-            load_events_Data();
+            load_Utility_charges_Data();
 
         });
 
-        function load_events_Data() {
+        function load_Utility_charges_Data() {
 
-            let eventsLimited = $("#events-limit").val();
-            let eventsOrder = $("#events-order").val();
+            let Utility_chargesLimited = $("#Utility_charges-limit").val();
+            let Utility_chargesOrder = $("#Utility_charges-order").val();
 
             $.ajax({
                 url: 'admin-index.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'load-events_booking-Data',
-                    eventsLimited: eventsLimited,
-                    eventsOrder: eventsOrder
+                    action: 'load-Utility_charges-Data',
+                    Utility_chargesLimited: Utility_chargesLimited,
+                    Utility_chargesOrder: Utility_chargesOrder
                 },
                 success: function(response) {
                     console.log(response);
                     // Update the result div with the loaded data
-                    $("#eventsDetails").html(response.data);
+                    $("#Utility_chargesDetails").html(response.data);
                 },
             });
         }
@@ -198,30 +197,30 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
-            search_events_Data();
+            search_Utility_charges_Data();
 
         });
 
-        function search_events_Data() {
+        function search_Utility_charges_Data() {
 
-            let eventsSearch = document.getElementById('eventsSearch').value;
+            let Utility_chargesSearch = document.getElementById('Utility_chargesSearch').value;
 
             $.ajax({
                 url: 'admin-index.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'search-events_booking-Data',
-                    eventsSearch: eventsSearch
+                    action: 'search-Utility_charges-Data',
+                    Utility_chargesSearch: Utility_chargesSearch
                 },
                 success: function(response) {
                     console.log(response);
                     // Update the result div with the loaded data
-                    $("#eventsDetails").html(response.data);
+                    $("#Utility_chargesDetails").html(response.data);
                 },
             });
         }
-    </script> -->
+    </script>
 
 </body>
 

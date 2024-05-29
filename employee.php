@@ -7,7 +7,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     header('location: login');
 }
 
-// deleteBookingEvents();
+deleteEmployeeID();
 ?>
 
 <!DOCTYPE html>

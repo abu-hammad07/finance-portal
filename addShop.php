@@ -122,20 +122,13 @@ addShopInsert();
                                 <span class="text-danger" id="floor_error"></span>
                             </div>
                             <div class="col-md-6 ">
-                                <label for="property-type" class="form-label">Type of Property</label>
-                                <select id="property_type" name="property_type" class="form-select form-control">
-                                    <option value="">-----</option>
-                                    <option value="Apartment">Apartment</option>
-                                    <option value="Duplex">Duplex</option>
-                                </select>
-                                <span class="text-danger" id="property_type_error"></span>
-                            </div>
-                            <div class="col-md-6 ">
                                 <label class="form-label">Size/Area of the Property</label>
                                 <select id="property_size" name="property_size" class="form-select form-control">
                                     <option value="">-----</option>
-                                    <option value="60 sq yards">60 sq yards</option>
-                                    <option value="120 sq yards">120 sq yards</option>
+                                    <option value="60 yards">60 yards</option>
+                                    <option value="120 yards">120 yards</option>
+                                    <option value="240 yards">240 yards</option>
+                                    <option value="520b yards">520 yards</option>
                                 </select>
                                 <span class="text-danger" id="property_size_error"></span>
                             </div>

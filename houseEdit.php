@@ -92,12 +92,11 @@ updateHouse();
                                             <input type="number" name="owner-cinc" class="form-control" placeholder="XXXXX-XXXXXXX-X" value="<?= $row['owner_cnic'] ?>" required>
                                             <span class="text-danger" id="owner-cinc_error"></span>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="display: none">
                                             <label for="owner" class="form-label">Occupancy Status</label>
                                             <select id="owner" name="occupance-status" class="form-select form-control">
                                                 <!-- <option value="">-----</option> -->
                                                 <option value="owned" <?php if ($row['occupancy_status'] == 'owned') echo 'selected' ?>>Owned</option>
-                                                <option value="rented" <?php if ($row['occupancy_status'] == 'Rented') echo 'selected' ?>>Rented</option>
                                             </select>
                                             <span class="text-danger" id="occupance-status_error"></span>
                                         </div>
@@ -126,8 +125,10 @@ updateHouse();
                                             <label class="form-label">Size/Area of the Property</label>
                                             <select id="size" name="property-size" class="form-select form-control">
                                                 <!-- <option value="">-----</option> -->
-                                                <option value="60 sq yards" <?php if ($row['property_size'] == '60 sq yards') echo 'selected' ?>>60 sq yards</option>
-                                                <option value="120 sq yards" <?php if ($row['property_size'] == '120 sq yards') echo 'selected' ?>>120 sq yards</option>
+                                                <option value="60 yards" <?php if ($row['property_size'] == '60 yards') echo 'selected' ?>>60 yards</option>
+                                                <option value="120 yards" <?php if ($row['property_size'] == '120 yards') echo 'selected' ?>>120 yards</option>
+                                                <option value="240 yards" <?php if ($row['property_size'] == '240 yards') echo 'selected' ?>>240 yards</option>
+                                                <option value="520 yards" <?php if ($row['property_size'] == '520 yards') echo 'selected' ?>>520 yards</option>
                                             </select>
                                             <span class="text-danger" id="property-size_error"></span>
                                         </div>

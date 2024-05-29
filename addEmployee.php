@@ -75,13 +75,13 @@ InsertEmployees();
             <!-- / Alert -->
 
             <?php
-            $gene_query = "SELECT `employee_id` FROM `employees` ORDER BY `employee_id` DESC";
+            $gene_query = "SELECT `employeeID` FROM `employees` ORDER BY `employeeID` DESC";
             $gene_result = mysqli_query($conn, $gene_query);
             if (!$gene_result) {
                 die("Error in SQL query: " . mysqli_error($conn));
             }
             $gene_row = mysqli_fetch_array($gene_result);
-            $last_reg_no = isset($gene_row['employee_id']) ? $gene_row['employee_id'] : null;
+            $last_reg_no = isset($gene_row['employeeID']) ? $gene_row['employeeID'] : null;
 
             if (empty($last_reg_no)) {
                 $auto_reg_no = "#-0001";
@@ -102,8 +102,7 @@ InsertEmployees();
                                 <label class="form-label">Employee ID
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" readonly name="employee_id" id="employee_id" class="form-control" placeholder="#EM001" value="<?= $auto_reg_no ?>">
-                                <span class="text-danger" id="employee_id_error"></span>
+                                <input type="text" readonly name="employeeID" id="employeeID" class="form-control" placeholder="#EM001" value="<?= $auto_reg_no ?>">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Full Name

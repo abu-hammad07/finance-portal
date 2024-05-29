@@ -1,13 +1,13 @@
 <?php
 session_start();
 include_once("includes/config.php");
-include "includes/function2.php";
+include_once("includes/function.php");
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
 }
-// addEmployee();
+insertUtilityCharges();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +31,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- responsive css -->
     <link rel="stylesheet" href="assets/css/responsive.css">
+
 </head>
 
 <body class="d2c_theme_light">
@@ -57,19 +58,19 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
             <!-- Alert -->
             <?php
-            if (isset($_SESSION['success_message_employee'])) {
+            if (isset($_SESSION['success_message_Utility'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_employee'] . '
+                    ' . $_SESSION['success_message_Utility'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['success_message_employee']);
+                unset($_SESSION['success_message_Utility']);
             }
-            if (isset($_SESSION['error_message_employee'])) {
+            if (isset($_SESSION['error_message_Utility'])) {
                 echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error_message_employee'] . '
+                    ' . $_SESSION['error_message_Utility'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['error_message_employee']);
+                unset($_SESSION['error_message_Utility']);
             }
             ?>
             <!-- / Alert -->
@@ -82,47 +83,34 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Utility Type</label>
-                                <input type="text" name="employee_id" id="employee_id" class="form-control" placeholder="Electricity" required>
-                                <span class="text-danger" id="employee_id_error"></span>
+                                <input type="text" name="utility_type" id="utility_type" class="form-control" placeholder="Electricity" required>
+                                <span class="text-danger" id="utility_type_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Bill Amount</label>
-                                <input type="number" name="full_name" id="full_name" class="form-control" placeholder="$100" required>
-                                <span class="text-danger" id="full_name_error"></span>
+                                <label class="form-label">Amount</label>
+                                <input type="number" name="utility_amount" id="utility_amount" class="form-control" placeholder="$100" required>
+                                <span class="text-danger" id="utility_amount_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Billing Period</label>
-                                <input type="month" name="date_of_birth" id="date_of_birth" class="form-control" required>
-                                <span class="text-danger" id="date_of_birth_error"></span>
+                                <label class="form-label">Billing Month</label>
+                                <input type="month" name="utility_billing_month" id="utility_billing_month" class="form-control" required value="<?php echo date('Y-m'); ?>">
+                                <span class="text-danger" id="utility_billing_month_error"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Due Date</label>
-                                <input type="date" name="phone_number" id="phone_number" class="form-control" required>
-                                <span class="text-danger" id="phone_number_error"></span>
+                                <label class="form-label">Location</label>
+                                <select name="utility_location" id="utility_location" class="form-select form-control" required>
+                                    <option value="">Select Location</option>
+                                    <option value="Office">Office</option>
+                                    <option value="Sports Area">Sports Area</option>
+                                    <option value="Shadi Hall">Shadi Hall</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span class="text-danger" id="utility_location_error"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Payment Date</label>
-                                <input type="date" name="cnic" id="cnic" class="form-control" value="<?php echo date('Y-m-d'); ?>" required>
-                                <span class="text-danger" id="cnic_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Payment Method</label>
-                                <input type="date" name="cnic" id="cnic" class="form-control" placeholder="Bank Transfer" required>
-                                <span class="text-danger" id="cnic_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Remarks/Comments</label>
-                                <input type="text" name="" id="" placeholder="Monthly charge" class="form-control">
-                                <!-- <textarea name="" id="" cols="30" rows="5" class="form-control" value="Monthly charge"></textarea> -->
-                                <span class="text-danger" id="address_error"></span>
-                            </div>
-                            
-
-
 
                             <!-- Button -->
                             <div class="col-md-12">
-                                <button class="btn btn-primary" id="submit_btn" type="submit" name="submit">Add Now</button>
+                                <button class="btn btn-primary" id="submit_btn" type="submit" name="utility_submit">Add Now</button>
                             </div>
                         </div>
                     </div>

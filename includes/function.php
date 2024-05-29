@@ -544,47 +544,44 @@ function addTenants()
     global $conn;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
+        $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
+        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
         $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
         $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
 
 
-        // image upload
-        $upload_directory = 'media/images/';
-
-        if (!file_exists($upload_directory)) {
-            if (!mkdir($upload_directory, 0777, true)) {
-                // die("Failed to create directory: $upload_directory");
-                $_SESSION['error_message_Tenant'] = "Failed to create directory: $upload_directory";
-                header('location: addTenant');
-                exit();
-            }
-        } elseif (!is_writable($upload_directory)) {
-            // die("Error: Directory '$upload_directory' is not writable.");
-            $_SESSION['error_message_Tenant'] = "Error: Directory '$upload_directory' is not writable.";
+        // Validate house_shop_id against the correct table
+        $valid_id = false;
+        if ($house_or_shop === 'house') {
+            $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
+        } elseif ($house_or_shop === 'shop') {
+            $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
+        } else {
+            $_SESSION['error_message_Tenant'] = "Invalid house_or_shop value.";
             header('location: addTenant');
             exit();
         }
 
-        // Image upload
-        function upload_image($file, $upload_directory)
-        {
-            $filename = rand(111111111, 999999999) . '_' . $file['name'];
-            $destination = $upload_directory . $filename;
-
-            if (move_uploaded_file($file['tmp_name'], $destination)) {
-                return $filename;
-            } else {
-                // die("Failed to move uploaded file: $filename");
-                $_SESSION['error_message_Tenant'] = "Failed to move uploaded file: $filename";
-                header('location: addTenant');
-                exit();
-            }
+        $checkResult = mysqli_query($conn, $checkQuery);
+        if (!$checkResult) {
+            error_log("Error executing check query: " . mysqli_error($conn));
         }
 
-        // Call the function for each image upload
-        $tenant_image = upload_image($_FILES['tenant_image'], $upload_directory);
+        if (mysqli_num_rows($checkResult) > 0) {
+            $valid_id = true;
+        }
+
+        if (!$valid_id) {
+            $_SESSION['error_message_Tenant'] = "Invalid house_shop_id for the given house_or_shop.";
+            header('location: addTenant');
+            exit();
+        }
+
+
+        // image upload
+        $tenant_image = rand(111111111, 999999999) . '_' . $_FILES['tenant_image']['name'];
+        move_uploaded_file($_FILES['tenant_image']['tmp_name'], 'media/images/' . $tenant_image);
 
 
         // added_by & added_on
@@ -592,9 +589,30 @@ function addTenants()
         $added_on = date("Y-m-d");
 
         // Insert data into tenants table
-        $insertTenants = "INSERT INTO tenants (
-            house_id, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on) VALUES
-        ('$house_id', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', '$added_by', '$added_on')";
+        // $insertTenants = "INSERT INTO tenants (
+        //     house_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
+        //     ) VALUES(
+        //         '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', '$added_by', '$added_on'
+        //         )";
+
+        // Build insert query dynamically based on house_or_shop
+        if ($house_or_shop === 'house') {
+            $insertTenants = "INSERT INTO tenants (
+                house_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
+            ) VALUES (
+                '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', 
+                '$added_by', '$added_on'
+            )";
+        } elseif ($house_or_shop === 'shop') {
+            $insertTenants = "INSERT INTO tenants (
+                shop_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
+            ) VALUES (
+                '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', 
+                '$added_by', '$added_on'
+            )";
+        }
+
+
         $insertTenants_res = mysqli_query($conn, $insertTenants);
 
         if ($insertTenants_res) {
@@ -672,7 +690,6 @@ function addShopInsert()
         $owner_name = mysqli_real_escape_string($conn, $_POST['owner_name']);
         $owner_contact = mysqli_real_escape_string($conn, $_POST['owner_contact']);
         $owner_cinc = mysqli_real_escape_string($conn, $_POST['owner_cinc']);
-        $occupance_status = mysqli_real_escape_string($conn, $_POST['occupance_status']);
         $floor = mysqli_real_escape_string($conn, $_POST['floor']);
         $property_type = mysqli_real_escape_string($conn, $_POST['property_type']);
         $property_size = mysqli_real_escape_string($conn, $_POST['property_size']);
@@ -694,11 +711,11 @@ function addShopInsert()
         // Insert data into shops table
         $insertShops = "INSERT INTO `shops`(
             `shop_number`, `owner_name`, `owner_contact`, `owner_cnic`, 
-            `occupancy_status`, `property_size`, `floor`, `property_type`, 
+            `property_size`, `floor`, `property_type`, 
             `maintenance_charges`, `added_on`, `added_by`) 
         VALUES (
             '$shop_number', '$owner_name', '$owner_contact', '$owner_cinc', 
-            '$occupance_status', '$floor', '$property_type', '$property_size', 
+            '$floor', '$property_type', '$property_size', 
             '$maintenance_charges', '$added_on', '$added_by')";
 
         $insertShops_res = mysqli_query($conn, $insertShops);
@@ -727,7 +744,6 @@ function addShopupdate()
         $owner_name = mysqli_real_escape_string($conn, $_POST['owner_name']);
         $owner_contact = mysqli_real_escape_string($conn, $_POST['owner_contact']);
         $owner_cinc = mysqli_real_escape_string($conn, $_POST['owner_cinc']);
-        $occupance_status = mysqli_real_escape_string($conn, $_POST['occupance_status']);
         $floor = mysqli_real_escape_string($conn, $_POST['floor']);
         $property_type = mysqli_real_escape_string($conn, $_POST['property_type']);
         $property_size = mysqli_real_escape_string($conn, $_POST['property_size']);
@@ -752,7 +768,6 @@ function addShopupdate()
             `owner_name` = '$owner_name',
             `owner_contact` = '$owner_contact',
             `owner_cnic` = '$owner_cinc',
-            `occupancy_status` = '$occupance_status',
             `floor` = '$floor',
             `property_type` = '$property_type',
             `property_size` = '$property_size',
@@ -891,7 +906,7 @@ function eGateInsert()
         $added_on = date("Y-m-d");
 
         // Build insert query dynamically based on house_or_shop
-        if ($house_or_shop === 'house') {
+        if ($house_or_shop === 'House') {
             $insertEGate = "INSERT INTO egate (
                 house_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
                 eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
@@ -901,7 +916,7 @@ function eGateInsert()
                 '$person_name', '$cnic_number', '$charges_type', '$charges', 
                 '$added_on', '$added_by'
             )";
-        } elseif ($house_or_shop === 'shop') {
+        } elseif ($house_or_shop === 'Shop') {
             $insertEGate = "INSERT INTO egate (
                 shop_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
                 eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
@@ -1018,7 +1033,7 @@ function InsertEmployees()
     global $conn;
     if (isset($_POST['submitEmployee'])) {
 
-        // $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
+        $employeeID = mysqli_real_escape_string($conn, $_POST['employeeID']);
         $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
         $cnic = mysqli_real_escape_string($conn, $_POST['cnic']);
         $qualification = mysqli_real_escape_string($conn, $_POST['qualification']);
@@ -1039,18 +1054,18 @@ function InsertEmployees()
         $cnic_check = "SELECT * FROM `employees` WHERE `employee_cnic` = '$cnic'";
         $cnic_check_result = mysqli_query($conn, $cnic_check);
         if (mysqli_num_rows($cnic_check_result) > 0) {
-            $_SESSION['error_added_employee'] = "($full_name) employee already exists.";
+            $_SESSION['error_added_employee'] = "($cnic) cnic already exists.";
             header('location: addEmployee');
-            // exit();
+            exit();
         } else {
 
             // unique email
             $email_check = "SELECT * FROM `employees` WHERE `employee_email` = '$email'";
             $email_check_result = mysqli_query($conn, $email_check);
             if (mysqli_num_rows($email_check_result) > 0) {
-                $_SESSION['error_added_employee'] = "($full_name) employee already exists.";
+                $_SESSION['error_added_employee'] = "($email) email already exists.";
                 header('location: addEmployee');
-                // exit();
+                exit();
             } else {
 
 
@@ -1058,9 +1073,9 @@ function InsertEmployees()
                 $phone_check = "SELECT * FROM `employees` WHERE `employee_contact` = '$phone_number'";
                 $phone_check_result = mysqli_query($conn, $phone_check);
                 if (mysqli_num_rows($phone_check_result) > 0) {
-                    $_SESSION['error_added_employee'] = "($full_name) employee already exists.";
+                    $_SESSION['error_added_employee'] = "($phone_number) phone number already exists.";
                     header('location: addEmployee');
-                    // exit();
+                    exit();
                 } else {
 
                     // Upload image
@@ -1069,11 +1084,11 @@ function InsertEmployees()
 
                     // insert data into employee table
                     $insert_query = "INSERT INTO `employees`(
-                        `employee_full_name`, `employee_cnic`, `employee_qualification`, `employee_contact`, 
+                        `employeeID`,`employee_full_name`, `employee_cnic`, `employee_qualification`, `employee_contact`, 
                         `employee_email`, `employee_address`, `employee_image`, `appointment_date`, 
                         `employement_type`, `department`, `designation`, `salary`, `added_on`, `added_by`) 
                     VALUES (
-                        '$full_name', '$cnic', '$qualification', '$phone_number', 
+                        '$employeeID', '$full_name', '$cnic', '$qualification', '$phone_number', 
                         '$email', '$address', '$employee_image', '$appointment_date', 
                         '$employee_type', '$department', '$designation', '$employee_salary', 
                         '$added_on', '$added_by'
@@ -1094,4 +1109,331 @@ function InsertEmployees()
             }
         }
     }
+}
+
+
+// ========== addEmployee ==========
+function updateEmployees()
+{
+    global $conn;
+    if (isset($_POST['employeeUpdate'])) {
+
+        $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
+        $employeeID = mysqli_real_escape_string($conn, $_POST['employeeID']);
+        $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
+        $cnic = mysqli_real_escape_string($conn, $_POST['cnic']);
+        $qualification = mysqli_real_escape_string($conn, $_POST['qualification']);
+        $phone_number = mysqli_real_escape_string($conn, $_POST['phone_number']);
+        $email = mysqli_real_escape_string($conn, $_POST['email']);
+        $address = mysqli_real_escape_string($conn, $_POST['address']);
+        $appointment_date = mysqli_real_escape_string($conn, $_POST['appointment_date']);
+        $employee_type = mysqli_real_escape_string($conn, $_POST['employee_type']);
+        $department = mysqli_real_escape_string($conn, $_POST['department']);
+        $designation = mysqli_real_escape_string($conn, $_POST['designation']);
+        $employee_salary = mysqli_real_escape_string($conn, $_POST['employee_salary']);
+
+        // updated_by & updated_on
+        $updated_by = $_SESSION['username'];
+        $updated_on = date("Y-m-d");
+
+        // unique cnic
+        $cnic_check = "SELECT * FROM `employees` WHERE `employee_cnic` = '$cnic' AND `employee_id` != '$employee_id'";
+        $cnic_check_result = mysqli_query($conn, $cnic_check);
+        if (mysqli_num_rows($cnic_check_result) > 0) {
+            $_SESSION['error_updated_employee'] = "($cnic) cnic already exists.";
+            header('location: employee');
+            exit();
+        } else {
+
+            // unique email
+            $email_check = "SELECT * FROM `employees` WHERE `employee_email` = '$email' AND `employee_id` != '$employee_id'";
+            $email_check_result = mysqli_query($conn, $email_check);
+            if (mysqli_num_rows($email_check_result) > 0) {
+                $_SESSION['error_updated_employee'] = "($email) email already exists.";
+                header('location: employee');
+                exit();
+            } else {
+
+
+                // unique phone number
+                $phone_check = "SELECT * FROM `employees` WHERE `employee_contact` = '$phone_number' AND `employee_id` != '$employee_id'";
+                $phone_check_result = mysqli_query($conn, $phone_check);
+                if (mysqli_num_rows($phone_check_result) > 0) {
+                    $_SESSION['error_updated_employee'] = "($phone_number) phone number already exists.";
+                    header('location: employee');
+                    exit();
+                } else {
+
+                    // Upload image
+                    $employee_image = '';
+                    $employee_image = rand(111111111, 999999999) . '_' . $_FILES['employee_image']['name'];
+                    move_uploaded_file($_FILES['employee_image']['tmp_name'], 'media/images/' . $employee_image);
+
+                    // update data into employee table
+                    $update_query = "UPDATE `employees` SET 
+                    `employeeID`='$employeeID',
+                    `employee_full_name`='$full_name',
+                    `employee_cnic`='$cnic',
+                    `employee_qualification`='$qualification',
+                    `employee_contact`='$phone_number',
+                    `employee_email`='$email',
+                    `employee_address`='$address',
+                    `appointment_date`='$appointment_date',
+                    `employement_type`='$employee_type',
+                    `department`='$department',
+                    `designation`='$designation',
+                    `salary`='$employee_salary',
+                    `updated_on`='$updated_on',
+                    `updated_by`='$updated_by' 
+                    WHERE `employee_id`='$employee_id'
+                    ";
+
+                    $update_query_res = mysqli_query($conn, $update_query);
+
+                    if ($update_query_res) {
+                        $_SESSION['success_updated_employee'] = "($full_name) employee has been Updated.";
+                        header('location: employee');
+                        exit();
+                    } else {
+                        $_SESSION['error_updated_employee'] = "($full_name) employee not Updated.";
+                        header('location: employee');
+                        exit();
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// ========== deleteEmployee ===========
+function deleteEmployeeID()
+{
+    global $conn;
+    if (isset($_GET['employee_delete_id'])) {
+        $employee_id = mysqli_real_escape_string($conn, $_GET['employee_delete_id']);
+        $delete_query = "DELETE FROM `employees` WHERE `employee_id` = '$employee_id'";
+        $delete_query_res = mysqli_query($conn, $delete_query);
+        if ($delete_query_res) {
+            $_SESSION['success_updated_employee'] = "Employee has been deleted.";
+            header('location: employee');
+            exit();
+        } else {
+            $_SESSION['error_updated_employee'] = "Employee not deleted.";
+            header('location: employee');
+            exit();
+        }
+    }
+}
+
+
+
+
+
+// ========== addUtilityCharges ===========
+function insertUtilityCharges()
+{
+    global $conn;
+
+    if (isset($_POST['utility_submit'])) {
+        $utility_type = mysqli_real_escape_string($conn, $_POST['utility_type']);
+        $utility_amount = mysqli_real_escape_string($conn, $_POST['utility_amount']);
+        $utility_billing_month = mysqli_real_escape_string($conn, $_POST['utility_billing_month']);
+        $utility_location = mysqli_real_escape_string($conn, $_POST['utility_location']);
+
+        // added_on & added_by
+        $added_by = $_SESSION['username'];
+        $added_on = date("Y-m-d");
+
+        // Insert data into utility_charges table
+        $insert_query = "INSERT INTO `utility_charges` SET
+        `utility_type` = '$utility_type',
+        `utility_amount` = '$utility_amount',
+        `utility_billing_month` = '$utility_billing_month',
+        `utility_location` = '$utility_location',
+        `added_by` = '$added_by',
+        `added_on` = '$added_on'";
+
+        $insert_query_res = mysqli_query($conn, $insert_query);
+
+        if ($insert_query_res) {
+            $_SESSION['success_message_Utility'] = "($utility_type) Utility Charges had been Added.";
+            header('location: addUtilityCharges');
+            exit();
+        } else {
+            $_SESSION['error_message_Utility'] = "($utility_type) Utility Charges not Added.";
+            header('location: addUtilityCharges');
+            exit();
+        }
+    }
+}
+
+
+// ========== addUtilityCharges ===========
+function updatedUtilityCharges()
+{
+    global $conn;
+
+    if (isset($_POST['update_utility'])) {
+        $utility_id = mysqli_real_escape_string($conn, $_POST['utility_id']);
+        $utility_type = mysqli_real_escape_string($conn, $_POST['utility_type']);
+        $utility_amount = mysqli_real_escape_string($conn, $_POST['utility_amount']);
+        $utility_billing_month = mysqli_real_escape_string($conn, $_POST['utility_billing_month']);
+        $utility_location = mysqli_real_escape_string($conn, $_POST['utility_location']);
+
+        // updated_on & updated_by
+        $updated_by = $_SESSION['username'];
+        $updated_on = date("Y-m-d");
+
+        // updated data into utility_charges table
+        $updated_query = "UPDATE `utility_charges` SET 
+        `utility_type`='$utility_type',
+        `utility_amount`='$utility_amount',
+        `utility_billing_month`='$utility_billing_month',
+        `utility_location`='$utility_location',
+        `updated_by`='$updated_by',
+        `updated_on`='$updated_on' 
+        WHERE `utility_id`='$utility_id'";
+
+        $updated_query_res = mysqli_query($conn, $updated_query);
+
+        if ($updated_query_res) {
+            $_SESSION['success_updated_Utility_charges'] = "($utility_type) Utility Charges had been updated.";
+            header('location: utilityCharges');
+            exit();
+        } else {
+            $_SESSION['error_updated_Utility_charges'] = "($utility_type) Utility Charges not updated.";
+            header('location: utilityCharges');
+            exit();
+        }
+    }
+}
+
+// ========== deleteUtilityCharges ===========
+function deleteUtilityChargesID()
+{
+    global $conn;
+    if (isset($_GET['utility_delete_id'])) {
+        $utility_id = mysqli_real_escape_string($conn, $_GET['utility_delete_id']);
+        $delete_query = "DELETE FROM `utility_charges` WHERE `utility_id` = '$utility_id'";
+        $delete_query_res = mysqli_query($conn, $delete_query);
+        if ($delete_query_res) {
+            $_SESSION['success_updated_Utility_charges'] = "Utility Charges has been deleted.";
+            header('location: utilityCharges');
+            exit();
+        } else {
+            $_SESSION['error_updated_Utility_charges'] = "Utility Charges not deleted.";
+            header('location: utilityCharges');
+            exit();
+        }
+    }
+}
+
+
+// ================= insertSocietyMaintenance =================
+function insertSocietyMaintenance()
+{
+    global $conn;
+    if(isset($_POST['societyMaintenance_submit'])){
+        $society_maint_type = mysqli_real_escape_string($conn, $_POST['society_maint_type']);
+        $society_maint_amount = mysqli_real_escape_string($conn, $_POST['society_maint_amount']);
+        $society_maint_dueDate = mysqli_real_escape_string($conn, $_POST['society_maint_dueDate']);
+        $society_maint_paymentDate = mysqli_real_escape_string($conn, $_POST['society_maint_paymentDate']);
+        $society_maint_comments = mysqli_real_escape_string($conn, $_POST['society_maint_comments']);
+
+        // added_on & added_by
+        $added_by = $_SESSION['username'];
+        $added_on = date("Y-m-d");
+
+        // Insert data into society_maintenance table
+        $insert_query = "INSERT INTO `society_maintenance` SET
+        `society_maint_type` = '$society_maint_type',
+        `society_maint_amount` = '$society_maint_amount',
+        `society_maint_dueDate` = '$society_maint_dueDate',
+        `society_maint_paymentDate` = '$society_maint_paymentDate',
+        `society_maint_comments` = '$society_maint_comments',
+        `added_by` = '$added_by',
+        `added_on` = '$added_on'";
+
+        $insert_query_res = mysqli_query($conn, $insert_query);
+
+        if ($insert_query_res) {
+            $_SESSION['success_message_societyMaint'] = "($society_maint_type) Society Maintenance Added.";
+            header('location: addSocietyMaintenance');
+            exit();
+        } else {
+            $_SESSION['error_message_societyMaint'] = "($society_maint_type) Society Maintenance not Added.";
+            header('location: addSocietyMaintenance');
+            exit();
+        }
+
+    }
+}
+
+// ================= updateSocietyMaintenance =================
+function updateSocietyMaintenance()
+{
+    global $conn;
+    if(isset($_POST['societyMaintenance_update'])){
+        $society_maint_id = mysqli_real_escape_string($conn, $_POST['society_maint_id']);
+        $society_maint_type = mysqli_real_escape_string($conn, $_POST['society_maint_type']);
+        $society_maint_amount = mysqli_real_escape_string($conn, $_POST['society_maint_amount']);
+        $society_maint_dueDate = mysqli_real_escape_string($conn, $_POST['society_maint_dueDate']);
+        $society_maint_paymentDate = mysqli_real_escape_string($conn, $_POST['society_maint_paymentDate']);
+        $society_maint_comments = mysqli_real_escape_string($conn, $_POST['society_maint_comments']);
+
+        // updated_on & updated_by
+        $updated_by = $_SESSION['username'];
+        $updated_on = date("Y-m-d");
+
+        // updated data into society_maintenance table
+        $updated_query = "UPDATE `society_maintenance` SET
+        `society_maint_type` = '$society_maint_type',
+        `society_maint_amount` = '$society_maint_amount',
+        `society_maint_dueDate` = '$society_maint_dueDate',
+        `society_maint_paymentDate` = '$society_maint_paymentDate',
+        `society_maint_comments` = '$society_maint_comments',
+        `updated_by` = '$updated_by',
+        `updated_on` = '$updated_on' 
+        WHERE `society_maint_id` = '$society_maint_id'";
+
+        $updated_query_res = mysqli_query($conn, $updated_query);
+
+        if ($updated_query_res) {
+            $_SESSION['success_updated_societyMaint'] = "($society_maint_type) Society Maintenance Added Successfully.";
+            header('location: societyMaintenance');
+            exit();
+        } else {
+            $_SESSION['error_updated_societyMaint'] = "($society_maint_type) Society Maintenance not Added.";
+            header('location: societyMaintenance');
+            exit();
+        }
+
+    }
+}
+
+
+
+// ================= deleteSocietyMaintenance =================
+function deleteSocietyMaintenance()
+{
+    global $conn;
+    if(isset($_GET['societyMaint_delete_id'])){
+        $delete_id = mysqli_real_escape_string($conn, $_GET['societyMaint_delete_id']);
+
+        $delete_query = "DELETE FROM `society_maintenance` WHERE `society_maint_id` = '$delete_id'";
+
+        $delete_query_res = mysqli_query($conn, $delete_query);
+
+        if ($delete_query_res) {
+            $_SESSION['success_updated_societyMaint'] = "Society Maintenance Deleted Successfully.";
+            header('location: societyMaintenance');
+            exit();
+        } else {
+            $_SESSION['error_updated_societyMaint'] = "Society Maintenance not Deleted.";
+            header('location: societyMaintenance');
+            exit();
+        }
+    }
+
 }

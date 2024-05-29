@@ -161,8 +161,8 @@ if ($row['image'] == '') {
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="viewIncomeReports">
-                                            <span>View Income Reports</span>
+                                        <a class="nav-link" href="viewexpensesReports">
+                                            <span>View Expenses Reports</span>
                                         </a>
                                     </li>
                                 </ul>
