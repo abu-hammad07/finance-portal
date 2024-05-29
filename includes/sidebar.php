@@ -187,7 +187,7 @@ if ($row['image'] == '') {
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="payroll">
+                                        <a class="nav-link" href="payroll.php">
                                             <span>Payroll</span>
                                         </a>
                                     </li>

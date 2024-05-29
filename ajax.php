@@ -235,3 +235,42 @@ if (isset($_POST['type'])) {
 } else {
     echo 'Type parameter not set';
 }
+// ==========================payroll page=====================
+if (isset($_POST['type'])) {
+    if ($_POST['type'] == "Employee_ID") {
+        $sql = "SELECT employee_id FROM employees";
+        $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        $fetchEmpolyeeData = '---';
+        while ($row = mysqli_fetch_assoc($query)) {
+            $fetchEmpolyeeData .= "<option value='{$row['employee_id']}'>{$row['employee_id']}</option>";
+        }
+    } elseif ($_POST['type'] == "Employee_Name") {
+        if (isset($_POST['id'])) {
+            $batchId = $_POST['id'];
+            $query = mysqli_query($conn, "SELECT * FROM employees WHERE employee_id = $batchId");
+            $fetchEmpolyeeData = '';
+            while ($row = mysqli_fetch_assoc($query)) {
+                $fetchEmpolyeeData .= "<option value='{$row['employee_full_name']}'>{$row['employee_full_name']}</option>";
+            }
+        } else {
+            $fetchEmpolyeeData = 'ID not provided for batch Data';
+        }
+    } 
+
+    elseif ($_POST['type'] == "Employee_Salary") {
+        if (isset($_POST['id'])) {
+            $batchId = $_POST['id'];
+            $query = mysqli_query($conn, "SELECT * FROM employees WHERE employee_id = $batchId");
+            $fetchEmpolyeeData = '';
+            while ($row = mysqli_fetch_assoc($query)) {
+                $fetchEmpolyeeData .= "<option value='{$row['salary']}'>{$row['salary']}</option>";
+            }
+        } else {
+            $fetchEmpolyeeData = 'ID not provided for batch Data';
+        }
+    } 
+} else {
+    $fetchEmpolyeeData = 'Type parameter not set';
+}
+
+echo $fetchEmpolyeeData;
