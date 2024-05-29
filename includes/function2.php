@@ -208,6 +208,7 @@ function addPayroll()
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
         $month_year = mysqli_real_escape_string($conn, $_POST['month_year']);
+        $employee_salary = mysqli_real_escape_string($conn, $_POST['employee_salary']);
         $total_working_days = mysqli_real_escape_string($conn, $_POST['total_working_days']);
         $days_absent = mysqli_real_escape_string($conn, $_POST['days_absent']);
         $days_leave = mysqli_real_escape_string($conn, $_POST['days_leave']);
@@ -226,8 +227,8 @@ function addPayroll()
             exit();
         } else {
             // Insert the payroll entry
-            $insertQuery = "INSERT INTO Payroll (employee_id, month_year, total_working_days, days_absent, days_leave, days_present, total_salary, added_on, added_by)
-                            VALUES ('$employee_id', '$month_year', '$total_working_days', '$days_absent', '$days_leave', '$days_present', '$total_salary', '$added_on', '$added_by')";
+            $insertQuery = "INSERT INTO Payroll (employee_id,employee_salary, month_year, total_working_days, days_absent, days_leave, days_present, total_salary, added_on, added_by)
+                            VALUES ('$employee_id', '$employee_salary','$month_year', '$total_working_days', '$days_absent', '$days_leave', '$days_present', '$total_salary', '$added_on', '$added_by')";
 
             if (mysqli_query($conn, $insertQuery)) {
                 // Get the inserted payroll ID
@@ -284,6 +285,126 @@ function addPayroll()
                 $_SESSION['error_message'] = "Something went wrong. Please try again.";
             }
             header('location: addPayroll.php'); // Redirect after processing
+            exit();
+        }
+    }
+}
+// ===============payroll Update============
+
+function updatePayroll()
+{
+    global $conn;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $payroll_id = mysqli_real_escape_string($conn, $_POST['payroll_id']);
+        $employee_id = mysqli_real_escape_string($conn, $_POST['employee_id']);
+        $employee_salary = mysqli_real_escape_string($conn, $_POST['employee_salary']);
+        $month_year = mysqli_real_escape_string($conn, $_POST['month_year']);
+        $total_working_days = mysqli_real_escape_string($conn, $_POST['total_working_days']);
+        $days_absent = mysqli_real_escape_string($conn, $_POST['days_absent']);
+        $days_leave = mysqli_real_escape_string($conn, $_POST['days_leave']);
+        $days_present = mysqli_real_escape_string($conn, $_POST['days_present']);
+        $total_salary = mysqli_real_escape_string($conn, $_POST['total_salary']);
+        $updated_by = $_SESSION['username'];
+        $updated_on = date("Y-m-d");
+
+        // Check if a payroll entry with this employee and month exists, excluding the current one
+        $checkQuery = "SELECT * FROM Payroll WHERE employee_id = '$employee_id' AND month_year = '$month_year' AND payroll_id != '$payroll_id'";
+        $checkResult = mysqli_query($conn, $checkQuery);
+
+        if (mysqli_num_rows($checkResult) > 0) {
+            $_SESSION['error_message'] = "Payroll entry for this employee and month already exists.";
+            header("location: Payroll_edit.php?payroll_id=$payroll_id"); // Adjust the redirect location as needed
+            exit();
+        } else {
+            // Update the payroll entry
+            $updateQuery = "UPDATE Payroll SET 
+                                employee_id = '$employee_id', 
+                                employee_salary = '$employee_salary', 
+                                month_year = '$month_year', 
+                                total_working_days = '$total_working_days', 
+                                days_absent = '$days_absent', 
+                                days_leave = '$days_leave', 
+                                days_present = '$days_present', 
+                                total_salary = '$total_salary', 
+                                updated_on = '$updated_on', 
+                                updated_by = '$updated_by' 
+                            WHERE payroll_id = '$payroll_id'";
+
+            if (mysqli_query($conn, $updateQuery)) {
+                // Get the inserted payroll ID
+                $payroll_id = mysqli_insert_id($conn);
+
+                // Generate the PDF
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->SetFont('Arial', 'B', 16);
+                $pdf->Cell(40, 10, "Payroll Details for Employee ID: $employee_id");
+                $pdf->Ln();
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->Cell(40, 10, "Month-Year: $month_year");
+                $pdf->Ln();
+                $pdf->Cell(40, 10, "Total Working Days: $total_working_days");
+                $pdf->Ln();
+                $pdf->Cell(40, 10, "Days Absent: $days_absent");
+                $pdf->Ln();
+                $pdf->Cell(40, 10, "Days Leave: $days_leave");
+                $pdf->Ln();
+                $pdf->Cell(40, 10, "Days Present: $days_present");
+                $pdf->Ln();
+                $pdf->Cell(40, 10, "Total Salary: $total_salary");
+                $pdf->Ln();
+                $pdfContent = $pdf->Output('S');
+
+                // Save the PDF to the Payroll_pdfs table
+                $insertPdfQuery = "INSERT INTO payroll_pdfs (payroll_id, payroll_pdf) VALUES (?, ?)";
+                $stmt = mysqli_prepare($conn, $insertPdfQuery);
+                mysqli_stmt_bind_param($stmt, 'is', $payroll_id, $pdfContent);
+                mysqli_stmt_execute($stmt);
+
+                if (mysqli_stmt_affected_rows($stmt) > 0) {
+                    $_SESSION['success_message'] = "$month_year Payroll Update Successfully";
+                    // Set the URLs for download and view
+                    $pdfDownloadUrl = "download_pdf.php?payroll_id=$payroll_id"; // Ensure this script handles the PDF download
+                    $pdfViewUrl = "view_pdf.php?payroll_id=$payroll_id"; // Ensure this script handles PDF viewing
+
+                    // Set the JavaScript message
+                    $_SESSION['alert_script'] = "
+            <script>
+                window.onload = function() {
+                    if (confirm('Payroll added successfully! Click OK to download the PDF, or Cancel to view it.')) {
+                        window.location.href = '$pdfDownloadUrl';
+                    } else {
+                        window.location.href = '$pdfViewUrl';
+                    }
+                };
+            </script>";
+                } else {
+                    $_SESSION['error_message'] = "Failed to save PDF.";
+                }
+            } else {
+                $_SESSION['error_message'] = "Something went wrong. Please try again.";
+            }
+            header('location: addPayroll.php'); // Redirect after processing
+            exit();
+        }
+    }
+}
+
+// ===============payroll Delete===========
+function payrollDelete()
+{
+    global $conn;
+    if (isset($_GET['payroll_id'])) {
+        $delete_id = mysqli_real_escape_string($conn, $_GET['payroll_id']);
+        $deleteQuery = "DELETE FROM payroll where payroll_id = ('{$delete_id}')";
+        $deleteSQL = mysqli_query($conn, $deleteQuery);
+        if ($deleteSQL) {
+            $_SESSION['success_updated_payroll'] = "Payroll Deleted Successfully";
+            header('location: payroll');
+            exit();
+        } else {
+            $_SESSION['error_updated_payroll'] = "payroll Not Deleted";
+            header('location: payroll');
             exit();
         }
     }

@@ -6,7 +6,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     // Redirect to login page
     header('location: login');
 }
-MaintenanceDelete();
+payrollDelete();
 ?>
 
 <!DOCTYPE html>
@@ -57,19 +57,19 @@ MaintenanceDelete();
 
             <!-- Alert -->
             <?php
-            if (isset($_SESSION['success_updated_Maintenance'])) {
+            if (isset($_SESSION['success_updated_payroll'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_updated_Maintenance'] . '
+                    ' . $_SESSION['success_updated_payroll'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['success_updated_Maintenance']);
+                unset($_SESSION['success_updated_payroll']);
             }
-            if (isset($_SESSION['error_message_Maintenance'])) {
+            if (isset($_SESSION['error_updated_payroll'])) {
                 echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error_message_Maintenance'] . '
+                    ' . $_SESSION['error_updated_payroll'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['error_message_Maintenance']);
+                unset($_SESSION['error_updated_payroll']);
             }
             ?>
             <!-- / Alert -->
@@ -209,7 +209,7 @@ MaintenanceDelete();
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'search-maintenance-Data',
+                    action: 'search-payroll-Data',
                     payrollSearch: payrollSearch
                 },
                 success: function(response) {
