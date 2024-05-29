@@ -131,11 +131,12 @@ eGateInsert();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Charges</label>
-                                <select name="charges" id="charges" class="form-select form-control house-id" required>
+                                <input type="text" id="charges" name="charges" class="form-control" placeholder="2000">
+                                <!-- <select name="charges" id="charges" class="form-select form-control house-id" required>
                                     <option value="">--- Select Charges ---</option>
                                     <option value="2000">2000</option>
                                     <option value="1000">1000</option>
-                                </select>
+                                </select> -->
                             </div>
 
                             <!-- Button -->

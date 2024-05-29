@@ -100,12 +100,12 @@ addHouse();
                                 <input type="number" name="owner-cinc" class="form-control" placeholder="XXXXX-XXXXXXX-X" required>
                                 <span class="text-danger" id="owner-cinc_error"></span>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="display: none;">
                                 <label for="owner" class="form-label">Occupancy Status</label>
                                 <select id="owner" name="occupance-status" class="form-select form-control">
-                                    <option value="">-----</option>
                                     <option value="owned">Owned</option>
-                                    <option value="rented">Rented</option>
+                                    <!-- <option value="">-----</option>
+                                    <option value="rented">Rented</option> -->
                                 </select>
                                 <span class="text-danger" id="occupance-status_error"></span>
                             </div>
@@ -134,8 +134,10 @@ addHouse();
                                 <label class="form-label">Size/Area of the Property</label>
                                 <select id="size" name="property-size" class="form-select form-control">
                                     <option value="">-----</option>
-                                    <option value="60 sq yards">60 sq yards</option>
-                                    <option value="120 sq yards">120 sq yards</option>
+                                    <option value="60 yards">60 yards</option>
+                                    <option value="120 yards">120 yards</option>
+                                    <option value="240 yards">240 yards</option>
+                                    <option value="520 yards">520 yards</option>
                                 </select>
                                 <span class="text-danger" id="property-size_error"></span>
                             </div>

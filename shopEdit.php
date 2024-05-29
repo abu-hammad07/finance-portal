@@ -116,15 +116,6 @@ addShopupdate();
                                             <span class="text-danger" id="floor_error"></span>
                                         </div>
                                         <div class="col-md-6 ">
-                                            <label for="property-type" class="form-label">Type of Property</label>
-                                            <select id="property_type" name="property_type" class="form-select form-control">
-                                                <!-- <option value="">-----</option> -->
-                                                <option value="Apartment" <?php if ($row['property_type'] == 'Apartment') echo "selected" ?>>Apartment</option>
-                                                <option value="Duplex" <?php if ($row['property_type'] == 'Duplex') echo "selected" ?>>Duplex</option>
-                                            </select>
-                                            <span class="text-danger" id="property_type_error"></span>
-                                        </div>
-                                        <div class="col-md-6 ">
                                             <label class="form-label">Size/Area of the Property</label>
                                             <select id="property_size" name="property_size" class="form-select form-control">
                                                 <!-- <option value="">-----</option> -->
@@ -152,9 +143,16 @@ addShopupdate();
             <?php
                     }
                 } else {
-                    header('location: 404');
-                    exit();
+                    echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    No Data Found.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
                 }
+            } else {
+                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                No ID Found.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
             }
             ?>
 

@@ -126,7 +126,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                     <thead>
                                         <tr>
                                             <th>S.No</th>
-                                            <th>House Number</th>
+                                            <th>House/Shop Number</th>
                                             <th>Tenant Name</th>
                                             <th>Tenant Contact</th>
                                             <th>Tenant CNIC</th>

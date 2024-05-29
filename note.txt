@@ -67,3 +67,81 @@ CREATE TABLE events_booking(
 )
 
 
+CREATE TABLE society_maintenance (
+	society_maint_id INT PRIMARY KEY AUTO_INCREMENT,
+    society_maint_type varchar(255),
+    society_maint_amount varchar(255),
+    society_maint_dueDate varchar(100),
+    society_maint_paymentDate varchar(100),
+    society_maint_paymentMethod varchar(255),
+    society_maint_comments varchar(255),
+    added_by varchar(100),
+	added_on varchar(100),
+    updated_by varchar(100),
+    updated_on varchar(100)
+)
+
+
+
+
+
+
+
+
+
+CREATE TABLE employees(
+	employee_id INT PRIMARY KEY AUTO_INCREMENT,
+	employee_full_name varchar(255),
+	employee_cnic varchar(255),
+	employee_qualification varchar(255),
+	employee_contact varchar(255),
+	employee_email varchar(255),
+	employee_address varchar(255),
+	employee_image varchar(255),
+	appointment_date varchar(255),
+	employement_type ENUM('permanent', 'contract'),
+	department varchar(255),
+	designation varchar(255),
+	salary varchar(100),
+	added_on varchar(100),
+	added_by varchar(100),
+	updated_on varchar(100),
+	updated_by varchar(100)
+);
+
+CREATE TABLE payroll (
+	payroll_id INT PRIMARY KEY AUTO_INCREMENT,
+	employee_id INT,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
+	month_year varchar(100),
+	total_working_days varchar(255), 
+	days_absent varchar(255),
+	days_leave varchar(255),
+	absent_deduction varchar(255),
+	total_salary varchar(100),
+	added_on varchar(100),
+	added_by varchar(100),
+	updated_on varchar(100),
+	updated_by varchar(100)
+);
+
+CREATE TABLE payroll_pdfs (
+    pdf_id INT PRIMARY KEY AUTO_INCREMENT,
+	pdf_no varchar(255),
+	payroll_id INT,
+    FOREIGN KEY (payroll_id) REFERENCES payroll(payroll_id),
+	payroll_pdf varchar(255),
+    added_on varchar(100),
+	added_by varchar(100),
+	updated_on varchar(100),
+	updated_by varchar(100)
+);
+
+
+
+
+
+
+
+
+

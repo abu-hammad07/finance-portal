@@ -18,7 +18,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
-    <title>Add E-Gate</title>
+    <title>E-Gate</title>
     <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">

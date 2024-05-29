@@ -118,10 +118,15 @@ updatePenalty();
                     }
                 } else {
                     echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    No House Found.
+                    No Data Found.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
                 }
+            }else {
+                echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                No ID Found.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
             }
             ?>
         </div>
