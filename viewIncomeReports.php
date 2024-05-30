@@ -69,6 +69,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                 </select>
                             </div>
 
+                            
                             <!-- --------------egat-pass start------------------ -->
                             <div class="col-md-4 col-6" id="utilityTypeContainer" style="display: none;">
                                 <input type="text" class="form-control" id="searchUtilityType" placeholder="Vehicle Name..." />
