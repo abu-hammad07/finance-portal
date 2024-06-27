@@ -1,6 +1,88 @@
 <?php
 include "config.php";
 
+
+// Total Houses
+function totalHouses()
+{
+    global $conn;
+    $sql = "SELECT * FROM houses";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        $_SESSION['index_error'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $totalCounts = mysqli_num_rows($result);
+    return $totalCounts;
+}
+
+
+// Total Houses
+function totalShops()
+{
+    global $conn;
+    $sql = "SELECT * FROM shops";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        $_SESSION['index_error'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $totalCounts = mysqli_num_rows($result);
+    return $totalCounts;
+}
+
+
+// Total Houses
+function totalUsers()
+{
+    global $conn;
+    $sql = "SELECT * FROM users";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        $_SESSION['index_error'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $totalCounts = mysqli_num_rows($result);
+    return $totalCounts;
+}
+
+
+// Total Houses
+function totalServants()
+{
+    global $conn;
+    $sql = "SELECT * FROM servants";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        $_SESSION['index_error'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $totalCounts = mysqli_num_rows($result);
+    return $totalCounts;
+}
+
+
+// Total Houses
+function totalEmployees()
+{
+    global $conn;
+    $sql = "SELECT * FROM employees";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        $_SESSION['index_error'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $totalCounts = mysqli_num_rows($result);
+    return $totalCounts;
+}
+
+
+
 // Add Houses
 function addHouse()
 {
@@ -1334,7 +1416,7 @@ function deleteUtilityChargesID()
 function insertSocietyMaintenance()
 {
     global $conn;
-    if(isset($_POST['societyMaintenance_submit'])){
+    if (isset($_POST['societyMaintenance_submit'])) {
         $society_maint_type = mysqli_real_escape_string($conn, $_POST['society_maint_type']);
         $society_maint_amount = mysqli_real_escape_string($conn, $_POST['society_maint_amount']);
         $society_maint_dueDate = mysqli_real_escape_string($conn, $_POST['society_maint_dueDate']);
@@ -1366,7 +1448,6 @@ function insertSocietyMaintenance()
             header('location: addSocietyMaintenance');
             exit();
         }
-
     }
 }
 
@@ -1374,7 +1455,7 @@ function insertSocietyMaintenance()
 function updateSocietyMaintenance()
 {
     global $conn;
-    if(isset($_POST['societyMaintenance_update'])){
+    if (isset($_POST['societyMaintenance_update'])) {
         $society_maint_id = mysqli_real_escape_string($conn, $_POST['society_maint_id']);
         $society_maint_type = mysqli_real_escape_string($conn, $_POST['society_maint_type']);
         $society_maint_amount = mysqli_real_escape_string($conn, $_POST['society_maint_amount']);
@@ -1408,7 +1489,6 @@ function updateSocietyMaintenance()
             header('location: societyMaintenance');
             exit();
         }
-
     }
 }
 
@@ -1418,7 +1498,7 @@ function updateSocietyMaintenance()
 function deleteSocietyMaintenance()
 {
     global $conn;
-    if(isset($_GET['societyMaint_delete_id'])){
+    if (isset($_GET['societyMaint_delete_id'])) {
         $delete_id = mysqli_real_escape_string($conn, $_GET['societyMaint_delete_id']);
 
         $delete_query = "DELETE FROM `society_maintenance` WHERE `society_maint_id` = '$delete_id'";
@@ -1435,5 +1515,4 @@ function deleteSocietyMaintenance()
             exit();
         }
     }
-
 }

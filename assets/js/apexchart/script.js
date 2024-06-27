@@ -62,7 +62,7 @@
     } else{
         var options = {
             series: [{
-                name: "Desktops",
+                name: "Income",
                 data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
             }],
             chart: {
@@ -106,7 +106,7 @@
                 }
             },
             xaxis: {
-                categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                categories: ["Jan", "Feb", "Marc", "April", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec"],
             }
         };
 

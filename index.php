@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once("includes/config.php");
+include_once("includes/function.php");
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
@@ -14,7 +15,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
     // Execute the update query directly
     $query = "UPDATE `users_detail` SET `login_time` = NOW() 
     WHERE `users_detail_id` = (SELECT users_detail_id FROM `users` WHERE user_id = '$user_id')";
-    
+
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
@@ -89,17 +90,17 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                     <div class="row">
                         <!-- Visa Card -->
 
-                        <!-- Income Card -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <!-- Houses Card -->
+                        <div class="col-xl-4 col-md-6 col-6 mb-4">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body text-center">
                                     <div class="row mb-3">
-                                        <div class="col-8">
-                                            <div class="btn rounded shadow text-primary">
+                                        <div class="col-12">
+                                            <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                         </div>
-                                        <div class="col d-flex justify-content-end">
+                                        <!-- <div class="col d-flex justify-content-end">
                                             <div class="dropdown">
                                                 <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fas fa-ellipsis-v"></i>
@@ -109,28 +110,26 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                                     <li><a class="dropdown-item" href="#">Regular</a></li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
-
-                                    <h6>Income</h6>
-                                    <p>Last Month</p>
-
-                                    <h4 class="text-primary mb-0">$24,977.05</h4>
+                                    <h6>Houses</h6>
+                                    <!-- <p>Last Month</p> -->
+                                    <h4 class="text-primary mb-0"><?= totalHouses() ?></h4>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Total Spent -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <!-- Shops Card -->
+                        <div class="col-xl-4 col-md-6 col-6 mb-4">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body text-center">
                                     <div class="row mb-3">
-                                        <div class="col-8">
-                                            <div class="btn rounded shadow text-primary">
+                                        <div class="col-12">
+                                            <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                         </div>
-                                        <div class="col d-flex justify-content-end">
+                                        <!-- <div class="col d-flex justify-content-end">
                                             <div class="dropdown">
                                                 <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fas fa-ellipsis-v"></i>
@@ -140,28 +139,26 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                                     <li><a class="dropdown-item" href="#">Regular</a></li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
-
-                                    <h6>Total Spent</h6>
-                                    <p>Last Month</p>
-
-                                    <h4 class="text-primary mb-0">$16,547.59</h4>
+                                    <h6>Shops</h6>
+                                    <!-- <p>Last Month</p> -->
+                                    <h4 class="text-primary mb-0"><?= totalShops() ?></h4>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Transactions -->
-                        <div class="col-xl-4 col-md-6 mb-4 ">
+                        <!-- Users Card -->
+                        <div class="col-xl-4 col-md-6 col-6 mb-4">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body text-center">
                                     <div class="row mb-3">
-                                        <div class="col-8">
-                                            <div class="btn rounded shadow text-primary">
+                                        <div class="col-12">
+                                            <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                         </div>
-                                        <div class="col d-flex justify-content-end">
+                                        <!-- <div class="col d-flex justify-content-end">
                                             <div class="dropdown">
                                                 <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fas fa-ellipsis-v"></i>
@@ -171,28 +168,26 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                                     <li><a class="dropdown-item" href="#">Regular</a></li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
-
-                                    <h6>Transactions</h6>
-                                    <p>Last Month</p>
-
-                                    <h4 class="text-primary mb-0">$90,548.23</h4>
+                                    <h6>Users</h6>
+                                    <!-- <p>Last Month</p> -->
+                                    <h4 class="text-primary mb-0"><?= totalUsers() ?></h4>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Total Cashback -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <!-- Servants Card -->
+                        <div class="col-xl-4 col-md-6 col-6 mb-4">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body text-center">
                                     <div class="row mb-3">
-                                        <div class="col-8">
-                                            <div class="btn rounded shadow text-primary">
+                                        <div class="col-12">
+                                            <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                         </div>
-                                        <div class="col d-flex justify-content-end">
+                                        <!-- <div class="col d-flex justify-content-end">
                                             <div class="dropdown">
                                                 <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fas fa-ellipsis-v"></i>
@@ -202,44 +197,28 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                                     <li><a class="dropdown-item" href="#">Regular</a></li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
-
-                                    <h6>Total Cashback</h6>
-                                    <p>Last Month</p>
-
-                                    <h4 class="text-primary mb-0">$8,548.23</h4>
+                                    <h6>Servants</h6>
+                                    <!-- <p>Last Month</p> -->
+                                    <h4 class="text-primary mb-0"><?= totalServants() ?></h4>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Investment -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <!-- Employees Card -->
+                        <div class="col-xl-4 col-md-6 col-6 mb-4">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body text-center">
                                     <div class="row mb-3">
-                                        <div class="col-8">
-                                            <div class="btn rounded shadow text-primary">
+                                        <div class="col-12">
+                                            <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                         </div>
-                                        <div class="col d-flex justify-content-end">
-                                            <div class="dropdown">
-                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <ul class="dropdown-menu d2c_dropdown" aria-labelledby="dropdownMenuButton11">
-                                                    <li><a class="dropdown-item" href="#">Premium</a></li>
-                                                    <li><a class="dropdown-item" href="#">Regular</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
                                     </div>
-
-                                    <h6>Investment</h6>
-                                    <p>Last Month</p>
-
-                                    <h4 class="text-primary mb-0">$22,548.23</h4>
+                                    <h6>Employees</h6>
+                                    <h4 class="text-primary mb-0"><?= totalEmployees() ?></h4>
                                 </div>
                             </div>
                         </div>
@@ -310,8 +289,8 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
             </div>
 
             <div class="row">
+                <!-- Income Summary -->
                 <div class="col-xl-6 mb-4">
-                    <!-- Balance Summary -->
                     <div class="card h-100">
                         <div class="card-header">
                             <h6>Balance Summary</h6>
@@ -321,363 +300,24 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                             <div id="d2c_lineChart"></div>
                         </div>
                     </div>
-                    <!-- End:Balance Summary -->
                 </div>
+                <!-- End:Income Summary -->
 
+                <!-- Expenses -->
                 <div class="col-xl-6 mb-4">
-                    <!-- Balance -->
                     <div class="card">
                         <div class="card-header">
-                            <h6>Balance</h6>
+                            <h6>Expenses</h6>
                             <h4 class="text-primary">$12,389.54</h4>
                         </div>
                         <div class="card-body">
                             <div id="d2c_barChart"></div>
                         </div>
                     </div>
-                    <!-- End:Balance -->
                 </div>
+                <!-- End:Expenses -->
 
-                <div class="col-xl-6 mb-4">
-                    <!-- All Expanses -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h6>All Expanses</h6>
-                            <div class="row">
-                                <div class="col">
-                                    <p class="mb-0">Daily</p>
-                                    <p>$678.09</p>
-                                </div>
-                                <div class="col">
-                                    <p class="mb-0">Weekly</p>
-                                    <p>$1,904.21</p>
-                                </div>
-                                <div class="col">
-                                    <p class="mb-0">Monthly</p>
-                                    <p>$29,904.21</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div id="d2c_dashboard_radialBarChart"></div>
-                        </div>
-                    </div>
-                    <!-- End:All Expanses -->
-                </div>
-
-                <div class="col-xl-6 mb-4">
-                    <!-- Market Cap -->
-                    <div class="card h-100">
-                        <div class="card-header">
-                            <h6>Market Cap</h6>
-                        </div>
-                        <div class="card-body">
-                            <div id="d2c_dashboard_donutChart"></div>
-                        </div>
-                    </div>
-                    <!-- End:Market Cap -->
-                </div>
-
-                <div class="col-xl-6 mb-4">
-                    <!-- investment bar chart -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h6>Investment</h6>
-                            <h4 class="text-primary">$78,537.48</h4>
-                        </div>
-                        <div class="card-body">
-                            <div id="d2c_investment_bar_chart"></div>
-                        </div>
-                    </div>
-                    <!-- End:investment -->
-                </div>
-
-                <div class="col-xl-6 mb-4">
-                    <!-- Balance -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h6>Stock Watch list</h6>
-                            <h4 class="text-primary">$8,537.48</h4>
-                        </div>
-                        <div class="card-body">
-                            <div id="d2c_areaChart"></div>
-                        </div>
-                    </div>
-                    <!-- End:Balance -->
-                </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-12 mb-4">
-                    <!-- Basic Table -->
-                    <div class="card h-auto d2c_projects_datatable">
-                        <div class="card-header">
-                            <h6>Advance Table</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table" id="d2c_advanced_table">
-                                    <thead>
-                                        <tr>
-                                            <th style="min-width: 170px;">Date</th>
-                                            <th style="min-width: 170px;">Customer</th>
-                                            <th style="min-width: 130px;">Group Name</th>
-                                            <th style="min-width: 130px;">Voucher</th>
-                                            <th style="min-width: 130px;">Payment Type</th>
-                                            <th style="min-width: 130px;">Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        20 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Jane Cooper</td>
-                                            <td>Supplier</td>
-                                            <td>58755</td>
-                                            <td class="text-warning">Pending</td>
-                                            <td>$4,323.39</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        19 Jan 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Alex Cooper</td>
-                                            <td>Vendor</td>
-                                            <td>58723</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$2,432.39</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        16 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Hales Jane</td>
-                                            <td>Customer</td>
-                                            <td>58712</td>
-                                            <td class="text-danger">Unpaid</td>
-                                            <td>$1,582.87</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        23 Jun 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Maria D</td>
-                                            <td>Supplier</td>
-                                            <td>34755</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$5,582.45</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        12 Aug 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Robert Mon</td>
-                                            <td>Customer</td>
-                                            <td>67755</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$6,546.32</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        11 May 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Brian Depew</td>
-                                            <td>Vendor</td>
-                                            <td>28755</td>
-                                            <td class="text-warning">Pending</td>
-                                            <td>$3,582.6</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        6 Oct 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>James Murray</td>
-                                            <td>Customer</td>
-                                            <td>11755</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$8,432.56</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        10 Oct 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Alex Carey</td>
-                                            <td>Vendor</td>
-                                            <td>88755</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$1,321.34</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        29 Oct 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Jane Cooper</td>
-                                            <td>Vendor</td>
-                                            <td>56735</td>
-                                            <td class="text-danger">Unpaid</td>
-                                            <td>$6,453.66</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        27 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Gary Nunez</td>
-                                            <td>Vendor</td>
-                                            <td>45637</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$3,321.54</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        26 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>James Bowes</td>
-                                            <td>Customer</td>
-                                            <td>90876</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$4,582.39</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        25 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>David Sankey</td>
-                                            <td>Expenses</td>
-                                            <td>33425</td>
-                                            <td class="text-warning">Pending</td>
-                                            <td>$4,582.39</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        24 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Paul Clark</td>
-                                            <td>Vendor</td>
-                                            <td>33445</td>
-                                            <td class="text-warning">Pending</td>
-                                            <td>$4,582.39</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        23 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Matt Cogdell</td>
-                                            <td>Customer</td>
-                                            <td>33332</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$4,582.39</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        20 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Bill Blevins</td>
-                                            <td>Vendor</td>
-                                            <td>55565</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$4,582.39</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox">
-                                                    <label class="form-check-label">
-                                                        21 Mar 2023
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Joseph Dole</td>
-                                            <td>Supplier</td>
-                                            <td>88998</td>
-                                            <td class="text-success">Delivered</td>
-                                            <td>$4,582.39</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End:Advanced Table -->
-                </div>
-            </div>
-
         </div>
         <!-- End:Main Body -->
     </div>
