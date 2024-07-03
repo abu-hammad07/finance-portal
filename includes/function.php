@@ -49,23 +49,6 @@ function totalUsers()
     return $totalCounts;
 }
 
-
-// Total Houses
-function totalServants()
-{
-    global $conn;
-    $sql = "SELECT * FROM servants";
-    $result = mysqli_query($conn, $sql);
-
-    if (!$result) {
-        $_SESSION['index_error'] = "Error: " . $sql . "<br>" . mysqli_error($conn);
-    }
-
-    $totalCounts = mysqli_num_rows($result);
-    return $totalCounts;
-}
-
-
 // Total Houses
 function totalEmployees()
 {
@@ -80,6 +63,87 @@ function totalEmployees()
     $totalCounts = mysqli_num_rows($result);
     return $totalCounts;
 }
+
+// Function to get total income count from income table
+function get_total_combined_income()
+{
+    global $conn;
+
+    // Get the current month and year
+    $current_month = date('m');
+    $current_year = date('Y');
+
+    // Set the start and end date of the current month
+    $start_date = "$current_year-$current_month-01";
+    $end_date = date('Y-m-t', strtotime($start_date)); // Get the last day of the current month
+
+    // Define the queries to get total income from each table
+    $queries = [
+        "SELECT SUM(maintenance_charges) AS total_income FROM `houses` WHERE added_on BETWEEN '$start_date' AND '$end_date'",
+        "SELECT SUM(maintenance_charges) AS total_income FROM `shops` WHERE added_on BETWEEN '$start_date' AND '$end_date'",
+        "SELECT SUM(eGate_charges) AS total_income FROM `egate` WHERE added_on BETWEEN '$start_date' AND '$end_date'",
+        "SELECT SUM(servantFees) AS total_income FROM `servants` WHERE added_on BETWEEN '$start_date' AND '$end_date'",
+        "SELECT SUM(bookingPayment) AS total_income FROM `events_booking` WHERE added_on BETWEEN '$start_date' AND '$end_date'",
+        "SELECT SUM(maintenance_peyment) AS total_income FROM `maintenance_payments` WHERE added_on BETWEEN '$start_date' AND '$end_date'",
+        "SELECT SUM(penalty_charges) AS total_income FROM `penalty` WHERE created_by BETWEEN '$start_date' AND '$end_date'"
+    ];
+
+    $total_combined_income = 0;
+
+    // Execute each query and accumulate the total income
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            return "Error: " . mysqli_error($conn);
+        }
+        $row = mysqli_fetch_assoc($result);
+        $total_combined_income += $row['total_income'];
+    }
+
+    // Format the combined total income amount with commas
+    return number_format($total_combined_income);
+}
+
+// Function to get total expences count from expences table
+function get_total_combined_expences()
+{
+    global $conn;
+
+    // Get the current month and year
+    $current_month = date('m');
+    $current_year = date('Y');
+
+    // Set the start and end date of the current month
+    $start_date = "$current_year-$current_month-01";
+    $end_date = date('Y-m-t', strtotime($start_date)); // Get the last day of the current month
+
+    // Define the queries to get total expences from each table
+    $queries = [
+        "SELECT SUM(utility_amount) AS total_expences FROM `utility_charges` WHERE added_on BETWEEN '$start_date' AND '$end_date'",
+        "SELECT SUM(society_maint_amount) AS total_expences FROM `society_maintenance` WHERE added_on BETWEEN '$start_date' AND '$end_date'",
+    ];
+
+    $total_combined_expences = 0;
+
+    // Execute each query and accumulate the total expences
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            return "Error: " . mysqli_error($conn);
+        }
+        $row = mysqli_fetch_assoc($result);
+        $total_combined_expences += $row['total_expences'];
+    }
+
+    // Format the combined total expences amount with commas
+    return number_format($total_combined_expences);
+}
+
+
+
+
+
+
 
 
 
@@ -871,75 +935,6 @@ function addShopupdate()
         }
     }
 }
-
-
-
-// function eGateInsert() {
-//     global $conn;
-
-//     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
-//         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
-//         $vehicle_name = mysqli_real_escape_string($conn, $_POST['vehicle_name']);
-//         $vehicle_number = mysqli_real_escape_string($conn, $_POST['vehicle_number']);
-//         $vehicle_color = mysqli_real_escape_string($conn, $_POST['vehicle_color']);
-//         $person_name = mysqli_real_escape_string($conn, $_POST['person_name']);
-//         $cnic_number = mysqli_real_escape_string($conn, $_POST['cnic_number']);
-//         $charges_type = mysqli_real_escape_string($conn, $_POST['charges_type']);
-//         $charges = mysqli_real_escape_string($conn, $_POST['charges']);
-
-//         // Validate house_shop_id against the correct table
-//         // $valid_id = false;
-//         // if ($house_or_shop === 'house') {
-//         //     $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
-//         // } elseif ($house_or_shop === 'shop') {
-//         //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
-//         // } else {
-//         //     $_SESSION['error_insert_egate'] = "Invalid house_or_shop value.";
-//         //     header('location: addeGate');
-//         //     exit();
-//         // }
-
-//         // $checkResult = mysqli_query($conn, $checkQuery);
-//         // if (mysqli_num_rows($checkResult) > 0) {
-//         //     $valid_id = true;
-//         // }
-
-//         // if (!$valid_id) {
-//         //     $_SESSION['error_insert_egate'] = "Invalid house_shop_id for the given house_or_shop.";
-//         //     header('location: addeGate');
-//         //     exit();
-//         // }
-
-//         // added_by & added_on
-//         $added_by = $_SESSION['username'];
-//         $added_on = date("Y-m-d");
-
-//         // Insert data into e-gate table
-//         $insertEGate = "INSERT INTO egate (
-//             house_id, shop_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
-//             eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
-//             added_on, added_by
-//         ) VALUES (
-//             '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$vehicle_color', 
-//             '$person_name', '$cnic_number', '$charges_type', '$charges', 
-//             '$added_on', '$added_by'
-//         )";
-
-//         $insertEGate_res = mysqli_query($conn, $insertEGate);
-
-//         if ($insertEGate_res) {
-//             $_SESSION['success_insert_egate'] = "($vehicle_number) vehicle has been added.";
-//             header('location: addeGate');
-//             exit();
-//         } else {
-//             error_log("Error executing insert query: " . mysqli_error($conn));
-//             $_SESSION['error_insert_egate'] = "($vehicle_number) not Added.";
-//             header('location: addeGate');
-//             exit();
-//         }
-//     }
-// }
 
 function eGateInsert()
 {

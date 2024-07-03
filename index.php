@@ -95,22 +95,43 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                             <div class="card">
                                 <div class="card-body text-center">
                                     <div class="row mb-3">
+                                        <div class="col d-flex justify-content-end">
+                                            <div class="dropdown">
+                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="housesModalLabel" data-bs-toggle="modal" data-bs-target="#housesModal">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="housesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="housesModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+
+                                                        <div class="modal-content position-relative">
+                                                            <form>
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="housesModalLabel">House </h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body p-0">
+                                                                    <div class="p-4">
+                                                                        <label class="col-form-label" for="house_month">Select House Month:</label>
+                                                                        <input class="form-control" id="house_month" type="month" value="<?php echo date('Y-m'); ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                                                                    <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Search </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Modal -->
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                         </div>
-                                        <!-- <div class="col d-flex justify-content-end">
-                                            <div class="dropdown">
-                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <ul class="dropdown-menu d2c_dropdown" aria-labelledby="dropdownMenuButton11">
-                                                    <li><a class="dropdown-item" href="#">Premium</a></li>
-                                                    <li><a class="dropdown-item" href="#">Regular</a></li>
-                                                </ul>
-                                            </div>
-                                        </div> -->
                                     </div>
                                     <h6>Houses</h6>
                                     <!-- <p>Last Month</p> -->
@@ -118,28 +139,50 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                 </div>
                             </div>
                         </div>
+                        <!-- End:Houses Card -->
 
                         <!-- Shops Card -->
                         <div class="col-xl-4 col-md-6 col-6 mb-4">
                             <div class="card">
                                 <div class="card-body text-center">
                                     <div class="row mb-3">
+                                        <div class="col d-flex justify-content-end">
+                                            <div class="dropdown">
+                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="shopsModalLabel" data-bs-toggle="modal" data-bs-target="#shopsModal">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="shopsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="shopsModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+
+                                                        <div class="modal-content position-relative">
+                                                            <form>
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="shopsModalLabel">Shop </h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body p-0">
+                                                                    <div class="p-4">
+                                                                        <label class="col-form-label" for="house_month">Select Shop Month:</label>
+                                                                        <input class="form-control" id="house_month" type="month" value="<?php echo date('Y-m'); ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                                                                    <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Search </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Modal -->
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                         </div>
-                                        <!-- <div class="col d-flex justify-content-end">
-                                            <div class="dropdown">
-                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <ul class="dropdown-menu d2c_dropdown" aria-labelledby="dropdownMenuButton11">
-                                                    <li><a class="dropdown-item" href="#">Premium</a></li>
-                                                    <li><a class="dropdown-item" href="#">Regular</a></li>
-                                                </ul>
-                                            </div>
-                                        </div> -->
                                     </div>
                                     <h6>Shops</h6>
                                     <!-- <p>Last Month</p> -->
@@ -153,55 +196,47 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                             <div class="card">
                                 <div class="card-body text-center">
                                     <div class="row mb-3">
+                                    <div class="col d-flex justify-content-end">
+                                            <div class="dropdown">
+                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="usersModalLabel" data-bs-toggle="modal" data-bs-target="#usersModal">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="usersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="usersModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+
+                                                        <div class="modal-content position-relative">
+                                                            <form>
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="usersModalLabel">User </h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body p-0">
+                                                                    <div class="p-4">
+                                                                        <label class="col-form-label" for="user_month">Select User Month:</label>
+                                                                        <input class="form-control" id="user_month" type="month" value="<?php echo date('Y-m'); ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                                                                    <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Search </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Modal -->
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                         </div>
-                                        <!-- <div class="col d-flex justify-content-end">
-                                            <div class="dropdown">
-                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <ul class="dropdown-menu d2c_dropdown" aria-labelledby="dropdownMenuButton11">
-                                                    <li><a class="dropdown-item" href="#">Premium</a></li>
-                                                    <li><a class="dropdown-item" href="#">Regular</a></li>
-                                                </ul>
-                                            </div>
-                                        </div> -->
                                     </div>
                                     <h6>Users</h6>
                                     <!-- <p>Last Month</p> -->
                                     <h4 class="text-primary mb-0"><?= totalUsers() ?></h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Servants Card -->
-                        <div class="col-xl-4 col-md-6 col-6 mb-4">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <div class="row mb-3">
-                                        <div class="col-12">
-                                            <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-dollar-sign"></i>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="col d-flex justify-content-end">
-                                            <div class="dropdown">
-                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <ul class="dropdown-menu d2c_dropdown" aria-labelledby="dropdownMenuButton11">
-                                                    <li><a class="dropdown-item" href="#">Premium</a></li>
-                                                    <li><a class="dropdown-item" href="#">Regular</a></li>
-                                                </ul>
-                                            </div>
-                                        </div> -->
-                                    </div>
-                                    <h6>Servants</h6>
-                                    <!-- <p>Last Month</p> -->
-                                    <h4 class="text-primary mb-0"><?= totalServants() ?></h4>
                                 </div>
                             </div>
                         </div>
@@ -211,6 +246,38 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                             <div class="card">
                                 <div class="card-body text-center">
                                     <div class="row mb-3">
+                                    <div class="col d-flex justify-content-end">
+                                            <div class="dropdown">
+                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="employeesModalLabel" data-bs-toggle="modal" data-bs-target="#employeesModal">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="employeesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="employeesModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+
+                                                        <div class="modal-content position-relative">
+                                                            <form>
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="employeesModalLabel">Employee </h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body p-0">
+                                                                    <div class="p-4">
+                                                                        <label class="col-form-label" for="employee_month">Select Employee Month:</label>
+                                                                        <input class="form-control" id="employee_month" type="month" value="<?php echo date('Y-m'); ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                                                                    <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Search </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Modal -->
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
                                                 <i class="fas fa-dollar-sign"></i>
@@ -219,6 +286,104 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                     </div>
                                     <h6>Employees</h6>
                                     <h4 class="text-primary mb-0"><?= totalEmployees() ?></h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Employees Card -->
+                        <div class="col-xl-4 col-md-6 col-6 mb-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="row mb-3">
+                                    <div class="col d-flex justify-content-end">
+                                            <div class="dropdown">
+                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="incomeModalLabel" data-bs-toggle="modal" data-bs-target="#incomeModal">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="incomeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="incomeModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+
+                                                        <div class="modal-content position-relative">
+                                                            <form>
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="incomeModalLabel">Income </h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body p-0">
+                                                                    <div class="p-4">
+                                                                        <label class="col-form-label" for="income_month">Select Income Month:</label>
+                                                                        <input class="form-control" id="income_month" type="month" value="<?php echo date('Y-m'); ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                                                                    <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Search </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Modal -->
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="btn rounded shadow text-primary fs-3">
+                                                <i class="fas fa-dollar-sign"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6>Income</h6>
+                                    <h4 class="text-primary mb-0"><?= get_total_combined_income() ?></h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Employees Card -->
+                        <div class="col-xl-4 col-md-6 col-6 mb-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="row mb-3">
+                                    <div class="col d-flex justify-content-end">
+                                            <div class="dropdown">
+                                                <button class="btn px-1 d2c_dropdown_btn" type="button" id="expensesModalLabel" data-bs-toggle="modal" data-bs-target="#expensesModal">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="expensesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="expensesModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+
+                                                        <div class="modal-content position-relative">
+                                                            <form>
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="expensesModalLabel">Expense </h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body p-0">
+                                                                    <div class="p-4">
+                                                                        <label class="col-form-label" for="expense_month">Select Expense Month:</label>
+                                                                        <input class="form-control" id="expense_month" type="month" value="<?php echo date('Y-m'); ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                                                                    <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Search </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Modal -->
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="btn rounded shadow text-primary fs-3">
+                                                <i class="fas fa-dollar-sign"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6>Expenses</h6>
+                                    <h4 class="text-primary mb-0"><?= get_total_combined_expences() ?></h4>
                                 </div>
                             </div>
                         </div>
@@ -241,7 +406,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                     </div>
                                     <div class="flex-1 w-100 ms-3">
                                         <div class="d-flex justify-content-between mb-2">
-                                            Facebook Ads <span class="text-end"><span class="fw-bold">75</span> / 100</span>
+                                            Houses <span class="text-end"><span class="fw-bold">75</span> / 100</span>
                                         </div>
                                         <div class="progress bg-primary bg-opacity-10">
                                             <div class="progress-bar bg-primary rounded" role="progressbar" aria-label="Basic example" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -258,7 +423,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                     </div>
                                     <div class="flex-1 w-100 ms-3">
                                         <div class="d-flex justify-content-between mb-2">
-                                            Youtube Premium <span class="text-end"><span class="fw-bold">50</span> / 100</span>
+                                            Shops <span class="text-end"><span class="fw-bold">50</span> / 100</span>
                                         </div>
                                         <div class="progress bg-info bg-opacity-10">
                                             <div class="progress-bar bg-info rounded" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -275,7 +440,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                     </div>
                                     <div class="flex-1 w-100 ms-3">
                                         <div class="d-flex justify-content-between mb-2">
-                                            Skype Premium <span class="text-end"><span class="fw-bold">30</span> / 100</span>
+                                            Employee <span class="text-end"><span class="fw-bold">30</span> / 100</span>
                                         </div>
                                         <div class="progress bg-danger bg-opacity-10">
                                             <div class="progress-bar bg-danger rounded" role="progressbar" aria-label="Basic example" style="width: 30%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
