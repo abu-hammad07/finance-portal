@@ -95,23 +95,23 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <span class="text-danger" id="startTiming_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">No Of Servant</label>
-                                            <input type="text" class="form-control" id="noOfServant" name="noOfServant" readonly placeholder="Enter No Of Servant" value="<?= $row['noOfServant'] ?>">
+                                            <label class="form-label">No Of Persons</label>
+                                            <input type="text" class="form-control" id="noOfServant" name="noOfServant" readonly placeholder="Enter No Of Persons" value="<?= $row['noOfPersons'] ?>">
                                             <span class="text-danger" id="noOfServant_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Booking Name</label>
-                                            <input type="text" class="form-control" id="bookingName" name="bookingName" readonly placeholder="Enter Booking Name" value="<?= $row['bookingName'] ?>">
+                                            <label class="form-label">Event Type</label>
+                                            <input type="text" class="form-control" id="bookingName" name="bookingName" readonly placeholder="Enter Customer Name" value="<?= $row['eventType'] ?>">
                                             <span class="text-danger" id="bookingName_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Email</label>
-                                            <input type="text" class="form-control" id="bookingEmail" name="bookingEmail" readonly placeholder="Enter Email" value="<?= $row['bookingEmail'] ?>">
+                                            <label class="form-label">Customer CNIC</label>
+                                            <input type="text" class="form-control" id="bookingEmail" name="bookingEmail" readonly placeholder=" Customer CNIC" value="<?= $row['customerCnic'] ?>">
                                             <span class="text-danger" id="bookingEmail_error"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Contact</label>
-                                            <input type="text" class="form-control" id="bookingContact" name="bookingContact" readonly placeholder="Enter Contact" value="<?= $row['bookingContact'] ?>">
+                                            <label class="form-label">Customer Contact</label>
+                                            <input type="text" class="form-control" id="bookingContact" name="bookingContact" readonly placeholder=" Customer Contact" value="<?= $row['customerContact'] ?>">
                                             <span class="text-danger" id="bookingContact_error"></span>
                                         </div>
                                         <div class="col-md-6">
