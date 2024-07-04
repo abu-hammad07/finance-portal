@@ -104,6 +104,13 @@ addMaintenance();
                                 <span class="text-danger" id="Penal-Cnic_error"></span>
                             </div>
                             <div class="col-md-6">
+                                <label class="form-label">Total Maintenance</label>
+                                <select class="form-control" id="totalMaintenace" required name="totalMaintenace">
+                                    <!-- <option value="">Select Month</option> -->
+                                    <!-- Options will be loaded here via AJAX -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
                                 <label class="form-label">Maintenance Charges</label>
                                 <input type="text" required name="maintenace_charges" class="form-control" placeholder="Penalty Charges" required>
                                 <span class="text-danger" id="Penal-charges_error"></span>
@@ -264,6 +271,8 @@ addMaintenance();
                             $('#house_shop_id').html(data);
                         } else if (type === "month_data") {
                             $('#monthData').html(data);
+                        }else if(type === "totalMaintenace"){
+                            $('#totalMaintenace').html(data);
                         }
                     },
                     error: function(xhr, status, error) {
@@ -277,6 +286,11 @@ addMaintenance();
             $('#house_shop_id').change(function() {
                 var houseShopId = $(this).val();
                 loadData("month_data", houseShopId);
+            });
+
+            $('#house_shop_id').change(function() {
+                var monthData = $(this).val();
+                loadData("totalMaintenace", monthData);
             });
 
             $('#house_shop_id').change(function() {
