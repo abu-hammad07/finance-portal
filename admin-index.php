@@ -334,6 +334,8 @@ function filter_houses_data_In_Database($housesLimited, $housesOrder)
             <td>' . $row['owner_contact'] . '</td>
             <td>' . $row['owner_cnic']  . '</td>
             <td>' . $row['occupancy_status'] . '</td>
+            <td>' . $row['maintenance_charges'] . '</td>
+            <td>' . $row['added_on'] . '</td>
             <td>
                 <a href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">
                     <span>
@@ -410,6 +412,8 @@ function search_houses_data_In_Database($housesSearch)
             <td>' . $row['owner_contact'] . '</td>
             <td>' . $row['owner_cnic']  . '</td>
             <td>' . $row['occupancy_status'] . '</td>
+            <td>' . $row['maintenance_charges'] . '</td>
+            <td>' . $row['added_on'] . '</td>
             <td>
                 <a href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">
                     <span>

@@ -130,6 +130,7 @@ deleteBookingEvents();
                                         <tr>
                                             <th>S.No</th>
                                             <th>Event Name</th>
+                                            <th>Location</th>
                                             <th>Customer Name</th>
                                             <th>Customer CNIC</th>
                                             <th>Date Time</th>
