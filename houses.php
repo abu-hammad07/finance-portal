@@ -131,6 +131,8 @@ deleteHouse();
                                                 <th>Owner's Contact</th>
                                                 <th>Owner's CNIC</th>
                                                 <th>Occupancy Status</th>
+                                                <th>maintenance charges</th>
+                                                <th>Date of Entry</th>
                                                 <th>Action</th>
                                         </tr>
                                     </thead>

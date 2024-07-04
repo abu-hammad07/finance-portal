@@ -581,6 +581,15 @@ function eventBookingInsert()
         $added_on = date('Y-m-d');
         $added_by = $_SESSION['username'];
 
+        // $date Alrady Exist-----------
+        $checkDate = "SELECT * FROM events_booking WHERE `date` = '$date'";
+        $checkDate_res = mysqli_query($conn, $checkDate);
+        if (mysqli_num_rows($checkDate_res) > 0) {
+            $_SESSION['error_message_eventBooking'] = "($date) Date Already Exist.";
+            header('location: eventBooking');
+            exit();
+        }
+
         // insert data into event_booking table
         $insertEventBooking = "INSERT INTO `events_booking`(
             `eventName`, `location`, `date`, `startTiming`, `endTiming`, `noOfPersons`, 
@@ -983,7 +992,7 @@ function eGateInsert()
         $added_on = date("Y-m-d");
 
         // Build insert query dynamically based on house_or_shop
-        if ($house_or_shop === 'House') {
+        if ($house_or_shop === 'house') {
             $insertEGate = "INSERT INTO egate (
                 house_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
                 eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
@@ -993,7 +1002,7 @@ function eGateInsert()
                 '$person_name', '$cnic_number', '$charges_type', '$charges', 
                 '$added_on', '$added_by'
             )";
-        } elseif ($house_or_shop === 'Shop') {
+        } elseif ($house_or_shop === 'shop') {
             $insertEGate = "INSERT INTO egate (
                 shop_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
                 eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 

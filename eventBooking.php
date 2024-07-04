@@ -133,7 +133,7 @@ eventBookingInsert();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Event Type</label>
-                                <input type="text" class="form-control" id="eventType" name="eventType" placeholder="Enter Contact">
+                                <input type="text" class="form-control" id="eventType" name="eventType" placeholder="e:g Birthday, Award Ceremony etc">
                                 <span class="text-danger" id="eventType_error"></span>
                             </div>
                             <div class="col-md-6">
