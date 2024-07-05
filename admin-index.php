@@ -177,6 +177,7 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
         <tr>
             <td>' . $count++ . '</td>
             <td>' . $row['eventName'] . '</td>
+            <td>' . $row['location'] . '</td>
             <td>' . $row['customerName'] . '</td>
             <td>' . $row['customerCnic'] . '</td>
             <td>' . $date . '<br>' . $startTime . ' To ' . $endTime . '</td>
@@ -260,6 +261,7 @@ function search_events_booking_data_In_Database($eventsSearch)
         <tr>
             <td>' . $count++ . '</td>
             <td>' . $row['eventName'] . '</td>
+            <td>' . $row['location'] . '</td>
             <td>' . $row['customerName'] . '</td>
             <td>' . $row['customerCnic'] . '</td>
             <td>' . $date . '<br>' . $startTime . ' To ' . $endTime . '</td>
