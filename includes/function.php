@@ -1327,30 +1327,47 @@ function insertUtilityCharges()
         $utility_billing_month = mysqli_real_escape_string($conn, $_POST['utility_billing_month']);
         $utility_location = mysqli_real_escape_string($conn, $_POST['utility_location']);
 
-        // added_on & added_by
-        $added_by = $_SESSION['username'];
-        $added_on = date("Y-m-d");
 
-        // Insert data into utility_charges table
-        $insert_query = "INSERT INTO `utility_charges` SET
-        `utility_type` = '$utility_type',
-        `utility_amount` = '$utility_amount',
-        `utility_billing_month` = '$utility_billing_month',
-        `utility_location` = '$utility_location',
-        `added_by` = '$added_by',
-        `added_on` = '$added_on'";
-
-        $insert_query_res = mysqli_query($conn, $insert_query);
-
-        if ($insert_query_res) {
-            $_SESSION['success_message_Utility'] = "($utility_type) Utility Charges had been Added.";
-            header('location: addUtilityCharges');
+        // check if utility type already exists
+        $utility_checking = "SELECT * FROM `utility_charges` WHERE `utility_type` = '$utility_type' AND 'uttility_billing_month' = '$utility_billing_month' AND 'utility_location' = '$utility_location'";
+        $utility_checking_res = mysqli_query($conn, $utility_checking);
+        if (mysqli_num_rows($utility_checking_res) > 0) {
+            $_SESSION["error_message_Utility"] = "($utility_type) Utility Charges already exists.";
+            header("location: addUtilityCharges");
             exit();
         } else {
-            $_SESSION['error_message_Utility'] = "($utility_type) Utility Charges not Added.";
-            header('location: addUtilityCharges');
-            exit();
+
+            // added_on & added_by
+            $added_by = $_SESSION['username'];
+            $added_on = date("Y-m-d");
+
+            // Insert data into utility_charges table
+            $insert_query = "INSERT INTO `utility_charges` SET
+            `utility_type` = '$utility_type',
+            `utility_amount` = '$utility_amount',
+            `utility_billing_month` = '$utility_billing_month',
+            `utility_location` = '$utility_location',
+            `added_by` = '$added_by',
+            `added_on` = '$added_on'";
+
+            $insert_query_res = mysqli_query($conn, $insert_query);
+
+            if ($insert_query_res) {
+                $_SESSION['success_message_Utility'] = "($utility_type) Utility Charges had been Added.";
+                header('location: addUtilityCharges');
+                exit();
+            } else {
+                $_SESSION['error_message_Utility'] = "($utility_type) Utility Charges not Added.";
+                header('location: addUtilityCharges');
+                exit();
+            }
+
+
         }
+
+
+
+
     }
 }
 
