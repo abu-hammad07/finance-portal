@@ -21,6 +21,7 @@ function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder)
             <td>' . $row['penalty_type'] . '</td>
             <td>' . $row['penalty_cnic'] . '</td>
             <td>' . $row['penalty_charges'] . '</td>
+            <td>' . $row['created_date'] . '</td>
             <td>
                 <a href="penaltyEdit.php?penalty_edit_id=' . $row['id'] . '">
                     <span>
@@ -92,6 +93,7 @@ function search_penalty_data_In_Database($penaltySearch)
         <td>' . $row['penalty_type'] . '</td>
         <td>' . $row['penalty_cnic'] . '</td>
         <td>' . $row['penalty_charges'] . '</td>
+        <td>' . $row['created_date'] . '</td>
             <td>
             <a href="penaltyEdit.php?penalty_edit_id=' . $row['id'] . '">
                     <span>

@@ -212,7 +212,7 @@ if (isset($_POST['type'])) {
         $months_since_added = ($interval->y * 12) + $interval->m;
 
         $paid_months = [];
-            $sql = "SELECT maintenance_month FROM maintenance_payments WHERE house_id = $houseShopId or shop_id = $houseShopId";
+        $sql = "SELECT maintenance_month FROM maintenance_payments WHERE house_id = $houseShopId or shop_id = $houseShopId";
         $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
         while ($row = mysqli_fetch_assoc($result)) {
             $paid_months[] = (new DateTime($row['maintenance_month']))->format('Y-m');
@@ -229,7 +229,56 @@ if (isset($_POST['type'])) {
         }
 
         echo $monthOptions;
-    } else {
+    } elseif ($_POST['type'] == "owner_name" && isset($_POST['id'])) {
+        $houseShopId = $_POST['id'];
+        // Fetch the added date of the selected house/shop
+        $sql = "SELECT house_id AS id, house_number AS number, owner_name,  owner_contact FROM houses 
+         WHERE house_number = $houseShopId UNION
+         SELECT shop_id AS id, shop_number AS number, owner_name, owner_contact FROM shops WHERE shop_number = $houseShopId;";
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($result)) {
+            $monthOptions .= "<option value='{$row['owner_name']}'>{$row['owner_name']}</option>";
+        }
+        echo $monthOptions;
+    } elseif ($_POST['type'] == "owner_contact" && isset($_POST['id'])) {
+        $houseShopId = $_POST['id'];
+        // Fetch the added date of the selected house/shop
+        $sql = "SELECT house_id AS id, house_number AS number, owner_name,  owner_contact FROM houses 
+         WHERE house_number = $houseShopId UNION
+         SELECT shop_id AS id, shop_number AS number, owner_name, owner_contact FROM shops WHERE shop_number = $houseShopId;";
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($result)) {
+            $monthOptions .= "<option value='{$row['owner_contact']}'>{$row['owner_contact']}</option>";
+        }
+        echo $monthOptions;
+    } elseif ($_POST['type'] == "owner_cnic" && isset($_POST['id'])) {
+        $houseShopId = $_POST['id'];
+        // Fetch the added date of the selected house/shop
+        $sql = "SELECT house_id AS id, house_number AS number, owner_cnic  FROM houses 
+         WHERE house_number = $houseShopId UNION
+         SELECT shop_id AS id, shop_number AS number, owner_cnic FROM shops WHERE shop_number = $houseShopId;";
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($result)) {
+            $monthOptions .= "<option value='{$row['owner_cnic']}'>{$row['owner_cnic']}</option>";
+        }
+        echo $monthOptions;
+    } elseif ($_POST['type'] == "totalMaintenace" && isset($_POST['id'])) {
+        $houseShopId = $_POST['id'];
+        // Fetch the added date of the selected house/shop
+        $sql = "SELECT house_id AS id, house_number AS number,  maintenance_charges FROM houses 
+         WHERE house_number = $houseShopId UNION
+         SELECT shop_id AS id, shop_number AS number, maintenance_charges FROM shops WHERE shop_number = $houseShopId;";
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        $result = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
+        while ($row = mysqli_fetch_assoc($result)) {
+            $monthOptions .= "<option value='{$row['maintenance_charges']}'>{$row['maintenance_charges']}</option>";
+        }
+        echo $monthOptions;
+    } 
+    else {
         echo 'Invalid request';
     }
 } else {
@@ -255,9 +304,7 @@ if (isset($_POST['type'])) {
         } else {
             $fetchEmpolyeeData = 'ID not provided for batch Data';
         }
-    } 
-
-    elseif ($_POST['type'] == "Employee_Salary") {
+    } elseif ($_POST['type'] == "Employee_Salary") {
         if (isset($_POST['id'])) {
             $batchId = $_POST['id'];
             $query = mysqli_query($conn, "SELECT * FROM employees WHERE employee_id = $batchId");
@@ -268,7 +315,7 @@ if (isset($_POST['type'])) {
         } else {
             $fetchEmpolyeeData = 'ID not provided for batch Data';
         }
-    } 
+    }
 } else {
     $fetchEmpolyeeData = 'Type parameter not set';
 }

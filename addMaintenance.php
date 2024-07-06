@@ -104,6 +104,27 @@ addMaintenance();
                                 <span class="text-danger" id="Penal-Cnic_error"></span>
                             </div>
                             <div class="col-md-6">
+                                <label class="form-label">Owner Name</label>
+                                <select class="form-control" id="owner_name" required name="owner_name">
+                                    <!-- <option value="">Select Month</option> -->
+                                    <!-- Options will be loaded here via AJAX -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Owner Contact</label>
+                                <select class="form-control" id="owner_contact" required name="owner_contact">
+                                    <!-- <option value="">Select Month</option> -->
+                                    <!-- Options will be loaded here via AJAX -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Owner CNIC</label>
+                                <select class="form-control" id="owner_cnic" required name="owner_cnic">
+                                    <!-- <option value="">Select Month</option> -->
+                                    <!-- Options will be loaded here via AJAX -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
                                 <label class="form-label">Total Maintenance</label>
                                 <select class="form-control" id="totalMaintenace" required name="totalMaintenace">
                                     <!-- <option value="">Select Month</option> -->
@@ -271,6 +292,12 @@ addMaintenance();
                             $('#house_shop_id').html(data);
                         } else if (type === "month_data") {
                             $('#monthData').html(data);
+                        }else if(type === "owner_name"){
+                            $('#owner_name').html(data);                      
+                        }else if(type === "owner_contact"){
+                            $('#owner_contact').html(data);                       
+                        }else if(type === "owner_cnic"){
+                            $('#owner_cnic').html(data);
                         }else if(type === "totalMaintenace"){
                             $('#totalMaintenace').html(data);
                         }
@@ -288,6 +315,18 @@ addMaintenance();
                 loadData("month_data", houseShopId);
             });
 
+            $('#house_shop_id').change(function() {
+                var monthData = $(this).val();
+                loadData("owner_name", monthData);
+            });
+            $('#house_shop_id').change(function() {
+                var monthData = $(this).val();
+                loadData("owner_contact", monthData);
+            });
+            $('#house_shop_id').change(function() {
+                var monthData = $(this).val();
+                loadData("owner_cnic", monthData);
+            });
             $('#house_shop_id').change(function() {
                 var monthData = $(this).val();
                 loadData("totalMaintenace", monthData);

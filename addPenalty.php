@@ -87,7 +87,7 @@ addPenalty();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Penalty CINC</label>
-                                <input type="number" required name="penalty_cnic" class="form-control" placeholder="Penalty Charges" required>
+                                <input type="number" required name="penalty_cnic" class="form-control" placeholder="Penalty CINC" required>
                                 <span class="text-danger" id="Penal-Cnic_error"></span>
                             </div>
 

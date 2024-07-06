@@ -128,8 +128,10 @@ penaltyDelete();
                                         <tr>
                                             <th>S.No</th>
                                             <th>Penalty type</th>
-                                            <th>Penalty Cnic</th>
+                                            <th>Penalty CNIC</th>
                                             <th>Penalty Charges</th>
+                                            <th>Penalty Date</th>
+                                            
                                             <th>Action</th>
                                         </tr>
                                     </thead>
