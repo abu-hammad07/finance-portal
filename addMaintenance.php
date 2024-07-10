@@ -133,7 +133,7 @@ addMaintenance();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Maintenance Charges</label>
-                                <input type="text" required name="maintenace_charges" class="form-control" placeholder="Penalty Charges" required>
+                                <input type="text"  name="maintenace_charges" class="form-control" placeholder="Penalty Charges" required>
                                 <span class="text-danger" id="Penal-charges_error"></span>
                             </div>
                             <div class="col-md-12">

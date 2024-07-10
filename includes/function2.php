@@ -79,9 +79,7 @@ function penaltyDelete()
 }
 
 // =============maintenance================
-
 require 'vendor/autoload.php';
-
 use Dompdf\Dompdf;
 
 function addMaintenance()
@@ -91,18 +89,18 @@ function addMaintenance()
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
-        $maintenace_month = mysqli_real_escape_string($conn, $_POST['maintenace_month']);
-        $maintenace_charges = mysqli_real_escape_string($conn, $_POST['maintenace_charges']);
+        $maintenance_month = mysqli_real_escape_string($conn, $_POST['maintenace_month']);
+        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenace_charges']);
 
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
 
         if ($house_or_shop === 'house') {
             $insertQuery = "INSERT INTO maintenance_payments (house_id, house_or_shop, maintenance_month, maintenance_peyment, added_on, added_by) 
-                            VALUES ('$house_shop_id', '$house_or_shop', '$maintenace_month', '$maintenace_charges', '$added_on', '$added_by')";
+                            VALUES ('$house_shop_id', '$house_or_shop', '$maintenance_month', '$maintenance_charges', '$added_on', '$added_by')";
         } elseif ($house_or_shop === 'shop') {
             $insertQuery = "INSERT INTO maintenance_payments (shop_id, house_or_shop, maintenance_month, maintenance_peyment, added_on, added_by) 
-                            VALUES ('$house_shop_id', '$house_or_shop', '$maintenace_month', '$maintenace_charges', '$added_on', '$added_by')";
+                            VALUES ('$house_shop_id', '$house_or_shop', '$maintenance_month', '$maintenance_charges', '$added_on', '$added_by')";
         } else {
             $_SESSION['error_message_house'] = "Invalid house or shop selection.";
             header('location: addMaintenance');
@@ -110,38 +108,134 @@ function addMaintenance()
         }
 
         if (isset($insertQuery)) {
-            $_SESSION['success_message_house'] = "$maintenace_month Added Successfully";
             $query = mysqli_query($conn, $insertQuery);
-
             if ($query) {
+                $_SESSION['success_message_house'] = "$maintenance_month Added Successfully";
+
                 // PDF generation
                 $dompdf = new Dompdf();
                 $html = "
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-                    .container { padding: 20px; }
-                    h1 { color: #333; text-align: center; }
-                    .details { margin-top: 20px; }
-                    .details p { font-size: 14px; line-height: 1.5; }
-                    .details .label { font-weight: bold; }
-                    .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #888; }
-                    .bordered { border: 1px solid #333; padding: 10px; margin-bottom: 10px; }
-                </style>
-                <div class='container'>
-                    <h1>Maintenance Payment Receipt</h1>
-                    <div class='details'>
-                        <p class='bordered'><span class='label'>House/Shop:</span> $house_or_shop</p>
-                        <p class='bordered'><span class='label'>House/Shop ID:</span> $house_shop_id</p>
-                        <p class='bordered'><span class='label'>Maintenance Month:</span> $maintenace_month</p>
-                        <p class='bordered'><span class='label'>Maintenance Charges:</span> $maintenace_charges</p>
-                        <p class='bordered'><span class='label'>Added By:</span> $added_by</p>
-                        <p class='bordered'><span class='label'>Added On:</span> $added_on</p>
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, Helvetica, sans-serif;
+                        }
+                        .container {
+                            border: 1px solid black;
+                            width: 1000px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }
+                        .header {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                           
+                        }
+                        .header img {
+                            height: 100px;
+                            width: 100px;
+                            margin-right: 20px;
+                        }
+                        .header h2 {
+                            font-size: 24px;
+                            margin: 0;
+                            font-weight: bold;
+                        }
+                        .header div {
+                            text-align: right;
+                        }
+                        .header p {
+                            font-size: 18px;
+                            margin: 0;
+                            font-weight: bold;
+                            margin-bottom: 5px;
+                        }
+                        .header span {
+                            font-size: 17px;
+                            margin: 0;
+                            font-weight: 100;
+                        }
+                        .info {
+                            display: flex;
+                            margin-bottom: 10px;
+                        }
+                        .info span {
+                            display: block;
+                        }
+                        .info .label {
+                            font-weight: bold;
+                            width: 150px;
+                        }
+                        .info .value {
+                            width: 200px;
+                        }
+                        .form {
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                        .footer {
+                            text-align: center;
+                            margin-top: 20px;
+                        }
+                        li {
+                            margin-bottom: 15px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <img src='' alt='Logo'/>
+                            <h2>KDA Officer Co-Operative Housing Society<br/>Residents Welfare Association</h2>
+                            <div>
+                                <p>Email : <span>info@gmail.com</span></p>
+                                <p>Website : <span>www.example.com</span></p>
+                                <p>Phone : <span>034567238</span></p>
+                            </div>
+                        </div>
+                        <div class='form'>
+                            <div>
+                                <div class='info'>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>House Number:</span>
+                                    <span class='value'>$house_shop_id</span>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>Maintenance Date:</span>
+                                    <span class='value'>$maintenance_month</span>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>Maintenance Payment:</span>
+                                    <span class='value'>$maintenance_charges</span>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>Added On:</span>
+                                    <span class='value'>$added_on</span>
+                                </div>
+                            </div>
+                            <div>
+                                <ol>
+                                    <li>1. All Funds are to be used for Society's Welfare.</li>
+                                    <li>Residents paying partial monthly Payments would be referred as defaulters.</li>
+                                    <li>Donations are most welcome, ask for receipt when donating.</li>
+                                    <li>Association could not be held member could not be held responsible  for any mishap.</li>
+                                    <li>Complanint and Suggestions will only entertained in written.</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class='footer'>
+                            <p>This is computer generated receip, no signature required.</p>
+                        </div>
                     </div>
-                    <div class='footer'>
-                        Thank you for your payment!
-                    </div>
-                </div>
-            ";
+                </body>
+                </html>
+                ";
+
                 $dompdf->loadHtml($html);
                 $dompdf->setPaper('A4', 'landscape');
                 $dompdf->render();
