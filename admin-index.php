@@ -1,5 +1,6 @@
 <?php
-include_once('includes/config.php');
+include_once ('includes/config.php');
+require_once ('includes/phpqrcode/qrlib.php');
 
 
 // Feature Function to filter and display data in the table based on user input or database data depending on your database structure and requirements  
@@ -334,7 +335,7 @@ function filter_houses_data_In_Database($housesLimited, $housesOrder)
             <td>' . $row['house_number'] . '</td>
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['owner_contact'] . '</td>
-            <td>' . $row['owner_cnic']  . '</td>
+            <td>' . $row['owner_cnic'] . '</td>
             <td>' . $row['occupancy_status'] . '</td>
             <td>' . $row['maintenance_charges'] . '</td>
             <td>' . $row['added_on'] . '</td>
@@ -412,7 +413,7 @@ function search_houses_data_In_Database($housesSearch)
             <td>' . $row['house_number'] . '</td>
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['owner_contact'] . '</td>
-            <td>' . $row['owner_cnic']  . '</td>
+            <td>' . $row['owner_cnic'] . '</td>
             <td>' . $row['occupancy_status'] . '</td>
             <td>' . $row['maintenance_charges'] . '</td>
             <td>' . $row['added_on'] . '</td>
@@ -810,7 +811,7 @@ function filter_shops_data_In_Database($shopsLimited, $shopsOrder)
             <td>' . $row['shop_number'] . '</td>
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['owner_contact'] . '</td>
-            <td>' . $row['owner_cnic']  . '</td>
+            <td>' . $row['owner_cnic'] . '</td>
             <td>' . $row['occupancy_status'] . '</td>
             <td>
                 <a href="shopEdit.php?shop_edit_id=' . $row['shop_id'] . '">
@@ -887,7 +888,7 @@ function search_shops_data_In_Database($shopsSearch)
             <td>' . $row['shop_number'] . '</td>
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['owner_contact'] . '</td>
-            <td>' . $row['owner_cnic']  . '</td>
+            <td>' . $row['owner_cnic'] . '</td>
             <td>' . $row['occupancy_status'] . '</td>
             <td>
                 <a href="shopEdit.php?shop_edit_id=' . $row['shop_id'] . '">
@@ -1128,7 +1129,18 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder)
 
     $data = '';
     $count = 1;
+
     while ($row = mysqli_fetch_assoc($houseResult)) {
+        $imagePath = 'media/qrcodeImages/' . $row['QRcode'];  // Ensure the correct path to your images folder
+
+        // Check if the image file exists
+        $imgTag = '';
+        if (file_exists($imagePath)) {
+            $imgTag = '<img src="' . $imagePath . '" alt="QR Code">';
+        } else {
+            $imgTag = 'QR Code image not found';
+        }
+
         $data .= '
         <tr>
             <td>' . $count++ . '</td>
@@ -1136,42 +1148,44 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder)
             <td>' . $row['employee_cnic'] . '</td>
             <td>' . $row['employement_type'] . '</td>
             <td>' . $row['department'] . '</td>
-            <td>' . $row['designation'] . '</td>
+            <td>' . $imgTag . '</td>
             <td>
-                      <a href="employeeEdit?employee_edit_id=' . $row['employee_id'] . '">
-                          <span>
-                              <i class="fas fa-pencil-alt me-1 text-success"></i>
-                          </span>
-                      </a>
-                      <a class="" href="employeeView?employee_view_id=' . $row['employee_id'] . '">
-                          <i class="fas fa-eye me-1 text-info"></i>
-                      </a>
-                      <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteEmployee' . $row['employee_id'] . '" data-bs-placement="top" title="Delete">
-                          <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
-                      </button>
-                      <div class="modal fade" id="deleteEmployee' . $row['employee_id'] . '" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? employee Person Name: <span class="text-danger">' . $row['employee_full_name'] . '</span></h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body text-start">
-                                      <p>Please confirm that you want to delete this entry. <br>
-                                          Once deleted, you won\'t be able to recover it. <br>
-                                          Please proceed with caution.
-                                      </p>
-                                  </div>
-                                  <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                      <a href="?employee_delete_id=' . $row['employee_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
-                                      <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </td>
-              </tr>';
+                <a href="employeeEdit?employee_edit_id=' . $row['employee_id'] . '">
+                    <span>
+                        <i class="fas fa-pencil-alt me-1 text-success"></i>
+                    </span>
+                </a>
+                <a class="" href="employeeView?employee_view_id=' . $row['employee_id'] . '">
+                    <i class="fas fa-eye me-1 text-info"></i>
+                </a>
+                <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteEmployee' . $row['employee_id'] . '" data-bs-placement="top" title="Delete">
+                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
+                </button>
+                <div class="modal fade" id="deleteEmployee' . $row['employee_id'] . '" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? employee Person Name: <span class="text-danger">' . $row['employee_full_name'] . '</span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <p>Please confirm that you want to delete this entry. <br>
+                                    Once deleted, you won\'t be able to recover it. <br>
+                                    Please proceed with caution.
+                                </p>
+                            </div>
+                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                <a href="?employee_delete_id=' . $row['employee_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>';
     }
+
+
 
     // Check if $data is empty
     if (empty($data)) {
@@ -1205,50 +1219,60 @@ function search_employee_data_In_Database($employeeSearch)
 
     $data = '';
     $count = 1;
+
     while ($row = mysqli_fetch_assoc($houseResult)) {
+        $imagePath = 'media/qrcodeImages/' . $row['QRcode'];  // Ensure the correct path to your images folder
+
+        // Check if the image file exists
+        $imgTag = '';
+        if (file_exists($imagePath)) {
+            $imgTag = '<img src="' . $imagePath . '" alt="QR Code">';
+        } else {
+            $imgTag = 'QR Code image not found';
+        }
 
         $data .= '
-        <tr>
-            <td>' . $count++ . '</td>
-            <td>' . $row['employee_full_name'] . '</td>
-            <td>' . $row['employee_cnic'] . '</td>
-            <td>' . $row['employement_type'] . '</td>
-            <td>' . $row['department'] . '</td>
-            <td>' . $row['designation'] . '</td>
-            <td>
-                      <a href="employeeEdit?employee_edit_id=' . $row['employee_id'] . '">
-                          <span>
-                              <i class="fas fa-pencil-alt me-1 text-success"></i>
-                          </span>
-                      </a>
-                      <a class="" href="employeeView?employee_view_id=' . $row['employee_id'] . '">
-                          <i class="fas fa-eye me-1 text-info"></i>
-                      </a>
-                      <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteEmployee' . $row['employee_id'] . '" data-bs-placement="top" title="Delete">
-                          <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
-                      </button>
-                      <div class="modal fade" id="deleteEmployee' . $row['employee_id'] . '" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? employee Person Name: <span class="text-danger">' . $row['employee_full_name'] . '</span></h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body text-start">
-                                      <p>Please confirm that you want to delete this entry. <br>
-                                          Once deleted, you won\'t be able to recover it. <br>
-                                          Please proceed with caution.
-                                      </p>
-                                  </div>
-                                  <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                      <a href="?employee_delete_id=' . $row['employee_id'] . '" class="btn btn-danger" name="deleteEmployee">Delete</a>
-                                      <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </td>
-              </tr>';
+    <tr>
+        <td>' . $count++ . '</td>
+        <td>' . $row['employee_full_name'] . '</td>
+        <td>' . $row['employee_cnic'] . '</td>
+        <td>' . $row['employement_type'] . '</td>
+        <td>' . $row['department'] . '</td>
+        <td>' . $imgTag . '</td>
+        <td>
+            <a href="employeeEdit?employee_edit_id=' . $row['employee_id'] . '">
+                <span>
+                    <i class="fas fa-pencil-alt me-1 text-success"></i>
+                </span>
+            </a>
+            <a class="" href="employeeView?employee_view_id=' . $row['employee_id'] . '">
+                <i class="fas fa-eye me-1 text-info"></i>
+            </a>
+            <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteEmployee' . $row['employee_id'] . '" data-bs-placement="top" title="Delete">
+                <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
+            </button>
+            <div class="modal fade" id="deleteEmployee' . $row['employee_id'] . '" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? employee Person Name: <span class="text-danger">' . $row['employee_full_name'] . '</span></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-start">
+                            <p>Please confirm that you want to delete this entry. <br>
+                                Once deleted, you won\'t be able to recover it. <br>
+                                Please proceed with caution.
+                            </p>
+                        </div>
+                        <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                            <a href="?employee_delete_id=' . $row['employee_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>';
     }
     // Check if $data is empty
     if (empty($data)) {
