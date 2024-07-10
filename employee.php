@@ -34,6 +34,15 @@ deleteEmployeeID();
     <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
 
+<style>
+
+    #employeeDetails tr td img {
+        width: 50px;
+        height: 50px;
+    }
+
+</style>
+
 <body class="d2c_theme_light">
     <!-- Preloader Start -->
     <div class="preloader">
@@ -67,7 +76,7 @@ deleteEmployeeID();
                                 </form>
                             </div>
                             <div class="col-md-8 col-xl-9 text-end">
-                                <a href="addEmployee" class="btn btn-primary"><i class="fas fa-plus"></i> Employee</a>
+                                <a href="addEmployeeQRCode" class="btn btn-primary"><i class="fas fa-plus"></i> Employee</a>
                             </div>
                         </div>
                     </div>
@@ -133,7 +142,7 @@ deleteEmployeeID();
                                             <th>CNIC</th>
                                             <th>Employee Type</th>
                                             <th>Deparment</th>
-                                            <th>Designation</th>
+                                            <th>QR Code</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
