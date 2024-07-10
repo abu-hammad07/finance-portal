@@ -1,6 +1,5 @@
 <?php
 include_once("config.php");
-require('./fpdf/fpdf.php');
 // -----------add penalty----------
 function addPenalty()
 {
@@ -80,9 +79,15 @@ function penaltyDelete()
 }
 
 // =============maintenance================
+
+require 'vendor/autoload.php';
+
+use Dompdf\Dompdf;
+
 function addMaintenance()
 {
     global $conn;
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
@@ -104,12 +109,50 @@ function addMaintenance()
             exit();
         }
 
-        // Debugging: Check if $insertQuery is set properly
         if (isset($insertQuery)) {
+            $_SESSION['success_message_house'] = "$maintenace_month Added Successfully";
             $query = mysqli_query($conn, $insertQuery);
+
             if ($query) {
-                $_SESSION['success_message_house'] = "$maintenace_month Added Successfully";
-                header('location: addMaintenance');
+                // PDF generation
+                $dompdf = new Dompdf();
+                $html = "
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+                    .container { padding: 20px; }
+                    h1 { color: #333; text-align: center; }
+                    .details { margin-top: 20px; }
+                    .details p { font-size: 14px; line-height: 1.5; }
+                    .details .label { font-weight: bold; }
+                    .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #888; }
+                    .bordered { border: 1px solid #333; padding: 10px; margin-bottom: 10px; }
+                </style>
+                <div class='container'>
+                    <h1>Maintenance Payment Receipt</h1>
+                    <div class='details'>
+                        <p class='bordered'><span class='label'>House/Shop:</span> $house_or_shop</p>
+                        <p class='bordered'><span class='label'>House/Shop ID:</span> $house_shop_id</p>
+                        <p class='bordered'><span class='label'>Maintenance Month:</span> $maintenace_month</p>
+                        <p class='bordered'><span class='label'>Maintenance Charges:</span> $maintenace_charges</p>
+                        <p class='bordered'><span class='label'>Added By:</span> $added_by</p>
+                        <p class='bordered'><span class='label'>Added On:</span> $added_on</p>
+                    </div>
+                    <div class='footer'>
+                        Thank you for your payment!
+                    </div>
+                </div>
+            ";
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'landscape');
+                $dompdf->render();
+
+                // Save the PDF to a temporary file
+                $output = $dompdf->output();
+                $pdfFilePath = 'maintenance_payment_receipt.pdf';
+                file_put_contents($pdfFilePath, $output);
+
+                // Redirect to the temporary file to open it in a new tab
+                header('Location: ' . $pdfFilePath);
                 exit();
             } else {
                 $_SESSION['error_message_house'] = "Something went wrong. Please try again.";
@@ -123,6 +166,7 @@ function addMaintenance()
         }
     }
 }
+
 
 function updateMaintenance()
 {

@@ -74,7 +74,7 @@ addMaintenance();
             ?>
             <!-- / Alert -->
 
-            <form action="" method="post" id="add_houses_form">
+            <form action="" method="post" id="add_houses_form"  target="_blank">
                 <div class="card h-auto">
                     <div class="card-body">
                         <h3 class="card-header">Information</h3>
