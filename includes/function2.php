@@ -80,6 +80,7 @@ function penaltyDelete()
 
 // =============maintenance================
 require 'vendor/autoload.php';
+
 use Dompdf\Dompdf;
 
 function addMaintenance()
@@ -89,8 +90,8 @@ function addMaintenance()
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
-        $maintenance_month = mysqli_real_escape_string($conn, $_POST['maintenace_month']);
-        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenace_charges']);
+        $maintenance_month = mysqli_real_escape_string($conn, $_POST['maintenance_month']);
+        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenance_charges']);
 
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
@@ -118,119 +119,92 @@ function addMaintenance()
                 <html>
                 <head>
                     <style>
-                        body {
-                            font-family: Arial, Helvetica, sans-serif;
-                        }
-                        .container {
-                            border: 1px solid black;
-                            width: 1000px;
-                            margin: 0 auto;
-                            padding: 20px;
-                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                        }
-                        .header {
+                        .main_header {
                             display: flex;
-                            align-items: center;
                             justify-content: space-between;
-                           
+                            align-items: center;
+                            flex-direction: row;
+                            border-bottom: 1px solid #ccc;
                         }
-                        .header img {
-                            height: 100px;
-                            width: 100px;
-                            margin-right: 20px;
-                        }
-                        .header h2 {
-                            font-size: 24px;
-                            margin: 0;
+                        .main_header .title h2 {
+                            font-size: 20px;
                             font-weight: bold;
                         }
-                        .header div {
-                            text-align: right;
+                        .main_header .contact p {
+                            margin: 0 0;
                         }
-                        .header p {
-                            font-size: 18px;
-                            margin: 0;
-                            font-weight: bold;
-                            margin-bottom: 5px;
-                        }
-                        .header span {
-                            font-size: 17px;
-                            margin: 0;
-                            font-weight: 100;
+                        .main_form {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
                         }
                         .info {
-                            display: flex;
                             margin-bottom: 10px;
-                        }
-                        .info span {
-                            display: block;
                         }
                         .info .label {
                             font-weight: bold;
+                            display: inline-block;
                             width: 150px;
                         }
                         .info .value {
-                            width: 200px;
-                        }
-                        .form {
-                            display: flex;
-                            justify-content: space-between;
+                            display: inline-block;
                         }
                         .footer {
                             text-align: center;
                             margin-top: 20px;
                         }
-                        li {
+                        ol li {
                             margin-bottom: 15px;
                         }
                     </style>
                 </head>
                 <body>
-                    <div class='container'>
-                        <div class='header'>
-                            <img src='' alt='Logo'/>
+                     <div class='main_header'>
+                            <img src='./KDA.png' alt='Logo'/>
                             <h2>KDA Officer Co-Operative Housing Society<br/>Residents Welfare Association</h2>
-                            <div>
-                                <p>Email : <span>info@gmail.com</span></p>
-                                <p>Website : <span>www.example.com</span></p>
-                                <p>Phone : <span>034567238</span></p>
+                            <div class='contact'>
+                            <p>Email: <span>info@gmail.com</span></p>
+                            <p>Website: <span>www.example.com</span></p>
+                            <p>Phone: <span>034567238</span></p>
+                        </div>
+                    </div>
+                    
+
+                    <div class='main_form'>
+                        <div class='data'>
+                            <div class='info'>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                            </div>
+                            <div class='info'>
+                                <span class='label'>House Number:</span>
+                                <span class='value'>$house_shop_id</span>
+                            </div>
+                            <div class='info'>
+                                <span class='label'>Maintenance Date:</span>
+                                <span class='value'>$maintenance_month</span>
+                            </div>
+                            <div class='info'>
+                                <span class='label'>Maintenance Payment:</span>
+                                <span class='value'>$maintenance_charges</span>
+                            </div>
+                            <div class='info'>
+                                <span class='label'>Added By:</span>
+                                <span class='value'>$added_by</span>
                             </div>
                         </div>
-                        <div class='form'>
-                            <div>
-                                <div class='info'>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-                                </div>
-                                <div class='info'>
-                                    <span class='label'>House Number:</span>
-                                    <span class='value'>$house_shop_id</span>
-                                </div>
-                                <div class='info'>
-                                    <span class='label'>Maintenance Date:</span>
-                                    <span class='value'>$maintenance_month</span>
-                                </div>
-                                <div class='info'>
-                                    <span class='label'>Maintenance Payment:</span>
-                                    <span class='value'>$maintenance_charges</span>
-                                </div>
-                                <div class='info'>
-                                    <span class='label'>Added On:</span>
-                                    <span class='value'>$added_on</span>
-                                </div>
-                            </div>
-                            <div>
-                                <ol>
-                                    <li>1. All Funds are to be used for Society's Welfare.</li>
-                                    <li>Residents paying partial monthly Payments would be referred as defaulters.</li>
-                                    <li>Donations are most welcome, ask for receipt when donating.</li>
-                                    <li>Association could not be held member could not be held responsible  for any mishap.</li>
-                                    <li>Complanint and Suggestions will only entertained in written.</li>
-                                </ol>
-                            </div>
+                        <div class='description'>
+                            <ol>
+                                <li>All Funds are to be used for Society's Welfare.</li>
+                                <li>Residents paying partial monthly Payments would be referred as defaulters.</li>
+                                <li>Donations are most welcome, ask for receipt when donating.</li>
+                                <li>Association could not be held responsible for any mishap.</li>
+                                <li>Complaints and Suggestions will only be entertained in written form.</li>
+                            </ol>
                         </div>
-                        <div class='footer'>
-                            <p>This is computer generated receip, no signature required.</p>
-                        </div>
+                    </div>
+
+                    <div class='footer'>
+                        <p>This is a computer-generated receipt, no signature required.</p>
                     </div>
                 </body>
                 </html>
@@ -260,6 +234,7 @@ function addMaintenance()
         }
     }
 }
+
 
 
 function updateMaintenance()
