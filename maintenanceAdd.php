@@ -57,12 +57,12 @@ updateMaintenance();
 
             <!-- Alert -->
             <?php
-            if (isset($_SESSION['success_message_house'])) {
+            if (isset($_SESSION['success_updated_Maintenance'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_house'] . '
+                    ' . $_SESSION['success_updated_Maintenance'] . '
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
-                unset($_SESSION['success_message_house']);
+                unset($_SESSION['success_updated_Maintenance']);
             }
             if (isset($_SESSION['error_message_house'])) {
                 echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -74,7 +74,7 @@ updateMaintenance();
             ?>
             <!-- / Alert -->
 
-            <form action="" method="post" id="add_houses_form">
+            <form action="" method="post" id="add_houses_form" >
                 <div class="card h-auto">
                     <div class="card-body">
                         <h3 class="card-header">Information</h3>
@@ -121,13 +121,13 @@ updateMaintenance();
                                                 } elseif ($row['house_or_shop'] == "shop") {
                                                     foreach ($house_shop_ids as $shop_id_main) {
                                                         $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
-                                                        $select = "SELECT * FROM houses WHERE house_id = $shop_id_main";
+                                                        $select = "SELECT * FROM shops WHERE shop_id = $shop_id_main";
                                                         $result = mysqli_query($conn, $select);
 
                                                         if ($result && mysqli_num_rows($result) > 0) {
                                                             $shop_row = mysqli_fetch_assoc($result);
                                                         ?>
-                                                            <option class="form-control" value="<?= $house_row['shop_id'] ?>"><?= $house_row['shop_number'] ?></option>
+                                                            <option class="form-control" value="<?= $shop_row['shop_id'] ?>"><?= $shop_row['shop_number'] ?></option>
 
                                                 <?php }
                                                     }
@@ -159,13 +159,13 @@ updateMaintenance();
                                                 } elseif ($row['house_or_shop'] == "shop") {
                                                     foreach ($house_shop_ids as $shop_id_main) {
                                                         $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
-                                                        $select = "SELECT * FROM houses WHERE house_id = $shop_id_main";
+                                                        $select = "SELECT * FROM shops WHERE shop_id = $shop_id_main";
                                                         $result = mysqli_query($conn, $select);
 
                                                         if ($result && mysqli_num_rows($result) > 0) {
                                                             $shop_row = mysqli_fetch_assoc($result);
                                                         ?>
-                                                            <option class="form-control" value="<?= $house_row['owner_name'] ?>"><?= $house_row['owner_name'] ?></option>
+                                                            <option class="form-control" value="<?= $shop_row['owner_name'] ?>"><?= $shop_row['owner_name'] ?></option>
 
                                                 <?php }
                                                     }
@@ -197,14 +197,13 @@ updateMaintenance();
                                                 } elseif ($row['house_or_shop'] == "shop") {
                                                     foreach ($house_shop_ids as $shop_id_main) {
                                                         $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
-                                                        $select = "SELECT * FROM houses WHERE house_id = $shop_id_main";
+                                                        $select = "SELECT * FROM shops WHERE shop_id = $shop_id_main";
                                                         $result = mysqli_query($conn, $select);
 
                                                         if ($result && mysqli_num_rows($result) > 0) {
                                                             $shop_row = mysqli_fetch_assoc($result);
                                                         ?>
-                                                            <option class="form-control" value="<?= $house_row['owner_cnic'] ?>"><?= $house_row['owner_cnic'] ?></option>
-
+                                                            <option class="form-control" value="<?= $shop_row['owner_cnic'] ?>"><?= $shop_row['owner_cnic'] ?></option>
                                                 <?php }
                                                     }
                                                 }
@@ -215,7 +214,6 @@ updateMaintenance();
                                             <label class="form-label">Maintenance Month</label>
                                             <select class="form-select" id="monthData" required name="maintenace_month">
                                                 <option value="<?= $row['maintenance_month'] ?>"><?= $row['maintenance_month'] ?></option>
-                                                <!-- Options will be loaded here via AJAX -->
                                             </select>
                                             <span class="text-danger" id="Penal-Cnic_error"></span>
                                         </div>

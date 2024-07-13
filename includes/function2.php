@@ -248,7 +248,7 @@ function updateMaintenance()
         $updated_by = $_SESSION['username'];
         $updated_on = date("Y-m-d");
 
-            $updateQuery = "UPDATE maintenance_payments 
+        $updateQuery = "UPDATE maintenance_payments 
                             SET status = 'Paid', 
                                 updated_on = '$updated_on', 
                                 updated_by = '$updated_by'
@@ -259,7 +259,112 @@ function updateMaintenance()
             $query = mysqli_query($conn, $updateQuery);
             if ($query) {
                 $_SESSION['success_updated_Maintenance'] = " $maintenance_month Maintenance Added successfully.";
-                header('location: maintenanceCharges');
+                
+                
+                $dompdf = new Dompdf();
+                $html = "
+                    <html>
+                    <head>
+                        <style>
+                            .main_header {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                flex-direction: row;
+                                border-bottom: 1px solid #ccc;
+                            }
+                            .main_header .title h2 {
+                                font-size: 20px;
+                                font-weight: bold;
+                            }
+                            .main_header .contact p {
+                                margin: 0 0;
+                            }
+                            .main_form {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                            }
+                            .info {
+                                margin-bottom: 10px;
+                            }
+                            .info .label {
+                                font-weight: bold;
+                                display: inline-block;
+                                width: 150px;
+                            }
+                            .info .value {
+                                display: inline-block;
+                            }
+                            .footer {
+                                text-align: center;
+                                margin-top: 20px;
+                            }
+                            ol li {
+                                margin-bottom: 15px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                         <div class='main_header'>
+                                <img src='./KDA.png' alt='Logo'/>
+                                <h2>KDA Officer Co-Operative Housing Society<br/>Residents Welfare Association</h2>
+                                <div class='contact'>
+                                <p>Email: <span>info@gmail.com</span></p>
+                                <p>Website: <span>www.example.com</span></p>
+                                <p>Phone: <span>034567238</span></p>
+                            </div>
+                        </div>
+                        
+    
+                        <div class='main_form'>
+                            <div class='data'>
+                                <div class='info'>
+                                    <p>Recived with thanks the sum or Rupees <strong> Only ($maintenance_charges/-)</strong> on account of <strong> Monthly Maintenance</strong> in the month of <strong>$maintenance_month</strong> from</p>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>House or Shop:</span>
+                                    <span class='value'>$house_or_shop</span>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>House Number:</span>
+                                    <span class='value'>$house_shop_id</span>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>Maintenance Date:</span>
+                                    <span class='value'>$maintenance_month</span>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>Maintenance Payment:</span>
+                                    <span class='value'>$maintenance_charges</span>
+                                </div>
+                                <div class='info'>
+                                    <span class='label'>Added By:</span>
+                                    <span class='value'>$updated_by</span>
+                                </div>
+                            </div>
+                            <div class='description'>
+                                <ol>
+                                    <li>All Funds are to be used for Society's Welfare.</li>
+                                    <li>Residents paying partial monthly Payments would be referred as defaulters.</li>
+                                    <li>Donations are most welcome, ask for receipt when donating.</li>
+                                    <li>Association could not be held responsible for any mishap.</li>
+                                    <li>Complaints and Suggestions will only be entertained in written form.</li>
+                                </ol>
+                            </div>
+                        </div>
+    
+                        <div class='footer'>
+                            <p>This is a computer-generated receipt, no signature required.</p>
+                        </div>
+                    </body>
+                    </html>
+                    ";
+
+                    $dompdf->loadHtml($html);
+                    $dompdf->setPaper('A4', 'landscape');
+                    $dompdf->render();
+                    $dompdf->stream("maintenance_payment_receipt.pdf", array("Attachment" => false));
                 exit();
             } else {
                 $_SESSION['error_message_Maintenance'] = "Something went wrong. Please try again.";

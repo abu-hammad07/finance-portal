@@ -147,30 +147,28 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
     global $conn;
 
     // Modify the query based on your database structure
-    $query = "SELECT * FROM maintenance_payments 
-    ORDER BY maintenance_id $maintenaceOrder LIMIT $maintenaiceLimited;
-    ";
+    $query = "SELECT * FROM maintenance_payments ORDER BY maintenance_id $maintenaceOrder LIMIT $maintenaiceLimited";
     $result = mysqli_query($conn, $query);
 
     $data = '';
     $count = 1;
     while ($row = mysqli_fetch_assoc($result)) {
-        // Assuming $count is initialized somewhere before this code
+        // Start building the row for each maintenance payment record
         $data .= '
             <tr>
                 <td>' . $count++ . '</td>';
-        
+
         // Assuming $house_shop_id is a string of comma-separated IDs
         $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
-        
+
         if ($row['house_or_shop'] == "house") {
             foreach ($house_shop_ids as $house_shop_id_main) {
                 $house_shop_id_main = intval($house_shop_id_main); // Ensure it's an integer to prevent SQL injection
                 $select = "SELECT house_number FROM houses WHERE house_id = $house_shop_id_main";
-                $result = mysqli_query($conn, $select);
-        
-                if ($result && mysqli_num_rows($result) > 0) {
-                    $house_row = mysqli_fetch_assoc($result);
+                $house_result = mysqli_query($conn, $select);
+
+                if ($house_result && mysqli_num_rows($house_result) > 0) {
+                    $house_row = mysqli_fetch_assoc($house_result);
                     $data .= '<td>' . htmlspecialchars($house_row['house_number']) . '</td>';
                 } else {
                     $data .= '<td>House not found</td>';
@@ -180,17 +178,17 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
             foreach ($house_shop_ids as $shop_id_main) {
                 $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
                 $select = "SELECT shop_number FROM shops WHERE shop_id = $shop_id_main";
-                $result = mysqli_query($conn, $select);
-        
-                if ($result && mysqli_num_rows($result) > 0) {
-                    $shop_row = mysqli_fetch_assoc($result);
+                $shop_result = mysqli_query($conn, $select);
+
+                if ($shop_result && mysqli_num_rows($shop_result) > 0) {
+                    $shop_row = mysqli_fetch_assoc($shop_result);
                     $data .= '<td>' . htmlspecialchars($shop_row['shop_number']) . '</td>';
                 } else {
                     $data .= '<td>Shop not found</td>';
                 }
             }
         }
-        
+
         $data .= '
                 <td>' . htmlspecialchars($row['house_or_shop']) . '</td>
                 <td>' . htmlspecialchars($row['maintenance_month']) . '</td>
@@ -230,35 +228,30 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                     </div>
                 </td>
             </tr>';
-      
-        
-        
     }
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penalty data in the database.</td>
                 </tr>';
     }
 
     return $data;
 }
+
 // ------------search penalty-----------
-function search_maintenace_data_In_Database($penaltySearch)
+function search_maintenace_data_In_Database($manitenaceSearch)
 {
     global $conn;
-
-    $penaltySearch = mysqli_real_escape_string($conn, $penaltySearch);
 
     // Modify the query based on your database structure
     $query = "SELECT * From maintenance_payments";
 
     // empty search
-    if (!empty($penaltySearch)) {
-        $query .= " WHERE house_id LIKE '%" . $penaltySearch . "%' 
-        OR shop_id LIKE '%" . $penaltySearch . "%'
-        OR house_or_shop LIKE '%" . $penaltySearch . "%'
-        OR maintenance_month LIKE '%" . $penaltySearch . "%'
+    if (!empty($manitenaceSearch)) {
+        $query .= " WHERE  house_shop_id LIKE '%" . $manitenaceSearch . "%'
+        OR house_or_shop LIKE '%" . $manitenaceSearch . "%'
+        OR maintenance_month LIKE '%" . $manitenaceSearch . "%'
         ";
     }
 
@@ -267,22 +260,22 @@ function search_maintenace_data_In_Database($penaltySearch)
     $data = '';
     $count = 1;
     while ($row = mysqli_fetch_assoc($result)) {
-        // Assuming $count is initialized somewhere before this code
+        // Start building the row for each maintenance payment record
         $data .= '
             <tr>
                 <td>' . $count++ . '</td>';
-        
+
         // Assuming $house_shop_id is a string of comma-separated IDs
         $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
-        
+
         if ($row['house_or_shop'] == "house") {
             foreach ($house_shop_ids as $house_shop_id_main) {
                 $house_shop_id_main = intval($house_shop_id_main); // Ensure it's an integer to prevent SQL injection
                 $select = "SELECT house_number FROM houses WHERE house_id = $house_shop_id_main";
-                $result = mysqli_query($conn, $select);
-        
-                if ($result && mysqli_num_rows($result) > 0) {
-                    $house_row = mysqli_fetch_assoc($result);
+                $house_result = mysqli_query($conn, $select);
+
+                if ($house_result && mysqli_num_rows($house_result) > 0) {
+                    $house_row = mysqli_fetch_assoc($house_result);
                     $data .= '<td>' . htmlspecialchars($house_row['house_number']) . '</td>';
                 } else {
                     $data .= '<td>House not found</td>';
@@ -292,17 +285,17 @@ function search_maintenace_data_In_Database($penaltySearch)
             foreach ($house_shop_ids as $shop_id_main) {
                 $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
                 $select = "SELECT shop_number FROM shops WHERE shop_id = $shop_id_main";
-                $result = mysqli_query($conn, $select);
-        
-                if ($result && mysqli_num_rows($result) > 0) {
-                    $shop_row = mysqli_fetch_assoc($result);
+                $shop_result = mysqli_query($conn, $select);
+
+                if ($shop_result && mysqli_num_rows($shop_result) > 0) {
+                    $shop_row = mysqli_fetch_assoc($shop_result);
                     $data .= '<td>' . htmlspecialchars($shop_row['shop_number']) . '</td>';
                 } else {
                     $data .= '<td>Shop not found</td>';
                 }
             }
         }
-        
+
         $data .= '
                 <td>' . htmlspecialchars($row['house_or_shop']) . '</td>
                 <td>' . htmlspecialchars($row['maintenance_month']) . '</td>
@@ -341,10 +334,8 @@ function search_maintenace_data_In_Database($penaltySearch)
                         </div>
                     </div>
                 </td>
-            </tr>';
-      
-        
-        
+            </tr>
+        ';
     }
     // Check if $data is empty
     if (empty($data)) {
@@ -584,7 +575,7 @@ if (isset($_POST['action'])) {
     }
     // ------------ search filter maintenace-----------
     if ($action == 'search-maintenance-Data') {
-        $manitenaceSearch = $_POST['manitenaceSearch'];
+        $manitenaceSearch = $_POST['maintenaceSearch'];
 
         $result = search_maintenace_data_In_Database($manitenaceSearch);
 

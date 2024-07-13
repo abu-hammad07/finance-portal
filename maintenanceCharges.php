@@ -79,9 +79,22 @@ MaintenanceDelete();
                     <div class="card card-body h-auto d2c_projects_datatable">
                         <div class="row">
                             <div class="col-md-4 col-xl-3">
-                                <form class="position-relative">
+                                <form class="position-relative" method="post">
                                     <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="maintenaceSearch" onkeyup="search_maintenace_Data()" placeholder="Search &nbsp;..." />
                                     <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-xl-3">
+                                <form class="position-relative">
+                                    <input type="month" class="form-control product-search ps-5 word-spacing-2px" id="maintenace_month" onkeyup="search_maintenace_Data()" placeholder="Search &nbsp;..." />
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-xl-3">
+                                <form class="position-relative">
+                                    <select name="" class="form-select" id="">
+                                        <option value="house">house</option>
+                                        <option value="shop">shop</option>
+                                    </select>
                                 </form>
                             </div>
                             <!-- <div class="col-md-8 col-xl-9 text-end">
@@ -200,6 +213,8 @@ MaintenanceDelete();
         function search_maintenace_Data() {
 
             let maintenaceSearch = document.getElementById('maintenaceSearch').value;
+            let maintenace_id = document.getElementById('maintenace_id').value;
+            let maintenace_month = document.getElementById('maintenace_month').value;
 
             $.ajax({
                 url: 'admin-index2.php',
@@ -208,6 +223,8 @@ MaintenanceDelete();
                 data: {
                     action: 'search-maintenance-Data',
                     maintenaceSearch: maintenaceSearch
+                   
+
                 },
                 success: function(response) {
                     console.log(response);

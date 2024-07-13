@@ -24,7 +24,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
     }
 }
 
-
+include_once("includes/auto_addMontainace.php");
 ?>
 
 <!DOCTYPE html>

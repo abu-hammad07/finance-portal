@@ -885,6 +885,15 @@ function addShopInsert()
             '$maintenance_charges', '$added_on', '$added_by')";
 
         $insertShops_res = mysqli_query($conn, $insertShops);
+        $house_id = $conn->insert_id;
+        $current_month = date('F,Y');
+        // --------------insert maintanace table--------------
+        $sql_maintenance = "INSERT INTO maintenance_payments(house_shop_id, house_or_shop, maintenance_month,
+          maintenance_peyment,added_on,
+          added_by) VALUES ('$house_id' ,'shop','$current_month',
+         '$maintenance_charges',
+          '$added_on','$added_by')";
+        $query = mysqli_query($conn, $sql_maintenance);
 
         if ($insertShops_res) {
             $_SESSION['success_added_shop'] = "($shop_number) shop has been added.";
