@@ -9,7 +9,6 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 }
 updateMaintenance();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
