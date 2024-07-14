@@ -1839,6 +1839,172 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
 
 
 
+// ====================== Index Page Functions Start ======================
+function filter_month_house_data_In_Database($filterHousesData)
+{
+    global $conn;
+
+    // Extract month and year from the selected month variable
+    $month = date('m', strtotime($filterHousesData));
+    $year = date('Y', strtotime($filterHousesData));
+
+    $house_query = "SELECT * FROM houses WHERE month(added_on) = '$month' AND year(added_on) = '$year'";
+    $house_result = mysqli_query($conn, $house_query);
+    $total_houses = mysqli_num_rows($house_result);
+
+    $data = '
+        
+        <p>' . date('F, Y', strtotime($filterHousesData)) . '</p>
+        <h4 class="text-primary mb-0">' . $total_houses . '</h4>
+        
+        ';
+
+    return $data;
+}
+
+function filter_month_shops_data_In_Database($filterShopsData)
+{
+    global $conn;
+
+    // Extract month and year from the selected month variable
+    $month = date('m', strtotime($filterShopsData));
+    $year = date('Y', strtotime($filterShopsData));
+
+    $query = "SELECT * FROM shops WHERE month(added_on) = '$month' AND year(added_on) = '$year'";
+    $result = mysqli_query($conn, $query);
+    $total_numbers = mysqli_num_rows($result);
+
+    $data = '
+        
+        <p>' . date('F, Y', strtotime($filterShopsData)) . '</p>
+        <h4 class="text-primary mb-0">' . $total_numbers . '</h4>
+        
+        ';
+
+    return $data;
+}
+
+function filter_month_users_data_In_Database($filterUsersData)
+{
+    global $conn;
+
+    // Extract month and year from the selected month variable
+    $month = date('m', strtotime($filterUsersData));
+    $year = date('Y', strtotime($filterUsersData));
+
+    $query = "SELECT * FROM users WHERE month(created_date) = '$month' AND year(created_date) = '$year'";
+    $result = mysqli_query($conn, $query);
+    $total_numbers = mysqli_num_rows($result);
+
+    $data = '
+        
+        <p>' . date('F, Y', strtotime($filterUsersData)) . '</p>
+        <h4 class="text-primary mb-0">' . $total_numbers . '</h4>
+        
+        ';
+
+    return $data;
+}
+
+function filter_month_employees_data_In_Database($filterEmployeesData)
+{
+    global $conn;
+
+    // Extract month and year from the selected month variable
+    $month = date('m', strtotime($filterEmployeesData));
+    $year = date('Y', strtotime($filterEmployeesData));
+
+    $query = "SELECT * FROM employees WHERE month(added_on) = '$month' AND year(added_on) = '$year'";
+    $result = mysqli_query($conn, $query);
+    $total_numbers = mysqli_num_rows($result);
+
+    $data = '
+        
+        <p>' . date('F, Y', strtotime($filterEmployeesData)) . '</p>
+        <h4 class="text-primary mb-0">' . $total_numbers . '</h4>
+        
+        ';
+
+    return $data;
+}
+
+function filter_month_income_data_In_Database($filterIncomesData)
+{
+    global $conn;
+
+    // Extract month and year from the selected month variable
+    $month = date('m', strtotime($filterIncomesData));
+    $year = date('Y', strtotime($filterIncomesData));
+
+    // Define the queries to calculate the total income from various tables
+    $queries = [
+        "SELECT SUM(maintenance_charges) AS total_income FROM `houses` WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'",
+        "SELECT SUM(maintenance_charges) AS total_income FROM `shops` WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'",
+        "SELECT SUM(eGate_charges) AS total_income FROM `egate` WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'",
+        "SELECT SUM(servantFees) AS total_income FROM `servants` WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'",
+        "SELECT SUM(bookingPayment) AS total_income FROM `events_booking` WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'",
+        "SELECT SUM(maintenance_peyment) AS total_income FROM `maintenance_payments` WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'",
+        "SELECT SUM(penalty_charges) AS total_income FROM `penalty` WHERE MONTH(created_by) = '$month' AND YEAR(created_by) = '$year'"
+    ];
+
+    $total_income = 0;
+
+    // Execute each query and accumulate the total income
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $total_income += $row['total_income'];
+        }
+    }
+
+    // Prepare the data to be returned
+    $data = '
+        <p>' . date('F, Y', strtotime($filterIncomesData)) . '</p>
+        <h4 class="text-primary mb-0">' . number_format($total_income) . '</h4>
+    ';
+
+    return $data;
+}
+
+function filter_month_expences_data_In_Database($filterExpencesData)
+{
+    global $conn;
+
+    // Extract month and year from the selected month variable
+    $month = date('m', strtotime($filterExpencesData));
+    $year = date('Y', strtotime($filterExpencesData));
+
+    // Define the queries to calculate the total income from various tables
+    $queries = [
+        "SELECT SUM(utility_amount) AS total_expences FROM `utility_charges` WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'",
+        "SELECT SUM(society_maint_amount) AS total_expences FROM `society_maintenance` WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'",
+    ];
+
+    $total_expences = 0;
+
+    // Execute each query and accumulate the total income
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $total_expences += $row['total_expences'];
+        }
+    }
+
+    // Prepare the data to be returned
+    $data = '
+        <p>' . date('F, Y', strtotime($filterExpencesData)) . '</p>
+        <h4 class="text-primary mb-0">' . number_format($total_expences) . '</h4>
+    ';
+
+    return $data;
+}
+
+
+
+
+
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
 
@@ -2078,6 +2244,67 @@ if (isset($_POST['action'])) {
 
         $result = searching_incomeReports_data_In_Database($selectIncomeReport, $searchMonth, $searchDropdown);
 
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+
+    
+    // index page houses data month wise
+    if ($action == 'filter-house-Data') {
+        $filterHousesData = $_POST['filterHousesData'];
+
+        $result = filter_month_house_data_In_Database($filterHousesData);
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+
+    // index page shops data month wise
+    if ($action == 'filter-shops-Data') {
+        $filterShopsData = $_POST['filterShopsData'];
+
+        $result = filter_month_shops_data_In_Database($filterShopsData);
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+
+    // index page Users data month wise
+    if ($action == 'filter-users-Data') {
+        $filterUsersData = $_POST['filterUsersData'];
+
+        $result = filter_month_users_data_In_Database($filterUsersData);
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+
+    // index page Employees data month wise
+    if ($action == 'filter-employees-Data') {
+        $filterEmployeesData = $_POST['filterEmployeesData'];
+
+        $result = filter_month_employees_data_In_Database($filterEmployeesData);
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+
+    // index page Income data month wise
+    if ($action == 'filter-income-Data') {
+        $filterIncomesData = $_POST['filterIncomesData'];
+
+        $result = filter_month_income_data_In_Database($filterIncomesData);
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+
+    // index page Expences data month wise
+    if ($action == 'filter-Expences-Data') {
+        $filterExpencesData = $_POST['filterExpencesData'];
+
+        $result = filter_month_expences_data_In_Database($filterExpencesData);
         $response = array('data' => $result);
         echo json_encode($response);
     }
