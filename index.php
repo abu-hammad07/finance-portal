@@ -428,7 +428,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                             <div class="flex-1 w-100 ms-3">
                                                 <div class="d-flex justify-content-between mb-2">
-                                                    Houses <span class="text-end"><span class="fw-bold"><?= totalHousesUnpaid() ?></span> /
+                                                    Houses <span class="text-end"><span class="fw-bold"><?= totalHousespaid() ?></span> /
                                                         <?= totalHouses() ?></span>
                                                 </div>
                                                 <div class="progress bg-primary bg-opacity-10">
@@ -446,7 +446,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                             <div class="flex-1 w-100 ms-3">
                                                 <div class="d-flex justify-content-between mb-2">
-                                                    Shops <span class="text-end"><span class="fw-bold"><?= totalSHopsUnpaid() ?></span> /
+                                                    Shops <span class="text-end"><span class="fw-bold"><?= totalSHopspaid() ?></span> /
                                                         <?= totalShops() ?></span>
                                                 </div>
                                                 <div class="progress bg-info bg-opacity-10">
