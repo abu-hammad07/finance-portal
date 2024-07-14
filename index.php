@@ -147,7 +147,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                         </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-dollar-sign"></i>
+                                                <i class="fas fa-house-user"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -214,7 +214,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                         </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-dollar-sign"></i>
+                                                <i class="fas fa-store"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -280,7 +280,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                         </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-dollar-sign"></i>
+                                                <i class="fas fa-user"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -347,7 +347,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                         </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-dollar-sign"></i>
+                                                <i class="fas fa-users"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -414,7 +414,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                         </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-dollar-sign"></i>
+                                                <i class="fas fa-comments-dollar"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -481,7 +481,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                         </div>
                                         <div class="col-12">
                                             <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-dollar-sign"></i>
+                                                <i class="fas fa-comment-dollar"></i>
                                             </div>
                                         </div>
                                     </div>
