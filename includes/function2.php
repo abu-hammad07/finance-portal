@@ -307,7 +307,7 @@ function updateMaintenance()
                     </head>
                     <body>
                          <div class='main_header'>
-                                <img src='./KDA.png' alt='Logo'/>
+                                <img src='KDA.png' alt='Logo'/>
                                 <h2>KDA Officer Co-Operative Housing Society<br/>Residents Welfare Association</h2>
                                 <div class='contact'>
                                 <p>Email: <span>info@gmail.com</span></p>

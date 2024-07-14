@@ -145,6 +145,7 @@ MaintenanceDelete();
                                             <th>Maintenance Month</th>
                                             <th>Maintenance Charges</th>
                                             <th>Status</th>
+                                            <th>Print</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
