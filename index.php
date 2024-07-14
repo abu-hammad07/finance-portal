@@ -427,12 +427,17 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                             <div class="flex-1 w-100 ms-3">
+                                                <?php
+                                                $totalHouses =  totalHouses() ;
+                                                $totalHousesUnpaid = totalHousesUnpaid() ;
+                                                $percentageUnpaid = ($totalHousesUnpaid / $totalHouses) * 100;
+                                                ?>
                                                 <div class="d-flex justify-content-between mb-2">
-                                                    Houses <span class="text-end"><span class="fw-bold"><?= totalHousesUnpaid() ?></span> /
-                                                        <?= totalHouses() ?></span>
+                                                    Houses <span class="text-end"><span class="fw-bold"><?= $totalHousesUnpaid ?></span> /
+                                                        <?= $totalHouses ?></span>
                                                 </div>
                                                 <div class="progress bg-primary bg-opacity-10">
-                                                    <div class="progress-bar bg-primary rounded" role="progressbar" aria-label="Basic example" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-primary rounded" role="progressbar" aria-label="Basic example" style="width: <?= $percentageUnpaid ?>%" aria-valuenow="<?= $percentageUnpaid ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -445,12 +450,17 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                                 <i class="fas fa-dollar-sign"></i>
                                             </div>
                                             <div class="flex-1 w-100 ms-3">
+                                            <?php
+                                                $totalShops =  totalShops() ;
+                                                $totalSHopsUnpaid = totalSHopsUnpaid() ;
+                                                $percentageUnpaid = ($totalHousesUnpaid / $totalHouses) * 100;
+                                                ?>
                                                 <div class="d-flex justify-content-between mb-2">
                                                     Shops <span class="text-end"><span class="fw-bold"><?= totalSHopsUnpaid() ?></span> /
                                                         <?= totalShops() ?></span>
                                                 </div>
                                                 <div class="progress bg-info bg-opacity-10">
-                                                    <div class="progress-bar bg-info rounded" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-info rounded" role="progressbar" aria-label="Basic example" style="width: <?= $percentageUnpaid ?>%" aria-valuenow="<?= $percentageUnpaid ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                         </div>
