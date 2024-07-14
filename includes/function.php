@@ -21,7 +21,7 @@ function totalHousesUnpaid()
 {
     global $conn;
 
-    $sql = "SELECT * FROM maintenance_payments WHERE status = 'unpaid' AND house_or_shop = 'house'";
+    $sql = "SELECT * FROM maintenance_payments WHERE status = 'paid' AND house_or_shop = 'house'";
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {
@@ -36,7 +36,7 @@ function totalSHopsUnpaid()
 {
     global $conn;
 
-    $sql = "SELECT * FROM maintenance_payments WHERE status = 'unpaid' AND house_or_shop = 'shop'";
+    $sql = "SELECT * FROM maintenance_payments WHERE status = 'paid' AND house_or_shop = 'shop'";
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {

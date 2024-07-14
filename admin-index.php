@@ -1731,6 +1731,7 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
 {
     global $conn;
     $selectIncomeReport = mysqli_real_escape_string($conn, $selectIncomeReport);
+    $searchMonth = mysqli_real_escape_string($conn, $searchMonth);
     $month = date('m', strtotime($searchMonth));
     $year = date('Y', strtotime($searchDropdown));
     $searchDropdown = mysqli_real_escape_string($conn, $searchDropdown);
@@ -1745,7 +1746,7 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
                    WHERE 1=1";
 
         if (!empty($searchMonth)) {
-            $eGateQuery .= " AND month(added_on) = '$month' AND year(added_on) = '$year'";
+            $eGateQuery .= " AND egate.added_on LIKE '%" . $searchMonth . "%'";
         }
         $eGateQuery .= " ORDER BY eGate_id DESC LIMIT $searchDropdown";
 
@@ -1808,7 +1809,7 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
 
         if (empty($data)) {
             $data = '<tr>
-                        <td colspan="6" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database.</td>
+                        <td colspan="6" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database.'. $searchMonth .'</td>
                     </tr>';
         }
 
@@ -1817,21 +1818,326 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
 
     } elseif ($selectIncomeReport == 'Servants') {
 
+        // Modify the query based on your database structure
+        $query = "SELECT servants.*, houses.house_number, houses.owner_name From servants
+        INNER JOIN houses ON houses.house_id = servants.house_id 
+        WHERE 1=1";
+
+        if (!empty($searchMonth)) {
+            $query .= " AND servants.added_on LIKE '%" . $searchMonth . "%'";
+        }
+        $query .= " ORDER BY servant_id DESC LIMIT $searchDropdown";
+
+
+        $result = mysqli_query($conn, $query);
+
+        $data = '';
+        $count = 1;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data .= '
+
+        <tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['house_number'] . '</td>
+            <td>' . $row['owner_name'] . '</td>
+            <td>' . $row['servantDesignation'] . '</td>
+            <td>' . $row['servantFees'] . '</td>
+            <td>
+                <a href="servantEdit.php?servant_edit_id=' . $row['servant_id'] . '">
+                    <span>
+                        <i class="fas fa-pencil-alt me-1 text-success"></i>
+                    </span>
+                </a>
+                <a class="" href="servantView.php?servant_view_id=' . $row['servant_id'] . '">
+                    <i class="fas fa-eye me-1 text-info"></i>
+                </a>
+                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteServant' . $row['servant_id'] . '" data-bs-placement="top" title="Delete">
+                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
+                </button>
+                <div class="modal fade" id="deleteServant' . $row['servant_id'] . '" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['house_number'] . '</span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <p>Please confirm that you want to delete your Incometion. <br>
+                                    Once deleted, you won\'t be able to recover it. <br>
+                                    Please proceed with caution.
+                                </p>
+                            </div>
+                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                <a href="?servant_delete_id=' . $row['servant_id'] . '" class="btn btn-danger" name="delete_servant">Delete</a>
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        ';
+        }
+        // Check if $data is empty
+        if (empty($data)) {
+            $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database.'. $searchMonth .'</td>
+                </tr>';
+        }
+
+        return $data;
+
     } elseif ($selectIncomeReport == 'Events Booking') {
+
+        // Modify the query based on your database structure
+        $eventsQuery = "SELECT * FROM events_booking WHERE 1=1";
+        
+        if (!empty($searchMonth)) {
+            $eventsQuery .= " AND added_on LIKE '%" . $searchMonth . "%'";
+        }
+        $eventsQuery .= " ORDER BY event_id DESC LIMIT $searchDropdown";
+
+        $eventsResult = mysqli_query($conn, $eventsQuery);
+
+        $data = '';
+        $count = 1;
+        while ($row = mysqli_fetch_assoc($eventsResult)) {
+
+            // Modify date & time format
+            $date = date("d-F-Y", strtotime($row['date']));
+            $startTime = date("h:i A", strtotime($row['startTiming']));
+            $endTime = date("h:i A", strtotime($row['endTiming']));
+            $data .= '
+
+        <tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['eventName'] . '</td>
+            <td>' . $row['location'] . '</td>
+            <td>' . $row['customerName'] . '</td>
+            <td>' . $date . '<br>' . $startTime . ' To ' . $endTime . '</td>
+            <td>' . $row['bookingPayment'] . '</td>
+            <td>
+                <a href="eventEdit.php?event_edit_id=' . $row['event_id'] . '">
+                    <span>
+                        <i class="fas fa-pencil-alt me-1 text-success"></i>
+                    </span>
+                </a>
+                <a class="" href="eventView.php?event_view_id=' . $row['event_id'] . '">
+                    <i class="fas fa-eye me-1 text-info"></i>
+                </a>
+                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteUsers' . $row['event_id'] . '" data-bs-placement="top" title="Delete">
+                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
+                </button>
+                <div class="modal fade" id="deleteUsers' . $row['event_id'] . '" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['eventName'] . '</span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <p>Please confirm that you want to delete your Incometion. <br>
+                                    Once deleted, you won\'t be able to recover it. <br>
+                                    Please proceed with caution.
+                                </p>
+                            </div>
+                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                <a href="?booking_delete_id=' . $row['event_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        ';
+        }
+        // Check if $data is empty
+        if (empty($data)) {
+            $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database.'. $searchMonth .'</td>
+                </tr>';
+        }
+
+        return $data;
+
 
     } elseif ($selectIncomeReport == 'Maintenance Charges') {
 
+            // Modify the query based on your database structure
+    $query = "SELECT * FROM maintenance_payments WHERE 1=1";
+
+    if (!empty($searchMonth)) {
+        $query .= " AND added_on LIKE '%" . $searchMonth . "%'";
+    }
+    $query .= " ORDER BY maintenance_id DESC LIMIT $searchDropdown";
+
+    $result = mysqli_query($conn, $query);
+
+    $data = '';
+    $count = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Start building the row for each maintenance payment record
+        $data .= '
+            <tr>
+                <td>' . $count++ . '</td>';
+
+        // Assuming $house_shop_id is a string of comma-separated IDs
+        $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
+
+        if ($row['house_or_shop'] == "house") {
+            foreach ($house_shop_ids as $house_shop_id_main) {
+                $house_shop_id_main = intval($house_shop_id_main); // Ensure it's an integer to prevent SQL injection
+                $select = "SELECT house_number FROM houses WHERE house_id = $house_shop_id_main";
+                $house_result = mysqli_query($conn, $select);
+
+                if ($house_result && mysqli_num_rows($house_result) > 0) {
+                    $house_row = mysqli_fetch_assoc($house_result);
+                    $data .= '<td>' . htmlspecialchars($house_row['house_number']) . '</td>';
+                } else {
+                    $data .= '<td>House not found</td>';
+                }
+            }
+        } elseif ($row['house_or_shop'] == "shop") {
+            foreach ($house_shop_ids as $shop_id_main) {
+                $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
+                $select = "SELECT shop_number FROM shops WHERE shop_id = $shop_id_main";
+                $shop_result = mysqli_query($conn, $select);
+
+                if ($shop_result && mysqli_num_rows($shop_result) > 0) {
+                    $shop_row = mysqli_fetch_assoc($shop_result);
+                    $data .= '<td>' . htmlspecialchars($shop_row['shop_number']) . '</td>';
+                } else {
+                    $data .= '<td>Shop not found</td>';
+                }
+            }
+        }
+
+        $data .= '
+                <td>' . htmlspecialchars($row['house_or_shop']) . '</td>
+                <td>' . htmlspecialchars($row['maintenance_month']) . '</td>
+                <td>' . htmlspecialchars($row['maintenance_peyment']) . '</td>
+                <td>
+                    <a href="maintenanceAdd.php?maintenance_add_id=' . htmlspecialchars($row['maintenance_id']) . '">
+                        <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: ' . ($row['status'] == 'unpaid' ? 'lightcoral' : 'lightgreen') . ';">
+                            ' . htmlspecialchars($row['status']) . '
+                        </span>
+                    </a>
+                </td>
+                <td>
+                    <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deletepenalty' . htmlspecialchars($row['maintenance_id']) . '" data-bs-placement="top" title="Delete">
+                        <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete">
+                            <i class="fas fa-trash text-danger p-1"></i>
+                        </span>
+                    </button>
+                    <div class="modal fade" id="deletepenalty' . htmlspecialchars($row['maintenance_id']) . '" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? ID: <span class="text-danger">' . htmlspecialchars($row['maintenance_id']) . '</span></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-start">
+                                    <p>Please confirm that you want to delete your entry. <br>
+                                        Once deleted, you won\'t be able to recover it. <br>
+                                        Please proceed with caution.
+                                    </p>
+                                </div>
+                                <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                    <a href="?Maintenance_delete_id=' . htmlspecialchars($row['maintenance_id']) . '" class="btn btn-danger" name="delete_penalty">Delete</a>
+                                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>';
+    }
+    // Check if $data is empty
+    if (empty($data)) {
+        $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Maintenance data in the database.'. $searchMonth .'</td>
+                </tr>';
+    }
+
+    return $data;
+
+
     } elseif ($selectIncomeReport == 'Penalty Charges') {
+
+            // Modify the query based on your database structure
+    $query = "SELECT * FROM penalty WHERE 1=1";
+
+    if (!empty($searchMonth)) {
+        $query .= " AND created_date LIKE '%" . $searchMonth . "%'";
+    }
+    $query .= " ORDER BY id DESC LIMIT $searchDropdown";
+
+
+    $result = mysqli_query($conn, $query);
+
+    $data = '';
+    $count = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data .= '
+
+        <tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['penalty_type'] . '</td>
+            <td>' . $row['penalty_cnic'] . '</td>
+            <td>' . $row['penalty_charges'] . '</td>
+            <td>' . $row['created_date'] . '</td>
+            <td>
+                <a href="penaltyEdit.php?penalty_edit_id=' . $row['id'] . '">
+                    <span>
+                        <i class="fas fa-pencil-alt me-1 text-success"></i>
+                    </span>
+                </a>
+                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deletepenalty' . $row['id'] . '" data-bs-placement="top" title="Delete">
+                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
+                </button>
+                <div class="modal fade" id="deletepenalty' . $row['id'] . '" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['id'] . '</span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <p>Please confirm that you want to delete your Incometion. <br>
+                                    Once deleted, you won\'t be able to recover it. <br>
+                                    Please proceed with caution.
+                                </p>
+                            </div>
+                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                <a href="?penalty_delete_id=' . $row['id'] . '" class="btn btn-danger" name="delete_penalty">Delete</a>
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        ';
+    }
+    // Check if $data is empty
+    if (empty($data)) {
+        $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penalty data in the database. '. $searchMonth .'</td>
+                </tr>';
+    }
+
+    return $data;
+
 
     } else {
         return '<tr>
         <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">Please Select the income reports for Searching the data.</td>
     </tr>';
     }
-
-
-
-
 }
 
 
@@ -2249,7 +2555,7 @@ if (isset($_POST['action'])) {
     }
 
 
-    
+
     // index page houses data month wise
     if ($action == 'filter-house-Data') {
         $filterHousesData = $_POST['filterHousesData'];

@@ -121,15 +121,19 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <!-- ------------event booking------------- -->
                                             <th class="eventBookingID" style="display: none;">Event Name</th>
                                             <th class="eventBookingID" style="display: none;">Customer Name</th>
+                                            <th class="eventBookingID" style="display: none;">Location</th>
                                             <th class="eventBookingID" style="display: none;">Booking Date</th>
+                                            <th class="eventBookingID" style="display: none;">Payment</th>
                                             <!-- ------------Maintenance------------- -->
                                             <th class="maintenanceID" style="display: none;">House / Shop</th>
                                             <th class="maintenanceID" style="display: none;">Maintenance Month</th>
                                             <th class="maintenanceID" style="display: none;">Maintenance Charges</th>
+                                            <th class="maintenanceID" style="display: none;">Status</th>
                                             <!-- ------------Penalty------------- -->
                                             <th class="penaltyID" style="display: none;">Penalty type</th>
                                             <th class="penaltyID" style="display: none;">Penalty Cnic</th>
                                             <th class="penaltyID" style="display: none;">Penalty Charges</th>
+                                            <th class="penaltyID" style="display: none;">Penalty Date</th>
                                             <!-- --------------------all----------------- -->
                                             <th class="ActionID" style="display: none;">Action</th>
                                         </tr>
