@@ -224,33 +224,6 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
 
     <script>
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     // Load data on page load with default value (10)
-        //     load_expensesReports_Data();
-
-        // });
-
-        // function load_expensesReports_Data() {
-
-        //     let loadSearchMonth = document.getElementById('searchMonth').value;
-        //     let loadSearchDropdown = $("#searchDropdown").val();
-
-        //     $.ajax({
-        //         url: 'admin-index.php',
-        //         type: 'POST',
-        //         dataType: 'json',
-        //         data: {
-        //             action: 'load-expensesReports-Data',
-        //             loadSearchMonth: loadSearchMonth,
-        //             loadSearchDropdown: loadSearchDropdown
-        //         },
-        //         success: function(response) {
-        //             console.log(response);
-        //             // Update the result div with the loaded data
-        //             $("#expensesReportsData").html(response.data);
-        //         },
-        //     });
-        // }
 
 
 

@@ -67,7 +67,7 @@ deleteBookingEvents();
                                 </form>
                             </div>
                             <div class="col-md-8 col-xl-9 text-end">
-                                <a href="eventBooking" class="btn btn-primary"><i class="fas fa-plus"></i> Events Booking</a>
+                                <a href="addEventBooking" class="btn btn-primary"><i class="fas fa-plus"></i> Events Booking</a>
                             </div>
                         </div>
                     </div>

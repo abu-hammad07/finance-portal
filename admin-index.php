@@ -1727,6 +1727,114 @@ function searching_expensesReports_data_In_Database($selectUtilityMaint, $search
 
 
 
+function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMonth, $searchDropdown)
+{
+    global $conn;
+    $selectIncomeReport = mysqli_real_escape_string($conn, $selectIncomeReport);
+    $month = date('m', strtotime($searchMonth));
+    $year = date('Y', strtotime($searchDropdown));
+    $searchDropdown = mysqli_real_escape_string($conn, $searchDropdown);
+
+
+    if ($selectIncomeReport == 'E-Gate Pass') {
+
+        $eGateQuery = "SELECT egate.*, houses.house_number, shops.shop_number 
+                   FROM egate
+                   LEFT JOIN houses ON egate.house_id = houses.house_id
+                   LEFT JOIN shops ON egate.shop_id = shops.shop_id 
+                   WHERE 1=1";
+
+        if (!empty($searchMonth)) {
+            $eGateQuery .= " AND month(added_on) = '$month' AND year(added_on) = '$year'";
+        }
+        $eGateQuery .= " ORDER BY eGate_id DESC LIMIT $searchDropdown";
+
+        $eGateResult = mysqli_query($conn, $eGateQuery);
+        $data = '';
+        $count = 1;
+        while ($row = mysqli_fetch_array($eGateResult)) {
+
+            $data .= '
+
+                <tr>
+                    <td>' . $count++ . '</td>';
+
+            if (($row['house_or_shop'] == 'house')) {
+                $data .= '<td>' . $row['house_number'] . '</td>';
+            } elseif (($row['house_or_shop'] == 'shop')) {
+                $data .= '<td>' . $row['shop_number'] . '</td>';
+            }
+
+            $data .= '<td>' . $row['eGateperson_name'] . '</td>
+                    <td>' . $row['vehicle_name'] . '</td>
+                    <td>' . $row['vehicle_number'] . '</td>
+                    <td>' . $row['eGate_charges'] . '</td>
+                    <td>
+                      <a href="eGateEdit?eGate_edit_id=' . $row['eGate_id'] . '">
+                          <span>
+                              <i class="fas fa-pencil-alt me-1 text-success"></i>
+                          </span>
+                      </a>
+                      <a class="" href="eGateView?eGate_view_id=' . $row['eGate_id'] . '">
+                          <i class="fas fa-eye me-1 text-info"></i>
+                      </a>
+                      <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteeGate' . $row['eGate_id'] . '" data-bs-placement="top" title="Delete">
+                          <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
+                      </button>
+                      <div class="modal fade" id="deleteeGate' . $row['eGate_id'] . '" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? eGate Person Name: <span class="text-danger">' . $row['eGateperson_name'] . '</span></h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body text-start">
+                                      <p>Please confirm that you want to delete this entry. <br>
+                                          Once deleted, you won\'t be able to recover it. <br>
+                                          Please proceed with caution.
+                                      </p>
+                                  </div>
+                                  <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+                                      <a href="?eGate_delete_id=' . $row['eGate_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
+                                      <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </td>
+              </tr>';
+
+        }
+
+        if (empty($data)) {
+            $data = '<tr>
+                        <td colspan="6" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database.</td>
+                    </tr>';
+        }
+
+        return $data;
+
+
+    } elseif ($selectIncomeReport == 'Servants') {
+
+    } elseif ($selectIncomeReport == 'Events Booking') {
+
+    } elseif ($selectIncomeReport == 'Maintenance Charges') {
+
+    } elseif ($selectIncomeReport == 'Penalty Charges') {
+
+    } else {
+        return '<tr>
+        <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">Please Select the income reports for Searching the data.</td>
+    </tr>';
+    }
+
+
+
+
+}
+
+
 
 
 
@@ -1960,4 +2068,20 @@ if (isset($_POST['action'])) {
         $response = array('data' => $result);
         echo json_encode($response);
     }
+
+
+    // Income view reports
+    if ($action == 'search-incomeReports-Data') {
+        $selectIncomeReport = $_POST['selectIncomeReport'];
+        $searchMonth = $_POST['searchMonth'];
+        $searchDropdown = $_POST['searchDropdown'];
+
+        $result = searching_incomeReports_data_In_Database($selectIncomeReport, $searchMonth, $searchDropdown);
+
+        $response = array('data' => $result);
+        echo json_encode($response);
+    }
+
+
+
 }

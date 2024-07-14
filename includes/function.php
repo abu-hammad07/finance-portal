@@ -17,6 +17,36 @@ function totalHouses()
     return $totalCounts;
 }
 
+function totalHousesUnpaid()
+{
+    global $conn;
+
+    $sql = "SELECT * FROM maintenance_payments WHERE status = 'unpaid' AND house_or_shop = 'house'";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        $_SESSION["index_error"] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $totalCounts = mysqli_num_rows($result);
+    return $totalCounts;
+}
+
+function totalSHopsUnpaid()
+{
+    global $conn;
+
+    $sql = "SELECT * FROM maintenance_payments WHERE status = 'unpaid' AND house_or_shop = 'shop'";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        $_SESSION["index_error"] = "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $totalCounts = mysqli_num_rows($result);
+    return $totalCounts;
+
+}
 
 // Total Houses
 function totalShops()
@@ -593,11 +623,11 @@ function eventBookingInsert()
         $added_by = $_SESSION['username'];
 
         // $date Alrady Exist-----------
-        $checkDate = "SELECT * FROM events_booking WHERE `date` = '$date'";
+        $checkDate = "SELECT * FROM events_booking WHERE `date` = '$date' AND `location` = '$location'";
         $checkDate_res = mysqli_query($conn, $checkDate);
         if (mysqli_num_rows($checkDate_res) > 0) {
-            $_SESSION['error_message_eventBooking'] = "($date) Date Already Exist.";
-            header('location: eventBooking');
+            $_SESSION['error_message_eventBooking'] = "($date) Date Already Booking.";
+            header('location: addEventBooking');
             exit();
         }
 
@@ -616,11 +646,11 @@ function eventBookingInsert()
 
         if ($insertEventBooking_res) {
             $_SESSION['success_message_eventBooking'] = "($eventName) has been Added.";
-            header('location: eventBooking');
+            header('location: addEventBooking');
             exit();
         } else {
             $_SESSION['error_message_eventBooking'] = "($eventName) Not Added.";
-            header('location: eventBooking');
+            header('location: addEventBooking');
             exit();
         }
     }

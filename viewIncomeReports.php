@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("includes/config.php");
-include_once("includes/function.php");
+include_once ("includes/config.php");
+include_once ("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -17,10 +17,12 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
     <title>Income Reports</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <meta name="og:description"
+        content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
-    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <meta property="og:image"
+        content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
     <!-- bootstrap css link -->
     <link rel="stylesheet" href="lib/bootstrap_5/bootstrap.min.css">
     <!-- Font Awesome CDN -->
@@ -43,7 +45,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
         <!-- Main sidebar -->
         <?php
-        include("includes/sidebar.php");
+        include ("includes/sidebar.php");
         ?>
         <!-- End:Sidebar -->
 
@@ -59,8 +61,9 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                     <div class="card card-body h-auto d2c_projects_datatable">
                         <div class="row g-3">
                             <div class="col-md-4 col-6">
-                                <select id="selectUtilityMaint" class="form-select form-control" onchange="handleSelectionChange()">
-                                    <option value="">Select Income Form</option>
+                                <select id="selectIncomeReport" class="form-select form-control"
+                                    onchange="handleSelectionChange()">
+                                    <option value="">Select Income Report</option>
                                     <option value="E-Gate Pass">E-Gate Pass</option>
                                     <option value="Servants">Servants</option>
                                     <option value="Events Booking">Events Booking</option>
@@ -68,34 +71,13 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                     <option value="Penalty Charges">Penalty Charges</option>
                                 </select>
                             </div>
-
-                            
-                            <!-- --------------egat-pass start------------------ -->
-                            <div class="col-md-4 col-6" id="utilityTypeContainer" style="display: none;">
-                                <input type="text" class="form-control" id="searchUtilityType" placeholder="Vehicle Name..." />
-                            </div>
-                            <div class="col-md-4 col-6" id="utilityTypeContainer" style="display: none;">
-                                <input type="text" class="form-control" id="searchUtilityType" placeholder="Vehicle Number..." />
-                            </div>
-                            <div class="col-md-4 col-6" id="locationContainer" style="display: none;">
-                                <select id="searchLocation" class="form-select form-control">
-                                    <option value="">Select Location</option>
-                                    <option value="Office">Office</option>
-                                    <option value="Sports Area">Sports Area</option>
-                                    <option value="Shadi Hall">Shadi Hall</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                              <!-- --------------egat-pass end------------------ -->
-                            <div class="col-md-4 col-6" id="maintTypeContainer" style="display: none;">
-                                <input type="text" class="form-control" id="searchMaintType" placeholder="Maintenance Type..." />
-                            </div>
-
                             <div class="col-md-4 col-6">
-                                <input type="month" class="form-control" id="searchMonth" onchange="load_expensesReports_Data()" />
+                                <input type="month" class="form-control" id="searchMonth"
+                                    onchange="load_expensesReports_Data()" />
                             </div>
                             <div class="col-md-4 col-6">
-                                <select id="searchDropdown" class="form-select form-control" onchange="load_expensesReports_Data()">
+                                <select id="searchDropdown" class="form-select form-control"
+                                    onchange="load_expensesReports_Data()">
                                     <option value="25">25</option>
                                     <option value="50">50</option>
                                     <option value="75">75</option>
@@ -104,7 +86,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                 </select>
                             </div>
                             <div class="col-md-4 col-6">
-                                <button class="btn btn-primary w-100" id="submit_btn" type="submit" onclick="search_expensesReports_Data()">Search</button>
+                                <button class="btn btn-primary w-100" id="submit_btn" type="submit"
+                                    onclick="search_incomeReports_Data()">Search</button>
                             </div>
                         </div>
                     </div>
@@ -120,38 +103,38 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                     <thead>
                                         <tr>
                                             <!-- ------------Tenant------------- -->
-                                            <!-- ----------all page start------------------ -->
-                                            <th id="snoID" style="display: none;">S.No</th>
-                                            <th id="utilityTypeID" style="display: none;">House/Shop Number</th>
-                                            <!-- ----------all page end------------------ -->
+                                            <!-- ----------all start------------------ -->
+                                            <th class="snoID" style="display: none;">S.No</th>
+                                            <!-- ----------all end------------------ -->
+                                            <!-- ----------Egat, Servant & Maintenance Allow Start------------------ -->
+                                            <th class="houseShopID" style="display: none;">House/Shop Number</th>
+                                            <!-- ----------Egat, Servant & Maintenance Allow end------------------ -->
                                             <!-- ------------Egat ------------- -->
-                                            <th id="maintCommentsID" style="display: none;">Person Name</th>
-                                            <th id="maintCommentsID" style="display: none;">Vehicle Name</th>
-                                            <th id="maintCommentsID" style="display: none;">Vehicle Number</th>
-                                            <th id="maintCommentsID" style="display: none;">Charges</th>
+                                            <th class="eGatID" style="display: none;">Person Name</th>
+                                            <th class="eGatID" style="display: none;">Vehicle Name</th>
+                                            <th class="eGatID" style="display: none;">Vehicle Number</th>
+                                            <th class="eGatID" style="display: none;">Charges</th>
                                             <!-- ------------Servant------------- -->
-                                            <th id="maintActionID" style="display: none;">Owner Name</th>
-                                            <th id="maintActionID" style="display: none;">Designation</th>
-                                            <th id="maintActionID" style="display: none;">Fees</th>
+                                            <th class="servantID" style="display: none;">Owner Name</th>
+                                            <th class="servantID" style="display: none;">Designation</th>
+                                            <th class="servantID" style="display: none;">Fees</th>
                                             <!-- ------------event booking------------- -->
-                                            <th id="maintActionID" style="display: none;">Event Name</th>
-                                            <th id="maintActionID" style="display: none;">Customer Name</th>
-                                            <th id="maintActionID" style="display: none;">Customer CNIC</th>
-                                            <th id="maintActionID" style="display: none;">Date Time</th>
-                                            <th id="maintActionID" style="display: none;">Booking Payment</th>
+                                            <th class="eventBookingID" style="display: none;">Event Name</th>
+                                            <th class="eventBookingID" style="display: none;">Customer Name</th>
+                                            <th class="eventBookingID" style="display: none;">Booking Date</th>
                                             <!-- ------------Maintenance------------- -->
-                                            <th id="maintActionID" style="display: none;">House / Shop</th>
-                                            <th id="maintActionID" style="display: none;">Maintenance Month</th>
-                                            <th id="maintActionID" style="display: none;">Maintenance Charges</th>
+                                            <th class="maintenanceID" style="display: none;">House / Shop</th>
+                                            <th class="maintenanceID" style="display: none;">Maintenance Month</th>
+                                            <th class="maintenanceID" style="display: none;">Maintenance Charges</th>
                                             <!-- ------------Penalty------------- -->
-                                            <th id="maintActionID" style="display: none;">Penalty type</th>
-                                            <th id="maintActionID" style="display: none;">Penalty Cnic</th>
-                                            <th id="maintActionID" style="display: none;">Penalty Charges</th>
+                                            <th class="penaltyID" style="display: none;">Penalty type</th>
+                                            <th class="penaltyID" style="display: none;">Penalty Cnic</th>
+                                            <th class="penaltyID" style="display: none;">Penalty Charges</th>
                                             <!-- --------------------all----------------- -->
-                                            <th id="maintActionID" style="display: none;">Action</th>
+                                            <th class="ActionID" style="display: none;">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="expensesReportsData">
+                                    <tbody id="incomeReportsData">
                                         <!-- <div id="successAlert" class="alert alert-warning text-warning text-center alert-dismissible" role="alert">
                                             Select Utility/Maintenance & Search the data .
                                         </div> -->
@@ -167,7 +150,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     </div>
 
     <!-- Offcanvas Toggler -->
-    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
+    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
         <i class="far fa-hand-point-right"></i>
     </button>
     <!-- End:Offcanvas Toggler -->
@@ -181,116 +165,49 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
     <script>
         function handleSelectionChange() {
-            const selectUtilityMaint = document.getElementById('selectUtilityMaint');
-            const utilityTypeContainer = document.getElementById('utilityTypeContainer');
-            const locationContainer = document.getElementById('locationContainer');
-            const maintTypeContainer = document.getElementById('maintTypeContainer');
+            var select = document.getElementById("selectIncomeReport");
+            var selectedValue = select.value;
 
-            const snoID = document.getElementById('snoID');
-            const utilityTypeID = document.getElementById('utilityTypeID');
-            const utilityAmountID = document.getElementById('utilityAmountID');
-            const utilityDueDateID = document.getElementById('utilityDueDateID');
-            const utilityLocationID = document.getElementById('utilityLocationID');
-            const maintTypeID = document.getElementById('maintTypeID');
-            const maintAmountID = document.getElementById('maintAmountID');
-            const maintDueDateID = document.getElementById('maintDueDateID');
-            const maintPaymentDateID = document.getElementById('maintPaymentDateID');
-            const maintCommentsID = document.getElementById('maintCommentsID');
-            const maintActionID = document.getElementById('maintActionID');
+            // Hide all columns first
+            var allColumns = document.querySelectorAll('th, td');
+            allColumns.forEach(function (col) {
+                col.style.display = 'none';
+            });
 
-            if (selectUtilityMaint.value === "Society Maintenance") {
-                utilityTypeContainer.style.display = 'none';
-                locationContainer.style.display = 'none';
-                maintTypeContainer.style.display = 'block';
-
-                snoID.style.display = 'table-cell';
-                utilityTypeID.style.display = 'none';
-                utilityAmountID.style.display = 'none';
-                utilityDueDateID.style.display = 'none';
-                utilityLocationID.style.display = 'none';
-                maintTypeID.style.display = 'table-cell';
-                maintAmountID.style.display = 'table-cell';
-                maintDueDateID.style.display = 'table-cell';
-                maintPaymentDateID.style.display = 'table-cell';
-                maintCommentsID.style.display = 'table-cell';
-                maintActionID.style.display = 'table-cell';
-
-            } else if (selectUtilityMaint.value === "Utility Charges") {
-                utilityTypeContainer.style.display = 'block';
-                locationContainer.style.display = 'block';
-                maintTypeContainer.style.display = 'none';
-
-                snoID.style.display = 'table-cell';
-                utilityTypeID.style.display = 'table-cell';
-                utilityAmountID.style.display = 'table-cell';
-                utilityDueDateID.style.display = 'table-cell';
-                utilityLocationID.style.display = 'table-cell';
-                maintTypeID.style.display = 'none';
-                maintAmountID.style.display = 'none';
-                maintDueDateID.style.display = 'none';
-                maintPaymentDateID.style.display = 'none';
-                maintCommentsID.style.display = 'none';
-                maintActionID.style.display = 'table-cell';
-            } else {
-                utilityTypeContainer.style.display = 'none';
-                locationContainer.style.display = 'none';
-                maintTypeContainer.style.display = 'none';
-
-                snoID.style.display = 'none';
-                utilityTypeID.style.display = 'none';
-                utilityAmountID.style.display = 'none';
-                utilityDueDateID.style.display = 'none';
-                utilityLocationID.style.display = 'none';
-                maintTypeID.style.display = 'none';
-                maintAmountID.style.display = 'none';
-                maintDueDateID.style.display = 'none';
-                maintPaymentDateID.style.display = 'none';
-                maintCommentsID.style.display = 'none';
-                maintActionID.style.display = 'none';
+            // Show relevant columns based on selection
+            if (selectedValue === "E-Gate Pass") {
+                showColumns(['snoID', 'houseShopID', 'eGatID', 'ActionID']);
+            } else if (selectedValue === "Servants") {
+                showColumns(['snoID', 'houseShopID', 'servantID', 'ActionID']);
+            } else if (selectedValue === "Events Booking") {
+                showColumns(['snoID', 'eventBookingID', 'ActionID']);
+            } else if (selectedValue === "Maintenance Charges") {
+                showColumns(['snoID', 'houseShopID', 'maintenanceID', 'ActionID']);
+            } else if (selectedValue === "Penalty Charges") {
+                showColumns(['snoID', 'penaltyID', 'ActionID']);
             }
         }
+
+        function showColumns(classList) {
+            classList.forEach(function (className) {
+                var columns = document.querySelectorAll('.' + className);
+                columns.forEach(function (col) {
+                    col.style.display = '';
+                });
+            });
+        }
+
+        // Initialize by calling handleSelectionChange on page load to ensure the correct columns are shown based on any pre-selected value.
+        document.addEventListener('DOMContentLoaded', handleSelectionChange);
     </script>
 
 
     <script>
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     // Load data on page load with default value (10)
-        //     load_expensesReports_Data();
-
-        // });
-
-        // function load_expensesReports_Data() {
-
-        //     let loadSearchMonth = document.getElementById('searchMonth').value;
-        //     let loadSearchDropdown = $("#searchDropdown").val();
-
-        //     $.ajax({
-        //         url: 'admin-index.php',
-        //         type: 'POST',
-        //         dataType: 'json',
-        //         data: {
-        //             action: 'load-expensesReports-Data',
-        //             loadSearchMonth: loadSearchMonth,
-        //             loadSearchDropdown: loadSearchDropdown
-        //         },
-        //         success: function(response) {
-        //             console.log(response);
-        //             // Update the result div with the loaded data
-        //             $("#expensesReportsData").html(response.data);
-        //         },
-        //     });
-        // }
-
-
-
 
         // =========== function searching =============
-        function search_expensesReports_Data() {
+        function search_incomeReports_Data() {
 
-            let selectUtilityMaint = document.getElementById('selectUtilityMaint').value;
-            let searchUtilityType = document.getElementById('searchUtilityType').value;
-            let searchLocation = document.getElementById('searchLocation').value;
-            let searchMaintType = document.getElementById('searchMaintType').value;
+            let selectIncomeReport = document.getElementById('selectIncomeReport').value;
             let searchMonth = document.getElementById('searchMonth').value;
             let searchDropdown = $("#searchDropdown").val();
 
@@ -300,18 +217,15 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    action: 'search-expensesReports-Data',
-                    selectUtilityMaint: selectUtilityMaint,
-                    searchUtilityType: searchUtilityType,
-                    searchLocation: searchLocation,
-                    searchMaintType: searchMaintType,
+                    action: 'search-incomeReports-Data',
+                    selectIncomeReport: selectIncomeReport,
                     searchMonth: searchMonth,
                     searchDropdown: searchDropdown
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     // Update the result div with the loaded data
-                    $("#expensesReportsData").html(response.data);
+                    $("#incomeReportsData").html(response.data);
                 },
             });
         }
