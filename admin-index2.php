@@ -340,7 +340,7 @@ function search_maintenace_data_In_Database($manitenaceSearch)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database. ' . $penaltySearch . '</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database. ' . $manitenaceSearch . '</td>
                 </tr>';
     }
 

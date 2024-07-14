@@ -17,7 +17,7 @@ function totalHouses()
     return $totalCounts;
 }
 
-function totalHousesUnpaid()
+function totalHousesPaid()
 {
     global $conn;
 
@@ -32,7 +32,7 @@ function totalHousesUnpaid()
     return $totalCounts;
 }
 
-function totalSHopsUnpaid()
+function totalSHopsPaid()
 {
     global $conn;
 
