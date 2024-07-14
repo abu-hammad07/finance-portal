@@ -428,8 +428,8 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                             <div class="flex-1 w-100 ms-3">
                                                 <div class="d-flex justify-content-between mb-2">
-                                                    Houses <span class="text-end"><span class="fw-bold"><?= totalHousesUnpaid() ;?></span> /
-                                                        <?= totalHouses(); ?></span>
+                                                    Houses <span class="text-end"><span class="fw-bold"><?= totalHousesUnpaid() ?></span> /
+                                                        <?= totalHouses() ?></span>
                                                 </div>
                                                 <div class="progress bg-primary bg-opacity-10">
                                                     <div class="progress-bar bg-primary rounded" role="progressbar" aria-label="Basic example" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -446,8 +446,8 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                             <div class="flex-1 w-100 ms-3">
                                                 <div class="d-flex justify-content-between mb-2">
-                                                    Shops <span class="text-end"><span class="fw-bold"><?= totalSHopsUnpaid(); ?></span> /
-                                                        <?= totalShops(); ?></span>
+                                                    Shops <span class="text-end"><span class="fw-bold"><?= totalSHopsUnpaid() ?></span> /
+                                                        <?= totalShops() ?></span>
                                                 </div>
                                                 <div class="progress bg-info bg-opacity-10">
                                                     <div class="progress-bar bg-info rounded" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
