@@ -146,9 +146,11 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-house-user"></i>
-                                            </div>
+                                            <a href="houses">
+                                                <div class="btn rounded shadow text-primary fs-3">
+                                                    <i class="fas fa-house-user"></i>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <h6>Houses</h6>
@@ -213,9 +215,11 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-store"></i>
-                                            </div>
+                                            <a href="shops">
+                                                <div class="btn rounded shadow text-primary fs-3">
+                                                    <i class="fas fa-store"></i>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <h6>Shops</h6>
@@ -279,9 +283,11 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-user"></i>
-                                            </div>
+                                            <a href="userDetails">
+                                                <div class="btn rounded shadow text-primary fs-3">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <h6>Users</h6>
@@ -346,9 +352,11 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-users"></i>
-                                            </div>
+                                            <a href="employee">
+                                                <div class="btn rounded shadow text-primary fs-3">
+                                                    <i class="fas fa-users"></i>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <h6>Employees</h6>
@@ -413,9 +421,11 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-comments-dollar"></i>
-                                            </div>
+                                            <a href="viewIncomeReports">
+                                                <div class="btn rounded shadow text-primary fs-3">
+                                                    <i class="fas fa-comments-dollar"></i>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <h6>Income</h6>
@@ -480,9 +490,11 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="btn rounded shadow text-primary fs-3">
-                                                <i class="fas fa-comment-dollar"></i>
-                                            </div>
+                                            <a href="viewexpensesReports">
+                                                <div class="btn rounded shadow text-primary fs-3">
+                                                    <i class="fas fa-comment-dollar"></i>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <h6>Expenses</h6>

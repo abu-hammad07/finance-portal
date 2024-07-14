@@ -84,12 +84,12 @@ eventBookingInsert();
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Event Name</label>
-                                <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter Event Name">
+                                <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter Event Name" required>
                                 <span class="text-danger" id="eventName_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Location</label>
-                                <select name="location" id="location" class="form-control form-select">
+                                <select name="location" id="location" class="form-control form-select" required>
                                     <option value="">--- Select Location ---</option>
                                     <option value="Shadi Hall">Shadi Hall</option>
                                     <option value="Sports Centre">Sports Centre</option>
@@ -163,111 +163,6 @@ eventBookingInsert();
     </button>
     <!-- End:Offcanvas Toggler -->
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('event_booking_form');
-
-            // Validate input fields
-            function validateInput(inputElement, errorElement, validationRegex, errorMessage) {
-                inputElement.addEventListener('input', function() {
-                    let inputValue = inputElement.value.trim();
-                    const isValid = validationRegex.test(inputValue);
-
-                    if (!isValid) {
-                        errorElement.textContent = errorMessage;
-                        errorElement.style.display = 'block';
-                        inputElement.classList.add('is-invalid');
-                    } else {
-                        errorElement.textContent = '';
-                        errorElement.style.display = 'none';
-                        inputElement.classList.remove('is-invalid');
-                    }
-                });
-            }
-
-            // Validation regex patterns and error messages
-            const validationRules = {
-                eventName: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter an event name.'
-                },
-                location: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter a location.'
-                },
-                date: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please select a date.'
-                },
-                startTiming: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please select a start Time.'
-                },
-                noOfPersons: {
-                    regex: /^\d*$/, // Allow any number of digits
-                    errorMessage: 'Please enter a valid number for the number of servants.'
-                },
-                bookingName: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter a booking name.'
-                },
-                bookingEmail: {
-                    regex: /^.{1,}$/, // At least one character
-                    errorMessage: 'Please enter a booking name.'
-                },
-                bookingContact: {
-                    regex: /^\d*$/, // Allow any number of digits
-                    errorMessage: 'Please enter a valid number for the contact.'
-                },
-                bookingPayment: {
-                    regex: /^\d*$/, // Allow any number of digits
-                    errorMessage: 'Please enter a valid number for the payment.'
-                }
-            };
-
-            // Loop through each input field and attach validation
-            Object.keys(validationRules).forEach(key => {
-                const inputElement = document.getElementById(key);
-                const errorElement = document.getElementById(`${key}_error`);
-                validateInput(inputElement, errorElement, validationRules[key].regex, validationRules[key].errorMessage);
-            });
-
-            // Function to validate form submission
-            function validateForm(event) {
-                event.preventDefault(); // Prevent form submission
-
-                let isValid = true;
-
-                // Check if any input field is empty
-                Object.keys(validationRules).forEach(key => {
-                    const inputElement = document.getElementById(key);
-                    const errorElement = document.getElementById(`${key}_error`);
-                    const inputValue = inputElement.value.trim();
-                    const isValidField = validationRules[key].regex.test(inputValue);
-
-                    if (!isValidField) {
-                        errorElement.textContent = validationRules[key].errorMessage;
-                        errorElement.style.display = 'block';
-                        inputElement.classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        errorElement.textContent = '';
-                        errorElement.style.display = 'none';
-                        inputElement.classList.remove('is-invalid');
-                    }
-                });
-
-                // Submit the form if all inputs are valid
-                if (isValid) {
-                    form.submit();
-                }
-            }
-
-            // Event listener for form submission
-            form.addEventListener('submit', validateForm);
-        });
-    </script>
-
     <!-- Initial  Javascript -->
     <script src="lib/jQuery/jquery-3.5.1.min.js"></script>
     <script src="lib/bootstrap_5/bootstrap.bundle.min.js"></script>
@@ -278,38 +173,3 @@ eventBookingInsert();
 
 </html>
 
-<!-- JavaScript code -->
-<!-- <script>
-    $(document).ready(function() {
-        // Function to fetch servants count and update input field
-        function updateServantsCount() {
-            $.ajax({
-                url: 'get_servants_count.php', // PHP script to get total servants count
-                type: 'GET',
-                success: function(response) {
-                    var totalServants = parseInt(response);
-                    var enteredValue = parseInt($('#noOfServant').val());
-                    $('#noOfServant').attr('placeholder', 'Enter No Of Servant (Total: ' + totalServants + ')');
-
-                    // Check if entered value exceeds total servants count
-                    if (enteredValue > totalServants) {
-                        $('#noOfServant_error').text('Error: Cannot exceed total servants count (' + totalServants + ')');
-                    } else {
-                        $('#noOfServant_error').text('');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        }
-
-        // Call the function whenever the input field value changes
-        $('#noOfServant').on('input', function() {
-            updateServantsCount();
-        });
-
-        // Call the function when the page loads
-        updateServantsCount();
-    });
-</script> -->
