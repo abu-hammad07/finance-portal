@@ -201,7 +201,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                     </a>
                 </td>
                 <td>
-                <a href="includes/pdf_maker?MAT_ID='. $row['maintenance_id'] .'&ACTION=VIEW" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
+                <a href="includes/pdf_maker?MAT_ID='. $row['maintenance_id'] .'&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
                         <i class="fas fa-file text-white p-1">Print</i>
                         </span></a>  
                 </td>
