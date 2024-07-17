@@ -75,7 +75,7 @@ updateMaintenance();
             ?>
             <!-- / Alert -->
 
-            <form action="" method="post" id="add_houses_form" >
+            <form action="" method="post" id="add_houses_form">
                 <div class="card h-auto">
                     <div class="card-body">
                         <h3 class="card-header">Information</h3>
@@ -139,7 +139,7 @@ updateMaintenance();
 
                                         <div class="col-md-6">
                                             <label class="form-label">House Owner name / Owner name </label>
-                                            <select  class="form-select form-control house-id">
+                                            <select class="form-select form-control house-id">
                                                 <?php
                                                 // Assuming $house_shop_id is an array
                                                 $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
@@ -177,7 +177,7 @@ updateMaintenance();
 
                                         <div class="col-md-6">
                                             <label class="form-label">House Owner CNIC / Owner CNIC </label>
-                                            <select  class="form-select form-control house-id">
+                                            <select class="form-select form-control house-id">
                                                 <?php
                                                 // Assuming $house_shop_id is an array
                                                 $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
@@ -217,6 +217,15 @@ updateMaintenance();
                                                 <option value="<?= $row['maintenance_month'] ?>"><?= $row['maintenance_month'] ?></option>
                                             </select>
                                             <span class="text-danger" id="Penal-Cnic_error"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Maintenance Charges</label>
+                                            <select class="form-select" id="pymentType" required name="pymentType">
+                                                <option value=""> Select Payment Type</option>
+                                                <option value="Cash">Cash</option>
+                                                <option value="Bank">Bank</option>
+                                            </select>
+                                            <span class="text-danger"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Maintenance Charges</label>

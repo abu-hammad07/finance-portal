@@ -83,6 +83,13 @@ if ($count > 0) {
        
 <br> <br>
 
+
+       
+  <span style="font-weight:bold">Payment Type:</span>
+            <span class="value">' . $inv_det_data_row['payment_type'] . '</span>
+       
+<br> <br>
+
       
   <span style="font-weight:bold">Maintenance Payment:</span>
 <span class="value">' . $inv_det_data_row['maintenance_charges'] . '</span>       
