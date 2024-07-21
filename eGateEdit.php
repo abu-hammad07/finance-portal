@@ -126,7 +126,7 @@ eGateUpdate();
                                         </div>
                                         <div class="col-md-6 ">
                                             <label class="form-label">CNIC Number</label>
-                                            <input type="text" id="cnic_number" name="cnic_number" class="form-control" placeholder="XXXXX-XXXXXXX-X" value="<?= $row['eGate_cnic'] ?>">
+                                            <input type="number" id="cnic_number" name="cnic_number" class="form-control" placeholder="XXXXX-XXXXXXX-X" value="<?= $row['eGate_cnic'] ?>">
                                             <!-- <span class="text-danger" id="cnic_number_error"></span> -->
                                         </div>
                                         <div class="col-md-6">
@@ -146,6 +146,16 @@ eGateUpdate();
                                                 <option value="1000" <?php if ($row['eGate_charges'] == '1000') echo 'selected'; ?>>1000</option>
                                             </select>
                                             <!-- <span class="text-danger" id="charges_error"></span> -->
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label"> Payment Type</label>
+                                            <select class="form-select" id="pymentType" required name="pymentType">
+                                                <option value=""> Select Payment Type</option>
+                                                <option value="Cash">Cash</option>
+                                                <option value="Bank">Bank</option>
+                                            </select>
+                                            <span class="text-danger"></span>
                                         </div>
 
                                         <!-- Button -->

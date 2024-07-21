@@ -147,6 +147,12 @@ eGateUpdate();
                                             </select>
                                             <!-- <span class="text-danger" id="charges_error"></span> -->
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Payment Type</label>
+                                            <select name="PaymentType" id="PaymentType" class="form-select form-control house-id" required>
+                                                <option value="<?= $row['payment_type'] ?>"><?= $row['payment_type'] ?></option>
+                                            </select>
+                                        </div>
 
                                         <!-- Button -->
                                         <div class="col-md-12">
