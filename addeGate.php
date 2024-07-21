@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("includes/config.php");
-include_once("includes/function.php");
+include_once ("includes/config.php");
+include_once ("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -20,10 +20,12 @@ eGateInsert();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
     <title>Add e-Gate</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <meta name="og:description"
+        content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
-    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <meta property="og:image"
+        content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
     <!-- bootstrap css link -->
     <link rel="stylesheet" href="lib/bootstrap_5/bootstrap.min.css">
     <!-- Font Awesome CDN -->
@@ -49,7 +51,7 @@ eGateInsert();
 
         <!-- Main sidebar -->
         <?php
-        include("includes/sidebar.php");
+        include ("includes/sidebar.php");
         ?>
         <!-- End:Sidebar -->
 
@@ -87,14 +89,16 @@ eGateInsert();
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">House Number / Shop Number</label>
-                                <select name="house_shop_id" id="house_shop_id" class="form-select form-control house-id" required>
+                                <select name="house_shop_id" id="house_shop_id"
+                                    class="form-select form-control house-id" required>
                                     <option value="">--- Select House/Shop No ---</option>
                                     <!-- Add your house/shop options here -->
                                 </select>
                             </div>
                             <div class="col-md-6" style="display:none">
                                 <label class="form-label">House or Shop</label>
-                                <select name="house_or_shop" id="house_or_shop" class="form-select form-control house-id" required>
+                                <select name="house_or_shop" id="house_or_shop"
+                                    class="form-select form-control house-id" required>
                                     <option value="">--- Select House/Shop ---</option>
                                     <option value="house">House</option>
                                     <option value="shop">Shop</option>
@@ -103,27 +107,33 @@ eGateInsert();
 
                             <div class="col-md-6">
                                 <label class="form-label">Vehicle Name</label>
-                                <input type="text" id="vehicle_name" name="vehicle_name" class="form-control" placeholder="Honda City" required>
+                                <input type="text" id="vehicle_name" name="vehicle_name" class="form-control"
+                                    placeholder="Honda City" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Vehicle Number</label>
-                                <input type="text" id="vehicle_number" name="vehicle_number" class="form-control" placeholder="ABC-12345" required>
+                                <input type="text" id="vehicle_number" name="vehicle_number" class="form-control"
+                                    placeholder="ABC-12345" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Vehicle Color</label>
-                                <input type="text" id="vehicle_color" name="vehicle_color" class="form-control" placeholder="Black" required>
+                                <input type="text" id="vehicle_color" name="vehicle_color" class="form-control"
+                                    placeholder="Black" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Person Name</label>
-                                <input type="text" id="person_name" name="person_name" class="form-control" placeholder="John Doe">
+                                <input type="text" id="person_name" name="person_name" class="form-control"
+                                    placeholder="John Doe">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">CNIC Number</label>
-                                <input type="text" id="cnic_number" name="cnic_number" class="form-control" placeholder="XXXXX-XXXXXXX-X">
+                                <input type="text" id="cnic_number" name="cnic_number" class="form-control"
+                                    placeholder="XXXXX-XXXXXXX-X">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Charges Type</label>
-                                <select name="charges_type" id="charges_type" class="form-select form-control house-id" required>
+                                <select name="charges_type" id="charges_type" class="form-select form-control house-id"
+                                    required>
                                     <option value="">--- Select Charges Type ---</option>
                                     <option value="New Card">New Card</option>
                                     <option value="Renew">Renew</option>
@@ -138,10 +148,20 @@ eGateInsert();
                                     <option value="1000">1000</option>
                                 </select> -->
                             </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Charges Type</label>
+                                <select class="form-select form-control" id="pymentType" required name="pymentType">
+                                    <option value=""> Select Payment Type</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Bank">Bank</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
 
                             <!-- Button -->
                             <div class="col-md-12">
-                                <button class="btn btn-primary" id="submit_btn" type="submit" name="submit">Add Now</button>
+                                <button class="btn btn-primary" id="submit_btn" type="submit" name="submit">Add
+                                    Now</button>
                             </div>
                         </div>
                     </div>
@@ -158,7 +178,8 @@ eGateInsert();
     </div>
 
     <!-- Offcanvas Toggler -->
-    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
+    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
         <i class="far fa-hand-point-right"></i>
     </button>
     <!-- End:Offcanvas Toggler -->
@@ -168,7 +189,7 @@ eGateInsert();
     <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $("#house_shop_id").select2();
         });
     </script>
@@ -210,7 +231,7 @@ eGateInsert();
     // });
 
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         function loadData(type, id = null) {
             $.ajax({
                 url: 'ajax.php',
@@ -220,12 +241,12 @@ eGateInsert();
                     id: id
                 },
                 dataType: 'html',
-                success: function(data) {
+                success: function (data) {
                     if (type === "eGate_id_Data") {
                         $('#house_shop_id').html(data);
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('AJAX Error:', status, error);
                 }
             });
@@ -233,7 +254,7 @@ eGateInsert();
 
         loadData("eGate_id_Data");
 
-        $('#house_shop_id').change(function() {
+        $('#house_shop_id').change(function () {
             var selectedOption = $(this).find('option:selected').parent().attr('label');
             if (selectedOption === 'House Number') {
                 $('#house_or_shop').val('house');

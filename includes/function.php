@@ -1009,6 +1009,7 @@ function eGateInsert()
         $cnic_number = mysqli_real_escape_string($conn, $_POST['cnic_number']);
         $charges_type = mysqli_real_escape_string($conn, $_POST['charges_type']);
         $charges = mysqli_real_escape_string($conn, $_POST['charges']);
+        $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
 
         // Validate house_shop_id against the correct table
         $valid_id = false;
@@ -1045,21 +1046,21 @@ function eGateInsert()
         if ($house_or_shop === 'house') {
             $insertEGate = "INSERT INTO egate (
                 house_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
-                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
+                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, payment_type, 
                 added_on, added_by
             ) VALUES (
                 '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$vehicle_color', 
-                '$person_name', '$cnic_number', '$charges_type', '$charges', 
+                '$person_name', '$cnic_number', '$charges_type', '$charges', '$pymentType',
                 '$added_on', '$added_by'
             )";
         } elseif ($house_or_shop === 'shop') {
             $insertEGate = "INSERT INTO egate (
                 shop_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
-                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
+                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, payment_type, 
                 added_on, added_by
             ) VALUES (
                 '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$vehicle_color', 
-                '$person_name', '$cnic_number', '$charges_type', '$charges', 
+                '$person_name', '$cnic_number', '$charges_type', '$charges', '$pymentType', 
                 '$added_on', '$added_by'
             )";
         }
@@ -1098,6 +1099,7 @@ function eGateUpdate()
         $cnic_number = mysqli_real_escape_string($conn, $_POST['cnic_number']);
         $charges_type = mysqli_real_escape_string($conn, $_POST['charges_type']);
         $charges = mysqli_real_escape_string($conn, $_POST['charges']);
+        $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
 
         // Validate house_id against the correct table
         $valid_id = false;
@@ -1143,6 +1145,7 @@ function eGateUpdate()
             `eGate_cnic` = '$cnic_number',
             `eGate_charges_type` = '$charges_type',
             `eGate_charges` = '$charges',
+            `payment_type` = '$pymentType',
             `updated_by` = '$updated_by',
             `updated_on` = '$updated_on'
             WHERE `eGate_id` = '$eGate_id'";

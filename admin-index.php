@@ -938,17 +938,24 @@ function search_shops_data_In_Database($shopsSearch)
 }
 
 
-function filter_eGate_data_In_Database($eGateLimited, $eGateOrder)
+function filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth)
 {
     global $conn;
 
-    // Modify the query based on your database structure
+    $month = date('m', strtotime($eGateMonth));
+    $year = date('Y', strtotime($eGateMonth));
+
     $houseQuery = "SELECT egate.*, houses.house_number, shops.shop_number 
-                   FROM egate
-                   LEFT JOIN houses ON egate.house_id = houses.house_id
-                   LEFT JOIN shops ON egate.shop_id = shops.shop_id
-                   ORDER BY egate.eGate_id $eGateOrder 
-                   LIMIT $eGateLimited";
+               FROM egate
+               LEFT JOIN houses ON egate.house_id = houses.house_id
+               LEFT JOIN shops ON egate.shop_id = shops.shop_id";
+
+    if (!empty($eGateMonth)) {
+        $houseQuery .= " WHERE MONTH(egate.added_on) = '$month' AND YEAR(egate.added_on) = '$year'";
+    }
+
+    $houseQuery .= " ORDER BY egate.eGate_id $eGateOrder 
+                 LIMIT $eGateLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -973,9 +980,9 @@ function filter_eGate_data_In_Database($eGateLimited, $eGateOrder)
         }
 
         $data .= '<td>' . $row['eGateperson_name'] . '</td>
-                  <td>' . $row['vehicle_name'] . '</td>
-                  <td>' . $row['vehicle_number'] . '</td>
-                  <td>' . $row['eGate_charges'] . '</td>
+        <td>' . $row['vehicle_number'] . '</td>
+        <td>' . $row['eGate_charges'] . '</td>
+        <td>' . $row['vehicle_name'] . '</td>
                   <td>
                       <a href="eGateEdit?eGate_edit_id=' . $row['eGate_id'] . '">
                           <span>
@@ -1015,7 +1022,7 @@ function filter_eGate_data_In_Database($eGateLimited, $eGateOrder)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no entries in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no entries in the database. '. $eGateMonth .'</td>
                 </tr>';
     }
 
@@ -1809,7 +1816,7 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
 
         if (empty($data)) {
             $data = '<tr>
-                        <td colspan="6" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database.'. $searchMonth .'</td>
+                        <td colspan="6" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database.' . $searchMonth . '</td>
                     </tr>';
         }
 
@@ -1882,7 +1889,7 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
         // Check if $data is empty
         if (empty($data)) {
             $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database.'. $searchMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database.' . $searchMonth . '</td>
                 </tr>';
         }
 
@@ -1892,7 +1899,7 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
 
         // Modify the query based on your database structure
         $eventsQuery = "SELECT * FROM events_booking WHERE 1=1";
-        
+
         if (!empty($searchMonth)) {
             $eventsQuery .= " AND added_on LIKE '%" . $searchMonth . "%'";
         }
@@ -1957,7 +1964,7 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
         // Check if $data is empty
         if (empty($data)) {
             $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database.'. $searchMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database.' . $searchMonth . '</td>
                 </tr>';
         }
 
@@ -1966,56 +1973,56 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
 
     } elseif ($selectIncomeReport == 'Maintenance Charges') {
 
-            // Modify the query based on your database structure
-    $query = "SELECT * FROM maintenance_payments WHERE 1=1";
+        // Modify the query based on your database structure
+        $query = "SELECT * FROM maintenance_payments WHERE 1=1";
 
-    if (!empty($searchMonth)) {
-        $query .= " AND added_on LIKE '%" . $searchMonth . "%'";
-    }
-    $query .= " ORDER BY maintenance_id DESC LIMIT $searchDropdown";
+        if (!empty($searchMonth)) {
+            $query .= " AND added_on LIKE '%" . $searchMonth . "%'";
+        }
+        $query .= " ORDER BY maintenance_id DESC LIMIT $searchDropdown";
 
-    $result = mysqli_query($conn, $query);
+        $result = mysqli_query($conn, $query);
 
-    $data = '';
-    $count = 1;
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Start building the row for each maintenance payment record
-        $data .= '
+        $data = '';
+        $count = 1;
+        while ($row = mysqli_fetch_assoc($result)) {
+            // Start building the row for each maintenance payment record
+            $data .= '
             <tr>
                 <td>' . $count++ . '</td>';
 
-        // Assuming $house_shop_id is a string of comma-separated IDs
-        $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
+            // Assuming $house_shop_id is a string of comma-separated IDs
+            $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
 
-        if ($row['house_or_shop'] == "house") {
-            foreach ($house_shop_ids as $house_shop_id_main) {
-                $house_shop_id_main = intval($house_shop_id_main); // Ensure it's an integer to prevent SQL injection
-                $select = "SELECT house_number FROM houses WHERE house_id = $house_shop_id_main";
-                $house_result = mysqli_query($conn, $select);
+            if ($row['house_or_shop'] == "house") {
+                foreach ($house_shop_ids as $house_shop_id_main) {
+                    $house_shop_id_main = intval($house_shop_id_main); // Ensure it's an integer to prevent SQL injection
+                    $select = "SELECT house_number FROM houses WHERE house_id = $house_shop_id_main";
+                    $house_result = mysqli_query($conn, $select);
 
-                if ($house_result && mysqli_num_rows($house_result) > 0) {
-                    $house_row = mysqli_fetch_assoc($house_result);
-                    $data .= '<td>' . htmlspecialchars($house_row['house_number']) . '</td>';
-                } else {
-                    $data .= '<td>House not found</td>';
+                    if ($house_result && mysqli_num_rows($house_result) > 0) {
+                        $house_row = mysqli_fetch_assoc($house_result);
+                        $data .= '<td>' . htmlspecialchars($house_row['house_number']) . '</td>';
+                    } else {
+                        $data .= '<td>House not found</td>';
+                    }
+                }
+            } elseif ($row['house_or_shop'] == "shop") {
+                foreach ($house_shop_ids as $shop_id_main) {
+                    $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
+                    $select = "SELECT shop_number FROM shops WHERE shop_id = $shop_id_main";
+                    $shop_result = mysqli_query($conn, $select);
+
+                    if ($shop_result && mysqli_num_rows($shop_result) > 0) {
+                        $shop_row = mysqli_fetch_assoc($shop_result);
+                        $data .= '<td>' . htmlspecialchars($shop_row['shop_number']) . '</td>';
+                    } else {
+                        $data .= '<td>Shop not found</td>';
+                    }
                 }
             }
-        } elseif ($row['house_or_shop'] == "shop") {
-            foreach ($house_shop_ids as $shop_id_main) {
-                $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
-                $select = "SELECT shop_number FROM shops WHERE shop_id = $shop_id_main";
-                $shop_result = mysqli_query($conn, $select);
 
-                if ($shop_result && mysqli_num_rows($shop_result) > 0) {
-                    $shop_row = mysqli_fetch_assoc($shop_result);
-                    $data .= '<td>' . htmlspecialchars($shop_row['shop_number']) . '</td>';
-                } else {
-                    $data .= '<td>Shop not found</td>';
-                }
-            }
-        }
-
-        $data .= '
+            $data .= '
                 <td>' . htmlspecialchars($row['house_or_shop']) . '</td>
                 <td>' . htmlspecialchars($row['maintenance_month']) . '</td>
                 <td>' . htmlspecialchars($row['maintenance_peyment']) . '</td>
@@ -2054,34 +2061,34 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
                     </div>
                 </td>
             </tr>';
-    }
-    // Check if $data is empty
-    if (empty($data)) {
-        $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Maintenance data in the database.'. $searchMonth .'</td>
+        }
+        // Check if $data is empty
+        if (empty($data)) {
+            $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Maintenance data in the database.' . $searchMonth . '</td>
                 </tr>';
-    }
+        }
 
-    return $data;
+        return $data;
 
 
     } elseif ($selectIncomeReport == 'Penalty Charges') {
 
-            // Modify the query based on your database structure
-    $query = "SELECT * FROM penalty WHERE 1=1";
+        // Modify the query based on your database structure
+        $query = "SELECT * FROM penalty WHERE 1=1";
 
-    if (!empty($searchMonth)) {
-        $query .= " AND created_date LIKE '%" . $searchMonth . "%'";
-    }
-    $query .= " ORDER BY id DESC LIMIT $searchDropdown";
+        if (!empty($searchMonth)) {
+            $query .= " AND created_date LIKE '%" . $searchMonth . "%'";
+        }
+        $query .= " ORDER BY id DESC LIMIT $searchDropdown";
 
 
-    $result = mysqli_query($conn, $query);
+        $result = mysqli_query($conn, $query);
 
-    $data = '';
-    $count = 1;
-    while ($row = mysqli_fetch_assoc($result)) {
-        $data .= '
+        $data = '';
+        $count = 1;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data .= '
 
         <tr>
             <td>' . $count++ . '</td>
@@ -2122,15 +2129,15 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
         </tr>
         
         ';
-    }
-    // Check if $data is empty
-    if (empty($data)) {
-        $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penalty data in the database. '. $searchMonth .'</td>
+        }
+        // Check if $data is empty
+        if (empty($data)) {
+            $data = '<tr>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penalty data in the database. ' . $searchMonth . '</td>
                 </tr>';
-    }
+        }
 
-    return $data;
+        return $data;
 
 
     } else {
@@ -2442,8 +2449,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-eGate_booking-Data') {
         $eGateLimited = $_POST['eGateLimited'];
         $eGateOrder = $_POST['eGateOrder'];
+        $eGateMonth = $_POST['eGateMonth'];
 
-        $result = filter_eGate_data_In_Database($eGateLimited, $eGateOrder);
+        $result = filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);

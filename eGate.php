@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("includes/config.php");
-include_once("includes/function.php");
+include_once ("includes/config.php");
+include_once ("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -19,10 +19,12 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
     <title>E-Gate</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <meta name="og:description"
+        content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
-    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <meta property="og:image"
+        content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
     <!-- bootstrap css link -->
     <link rel="stylesheet" href="lib/bootstrap_5/bootstrap.min.css">
     <!-- Font Awesome CDN -->
@@ -45,7 +47,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
         <!-- Main sidebar -->
         <?php
-        include("includes/sidebar.php");
+        include ("includes/sidebar.php");
         ?>
         <!-- End:Sidebar -->
 
@@ -60,13 +62,17 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 <div class="col-lg-12 mb-4">
                     <div class="card card-body h-auto d2c_projects_datatable">
                         <div class="row">
-                            <div class="col-md-4 col-xl-3">
-                                <form class="position-relative">
-                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="eGateSearch" onkeyup="search_eGate_Data()" placeholder="Search &nbsp;..." />
-                                    <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                                </form>
+                            <div class="col-md-8 col-12">
+                                <div class="col-md-4">
+                                    <form class="position-relative">
+                                        <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                            id="eGateSearch" onkeyup="search_eGate_Data()" placeholder="Search &nbsp;..." />
+                                        <i
+                                            class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="col-md-8 col-xl-9 text-end">
+                            <div class="col-md-4 col-12 text-end">
                                 <a href="addeGate" class="btn btn-primary"><i class="fas fa-plus"></i> E-Gate</a>
                             </div>
                         </div>
@@ -106,18 +112,21 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="eGate-limit" class="form-select" onchange="load_eGate_Data()">
-                                            <option value="15">15</option>
+                                        <input type="month" id="eGate-month" class="form-control" onchange="load_eGate_Data()" >
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="eGate-limit" class="form-control" onchange="load_eGate_Data()">
                                             <option value="25">25</option>
                                             <option value="50">50</option>
                                             <option value="75">75</option>
                                             <option value="100">100</option>
+                                            <option value="125">125</option>
                                         </select>
                                     </div>
-                                    <div class="div">
-                                        <select id="eGate-order" class="form-select" onchange="load_eGate_Data()">
-                                            <option value="ASC">Old</option>
+                                    <div class="me-2">
+                                        <select id="eGate-order" class="form-control" onchange="load_eGate_Data()">
                                             <option value="DESC">New</option>
+                                            <option value="ASC">Old</option>
                                         </select>
                                     </div>
                                 </div>
@@ -130,11 +139,10 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                         <tr>
                                             <th>S.No</th>
                                             <th>House/Shop Number</th>
-                                            <!-- <th>house_or_shop</th> -->
                                             <th>Person Name</th>
-                                            <th>Vehicle Name</th>
                                             <th>Vehicle Number</th>
                                             <th>Charges</th>
+                                            <th>Charges Type</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -154,7 +162,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     </div>
 
     <!-- Offcanvas Toggler -->
-    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
+    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
         <i class="far fa-hand-point-right"></i>
     </button>
     <!-- End:Offcanvas Toggler -->
@@ -167,7 +176,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     <script src="assets/js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Load data on page load with default value (10)
             load_eGate_Data();
 
@@ -175,6 +184,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
         function load_eGate_Data() {
 
+            let eGateMonth = $("#eGate-month").val();
             let eGateLimited = $("#eGate-limit").val();
             let eGateOrder = $("#eGate-order").val();
 
@@ -185,9 +195,10 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 data: {
                     action: 'load-eGate_booking-Data',
                     eGateLimited: eGateLimited,
-                    eGateOrder: eGateOrder
+                    eGateOrder: eGateOrder,
+                    eGateMonth: eGateMonth
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     // Update the result div with the loaded data
                     $("#eGateDetails").html(response.data);
@@ -196,7 +207,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
         }
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Load data on page load with default value (10)
             search_eGate_Data();
 
@@ -214,7 +225,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                     action: 'search-eGate-Data',
                     eGateSearch: eGateSearch
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     // Update the result div with the loaded data
                     $("#eGateDetails").html(response.data);
