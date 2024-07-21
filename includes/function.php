@@ -488,6 +488,7 @@ function servantSubmit()
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
         $designation = mysqli_real_escape_string($conn, $_POST['designation']);
         $servant_fees = mysqli_real_escape_string($conn, $_POST['servant_fees']);
+        $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
 
         // select house details
         $selectHouse = "SELECT house_number FROM houses WHERE house_id = '$house_id'";
@@ -505,9 +506,9 @@ function servantSubmit()
 
         // Insert data into user_details table first
         $insert_details = "INSERT INTO servants(
-            house_id, servantDesignation, servantFees, added_by, added_on) 
+            house_id, servantDesignation, servantFees, payment_type, added_by, added_on) 
         VALUES (
-            '$house_id', '$designation', '$servant_fees', '$added_by', '$added_on'
+            '$house_id', '$designation', '$servant_fees', '$pymentType'  ,'$added_by', '$added_on'
         )";
 
         $insert_udetails_res = mysqli_query($conn, $insert_details);
@@ -539,6 +540,7 @@ function serventUpdate()
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
         $designation = mysqli_real_escape_string($conn, $_POST['designation']);
         $servant_fees = mysqli_real_escape_string($conn, $_POST['servant_fees']);
+        $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
 
         // select house details
         $selectHouse = "SELECT house_number FROM houses WHERE house_id = '$house_id'";
@@ -551,14 +553,12 @@ function serventUpdate()
         // Get the current date and time
         $updated_on = date('Y-m-d');
         $updated_by = $_SESSION['username'];
-
-
-
         // Update data into servants table
         $servant_update = "UPDATE servants SET
             house_id = '$house_id',
             servantDesignation = '$designation',
             servantFees = '$servant_fees',
+            payment_type = '$pymentType',
             updated_by = '$updated_by',
             updated_on = '$updated_on'
             WHERE servant_id = '$servant_id'";
@@ -1000,6 +1000,7 @@ function eGateInsert()
     global $conn;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $vehicle_name = mysqli_real_escape_string($conn, $_POST['vehicle_name']);
@@ -1055,12 +1056,13 @@ function eGateInsert()
             )";
         } elseif ($house_or_shop === 'shop') {
             $insertEGate = "INSERT INTO egate (
-                shop_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
-                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, payment_type, 
+
+                shop_id, house_or_shop, vehicle_number, vehicle_name, payment_type, vehicle_color, 
+                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, 
                 added_on, added_by
             ) VALUES (
-                '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$vehicle_color', 
-                '$person_name', '$cnic_number', '$charges_type', '$charges', '$pymentType', 
+                '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$pymentType', '$vehicle_color', 
+                '$person_name', '$cnic_number', '$charges_type', '$charges', 
                 '$added_on', '$added_by'
             )";
         }
@@ -1089,6 +1091,7 @@ function eGateUpdate()
 {
     global $conn;
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
         $eGate_id = mysqli_real_escape_string($conn, $_POST['eGate_id']);
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);

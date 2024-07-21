@@ -76,6 +76,8 @@ serventUpdate();
                                     <h3 class="card-header">Information</h3>
                                     <hr class="my-4">
                                     <div class="row g-3">
+                                    <input type="text" hidden  name="servant_id" class="form-control" placeholder="Enter Designation" value="<?= $row['servant_id'] ?>" required>
+
                                         <div class="col-md-6">
                                             <label class="form-label">House/Unit Number</label>
                                             <select name="house_id" id="house_id" class="form-select form-control house-id" required>
@@ -104,6 +106,16 @@ serventUpdate();
                                             <label class="form-label">Fees</label>
                                             <input type="text" id="servant_fees" name="servant_fees" class="form-control" placeholder="999" value="<?= $row['servantFees'] ?>" required>
                                             <span class="text-danger" id="servant_fees_error"></span>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label"> Payment Type</label>
+                                            <select class="form-select" id="pymentType" required name="pymentType">
+                                                <option value="<?= $row['payment_type'] ?>"> <?= $row['payment_type'] ?></option>
+                                                <option value="Cash">Cash</option>
+                                                <option value="Bank">Bank</option>
+                                            </select>
+                                            <span class="text-danger"></span>
                                         </div>
 
                                         <!-- Button -->

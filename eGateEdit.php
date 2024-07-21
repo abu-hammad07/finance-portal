@@ -135,8 +135,7 @@ eGateUpdate();
                                         </div>
                                         <div class="col-md-6 ">
                                             <label class="form-label">CNIC Number</label>
-                                            <input type="text" id="cnic_number" name="cnic_number" class="form-control"
-                                                placeholder="XXXXX-XXXXXXX-X" value="<?= $row['eGate_cnic'] ?>">
+                                            <input type="text" id="cnic_number" name="cnic_number" class="form-control" placeholder="XXXXX-XXXXXXX-X" value="<?= $row['eGate_cnic'] ?>">
                                             <!-- <span class="text-danger" id="cnic_number_error"></span> -->
                                         </div>
                                         <div class="col-md-6">
@@ -163,15 +162,6 @@ eGateUpdate();
                                             </select> -->
                                             <!-- <span class="text-danger" id="charges_error"></span> -->
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Charges Type</label>
-                                            <select class="form-select form-control" id="pymentType" required name="pymentType">
-                                                <option value=""> Select Payment Type</option>
-                                                <option value="Cash" <?php if ($row['payment_type'] == 'Cash') echo 'selected'; ?>>Cash</option>
-                                                <option value="Bank" <?php if ($row['payment_type'] == 'Bank') echo 'selected'; ?>>Bank</option>
-                                            </select>
-                                            <span class="text-danger"></span>
-                                        </div>div>
 
                                         <!-- Button -->
                                         <div class="col-md-12">

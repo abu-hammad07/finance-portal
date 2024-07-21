@@ -102,6 +102,11 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <input type="text" readonly id="servant_fees" name="servant_fees" class="form-control" placeholder="999" value="<?= $row['servantFees'] ?>" required>
                                             <span class="text-danger" id="servant_fees_error"></span>
                                         </div>
+                                        <div class="col-md-6 ">
+                                            <label class="form-label">Payment Type</label>
+                                            <input type="text" readonly id="pymentType" name="pymentType" class="form-control"  value="<?= $row['payment_type'] ?>" required>
+                                            <span class="text-danger" id="pymentType"></span>
+                                        </div>
 
                                         <!-- Button -->
                                         <div class="col-md-12">

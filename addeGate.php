@@ -127,8 +127,7 @@ eGateInsert();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">CNIC Number</label>
-                                <input type="text" id="cnic_number" name="cnic_number" class="form-control"
-                                    placeholder="XXXXX-XXXXXXX-X">
+                                <input type="text" id="cnic_number" name="cnic_number" class="form-control" placeholder="XXXXX-XXXXXXX-X">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Charges Type</label>
@@ -147,15 +146,6 @@ eGateInsert();
                                     <option value="2000">2000</option>
                                     <option value="1000">1000</option>
                                 </select> -->
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Charges Type</label>
-                                <select class="form-select form-control" id="pymentType" required name="pymentType">
-                                    <option value=""> Select Payment Type</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Bank">Bank</option>
-                                </select>
-                                <span class="text-danger"></span>
                             </div>
 
                             <!-- Button -->
