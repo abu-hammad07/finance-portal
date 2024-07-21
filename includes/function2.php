@@ -344,6 +344,12 @@ function updateMaintenance()
                 $dompdf->setPaper('A4', 'landscape');
                 $dompdf->render();
                 $dompdf->stream("maintenance_payment_receipt.pdf", array("Attachment" => false));
+
+                $insert = "INSERT INTO print (
+                    print_name,
+                )";
+                // --------insert print-------
+
                 exit();
             } else {
                 $_SESSION['error_message_Maintenance'] = "Something went wrong. Please try again.";
