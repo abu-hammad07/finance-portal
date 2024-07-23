@@ -145,6 +145,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <th>Vehicle Number</th>
                                             <th>Charges</th>
                                             <th>Payment Type</th>
+                                            <th>Print</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

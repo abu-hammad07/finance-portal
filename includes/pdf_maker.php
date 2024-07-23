@@ -145,3 +145,144 @@ if ($count > 0) {
 } else {
     echo 'Record not found for PDF.';
 }
+
+
+// ----------------------egat pdf---------------------
+
+
+$egat_ID = $_GET['eGate_id'];
+
+$inv_mst_query = "SELECT * FROM egate WHERE eGate_id='" . $egat_ID . "' ";
+$inv_mst_results = mysqli_query($conn, $inv_mst_query);
+$count = mysqli_num_rows($inv_mst_results);
+
+if ($count > 0) {
+    $inv_mst_data_row = mysqli_fetch_array($inv_mst_results, MYSQLI_ASSOC);
+
+    //----- Code for generate pdf
+    $pdf = new TCPDF('L', PDF_UNIT, 'A4', true, 'UTF-8', false);
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);
+    $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+    $pdf->SetDefaultMonospacedFont('helvetica');
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+    $pdf->SetMargins(PDF_MARGIN_LEFT, '10', PDF_MARGIN_RIGHT);
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+    $pdf->SetAutoPageBreak(TRUE, 10);
+    $pdf->SetFont('helvetica', '', 12);
+    $pdf->AddPage(); //default A4 landscape
+
+    $content = '';
+
+    $inv_det_query = "SELECT * FROM egate WHERE eGate_id='" . $egat_ID . "' ";
+    $inv_det_results = mysqli_query($conn, $inv_det_query);
+    while ($inv_det_data_row = mysqli_fetch_array($inv_det_results, MYSQLI_ASSOC)) {
+        $content .= '
+        <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+        }   
+            .id-card {
+                border: 2px solid #00796b;
+                border-radius: 10px;
+                overflow: hidden;
+                background-color: #ffffff;
+                width: 300px; /* ID card width in points */
+                height: 200px; /* ID card height in points */
+                margin: 0 auto;
+                table-layout: fixed;
+                padding: 10px;
+                font-size: 10px;
+                text-align: center;
+                
+
+            }
+            .id-card td {
+                padding: 5px;
+            }
+            .left {
+                border-right: 2px solid #00796b;
+                width: 50%;
+                text-align: center;
+            }
+            .logo {
+                width: 100px;
+                height: auto;
+                margin-bottom: 10px;
+            }
+            .details p {
+                margin: 3px 0;
+                text-align: left;
+                font-size: 9px;
+            }
+            .signature {
+                margin-top: 10px;
+                font-size: 9px;
+            }
+            .qrcode {
+                width: 120px;
+                height: auto;
+                margin-top: 10px;
+            }
+        </style>
+        <table class="id-card">
+            <tr>
+                <td class="left">
+                    <img src="KDA.png" alt="KDA Housing Logo" class="logo">
+                    <h3 style="font-size: 14px;">E-Gate Pass</h3>
+                    <div class="details">
+                        <p><strong>House/Shop Number:</strong> ' . $inv_det_data_row['house_id'] . '</p>
+                        <p><strong>Vehicle Number:</strong> ' . $inv_det_data_row['vehicle_number'] . '</p>
+                        <p><strong>Person Name:</strong> ' . $inv_det_data_row['vehicle_name'] . '</p>
+                        <p><strong>CNIC Number:</strong> ' . $inv_det_data_row['eGate_cnic'] . '</p>
+                        <p><strong>Charges Type:</strong> ' . $inv_det_data_row['eGate_charges_type'] . '</p>
+                        <p><strong>Charges:</strong> ' . $inv_det_data_row['eGate_charges'] . '</p>
+                        <p><strong>Bank/Cash:</strong> ' . $inv_det_data_row['payment_type'] . '</p>
+                        <p><strong>Issue Date:</strong> ' . $inv_det_data_row['added_on'] . '</p>
+                    </div>
+                </td>
+                <td>
+                    <img src="KDA.png" alt="KDA Housing Logo" class="logo">
+                    <p style="font-size: 10px;">The bearer whose photograph appears overleaf is a staff of</p>
+                    <h3 style="font-size: 14px;">E-Gate Pass</h3>
+                    <div class="signature">
+                        <p>Authorised Signature</p>
+                        <img src="qrcode.png" alt="Barcode" class="qrcode">
+                    </div>
+                    <p style="font-size: 9px;">Property of Masm3</p>
+                </td>
+            </tr>
+        </table>';
+    }
+
+    $pdf->writeHTML($content);
+
+    $file_location = "/home/fbi1glfa0j7p/public_html/examples/generate_pdf/uploads/"; //add your full path of your server
+    //$file_location = "/opt/lampp/htdocs/examples/generate_pdf/uploads/"; //for local xampp server
+
+    $datetime = date('dmY_hms');
+    $file_name = "INV_" . $datetime . ".pdf";
+    ob_end_clean();
+
+    if ($_GET['ACTION'] == 'VIEW') {
+        $pdf->Output($file_name, 'I'); // I means Inline view
+    } else if ($_GET['ACTION'] == 'DOWNLOAD') {
+        $pdf->Output($file_name, 'D'); // D means download
+    } else if ($_GET['ACTION'] == 'UPLOAD') {
+        $pdf->Output($file_location . $file_name, 'F'); // F means upload PDF file on some folder
+        echo "Upload successfully!!";
+    }
+
+    //----- End Code for generate pdf
+} else {
+    echo 'Record not found for PDF.';
+}

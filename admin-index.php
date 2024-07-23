@@ -1,6 +1,6 @@
 <?php
-include_once ('includes/config.php');
-require_once ('includes/phpqrcode/qrlib.php');
+include_once('includes/config.php');
+require_once('includes/phpqrcode/qrlib.php');
 
 
 // Feature Function to filter and display data in the table based on user input or database data depending on your database structure and requirements  
@@ -231,7 +231,7 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $e
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database. '. $eventsMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database. ' . $eventsMonth . '</td>
                 </tr>';
     }
 
@@ -484,7 +484,7 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder, $servan
     $query = "SELECT servants.*, houses.house_number, houses.owner_name From servants
     INNER JOIN houses ON houses.house_id = servants.house_id";
 
-    if(!empty($servantMonth)){
+    if (!empty($servantMonth)) {
         $query .= " WHERE MONTH(servants.added_on) = '$month' AND YEAR(servants.added_on) = '$year'";
     }
 
@@ -545,7 +545,7 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder, $servan
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database. '. $servantMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database. ' . $servantMonth . '</td>
                 </tr>';
     }
 
@@ -818,7 +818,7 @@ function filter_shops_data_In_Database($shopsLimited, $shopsOrder, $shopsMonth)
     // Modify the query based on your database structure
     $houseQuery = "SELECT * FROM shops";
 
-    if(!empty($shopsMonth)){
+    if (!empty($shopsMonth)) {
         $houseQuery .= " WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'";
     }
 
@@ -879,7 +879,7 @@ function filter_shops_data_In_Database($shopsLimited, $shopsOrder, $shopsMonth)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no shops data in the database. '. $shopsMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no shops data in the database. ' . $shopsMonth . '</td>
                 </tr>';
     }
 
@@ -1009,6 +1009,16 @@ function filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth)
         <td>' . $row['vehicle_number'] . '</td>
         <td>' . $row['eGate_charges'] . '</td>
         <td>' . $row['payment_type'] . '</td>
+         
+
+        <td>
+        <a href="includes/pdf_maker?eGate_id=' . $row['eGate_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
+                            <i class="fas fa-file text-white m-0 p-1">Print</i>
+                            </span></a>  
+                    </td>
+
+        
+
                   <td>
                       <a href="eGateEdit?eGate_edit_id=' . $row['eGate_id'] . '">
                           <span>
@@ -1048,7 +1058,7 @@ function filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no entries in the database. '. $eGateMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no entries in the database. ' . $eGateMonth . '</td>
                 </tr>';
     }
 
@@ -1837,7 +1847,6 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
                       </div>
                   </td>
               </tr>';
-
         }
 
         if (empty($data)) {
@@ -1847,8 +1856,6 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
         }
 
         return $data;
-
-
     } elseif ($selectIncomeReport == 'Servants') {
 
         // Modify the query based on your database structure
@@ -1920,7 +1927,6 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
         }
 
         return $data;
-
     } elseif ($selectIncomeReport == 'Events Booking') {
 
         // Modify the query based on your database structure
@@ -1995,8 +2001,6 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
         }
 
         return $data;
-
-
     } elseif ($selectIncomeReport == 'Maintenance Charges') {
 
         // Modify the query based on your database structure
@@ -2096,8 +2100,6 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
         }
 
         return $data;
-
-
     } elseif ($selectIncomeReport == 'Penalty Charges') {
 
         // Modify the query based on your database structure
@@ -2164,8 +2166,6 @@ function searching_incomeReports_data_In_Database($selectIncomeReport, $searchMo
         }
 
         return $data;
-
-
     } else {
         return '<tr>
         <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">Please Select the income reports for Searching the data.</td>
@@ -2371,9 +2371,8 @@ if (isset($_POST['action'])) {
     if ($action == 'load-events_booking-Data') {
         $eventsLimited = $_POST['eventsLimited'];
         $eventsOrder = $_POST['eventsOrder'];
-        $eventsMonth = $_POST['eventsMonth'];
-
-;        $result = filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $eventsMonth);
+        $eventsMonth = $_POST['eventsMonth'];;
+        $result = filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $eventsMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2651,7 +2650,4 @@ if (isset($_POST['action'])) {
         $response = array('data' => $result);
         echo json_encode($response);
     }
-
-
-
 }
