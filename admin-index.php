@@ -155,13 +155,21 @@ function search_user_data_In_Database($userSearch)
     return $data;
 }
 
-function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
+function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $eventsMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($eventsMonth));
+    $year = date('Y', strtotime($eventsMonth));
+
     // Modify the query based on your database structure
-    $eventsQuery = "SELECT * FROM events_booking
-    ORDER BY event_id $eventsOrder LIMIT $eventsLimited";
+    $eventsQuery = "SELECT * FROM events_booking";
+
+    if (!empty($eventsMonth)) {
+        $eventsQuery .= " WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'";
+    }
+
+    $eventsQuery .= " ORDER BY event_id $eventsOrder LIMIT $eventsLimited";
 
     $eventsResult = mysqli_query($conn, $eventsQuery);
 
@@ -180,9 +188,9 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
             <td>' . $row['eventName'] . '</td>
             <td>' . $row['location'] . '</td>
             <td>' . $row['customerName'] . '</td>
-            <td>' . $row['customerCnic'] . '</td>
             <td>' . $date . '<br>' . $startTime . ' To ' . $endTime . '</td>
             <td>' . $row['bookingPayment'] . '</td>
+            <td>' . $row['payment_type'] . '</td>
             <td>
                 <a href="eventEdit.php?event_edit_id=' . $row['event_id'] . '">
                     <span>
@@ -223,7 +231,7 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Events Booking data in the database. '. $eventsMonth .'</td>
                 </tr>';
     }
 
@@ -465,15 +473,24 @@ function search_houses_data_In_Database($housesSearch)
 }
 
 
-function filter_servant_data_In_Database($servantLimited, $servantOrder)
+function filter_servant_data_In_Database($servantLimited, $servantOrder, $servantMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($servantMonth));
+    $year = date('Y', strtotime($servantMonth));
+
     // Modify the query based on your database structure
     $query = "SELECT servants.*, houses.house_number, houses.owner_name From servants
-    INNER JOIN houses ON houses.house_id = servants.house_id 
-    ORDER BY servants.servant_id $servantOrder LIMIT $servantLimited;
-    ";
+    INNER JOIN houses ON houses.house_id = servants.house_id";
+
+    if(!empty($servantMonth)){
+        $query .= " WHERE MONTH(servants.added_on) = '$month' AND YEAR(servants.added_on) = '$year'";
+    }
+
+    $query .= " ORDER BY servants.servant_id $servantOrder LIMIT $servantLimited";
+
+
     $result = mysqli_query($conn, $query);
 
     $data = '';
@@ -487,6 +504,7 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder)
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['servantDesignation'] . '</td>
             <td>' . $row['servantFees'] . '</td>
+            <td>' . $row['payment_type'] . '</td>
             <td>
                 <a href="servantEdit.php?servant_edit_id=' . $row['servant_id'] . '">
                     <span>
@@ -527,7 +545,7 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no servants data in the database. '. $servantMonth .'</td>
                 </tr>';
     }
 
@@ -790,13 +808,21 @@ function search_tenant_data_In_Database($tenantSearch)
 
 
 
-function filter_shops_data_In_Database($shopsLimited, $shopsOrder)
+function filter_shops_data_In_Database($shopsLimited, $shopsOrder, $shopsMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($shopsMonth));
+    $year = date('Y', strtotime($shopsOrder));
+
     // Modify the query based on your database structure
-    $houseQuery = "SELECT * FROM shops
-    ORDER BY shop_id $shopsOrder LIMIT $shopsLimited";
+    $houseQuery = "SELECT * FROM shops";
+
+    if(!empty($shopsMonth)){
+        $houseQuery .= " WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'";
+    }
+
+    $houseQuery .= " ORDER BY shop_id $shopsOrder LIMIT $shopsLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -853,7 +879,7 @@ function filter_shops_data_In_Database($shopsLimited, $shopsOrder)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no shops data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no shops data in the database. '. $shopsMonth .'</td>
                 </tr>';
     }
 
@@ -982,7 +1008,7 @@ function filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth)
         $data .= '<td>' . $row['eGateperson_name'] . '</td>
         <td>' . $row['vehicle_number'] . '</td>
         <td>' . $row['eGate_charges'] . '</td>
-        <td>' . $row['vehicle_name'] . '</td>
+        <td>' . $row['payment_type'] . '</td>
                   <td>
                       <a href="eGateEdit?eGate_edit_id=' . $row['eGate_id'] . '">
                           <span>
@@ -2345,8 +2371,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-events_booking-Data') {
         $eventsLimited = $_POST['eventsLimited'];
         $eventsOrder = $_POST['eventsOrder'];
+        $eventsMonth = $_POST['eventsMonth'];
 
-        $result = filter_events_booking_data_In_Database($eventsLimited, $eventsOrder);
+;        $result = filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $eventsMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2387,8 +2414,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-servant-Data') {
         $servantLimited = $_POST['servantLimited'];
         $servantOrder = $_POST['servantOrder'];
+        $servantMonth = $_POST['servantMonth'];
 
-        $result = filter_servant_data_In_Database($servantLimited, $servantOrder);
+        $result = filter_servant_data_In_Database($servantLimited, $servantOrder, $servantMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2428,8 +2456,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-shops-Data') {
         $shopsLimited = $_POST['shopsLimited'];
         $shopsOrder = $_POST['shopsOrder'];
+        $shopsMonth = $_POST['shopsMonth'];
 
-        $result = filter_shops_data_In_Database($shopsLimited, $shopsOrder);
+        $result = filter_shops_data_In_Database($shopsLimited, $shopsOrder, $shopsMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);

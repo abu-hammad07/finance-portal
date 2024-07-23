@@ -120,12 +120,12 @@ if ($row['image'] == '') {
                                         </a>
                                     </li>
                                     <li class="nav-item <?php if ($page == 'maintenanceCharges.php') echo ('active'); ?>">
-                                        <a class="nav-link" href="maintenanceCharges.php">
+                                        <a class="nav-link" href="maintenanceCharges">
                                             <span>Maintenance Charges</span>
                                         </a>
                                     </li>
                                     <li class="nav-item <?php if ($page == 'penalty.php') echo ('active'); ?>">
-                                        <a class="nav-link" href="penalty.php">
+                                        <a class="nav-link" href="penalty">
                                             <span>Penalty Charges</span>
                                         </a>
                                     </li>

@@ -1,14 +1,22 @@
 <?php
 include_once ('includes/config.php');
 // ------------filter penalty-----------
-function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder)
+function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder, $penaltyMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($penaltyMonth));
+    $year = date('Y', strtotime($penaltyMonth));
+
     // Modify the query based on your database structure
-    $query = "SELECT * FROM penalty 
-    ORDER BY id $penaltyOrder LIMIT $penaltyLimited;
-    ";
+    $query = "SELECT * FROM penalty";
+
+    if(!empty($penaltyMonth)){
+        $query .= " WHERE month(created_date) = '$month' AND year(created_date) = '$year'";
+    }
+
+    $query .= " ORDER BY id $penaltyOrder LIMIT $penaltyLimited";
+
     $result = mysqli_query($conn, $query);
 
     $data = '';
@@ -21,6 +29,7 @@ function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder)
             <td>' . $row['penalty_type'] . '</td>
             <td>' . $row['penalty_cnic'] . '</td>
             <td>' . $row['penalty_charges'] . '</td>
+            <td>' . $row['payment_type'] . '</td>
             <td>' . $row['created_date'] . '</td>
             <td>
                 <a href="penaltyEdit.php?penalty_edit_id=' . $row['id'] . '">
@@ -59,7 +68,7 @@ function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database. '. $penaltyMonth .'</td>
                 </tr>';
     }
 
@@ -142,12 +151,22 @@ function search_penalty_data_In_Database($penaltySearch)
 // ==========================maintenace===================
 // =======================
 // ------------filter penalty-----------
-function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrder)
+function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrder, $maintenaceMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($maintenaceMonth));
+    $year = date('Y', strtotime($maintenaceMonth));
+
     // Modify the query based on your database structure
-    $query = "SELECT * FROM maintenance_payments ORDER BY maintenance_id $maintenaceOrder LIMIT $maintenaiceLimited";
+    $query = "SELECT * FROM maintenance_payments";
+
+    if(!empty($maintenaceMonth)){
+        $query .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
+    }
+
+    $query .= " ORDER BY maintenance_id $maintenaceOrder LIMIT $maintenaiceLimited";
+
     $result = mysqli_query($conn, $query);
 
     $data = '';
@@ -193,6 +212,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                 <td>' . htmlspecialchars($row['house_or_shop']) . '</td>
                 <td>' . htmlspecialchars($row['maintenance_month']) . '</td>
                 <td>' . htmlspecialchars($row['maintenance_peyment']) . '</td>
+                <td>' . htmlspecialchars($row['payment_type']) . '</td>
                 <td>
                     <a href="maintenanceAdd.php?maintenance_add_id=' . htmlspecialchars($row['maintenance_id']) . '">
                         <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: ' . ($row['status'] == 'unpaid' ? 'lightcoral' : 'lightgreen') . ';">
@@ -240,7 +260,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penalty data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penalty data in the database. '. $maintenaceMonth .'</td>
                 </tr>';
     }
 
@@ -555,8 +575,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-penalty-Data') {
         $penaltyLimited = $_POST['penaltyLimited'];
         $penaltyOrder = $_POST['penaltyOrder'];
+        $penaltyMonth = $_POST['penaltyMonth'];
 
-        $result = filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder);
+        $result = filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder, $penaltyMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -575,8 +596,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-maintenance-Data') {
         $maintenaiceLimited = $_POST['maintenaiceLimited'];
         $maintenaceOrder = $_POST['maintenaceOrder'];
+        $maintenaceMonth = $_POST['maintenaceMonth'];
 
-        $result = filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrder);
+        $result = filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrder, $maintenaceMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);

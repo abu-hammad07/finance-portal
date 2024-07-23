@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("includes/config.php");
-include_once("includes/function.php");
+include_once ("includes/config.php");
+include_once ("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -20,10 +20,12 @@ eventBookingInsert();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
     <title>Event Booking</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <meta name="og:description"
+        content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
-    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <meta property="og:image"
+        content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
     <!-- bootstrap css link -->
     <link rel="stylesheet" href="lib/bootstrap_5/bootstrap.min.css">
     <!-- Font Awesome CDN -->
@@ -46,7 +48,7 @@ eventBookingInsert();
 
         <!-- Main sidebar -->
         <?php
-        include("includes/sidebar.php");
+        include ("includes/sidebar.php");
         ?>
         <!-- End:Sidebar -->
 
@@ -84,7 +86,8 @@ eventBookingInsert();
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Event Name</label>
-                                <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter Event Name" required>
+                                <input type="text" class="form-control" id="eventName" name="eventName"
+                                    placeholder="Enter Event Name" required>
                                 <span class="text-danger" id="eventName_error"></span>
                             </div>
                             <div class="col-md-6">
@@ -104,42 +107,58 @@ eventBookingInsert();
                             <div class="col-md-6">
                                 <label class="form-label">Timing</label>
                                 <div class="input-group input-daterange">
-                                    <input type="time" id="startTiming" name="startTiming" placeholder="MM/DD/YYYY" class="form-control" />
+                                    <input type="time" id="startTiming" name="startTiming" placeholder="MM/DD/YYYY"
+                                        class="form-control" />
                                     <span class="input-group-text">to</span>
-                                    <input type="time" id="endTiming" name="endTiming" placeholder="MM/DD/YYYY" class="form-control" />
+                                    <input type="time" id="endTiming" name="endTiming" placeholder="MM/DD/YYYY"
+                                        class="form-control" />
                                 </div>
                                 <span class="text-danger" id="startTiming_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">No Of Persons</label>
-                                <input type="text" class="form-control" id="noOfPersons" name="noOfPersons" placeholder="50">
+                                <input type="text" class="form-control" id="noOfPersons" name="noOfPersons"
+                                    placeholder="50">
                                 <span class="text-danger" id="noOfPersons_error"></span>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label">Customer Name</label>
-                                <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Enter Booking Name">
+                                <input type="text" class="form-control" id="customerName" name="customerName"
+                                    placeholder="Enter Booking Name">
                                 <span class="text-danger" id="customerName_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Customer Contact</label>
-                                <input type="number" class="form-control" id="customerContact" name="customerContact" placeholder="03XXXXXXXXX">
+                                <input type="number" class="form-control" id="customerContact" name="customerContact"
+                                    placeholder="03XXXXXXXXX">
                                 <span class="text-danger" id="customerContact_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Customer CNIC</label>
-                                <input type="number" class="form-control" id="customerCnic" name="customerCnic" placeholder="XXXXXXXXXXXXX">
+                                <input type="number" class="form-control" id="customerCnic" name="customerCnic"
+                                    placeholder="XXXXXXXXXXXXX">
                                 <span class="text-danger" id="customerCnic_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Event Type</label>
-                                <input type="text" class="form-control" id="eventType" name="eventType" placeholder="e:g Birthday, Award Ceremony etc">
+                                <input type="text" class="form-control" id="eventType" name="eventType"
+                                    placeholder="e:g Birthday, Award Ceremony etc">
                                 <span class="text-danger" id="eventType_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Payment</label>
-                                <input type="number" class="form-control" id="bookingPayment" name="bookingPayment" placeholder="999">
+                                <input type="number" class="form-control" id="bookingPayment" name="bookingPayment"
+                                    placeholder="999">
                                 <span class="text-danger" id="bookingPayment_error"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Payment Type</label>
+                                <select class="form-select form-control" id="pymentType" required name="paymentType">
+                                    <option value=""> Select Payment Type</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Bank">Bank</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -158,7 +177,8 @@ eventBookingInsert();
     </div>
 
     <!-- Offcanvas Toggler -->
-    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
+    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
         <i class="far fa-hand-point-right"></i>
     </button>
     <!-- End:Offcanvas Toggler -->
@@ -172,4 +192,3 @@ eventBookingInsert();
 </body>
 
 </html>
-

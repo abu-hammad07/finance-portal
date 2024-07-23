@@ -66,7 +66,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                 <div class="col-md-4">
                                     <form class="position-relative">
                                         <input type="text" class="form-control product-search ps-5 word-spacing-2px"
-                                            id="eGateSearch" onkeyup="search_eGate_Data()" placeholder="Search &nbsp;..." />
+                                            id="eGateSearch" onkeyup="search_eGate_Data()"
+                                            placeholder="Search &nbsp;..." />
                                         <i
                                             class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
                                     </form>
@@ -112,7 +113,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <input type="month" id="eGate-month" class="form-control" onchange="load_eGate_Data()" >
+                                        <input type="month" id="eGate-month" class="form-control"
+                                            onchange="load_eGate_Data()">
                                     </div>
                                     <div class="me-2">
                                         <select id="eGate-limit" class="form-control" onchange="load_eGate_Data()">
@@ -142,7 +144,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <th>Person Name</th>
                                             <th>Vehicle Number</th>
                                             <th>Charges</th>
-                                            <th>Charges Type</th>
+                                            <th>Payment Type</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -206,7 +208,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
             });
         }
     </script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Load data on page load with default value (10)
             search_eGate_Data();
@@ -232,7 +234,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 

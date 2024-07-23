@@ -104,7 +104,10 @@ penaltyDelete();
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="penalty-limit" class="form-select" onchange="load_penalty_Data()">
+                                        <input type="month" class="form-control" id="penalty-month" onchange="load_penalty_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="penalty-limit" class="form-control" onchange="load_penalty_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -113,7 +116,7 @@ penaltyDelete();
                                         </select>
                                     </div>
                                     <div class="div">
-                                        <select id="penalty-order" class="form-select" onchange="load_penalty_Data()">
+                                        <select id="penalty-order" class="form-control" onchange="load_penalty_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -130,8 +133,8 @@ penaltyDelete();
                                             <th>Penalty type</th>
                                             <th>Penalty CNIC</th>
                                             <th>Penalty Charges</th>
+                                            <th>Payment Type</th>
                                             <th>Penalty Date</th>
-                                            
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -172,6 +175,7 @@ penaltyDelete();
 
             let penaltyLimited = $("#penalty-limit").val();
             let penaltyOrder = $("#penalty-order").val();
+            let penaltyMonth = $("#penalty-month").val();
 
             $.ajax({
                 url: 'admin-index2.php',
@@ -180,7 +184,8 @@ penaltyDelete();
                 data: {
                     action: 'load-penalty-Data',
                     penaltyLimited: penaltyLimited,
-                    penaltyOrder: penaltyOrder
+                    penaltyOrder: penaltyOrder,
+                    penaltyMonth: penaltyMonth
                 },
                 success: function(response) {
                     console.log(response);
@@ -190,7 +195,7 @@ penaltyDelete();
             });
         }
     </script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
             search_penalty_Data();
@@ -216,7 +221,7 @@ penaltyDelete();
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 

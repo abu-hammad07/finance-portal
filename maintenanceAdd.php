@@ -222,8 +222,8 @@ updateMaintenance();
                                             <label class="form-label">Maintenance Charges</label>
                                             <select class="form-select" id="pymentType" required name="pymentType">
                                                 <option value=""> Select Payment Type</option>
-                                                <option value="Cash">Cash</option>
-                                                <option value="Bank">Bank</option>
+                                                <option value="Cash" <?php if ($row['payment_type'] == "Cash") echo "selected"; ?>>Cash</option>
+                                                <option value="Bank" <?php if ($row['payment_type'] == "Bank") echo "selected"; ?>>Bank</option>
                                             </select>
                                             <span class="text-danger"></span>
                                         </div>

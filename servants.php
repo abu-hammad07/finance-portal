@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("includes/config.php");
-include_once("includes/function.php");
+include_once ("includes/config.php");
+include_once ("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -18,10 +18,12 @@ deleteServants();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
     <title>Servants Details</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and servant-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <meta name="og:description"
+        content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and servant-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
-    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <meta property="og:image"
+        content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
     <!-- bootstrap css link -->
     <link rel="stylesheet" href="lib/bootstrap_5/bootstrap.min.css">
     <!-- Font Awesome CDN -->
@@ -44,7 +46,7 @@ deleteServants();
 
         <!-- Main sidebar -->
         <?php
-        include("includes/sidebar.php");
+        include ("includes/sidebar.php");
         ?>
         <!-- End:Sidebar -->
 
@@ -80,8 +82,11 @@ deleteServants();
                         <div class="row">
                             <div class="col-md-4 col-xl-3">
                                 <form class="position-relative">
-                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="servantSearch" onkeyup="search_servant_Data()" placeholder="Search &nbsp;..." />
-                                    <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                        id="servantSearch" onkeyup="search_servant_Data()"
+                                        placeholder="Search &nbsp;..." />
+                                    <i
+                                        class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
                                 </form>
                             </div>
                             <div class="col-md-8 col-xl-9 text-end">
@@ -104,7 +109,11 @@ deleteServants();
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="servant-limit" class="form-select" onchange="load_servant_Data()">
+                                        <input type="month" id="servant-month" class="form-control"
+                                            onchange="load_servant_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="servant-limit" class="form-control" onchange="load_servant_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -112,8 +121,8 @@ deleteServants();
                                             <option value="100">100</option>
                                         </select>
                                     </div>
-                                    <div class="div">
-                                        <select id="servant-order" class="form-select" onchange="load_servant_Data()">
+                                    <div class="me-2">
+                                        <select id="servant-order" class="form-control" onchange="load_servant_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -131,6 +140,7 @@ deleteServants();
                                             <th>Owner Name</th>
                                             <th>Designation</th>
                                             <th>Fees</th>
+                                            <th>Payment Type</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -147,7 +157,8 @@ deleteServants();
     </div>
 
     <!-- Offcanvas Toggler -->
-    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
+    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
         <i class="far fa-hand-point-right"></i>
     </button>
     <!-- End:Offcanvas Toggler -->
@@ -161,7 +172,7 @@ deleteServants();
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Load data on page load with default value (10)
             load_servant_Data();
 
@@ -171,7 +182,8 @@ deleteServants();
 
             let servantLimited = $("#servant-limit").val();
             let servantOrder = $("#servant-order").val();
-
+            let servantMonth = $("#servant-month").val();
+            
             $.ajax({
                 url: 'admin-index.php',
                 type: 'POST',
@@ -179,9 +191,10 @@ deleteServants();
                 data: {
                     action: 'load-servant-Data',
                     servantLimited: servantLimited,
-                    servantOrder: servantOrder
+                    servantOrder: servantOrder,
+                    servantMonth: servantMonth
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     // Update the result div with the loaded data
                     $("#servantDetails").html(response.data);
@@ -189,33 +202,33 @@ deleteServants();
             });
         }
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Load data on page load with default value (10)
-            search_servant_Data();
+        <!-- <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Load data on page load with default value (10)
+                search_servant_Data();
 
-        });
-
-        function search_servant_Data() {
-
-            let servantSearch = document.getElementById('servantSearch').value;
-
-            $.ajax({
-                url: 'admin-index.php',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    action: 'search-servant-Data',
-                    servantSearch: servantSearch
-                },
-                success: function(response) {
-                    console.log(response);
-                    // Update the result div with the loaded data
-                    $("#servantDetails").html(response.data);
-                },
             });
-        }
-    </script>
+
+            function search_servant_Data() {
+
+                let servantSearch = document.getElementById('servantSearch').value;
+
+                $.ajax({
+                    url: 'admin-index.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        action: 'search-servant-Data',
+                        servantSearch: servantSearch
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        // Update the result div with the loaded data
+                        $("#servantDetails").html(response.data);
+                    },
+                });
+            }
+        </script> -->
 
 </body>
 

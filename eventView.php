@@ -119,6 +119,12 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <input type="text" class="form-control" id="bookingPayment" name="bookingPayment" readonly placeholder="Enter Payment" value="<?= $row['bookingPayment'] ?>">
                                             <span class="text-danger" id="bookingPayment_error"></span>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Payment Type</label>
+                                            <select class="form-select form-control" id="pymentType" required name="paymentType">
+                                                <option value="<?= $row['payment_type'] ?>"><?= $row['payment_type'] ?></option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

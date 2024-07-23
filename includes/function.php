@@ -501,7 +501,7 @@ function servantSubmit()
         // Get the current date and time
         $added_on = date('Y-m-d');
         // Get the user's ID and name
-        $added_by = $_SESSION['UID'];
+        $added_by = $_SESSION['username'];
 
 
         // Insert data into user_details table first
@@ -616,6 +616,7 @@ function eventBookingInsert()
         $customerCnic = mysqli_real_escape_string($conn, $_POST['customerCnic']);
         $eventType = mysqli_real_escape_string($conn, $_POST['eventType']);
         $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
+        $paymentType = mysqli_real_escape_string($conn, $_POST['paymentType']);
 
 
         // Get the current date and time
@@ -635,10 +636,10 @@ function eventBookingInsert()
         $insertEventBooking = "INSERT INTO `events_booking`(
             `eventName`, `location`, `date`, `startTiming`, `endTiming`, `noOfPersons`, 
             `eventType`, `customerCnic`, `customerContact`, `customerName`, 
-            `bookingPayment`, `added_by`, `added_on`) 
+            `bookingPayment`, `payment_type`, `added_by`, `added_on`) 
         VALUES(
             '{$eventName}', '{$location}', '{$date}', '{$startTiming}', '{$endTiming}', '{$noOfPersons}',
-            '{$eventType}', '{$customerCnic}', '{$customerContact}', '{$customerName}', '{$bookingPayment}', '{$added_by}', '{$added_on}'
+            '{$eventType}', '{$customerCnic}', '{$customerContact}', '{$customerName}', '{$bookingPayment}', '{$paymentType}', '{$added_by}', '{$added_on}'
         )";
 
 
@@ -677,6 +678,7 @@ function eventBookingUpdate()
         $customerCnic = mysqli_real_escape_string($conn, $_POST['customerCnic']);
         $eventType = mysqli_real_escape_string($conn, $_POST['eventType']);
         $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
+        $paymentType = mysqli_real_escape_string($conn, $_POST['paymentType']);
 
 
         // Get the current date and time
@@ -696,6 +698,7 @@ function eventBookingUpdate()
         `customerCnic` = '$customerCnic',
         `eventType` = '$eventType',
         `bookingPayment` = '$bookingPayment',
+        `payment_type` = '$paymentType',
         `updated_on` = '$updated_on',
         `updated_by` = '$updated_by'
         WHERE event_id = '$event_id'";
@@ -1000,7 +1003,6 @@ function eGateInsert()
     global $conn;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $vehicle_name = mysqli_real_escape_string($conn, $_POST['vehicle_name']);

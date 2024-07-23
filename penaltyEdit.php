@@ -106,6 +106,14 @@ updatePenalty();
                                             <input type="number" name="penalty_charges" class="form-control" value="<?=$row['penalty_charges'];?>" placeholder="Penalty Charges" required>
                                             <span class="text-danger" id="Penal-charges_error"></span>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Payment Type</label>
+                                            <select class="form-select form-control" id="pymentType" required name="paymentType">
+                                                <option value=""> Select Payment Type</option>
+                                                <option value="Cash" <?php if ($row['payment_type'] == 'Cash') echo 'selected'; ?>>Cash</option>
+                                                <option value="Bank" <?php if ($row['payment_type'] == 'Bank') echo 'selected'; ?>>Bank</option>
+                                            </select>
+                                        </div>
                                         <!-- Button -->
                                         <div class="col-md-12">
                                             <button class="btn btn-primary" id="Update_btn" type="submit" name="update">Update Now</button>

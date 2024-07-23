@@ -106,7 +106,10 @@ deleteBookingEvents();
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="events-limit" class="form-select" onchange="load_events_Data()">
+                                        <input type="month" class="form-control" id="events-month" onchange="load_events_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="events-limit" class="form-control" onchange="load_events_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -114,8 +117,8 @@ deleteBookingEvents();
                                             <option value="100">100</option>
                                         </select>
                                     </div>
-                                    <div class="div">
-                                        <select id="events-order" class="form-select" onchange="load_events_Data()">
+                                    <div class="me-2">
+                                        <select id="events-order" class="form-control" onchange="load_events_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -132,9 +135,10 @@ deleteBookingEvents();
                                             <th>Event Name</th>
                                             <th>Location</th>
                                             <th>Customer Name</th>
-                                            <th>Customer CNIC</th>
+                                            <!-- <th>Customer CNIC</th> -->
                                             <th>Date Time</th>
                                             <th>Booking Payment</th>
+                                            <th>Payment Type</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -178,6 +182,7 @@ deleteBookingEvents();
 
             let eventsLimited = $("#events-limit").val();
             let eventsOrder = $("#events-order").val();
+            let eventsMonth = $("#events-month").val();
 
             $.ajax({
                 url: 'admin-index.php',
@@ -186,7 +191,8 @@ deleteBookingEvents();
                 data: {
                     action: 'load-events_booking-Data',
                     eventsLimited: eventsLimited,
-                    eventsOrder: eventsOrder
+                    eventsOrder: eventsOrder,
+                    eventsMonth: eventsMonth
                 },
                 success: function(response) {
                     console.log(response);
@@ -196,7 +202,7 @@ deleteBookingEvents();
             });
         }
     </script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
             search_events_Data();
@@ -222,7 +228,7 @@ deleteBookingEvents();
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 

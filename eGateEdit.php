@@ -135,7 +135,8 @@ eGateUpdate();
                                         </div>
                                         <div class="col-md-6 ">
                                             <label class="form-label">CNIC Number</label>
-                                            <input type="text" id="cnic_number" name="cnic_number" class="form-control" placeholder="XXXXX-XXXXXXX-X" value="<?= $row['eGate_cnic'] ?>">
+                                            <input type="text" id="cnic_number" name="cnic_number" class="form-control"
+                                                placeholder="XXXXX-XXXXXXX-X" value="<?= $row['eGate_cnic'] ?>">
                                             <!-- <span class="text-danger" id="cnic_number_error"></span> -->
                                         </div>
                                         <div class="col-md-6">
@@ -152,15 +153,16 @@ eGateUpdate();
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Charges</label>
-                                            <input type="text" id="charges" name="charges" class="form-control" placeholder="2000" value="<?= $row['eGate_charges'] ?>">
-                                            <!-- <select name="charges" id="charges" class="form-select form-control house-id" required>
-                                                <option value="">--- Select Charges ---</option>
-                                                <option value="2000" <?php //if ($row['eGate_charges'] == '2000') echo 'selected'; ?>>
-                                                    2000</option>
-                                                <option value="1000" <?php //if ($row['eGate_charges'] == '1000') echo 'selected'; ?>>
-                                                    1000</option>
-                                            </select> -->
-                                            <!-- <span class="text-danger" id="charges_error"></span> -->
+                                            <input type="text" id="charges" name="charges" class="form-control" placeholder="2000"
+                                                value="<?= $row['eGate_charges'] ?>">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Payment Type</label>
+                                            <select class="form-select form-control" id="pymentType" required name="pymentType">
+                                                <option value=""> Select Payment Type</option>
+                                                <option value="Cash" <?php if ($row['payment_type'] == 'Cash') echo 'selected'; ?>>Cash</option>
+                                                <option value="Bank" <?php if ($row['payment_type'] == 'Bank') echo 'selected'; ?>>Bank</option>
+                                            </select>
                                         </div>
 
                                         <!-- Button -->

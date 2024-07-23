@@ -91,7 +91,7 @@ MaintenanceDelete();
                             </div>
                             <div class="col-md-4 col-xl-3">
                                 <form class="position-relative">
-                                    <select name="" class="form-select" id="">
+                                    <select name="" class="form-control" id="">
                                         <option value="house">house</option>
                                         <option value="shop">shop</option>
                                     </select>
@@ -117,7 +117,10 @@ MaintenanceDelete();
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="maintenace-limit" class="form-select" onchange="load_maintenace_Data()">
+                                        <input type="month" class="form-control" id="maintenace-month" onchange="load_maintenace_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="maintenace-limit" class="form-control" onchange="load_maintenace_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -125,8 +128,8 @@ MaintenanceDelete();
                                             <option value="10000000000">All</option>
                                         </select>
                                     </div>
-                                    <div class="div">
-                                        <select id="maintenace-order" class="form-select" onchange="load_maintenace_Data()">
+                                    <div class="me-2">
+                                        <select id="maintenace-order" class="form-control" onchange="load_maintenace_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -140,10 +143,11 @@ MaintenanceDelete();
                                     <thead>
                                         <tr>
                                             <th>S.No</th>
-                                            <th>House Number / Shop Number</th>
-                                            <th>House / Shop</th>
-                                            <th>Maintenance Month</th>
-                                            <th>Maintenance Charges</th>
+                                            <th>House/Shop Number</th>
+                                            <th>House/Shop</th>
+                                            <th>Month</th>
+                                            <th>Charges</th>
+                                            <th>Charges Type</th>
                                             <th>Status</th>
                                             <th>Print</th>
                                             <th>Action</th>
@@ -186,6 +190,7 @@ MaintenanceDelete();
 
             let maintenaiceLimited = $("#maintenace-limit").val();
             let maintenaceOrder = $("#maintenace-order").val();
+            let maintenaceMonth = $("#maintenace-month").val();
 
             $.ajax({
                 url: 'admin-index2.php',
@@ -194,7 +199,8 @@ MaintenanceDelete();
                 data: {
                     action: 'load-maintenance-Data',
                     maintenaiceLimited: maintenaiceLimited,
-                    maintenaceOrder: maintenaceOrder
+                    maintenaceOrder: maintenaceOrder,
+                    maintenaceMonth: maintenaceMonth
                 },
                 success: function(response) {
                     console.log(response);
@@ -204,7 +210,7 @@ MaintenanceDelete();
             });
         }
     </script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
             search_maintenace_Data();
@@ -234,7 +240,7 @@ MaintenanceDelete();
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 

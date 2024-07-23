@@ -116,13 +116,12 @@ servantSubmit();
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label"> Payment Type</label>
-                                <select class="form-select" id="pymentType" required name="pymentType">
-                                    <option value=""> Select Payment Type</option>
+                                <label class="form-label">Payment Type</label>
+                                <select class="form-select form-control" id="pymentType" required name="pymentType">
+                                    <option value="">Select Payment Type</option>
                                     <option value="Cash">Cash</option>
                                     <option value="Bank">Bank</option>
                                 </select>
-                                <span class="text-danger"></span>
                             </div>
 
                             <!-- Button -->

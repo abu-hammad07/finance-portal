@@ -107,15 +107,13 @@ serventUpdate();
                                             <input type="text" id="servant_fees" name="servant_fees" class="form-control" placeholder="999" value="<?= $row['servantFees'] ?>" required>
                                             <span class="text-danger" id="servant_fees_error"></span>
                                         </div>
-
                                         <div class="col-md-6">
-                                            <label class="form-label"> Payment Type</label>
-                                            <select class="form-select" id="pymentType" required name="pymentType">
-                                                <option value="<?= $row['payment_type'] ?>"> <?= $row['payment_type'] ?></option>
-                                                <option value="Cash">Cash</option>
-                                                <option value="Bank">Bank</option>
+                                            <label class="form-label">Payment Type</label>
+                                            <select class="form-select form-control" id="pymentType" required name="pymentType">
+                                                <option value=""> Select Payment Type</option>
+                                                <option value="Cash" <?php if ($row['payment_type'] == 'Cash') echo 'selected'; ?>>Cash</option>
+                                                <option value="Bank" <?php if ($row['payment_type'] == 'Bank') echo 'selected'; ?>>Bank</option>
                                             </select>
-                                            <span class="text-danger"></span>
                                         </div>
 
                                         <!-- Button -->

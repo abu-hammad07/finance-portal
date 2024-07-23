@@ -106,7 +106,10 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="shops-limit" class="form-select" onchange="load_shops_Data()">
+                                        <input type="month" class="form-control" id="shops-month" onchange="load_shops_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="shops-limit" class="form-control" onchange="load_shops_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -115,7 +118,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                         </select>
                                     </div>
                                     <div class="div">
-                                        <select id="shops-order" class="form-select" onchange="load_shops_Data()">
+                                        <select id="shops-order" class="form-control" onchange="load_shops_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -173,6 +176,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
             let shopsLimited = $("#shops-limit").val();
             let shopsOrder = $("#shops-order").val();
+            let shopsMonth = $("#shops-month").val();
 
             $.ajax({
                 url: 'admin-index.php',
@@ -181,7 +185,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 data: {
                     action: 'load-shops-Data',
                     shopsLimited: shopsLimited,
-                    shopsOrder: shopsOrder
+                    shopsOrder: shopsOrder,
+                    shopsMonth: shopsMonth
                 },
                 success: function(response) {
                     console.log(response);
@@ -191,7 +196,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
             });
         }
     </script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
             search_shops_Data();
@@ -217,7 +222,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 

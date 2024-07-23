@@ -133,6 +133,14 @@ eventBookingUpdate();
                                             <input type="number" class="form-control" id="bookingPayment" name="bookingPayment" placeholder="999" value="<?= $row['bookingPayment'] ?>">
                                             <span class="text-danger" id="bookingPayment_error"></span>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Payment Type</label>
+                                            <select class="form-select form-control" id="pymentType" required name="paymentType">
+                                                <option value=""> Select Payment Type</option>
+                                                <option value="Cash" <?php if ($row['payment_type'] == 'Cash') echo 'selected'; ?>>Cash</option>
+                                                <option value="Bank" <?php if ($row['payment_type'] == 'Bank') echo 'selected'; ?>>Bank</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
