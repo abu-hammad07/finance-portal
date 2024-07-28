@@ -141,6 +141,7 @@ deleteServants();
                                             <th>Designation</th>
                                             <th>Fees</th>
                                             <th>Payment Type</th>
+                                            <th>Print</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

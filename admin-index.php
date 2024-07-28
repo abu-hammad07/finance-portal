@@ -505,6 +505,11 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder, $servan
             <td>' . $row['servantDesignation'] . '</td>
             <td>' . $row['servantFees'] . '</td>
             <td>' . $row['payment_type'] . '</td>
+              <td>
+           <a href="includes/pdf_maker?servants_id=' . $row['servant_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
+                            <i class="fas fa-file text-white m-0 p-1">Print</i>
+                            </span></a>  
+                    </td>
             <td>
                 <a href="servantEdit.php?servant_edit_id=' . $row['servant_id'] . '">
                     <span>
@@ -581,6 +586,11 @@ function search_servant_data_In_Database($servantSearch)
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['servantDesignation'] . '</td>
             <td>' . $row['servantFees'] . '</td>
+              <td>
+           <a href="includes/pdf_maker?servants_id=' . $row['servant_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
+                            <i class="fas fa-file text-white m-0 p-1">Print</i>
+                            </span></a>  
+                    </td>
             <td>
             <a href="servantEdit.php?servant_edit_id=' . $row['servant_id'] . '">
                     <span>
