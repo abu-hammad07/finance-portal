@@ -143,7 +143,10 @@ deleteEmployeeID();
                                             <th>Employee Type</th>
                                             <th>Deparment</th>
                                             <th>QR Code</th>
+                                            <th>Print</th>
+
                                             <th>Action</th>
+
                                         </tr>
                                     </thead>
                                     <tbody id="employeeDetails">

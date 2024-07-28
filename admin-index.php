@@ -1193,6 +1193,13 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder)
             <td>' . $row['department'] . '</td>
             <td>' . $imgTag . '</td>
             <td>
+           <a href="includes/pdf_maker?employee_id=' . $row['employee_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
+                            <i class="fas fa-file text-white m-0 p-1">Print</i>
+                            </span></a>  
+                    </td>
+
+     
+            <td>
                 <a href="employeeEdit?employee_edit_id=' . $row['employee_id'] . '">
                     <span>
                         <i class="fas fa-pencil-alt me-1 text-success"></i>
@@ -1282,6 +1289,11 @@ function search_employee_data_In_Database($employeeSearch)
         <td>' . $row['employement_type'] . '</td>
         <td>' . $row['department'] . '</td>
         <td>' . $imgTag . '</td>
+         <td>
+           <a href="includes/pdf_maker?employee_id=' . $row['employee_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
+                            <i class="fas fa-file text-white m-0 p-1">Print</i>
+                            </span></a>  
+                    </td>
         <td>
             <a href="employeeEdit?employee_edit_id=' . $row['employee_id'] . '">
                 <span>
