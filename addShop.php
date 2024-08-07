@@ -102,12 +102,12 @@ addShopInsert();
                             </div>
                             <div class="col-md-6">
                                 <label for="owner" class="form-label">Occupancy Status</label>
-                                <select id="occupance_status" name="occupance_status" class="form-select form-control">
+                                <select id="occupancy_status" name="occupancy_status" class="form-select form-control">
                                     <option value="">-----</option>
                                     <option value="owned">Owned</option>
                                     <option value="rented">Rented</option>
                                 </select>
-                                <span class="text-danger" id="occupance_status_error"></span>
+                                <span class="text-danger" id="occupancy_status_error"></span>
                             </div>
                             <div class="col-md-6 ">
                                 <label for="floor" class="form-label">Floor</label>

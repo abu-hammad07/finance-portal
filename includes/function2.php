@@ -389,7 +389,7 @@ function MaintenanceDelete()
     }
 }
 // ================add payroll=============
-// Adjust the path to where you placed the fpdf.php file
+// Adjust the path to where you placed the fpdf file
 function addPayroll()
 {
     global $conn;
@@ -472,7 +472,7 @@ function addPayroll()
             } else {
                 $_SESSION['error_message'] = "Something went wrong. Please try again.";
             }
-            header('location: addPayroll.php'); // Redirect after processing
+            header('location: addPayroll'); // Redirect after processing
             exit();
         }
     }

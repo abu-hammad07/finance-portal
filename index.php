@@ -523,9 +523,16 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                             <div class="flex-1 w-100 ms-3">
                                                 <div class="d-flex justify-content-between mb-2">
-                                                    Houses <span class="text-end"><span
-                                                            class="fw-bold"><?= totalHousesPaid() ?></span> /
-                                                        <?= totalHouses() ?></span>
+                                                    Houses 
+                                                    <span class="text-end">Paid 
+                                                        <span
+                                                            class="fw-bold"><?= totalHousesPaid() ?>
+                                                        </span> /
+                                                        <span class="fw-bold">
+                                                            <?= totalHouses() ?> 
+                                                        </span>
+                                                        Total
+                                                    </span>
                                                 </div>
                                                 <div class="progress bg-primary bg-opacity-10">
                                                     <?php
@@ -543,7 +550,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                         </div>
                                     </div>
 
-                                    <!-- Youtube Premium -->
+                                    <!-- Total Shops -->
                                     <div class="card mb-4">
                                         <div class="card-body d-flex align-items-center">
                                             <div class="d2c_icon btn bg-info text-info rounded-circle bg-opacity-10">
@@ -551,9 +558,16 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
                                             </div>
                                             <div class="flex-1 w-100 ms-3">
                                                 <div class="d-flex justify-content-between mb-2">
-                                                    Shops <span class="text-end"><span
-                                                            class="fw-bold"><?= totalShopsPaid() ?></span> /
-                                                        <?= totalShops() ?></span>
+                                                    Shops
+                                                    <span class="text-end">Paid 
+                                                        <span
+                                                            class="fw-bold"><?= totalShopsPaid() ?>
+                                                        </span> /
+                                                        <span class="fw-bold">
+                                                            <?= totalShops() ?>
+                                                        </span>
+                                                        Total
+                                                    </span>
                                                 </div>
                                                 <div class="progress bg-info bg-opacity-10">
                                                     <?php

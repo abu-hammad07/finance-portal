@@ -179,6 +179,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
 
         // Assuming $house_shop_id is a string of comma-separated IDs
         $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
+        $shop_ids = explode(',', $row['shop_id']); // Convert the string of IDs to an array
 
         if ($row['house_or_shop'] == "house") {
             foreach ($house_shop_ids as $house_shop_id_main) {
@@ -194,7 +195,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                 }
             }
         } elseif ($row['house_or_shop'] == "shop") {
-            foreach ($house_shop_ids as $shop_id_main) {
+            foreach ($shop_ids as $shop_id_main) {
                 $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
                 $select = "SELECT shop_number FROM shops WHERE shop_id = $shop_id_main";
                 $shop_result = mysqli_query($conn, $select);
@@ -377,14 +378,22 @@ function search_maintenace_data_In_Database($manitenaceSearch)
 
 // ===============filter payroll====================
 
-function filter_payroll_data_In_Database($payrollLimited, $payrollOrder)
+function filter_payroll_data_In_Database($payrollLimited, $payrollOrder, $payrollMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($payrollMonth));
+    $year = date('Y', strtotime($payrollMonth));
+
     // Modify the query based on your database structure
-    $query = "SELECT * FROM payroll 
-    ORDER BY employee_id  $payrollOrder LIMIT $payrollLimited;
-    ";
+    $query = "SELECT * FROM payroll";
+
+    if (!empty($payrollMonth)) {
+        $query .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
+    }
+
+    $query .= " ORDER BY employee_id  $payrollOrder LIMIT $payrollLimited";
+
     $result = mysqli_query($conn, $query);
 
     $data = '';
@@ -424,7 +433,7 @@ function filter_payroll_data_In_Database($payrollLimited, $payrollOrder)
                 </a>
                 <a href="Payroll_view.php?payroll_view_id=' . $row['payroll_id'] . '">
                 <span>
-                    <i class="fas fa-pencil-alt me-1 text-success"></i>
+                    <i class="fas fa-eye me-1 text-success"></i>
                 </span>
             </a>
                 <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deletepenalty' . $row['payroll_id'] . '" data-bs-placement="top" title="Delete">
@@ -457,7 +466,7 @@ function filter_payroll_data_In_Database($payrollLimited, $payrollOrder)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database. '. $payrollMonth .'</td>
                 </tr>';
     }
 
@@ -617,8 +626,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-payroll-Data') {
         $payrollLimited = $_POST['payrollLimited'];
         $payrollOrder = $_POST['payrollOrder'];
+        $payrollMonth = $_POST['payrollMonth'];
 
-        $result = filter_payroll_data_In_Database($payrollLimited, $payrollOrder);
+        $result = filter_payroll_data_In_Database($payrollLimited, $payrollOrder, $payrollMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);

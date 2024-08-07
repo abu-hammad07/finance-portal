@@ -152,6 +152,11 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                             <label class="form-label">Employee Image</label>
                                             <img src="media/images/<?= $row['employee_image'] ?>" alt="employee image" class="img-fluid">
                                         </div>
+                                        <!-- images show -->
+                                        <div class="col-md-6">
+                                            <label class="form-label">Employee QR Code</label>
+                                            <img src="media/qrcodeImages<?= $row['QRcode'] ?>" alt="employee image" class="img-fluid">
+                                        </div>
 
                                         <!-- Button -->
                                         <div class="col-md-12">

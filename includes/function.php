@@ -888,6 +888,7 @@ function addShopInsert()
         $owner_name = mysqli_real_escape_string($conn, $_POST['owner_name']);
         $owner_contact = mysqli_real_escape_string($conn, $_POST['owner_contact']);
         $owner_cinc = mysqli_real_escape_string($conn, $_POST['owner_cinc']);
+        $occupancy_status = mysqli_real_escape_string($conn, $_POST['occupancy_status']);
         $floor = mysqli_real_escape_string($conn, $_POST['floor']);
         $property_type = mysqli_real_escape_string($conn, $_POST['property_type']);
         $property_size = mysqli_real_escape_string($conn, $_POST['property_size']);
@@ -908,11 +909,11 @@ function addShopInsert()
 
         // Insert data into shops table
         $insertShops = "INSERT INTO `shops`(
-            `shop_number`, `owner_name`, `owner_contact`, `owner_cnic`, 
+            `shop_number`, `owner_name`, `owner_contact`, `owner_cnic`, `occupancy_status`, 
             `property_size`, `floor`, `property_type`, 
             `maintenance_charges`, `added_on`, `added_by`) 
         VALUES (
-            '$shop_number', '$owner_name', '$owner_contact', '$owner_cinc', 
+            '$shop_number', '$owner_name', '$owner_contact', '$owner_cinc', '$occupancy_status', 
             '$floor', '$property_type', '$property_size', 
             '$maintenance_charges', '$added_on', '$added_by')";
 
@@ -920,7 +921,7 @@ function addShopInsert()
         $house_id = $conn->insert_id;
         $current_month = date('F,Y');
         // --------------insert maintanace table--------------
-        $sql_maintenance = "INSERT INTO maintenance_payments(house_shop_id, house_or_shop, maintenance_month,
+        $sql_maintenance = "INSERT INTO maintenance_payments(shop_id, house_or_shop, maintenance_month,
           maintenance_peyment,added_on,
           added_by) VALUES ('$house_id' ,'shop','$current_month',
          '$maintenance_charges',
@@ -951,6 +952,7 @@ function addShopupdate()
         $owner_name = mysqli_real_escape_string($conn, $_POST['owner_name']);
         $owner_contact = mysqli_real_escape_string($conn, $_POST['owner_contact']);
         $owner_cinc = mysqli_real_escape_string($conn, $_POST['owner_cinc']);
+        $occupancy_status = mysqli_real_escape_string($conn, $_POST['occupancy_status']);
         $floor = mysqli_real_escape_string($conn, $_POST['floor']);
         $property_type = mysqli_real_escape_string($conn, $_POST['property_type']);
         $property_size = mysqli_real_escape_string($conn, $_POST['property_size']);
@@ -975,6 +977,7 @@ function addShopupdate()
             `owner_name` = '$owner_name',
             `owner_contact` = '$owner_contact',
             `owner_cnic` = '$owner_cinc',
+            `occupancy_status` = '$occupancy_status',
             `floor` = '$floor',
             `property_type` = '$property_type',
             `property_size` = '$property_size',

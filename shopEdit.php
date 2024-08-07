@@ -96,12 +96,12 @@ addShopupdate();
                                         </div>
                                         <div class="col-md-6">
                                             <label for="owner" class="form-label">Occupancy Status</label>
-                                            <select id="occupance_status" name="occupance_status" class="form-select form-control" value="<?= $row['occupancy_status'] ?>">
+                                            <select id="occupancy_status" name="occupancy_status" class="form-select form-control" value="<?= $row['occupancy_status'] ?>">
                                                 <!-- <option value="">-----</option> -->
                                                 <option value="owned" <?php if ($row['occupancy_status'] == 'owned') echo "selected" ?>>Owned</option>
                                                 <option value="rented" <?php if ($row['occupancy_status'] == 'rented') echo "selected" ?>>Rented</option>
                                             </select>
-                                            <span class="text-danger" id="occupance_status_error"></span>
+                                            <span class="text-danger" id="occupancy_status_error"></span>
                                         </div>
                                         <div class="col-md-6 ">
                                             <label for="floor" class="form-label">Floor</label>

@@ -104,7 +104,10 @@ payrollDelete();
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="payroll-limit" class="form-select" onchange="load_maintenace_Data()">
+                                        <input type="month" class="form-control" id="payroll-month" onchange="load_maintenace_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="payroll-limit" class="form-control" onchange="load_maintenace_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -113,8 +116,8 @@ payrollDelete();
                                             <option value="10000000000">All</option>
                                         </select>
                                     </div>
-                                    <div class="div">
-                                        <select id="payroll-order" class="form-select" onchange="load_maintenace_Data()">
+                                    <div class="me-2">
+                                        <select id="payroll-order" class="form-control" onchange="load_maintenace_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -173,6 +176,7 @@ payrollDelete();
 
         function load_maintenace_Data() {
 
+            let payrollMonth = $("#payroll-month").val();
             let payrollLimited = $("#payroll-limit").val();
             let payrollOrder = $("#payroll-order").val();
 
@@ -183,7 +187,8 @@ payrollDelete();
                 data: {
                     action: 'load-payroll-Data',
                     payrollLimited: payrollLimited,
-                    payrollOrder: payrollOrder
+                    payrollOrder: payrollOrder,
+                    payrollMonth: payrollMonth
                 },
                 success: function(response) {
                     console.log(response);
@@ -193,7 +198,7 @@ payrollDelete();
             });
         }
     </script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
             search_maintenace_Data();
@@ -219,7 +224,7 @@ payrollDelete();
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 

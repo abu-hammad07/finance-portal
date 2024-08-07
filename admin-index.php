@@ -1163,17 +1163,25 @@ function search_eGate_data_In_Database($eGateSearch)
 }
 
 
-function filter_employee_data_In_Database($employeeLimited, $employeeOrder)
+function filter_employee_data_In_Database($employeeLimited, $employeeOrder, $employeeMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($employeeMonth));
+    $year = date('Y', strtotime($employeeMonth));
+
     // Modify the query based on your database structure
-    $houseQuery = "SELECT * FROM employees 
-                   ORDER BY employee_id $employeeOrder LIMIT $employeeLimited";
+    $employeeQuery = "SELECT * FROM employees";
 
-    $houseResult = mysqli_query($conn, $houseQuery);
+    if(!empty($employeeMonth)){
+        $employeeQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
+    }
 
-    if (!$houseResult) {
+    $employeeQuery .= " ORDER BY employee_id $employeeOrder LIMIT $employeeLimited";
+
+    $employeeResult = mysqli_query($conn, $employeeQuery);
+
+    if (!$employeeResult) {
         // Debugging output for SQL errors
         $_SESSION['error_updated_employee'] = ("Error executing query: " . mysqli_error($conn));
         header("Location: employee");
@@ -1183,16 +1191,16 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder)
     $data = '';
     $count = 1;
 
-    while ($row = mysqli_fetch_assoc($houseResult)) {
+    while ($row = mysqli_fetch_assoc($employeeResult)) {
         $imagePath = 'media/qrcodeImages/' . $row['QRcode'];  // Ensure the correct path to your images folder
 
         // Check if the image file exists
-        $imgTag = '';
-        if (file_exists($imagePath)) {
-            $imgTag = '<img src="' . $imagePath . '" alt="QR Code">';
-        } else {
-            $imgTag = 'QR Code image not found';
-        }
+        // $imgTag = '';
+        // if (file_exists($imagePath)) {
+        //     $imgTag = '<img src="' . $imagePath . '" alt="QR Code">';
+        // } else {
+        //     $imgTag = 'QR Code image not found';
+        // }
 
         $data .= '
         <tr>
@@ -1201,7 +1209,6 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder)
             <td>' . $row['employee_cnic'] . '</td>
             <td>' . $row['employement_type'] . '</td>
             <td>' . $row['department'] . '</td>
-            <td>' . $imgTag . '</td>
             <td>
            <a href="includes/pdf_maker?employee_id=' . $row['employee_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
                             <i class="fas fa-file text-white m-0 p-1">Print</i>
@@ -1250,7 +1257,7 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database. '. $employeeMonth .'</td>
                 </tr>';
     }
 
@@ -2522,8 +2529,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-employee-Data') {
         $employeeLimited = $_POST['employeeLimited'];
         $employeeOrder = $_POST['employeeOrder'];
+        $employeeMonth = $_POST['employeeMonth'];
 
-        $result = filter_employee_data_In_Database($employeeLimited, $employeeOrder);
+        $result = filter_employee_data_In_Database($employeeLimited, $employeeOrder, $employeeMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);

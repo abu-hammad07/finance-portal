@@ -115,7 +115,10 @@ deleteEmployeeID();
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="employee-limit" class="form-select" onchange="load_employee_Data()">
+                                        <input type="month" class="form-control" id="employee-month" onchange="load_employee_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="employee-limit" class="form-control" onchange="load_employee_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -123,8 +126,8 @@ deleteEmployeeID();
                                             <option value="100">100</option>
                                         </select>
                                     </div>
-                                    <div class="div">
-                                        <select id="employee-order" class="form-select" onchange="load_employee_Data()">
+                                    <div class="me-2">
+                                        <select id="employee-order" class="form-control" onchange="load_employee_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -142,7 +145,7 @@ deleteEmployeeID();
                                             <th>CNIC</th>
                                             <th>Employee Type</th>
                                             <th>Deparment</th>
-                                            <th>QR Code</th>
+                                            <!-- <th>QR Code</th> -->
                                             <th>Print</th>
 
                                             <th>Action</th>
@@ -189,6 +192,7 @@ deleteEmployeeID();
 
             let employeeLimited = $("#employee-limit").val();
             let employeeOrder = $("#employee-order").val();
+            let employeeMonth = $("#employee-month").val();
 
             $.ajax({
                 url: 'admin-index.php',
@@ -197,7 +201,8 @@ deleteEmployeeID();
                 data: {
                     action: 'load-employee-Data',
                     employeeLimited: employeeLimited,
-                    employeeOrder: employeeOrder
+                    employeeOrder: employeeOrder,
+                    employeeMonth: employeeMonth
                 },
                 success: function(response) {
                     console.log(response);
@@ -207,7 +212,7 @@ deleteEmployeeID();
             });
         }
     </script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
             search_employee_Data();
@@ -233,7 +238,7 @@ deleteEmployeeID();
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 
