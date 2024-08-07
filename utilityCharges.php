@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("includes/config.php");
-include_once("includes/function.php");
+include_once ("includes/config.php");
+include_once ("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -19,10 +19,12 @@ deleteUtilityChargesID();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
     <title>Utility Charges</title>
-    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <meta name="og:description"
+        content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
     <meta name="robots" content="index, follow">
     <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
-    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <meta property="og:image"
+        content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
     <!-- bootstrap css link -->
     <link rel="stylesheet" href="lib/bootstrap_5/bootstrap.min.css">
     <!-- Font Awesome CDN -->
@@ -45,7 +47,7 @@ deleteUtilityChargesID();
 
         <!-- Main sidebar -->
         <?php
-        include("includes/sidebar.php");
+        include ("includes/sidebar.php");
         ?>
         <!-- End:Sidebar -->
 
@@ -62,12 +64,16 @@ deleteUtilityChargesID();
                         <div class="row">
                             <div class="col-md-4 col-6 col-xl-3">
                                 <form class="position-relative">
-                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="Utility_chargesSearch" onkeyup="search_Utility_charges_Data()" placeholder="Search &nbsp;..." />
-                                    <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                                    <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                        id="Utility_chargesSearch" onkeyup="search_Utility_charges_Data()"
+                                        placeholder="Search &nbsp;..." />
+                                    <i
+                                        class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
                                 </form>
                             </div>
                             <div class="col-md-8 col-xl-9 col-6 text-end">
-                                <a href="addUtilityCharges" class="btn btn-primary"><i class="fas fa-plus"></i> Utility CHarges</a>
+                                <a href="addUtilityCharges" class="btn btn-primary"><i class="fas fa-plus"></i> Utility
+                                    CHarges</a>
                             </div>
                         </div>
                     </div>
@@ -106,7 +112,12 @@ deleteUtilityChargesID();
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="Utility_charges-limit" class="form-select" onchange="load_Utility_charges_Data()">
+                                        <input type="month" class="form-control" id="Utility_charges-month"
+                                            onchange="load_Utility_charges_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="Utility_charges-limit" class="form-control"
+                                            onchange="load_Utility_charges_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -114,8 +125,9 @@ deleteUtilityChargesID();
                                             <option value="100">100</option>
                                         </select>
                                     </div>
-                                    <div class="div">
-                                        <select id="Utility_charges-order" class="form-select" onchange="load_Utility_charges_Data()">
+                                    <div class="me-2">
+                                        <select id="Utility_charges-order" class="form-control"
+                                            onchange="load_Utility_charges_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -152,7 +164,8 @@ deleteUtilityChargesID();
     </div>
 
     <!-- Offcanvas Toggler -->
-    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
+    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
         <i class="far fa-hand-point-right"></i>
     </button>
     <!-- End:Offcanvas Toggler -->
@@ -166,7 +179,7 @@ deleteUtilityChargesID();
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Load data on page load with default value (10)
             load_Utility_charges_Data();
 
@@ -176,6 +189,7 @@ deleteUtilityChargesID();
 
             let Utility_chargesLimited = $("#Utility_charges-limit").val();
             let Utility_chargesOrder = $("#Utility_charges-order").val();
+            let Utility_chargesMonth = $("#Utility_charges-month").val();
 
             $.ajax({
                 url: 'admin-index.php',
@@ -184,9 +198,10 @@ deleteUtilityChargesID();
                 data: {
                     action: 'load-Utility_charges-Data',
                     Utility_chargesLimited: Utility_chargesLimited,
-                    Utility_chargesOrder: Utility_chargesOrder
+                    Utility_chargesOrder: Utility_chargesOrder,
+                    Utility_chargesMonth: Utility_chargesMonth
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     // Update the result div with the loaded data
                     $("#Utility_chargesDetails").html(response.data);
@@ -194,8 +209,8 @@ deleteUtilityChargesID();
             });
         }
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
             // Load data on page load with default value (10)
             search_Utility_charges_Data();
 
@@ -213,14 +228,14 @@ deleteUtilityChargesID();
                     action: 'search-Utility_charges-Data',
                     Utility_chargesSearch: Utility_chargesSearch
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     // Update the result div with the loaded data
                     $("#Utility_chargesDetails").html(response.data);
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 

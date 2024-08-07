@@ -1357,13 +1357,21 @@ function search_employee_data_In_Database($employeeSearch)
 }
 
 
-function filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utility_chargesOrder)
+function filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utility_chargesOrder, $Utility_chargesMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($Utility_chargesMonth));
+    $year = date('Y', strtotime($Utility_chargesMonth));
+
     // Modify the query based on your database structure
-    $houseQuery = "SELECT * FROM utility_charges 
-                   ORDER BY utility_id $Utility_chargesOrder LIMIT $Utility_chargesLimited";
+    $houseQuery = "SELECT * FROM utility_charges";
+
+    if(!empty($Utility_chargesMonth)){
+        $houseQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
+    }
+
+    $houseQuery .= " ORDER BY utility_id $Utility_chargesOrder LIMIT $Utility_chargesLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -1420,7 +1428,7 @@ function filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utili
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database. '. $Utility_chargesMonth .'</td>
                 </tr>';
     }
 
@@ -1500,13 +1508,21 @@ function search_Utility_charges_data_In_Database($Utility_chargesSearch)
 
 
 
-function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMaintOrder)
+function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMaintOrder, $societyMaintDate)
 {
     global $conn;
 
+    $month = date('m', strtotime($societyMaintDate));
+    $year = date('Y', strtotime($societyMaintDate));
+
     // Modify the query based on your database structure
-    $houseQuery = "SELECT * FROM society_maintenance 
-                   ORDER BY society_maint_id $societyMaintOrder LIMIT $societyMaintLimited";
+    $houseQuery = "SELECT * FROM society_maintenance";
+
+    if(!empty($societyMaintDate)) {
+        $houseQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
+    }
+
+    $houseQuery .= " ORDER BY society_maint_id $societyMaintOrder LIMIT $societyMaintLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -1564,7 +1580,7 @@ function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMain
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no suciety maintenance data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no suciety maintenance data in the database. '. $societyMaintDate .'</td>
                 </tr>';
     }
 
@@ -2553,8 +2569,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-Utility_charges-Data') {
         $Utility_chargesLimited = $_POST['Utility_chargesLimited'];
         $Utility_chargesOrder = $_POST['Utility_chargesOrder'];
+        $Utility_chargesMonth = $_POST['Utility_chargesMonth'];
 
-        $result = filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utility_chargesOrder);
+        $result = filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utility_chargesOrder, $Utility_chargesMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2574,8 +2591,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-societyMaint-Data') {
         $societyMaintLimited = $_POST['societyMaintLimited'];
         $societyMaintOrder = $_POST['societyMaintOrder'];
+        $societyMaintDate = $_POST['societyMaintDate'];
 
-        $result = filter_societyMaint_data_In_Database($societyMaintLimited, $societyMaintOrder);
+        $result = filter_societyMaint_data_In_Database($societyMaintLimited, $societyMaintOrder, $societyMaintDate);
 
         $response = array('data' => $result);
         echo json_encode($response);

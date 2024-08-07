@@ -106,7 +106,10 @@ deleteSocietyMaintenance();
                             <div class="col-md-6 text-end card-header">
                                 <div class="btn-group">
                                     <div class="me-2">
-                                        <select id="societyMaint-limit" class="form-select" onchange="load_societyMaint_Data()">
+                                        <input type="month" class="form-control" id="societyMaint-date" onchange="load_societyMaint_Data()">
+                                    </div>
+                                    <div class="me-2">
+                                        <select id="societyMaint-limit" class="form-control" onchange="load_societyMaint_Data()">
                                             <option value="15">15</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>
@@ -114,8 +117,8 @@ deleteSocietyMaintenance();
                                             <option value="100">100</option>
                                         </select>
                                     </div>
-                                    <div class="div">
-                                        <select id="societyMaint-order" class="form-select" onchange="load_societyMaint_Data()">
+                                    <div class="me-2">
+                                        <select id="societyMaint-order" class="form-control" onchange="load_societyMaint_Data()">
                                             <option value="ASC">Old</option>
                                             <option value="DESC">New</option>
                                         </select>
@@ -177,6 +180,7 @@ deleteSocietyMaintenance();
 
             let societyMaintLimited = $("#societyMaint-limit").val();
             let societyMaintOrder = $("#societyMaint-order").val();
+            let societyMaintDate = $("#societyMaint-date").val();
 
             $.ajax({
                 url: 'admin-index.php',
@@ -185,7 +189,8 @@ deleteSocietyMaintenance();
                 data: {
                     action: 'load-societyMaint-Data',
                     societyMaintLimited: societyMaintLimited,
-                    societyMaintOrder: societyMaintOrder
+                    societyMaintOrder: societyMaintOrder,
+                    societyMaintDate: societyMaintDate
                 },
                 success: function(response) {
                     console.log(response);
@@ -195,7 +200,7 @@ deleteSocietyMaintenance();
             });
         }
     </script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Load data on page load with default value (10)
             search_societyMaint_Data();
@@ -221,7 +226,7 @@ deleteSocietyMaintenance();
                 },
             });
         }
-    </script>
+    </script> -->
 
 </body>
 
