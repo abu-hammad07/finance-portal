@@ -19,7 +19,7 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                 $html = '<table class="contain-table" >
             <thead>
                 <tr>
-                    <th class="fs-4" colspan="14">Teacher Deatails</th>
+                    <th class="fs-4" colspan="14">Shop Deatails</th>
                 </tr>
                 <tr>
                       <th>S/NO</th>
@@ -67,7 +67,7 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
 
                                 // Set the appropriate headers for Excel download
                                 header('Content-Type: application/vnd.ms-excel');
-                                header('Content-Disposition: attachment; filename=Teacher_Details.xls');
+                                header('Content-Disposition: attachment; filename=Shop_Details.xls');
                                 echo $html;
                                 ?>
                             </div>
