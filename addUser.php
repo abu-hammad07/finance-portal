@@ -36,9 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // token generate
     $token = bin2hex(random_bytes(50));
     // Get the current date and time
-    $created_date = date('Y-m-d');
+    $created_date = date('d-f-Y');
     // Get the user's ID and name
-    $created_by = "Abu Hammad";
+    $created_by = $_SESSION['username'];
 
 
     // check duplicate username
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Insert data into user_details table first
             $insert_details = "INSERT INTO `users_detail`(`full_name`, `Phone`, `address`, `gender`, `date_of_birth`, `image`, `created_by`, `created_date`
             ) VALUES (
-                '$full_name', '$phone', '$address', '$gender', '$date_of_birth', '$image', '$created_date', '$created_by'
+                '$full_name', '$phone', '$address', '$gender', '$date_of_birth', '$image', '$created_by', '$created_date'
             )";
 
             $insert_udetails_res = mysqli_query($conn, $insert_details);

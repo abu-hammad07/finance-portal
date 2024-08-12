@@ -46,7 +46,6 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                 if (mysqli_num_rows($result) > 0) {
                                     $no = 1;
                                     while ($item = mysqli_fetch_assoc($result)) {
-                                        $date = date('Y-m-d', strtotime($item['created_date']));
                                         $html .= '<tr>';
                                         $html .= '<td class="font">' . $no++ . '</td>';
                                         $html .= '<td>' . $item['full_name'] . '</td>';
@@ -57,7 +56,7 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                         $html .= '<td>' . $item['name'] . '</td>';
                                         $html .= '<td>' . $item['email'] . '</td>';
                                         $html .= '<td>' . $item['username'] . '</td>';
-                                        $html .= '<td>' . $date . '</td>';
+                                        $html .= '<td>' . $item['created_date'] . '</td>';
 
                                         $html .= '</tr>';
                                     }
