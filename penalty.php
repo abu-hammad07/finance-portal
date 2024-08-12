@@ -93,7 +93,7 @@ include ("includes/sidebar.php");
                                 </select>
                             </div>
                             <div class="me-2">
-                                <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-black"
+                                <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="">
                                     <span><i class="fas fa-file-pdf mt-2"></i></span>
                                 </a>
