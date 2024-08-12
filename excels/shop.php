@@ -4,6 +4,7 @@ include_once("../includes/config.php");
 if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
     $userID =   $_SESSION['role'] === 'Admin';
 ?>
+
     <!-- Content wrapper -->
     <div class="content-wrapper">
         <!-- Content -->
