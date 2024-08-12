@@ -86,11 +86,17 @@ include ("includes/sidebar.php");
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            <div class="div">
+                            <div class="me-2">
                                 <select id="penalty-order" class="form-control" onchange="load_penalty_Data()">
                                     <option value="ASC">Old</option>
                                     <option value="DESC">New</option>
                                 </select>
+                            </div>
+                            <div class="me-2">
+                                <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-black"
+                                    href="">
+                                    <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -120,6 +126,10 @@ include ("includes/sidebar.php");
 </div>
 <!-- End:Main Body -->
 </div>
+
+
+<?php include_once('includes/footer.php') ?>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -179,4 +189,3 @@ include ("includes/sidebar.php");
             });
         }
     </script> -->
-
