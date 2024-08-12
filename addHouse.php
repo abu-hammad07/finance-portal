@@ -82,7 +82,7 @@ addHouse();
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">House/Unit Number</label>
-                                <input type="number" name="house-number" class="form-control" placeholder="Enter House/Unit Number" required>
+                                <input type="text" name="house-number" class="form-control" placeholder="Enter House/Unit Number" required>
                                 <span class="text-danger" id="house-number_error"></span>
                             </div>
                             <div class="col-md-6">
