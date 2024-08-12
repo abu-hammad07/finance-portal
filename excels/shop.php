@@ -1,9 +1,9 @@
 <?php
 session_start();
-include_once("../includes/config.php");
+include_once ("../includes/config.php");
 if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
-    $userID =   $_SESSION['role'] === 'Admin';
-?>
+    $userID = $_SESSION['role'] === 'Admin';
+    ?>
 
     <!-- Content wrapper -->
     <div class="content-wrapper">
@@ -19,6 +19,7 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                 $html = '<table class="contain-table" >
             <thead>
                 <tr>
+                    <th class="fs-4" colspan="14">Shop Deatails</th>
                     <th class="fs-4" colspan="14">Shop Deatails</th>
                 </tr>
                 <tr>
@@ -77,9 +78,9 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
             </form>
 
         </div>
-    <?php
+        <?php
 } else {
     header('location:../login.php ');
     exit;
 }
-    ?>
+?>
