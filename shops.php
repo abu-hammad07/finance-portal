@@ -113,7 +113,7 @@ include ("includes/sidebar.php");
                                     <th>Owner's CNIC</th>
                                     <th>Occupancy Status</th>
                                     <th>Action</th>
-                                    <th>Export</th>
+                                
                                 </tr>
                             </thead>
                             <tbody id="shopsDetails">
