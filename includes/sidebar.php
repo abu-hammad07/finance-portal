@@ -42,7 +42,7 @@ if ($row['image'] == '') {
 <body class="d2c_theme_light">
     <!-- Preloader Start -->
     <div class="preloader">
-        <!-- <img src="./assets/images/logo/KDA.png" alt="KDA-Housing-Society"> -->
+        <img src="./assets/images/logo/KDA.png" alt="KDA-Housing-Society">
     </div>
     <!-- Preloader End -->
 
