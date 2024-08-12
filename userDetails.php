@@ -90,6 +90,12 @@ include ("includes/sidebar.php");
                                     <option value="DESC">New</option>
                                 </select>
                             </div>
+                            <div class="me-2">
+                                <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-black"
+                                    href="">
+                                    <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,7 +127,7 @@ include ("includes/sidebar.php");
 </div>
 
 <!-- Start: Footer -->
-<?php include_once('includes/footer.php'); ?>
+<?php include_once ('includes/footer.php'); ?>
 <!-- End: Footer -->
 
 

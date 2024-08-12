@@ -73,7 +73,10 @@ include ("includes/sidebar.php");
                     <div class="col-md-6 text-end card-header">
                         <div class="btn-group">
                             <div class="me-2">
-                                <select id="tenant-limit" class="form-select" onchange="load_tenant_Data()">
+                                <input type="month" class="form-control" id="">
+                            </div>
+                            <div class="me-2">
+                                <select id="tenant-limit" class="form-control" onchange="load_tenant_Data()">
                                     <option value="15">15</option>
                                     <option value="25">25</option>
                                     <option value="50">50</option>
@@ -81,11 +84,17 @@ include ("includes/sidebar.php");
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            <div class="div">
+                            <div class="me-2">
                                 <select id="tenant-order" class="form-select" onchange="load_tenant_Data()">
                                     <option value="ASC">Old</option>
                                     <option value="DESC">New</option>
                                 </select>
+                            </div>
+                            <div class="me-2">
+                                <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-black"
+                                    href="">
+                                    <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                </a>
                             </div>
                         </div>
                     </div>
