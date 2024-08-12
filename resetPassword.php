@@ -77,9 +77,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="d2c_theme_light">
 
     <!-- Preloader Start -->
-    <!-- <div class="preloader">
-        <img src="assets/images/logo/logo.png" alt="DesignToCodes">
-    </div> -->
+    <div class="preloader">
+    <img src="assets/images/logo/logo.png" alt="KDA-Housing-Society">
+    </div>
     <!-- Preloader End -->
 
     <section class="d2c_login_system d-flex align-items-center">

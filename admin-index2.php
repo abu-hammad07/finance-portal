@@ -223,10 +223,10 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                 </td>
                 <td>';
         if ($row['status'] != 'unpaid') {
-            $data .= '<a href="includes/pdf_maker?MAT_ID=' . $row['maintenance_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
-                            <i class="fas fa-file text-white m-0 p-1">Print</i>
-                            </span></a>  
-                    </td>';
+            $data .= '
+            <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none text-danger" href="includes/pdf_maker?MAT_ID=' . $row['maintenance_id'] . '&ACTION=VIEW" target="_blank">
+                <span><i class="fas fa-print mt-2"></i></span>
+            </a>';
         }
         $data .= '    
                 <td>

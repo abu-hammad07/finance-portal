@@ -5,17 +5,25 @@ require_once('includes/phpqrcode/qrlib.php');
 
 // Feature Function to filter and display data in the table based on user input or database data depending on your database structure and requirements  
 
-function filter_user_data_In_Database($userLimited, $userOrder)
+function filter_user_data_In_Database($userLimited, $userOrder, $userMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($userMonth));
+    $year = date('Y', strtotime($userMonth));
+
     // Modify the query based on your database structure
-    $query = "SELECT users.user_id, users.username, users.email, users.status, users_detail.Phone, role.name as role 
+    $query = "SELECT users.user_id, users.username, users.email, users.status, users.created_date, users_detail.Phone, role.name as role 
     FROM users
     INNER JOIN users_detail ON users_detail.users_detail_id = users.users_detail_id
-    LEFT JOIN role ON role.role_id = users.role_id
-    ORDER BY users.user_id $userOrder LIMIT $userLimited;
-    ";
+    LEFT JOIN role ON role.role_id = users.role_id";
+
+    if (!empty($userMonth)) {
+        $query .= " WHERE MONTH(users.created_date) = $month AND YEAR(users.created_date) = $year";
+    }
+
+    $query .= " ORDER BY users.user_id $userOrder LIMIT $userLimited";
+
     $result = mysqli_query($conn, $query);
 
     $data = '';
@@ -71,7 +79,7 @@ function filter_user_data_In_Database($userLimited, $userOrder)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Users data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Users data in the database. '. $userMonth .'</td>
                 </tr>';
     }
 
@@ -2396,8 +2404,9 @@ if (isset($_POST['action'])) {
     if ($action == 'load-user-Data') {
         $userLimited = $_POST['userLimited'];
         $userOrder = $_POST['userOrder'];
+        $userMonth = $_POST['userMonth'];
 
-        $result = filter_user_data_In_Database($userLimited, $userOrder);
+        $result = filter_user_data_In_Database($userLimited, $userOrder, $userMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
