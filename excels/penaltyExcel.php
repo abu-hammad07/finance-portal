@@ -17,20 +17,20 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                 <?php
                                 // Create a table in HTML and set it as a variable
                                 $html = '<table class="contain-table" >
-            <thead>
-                <tr>
-                    <th class="fs-4" colspan="14">Penalty Deatails</th>
-                </tr>
-                <tr>
+                            <thead>
+                                <tr>
+                                    <th class="fs-4" colspan="14">Penalty Deatails</th>
+                                </tr>
+                                <tr>
                                    <th>S.No</th>
                                     <th>Penalty type</th>
                                     <th>Penalty CNIC</th>
                                     <th>Penalty Charges</th>
                                     <th>Payment Type</th>
                                     <th>Penalty Date</th>   
-                </tr>
-            </thead>
-            <tbody id="data-table">';
+                                </tr>
+                            </thead>
+                            <tbody id="data-table">';
 
                                 // Execute the query
                                 $query = "SELECT * FROM  `penalty` ";
