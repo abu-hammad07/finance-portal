@@ -108,12 +108,8 @@ include ("includes/sidebar.php");
                                 </select>
                             </div>
                             <div class="me-2">
-
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
-
-                                <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-black"
-
-                                    href="excels/maintenanceCharges">
+                                    href="excels/maintenanceChargesExcel">
                                     <span><i class="fas fa-file-pdf mt-2 "></i></span>
                                 </a>
                             </div>
@@ -137,12 +133,6 @@ include ("includes/sidebar.php");
                                 </tr>
                             </thead>
                             <tbody id="maintenanceDetails">
-                                <!-- <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none text-danger" href="">
-                                    <span><i class="fas fa-print mt-2"></i></span>
-                            </a>
-                            <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-black" href="">
-                                    <span><i class="fas fa-file-pdf mt-2"></i></span>
-                            </a> -->
                                 <!-- <button id="alert15" class="btn btn-primary">Alert 15</button> -->
                             </tbody>
                         </table>

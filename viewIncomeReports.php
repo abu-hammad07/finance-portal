@@ -64,6 +64,52 @@ include ("includes/sidebar.php");
         <div class="col-lg-12">
             <div class="card h-auto d2c_projects_datatable">
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="card-header">
+                                Reports
+                            </h4>
+                        </div>
+                        <div class="col-md-6 text-end card-header">
+                            <div class="btn-group">
+                                <!-- eGate -->
+                                <div class="me-2 eGateExcel" style="display: none;">
+                                    <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
+                                        href="excels/eGateExcel">
+                                        <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                    </a>
+                                </div>
+                                <!-- Servents -->
+                                <div class="me-2 servantsExcel" style="display: none;">
+                                    <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
+                                        href="excels/servantsExcel">
+                                        <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                    </a>
+                                </div>
+                                <!-- Events Booking -->
+                                <div class="me-2 eventsExcel" style="display: none;">
+                                    <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
+                                        href="excels/eventsDetailsExcel">
+                                        <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                    </a>
+                                </div>
+                                <!-- Maintenance -->
+                                <div class="me-2 maintenanceExcel" style="display: none;">
+                                    <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
+                                        href="excels/maintenanceChargesExcel">
+                                        <span><i class="fas fa-file-pdf mt-2 "></i></span>
+                                    </a>
+                                </div>
+                                <!-- Penalty -->
+                                <div class="me-2 penaltyExcel" style="display: none;">
+                                    <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
+                                        href="excels/penaltyExcel">
+                                        <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive table-responsive">
                         <table class="table" id="d2c_advanced_table_2">
                             <thead>
@@ -120,11 +166,11 @@ include ("includes/sidebar.php");
 </div>
 
 <!-- Start: Footer -->
-<?php include_once('includes/footer.php'); ?>
+<?php include_once ('includes/footer.php'); ?>
 <!-- End: Footer -->
- 
- 
- <script>
+
+
+<!-- <script>
     function handleSelectionChange() {
         var select = document.getElementById("selectIncomeReport");
         var selectedValue = select.value;
@@ -159,6 +205,65 @@ include ("includes/sidebar.php");
     }
 
     // Initialize by calling handleSelectionChange on page load to ensure the correct columns are shown based on any pre-selected value.
+    document.addEventListener('DOMContentLoaded', handleSelectionChange);
+</script> -->
+
+
+<script>
+    function handleSelectionChange() {
+        var select = document.getElementById("selectIncomeReport");
+        var selectedValue = select.value;
+
+        // Hide all columns first
+        var allColumns = document.querySelectorAll('th, td');
+        allColumns.forEach(function (col) {
+            col.style.display = 'none';
+        });
+
+        // Hide all buttons first
+        var allButtons = document.querySelectorAll('.eGateExcel, .servantsExcel, .eventsExcel, .maintenanceExcel, .penaltyExcel');
+        allButtons.forEach(function (btn) {
+            btn.style.display = 'none';
+        });
+
+        // Show relevant columns and buttons based on selection
+        if (selectedValue === "E-Gate Pass") {
+            showColumns(['snoID', 'houseShopID', 'eGatID', 'ActionID']);
+            showButtons(['eGateExcel']);
+        } else if (selectedValue === "Servants") {
+            showColumns(['snoID', 'houseShopID', 'servantID', 'ActionID']);
+            showButtons(['servantsExcel']);
+        } else if (selectedValue === "Events Booking") {
+            showColumns(['snoID', 'eventBookingID', 'ActionID']);
+            showButtons(['eventsExcel']);
+        } else if (selectedValue === "Maintenance Charges") {
+            showColumns(['snoID', 'houseShopID', 'maintenanceID', 'ActionID']);
+            showButtons(['maintenanceExcel']);
+        } else if (selectedValue === "Penalty Charges") {
+            showColumns(['snoID', 'penaltyID', 'ActionID']);
+            showButtons(['penaltyExcel']);
+        }
+    }
+
+    function showColumns(classList) {
+        classList.forEach(function (className) {
+            var columns = document.querySelectorAll('.' + className);
+            columns.forEach(function (col) {
+                col.style.display = '';
+            });
+        });
+    }
+
+    function showButtons(buttonList) {
+        buttonList.forEach(function (btnClass) {
+            var buttons = document.querySelectorAll('.' + btnClass);
+            buttons.forEach(function (btn) {
+                btn.style.display = 'block';
+            });
+        });
+    }
+
+    // Initialize by calling handleSelectionChange on page load to ensure the correct columns and buttons are shown based on any pre-selected value.
     document.addEventListener('DOMContentLoaded', handleSelectionChange);
 </script>
 
