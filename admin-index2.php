@@ -11,7 +11,7 @@ function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder, $penalt
     // Modify the query based on your database structure
     $query = "SELECT * FROM penalty";
 
-    if(!empty($penaltyMonth)){
+    if (!empty($penaltyMonth)) {
         $query .= " WHERE month(created_date) = '$month' AND year(created_date) = '$year'";
     }
 
@@ -68,7 +68,7 @@ function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder, $penalt
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database. '. $penaltyMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database. ' . $penaltyMonth . '</td>
                 </tr>';
     }
 
@@ -161,7 +161,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
     // Modify the query based on your database structure
     $query = "SELECT * FROM maintenance_payments";
 
-    if(!empty($maintenaceMonth)){
+    if (!empty($maintenaceMonth)) {
         $query .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
     }
 
@@ -261,7 +261,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penalty data in the database. '. $maintenaceMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penalty data in the database. ' . $maintenaceMonth . '</td>
                 </tr>';
     }
 
@@ -421,9 +421,9 @@ function filter_payroll_data_In_Database($payrollLimited, $payrollOrder, $payrol
             <td>' . $row['days_leave'] . '</td>
             <td>' . $row['month_year'] . '</td>
             <td>
-                <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deletepenalty" data-bs-placement="top" title="Delete">
-                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete" class="bg-danger p-1 text-white rounded">Print</span>
-                </button>
+            <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none text-danger" href="">
+                <span><i class="fas fa-print mt-2"></i></span>
+            </a>
             </td>
             <td>
                 <a href="Payroll_edit.php?payroll_edit_id=' . $row['payroll_id'] . '">
@@ -466,7 +466,7 @@ function filter_payroll_data_In_Database($payrollLimited, $payrollOrder, $payrol
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database. '. $payrollMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no penaltys data in the database. ' . $payrollMonth . '</td>
                 </tr>';
     }
 

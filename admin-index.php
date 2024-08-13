@@ -1,6 +1,6 @@
 <?php
-include_once('includes/config.php');
-require_once('includes/phpqrcode/qrlib.php');
+include_once ('includes/config.php');
+require_once ('includes/phpqrcode/qrlib.php');
 
 
 // Feature Function to filter and display data in the table based on user input or database data depending on your database structure and requirements  
@@ -79,7 +79,7 @@ function filter_user_data_In_Database($userLimited, $userOrder, $userMonth)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Users data in the database. '. $userMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Users data in the database. ' . $userMonth . '</td>
                 </tr>';
     }
 
@@ -1181,7 +1181,7 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder, $emp
     // Modify the query based on your database structure
     $employeeQuery = "SELECT * FROM employees";
 
-    if(!empty($employeeMonth)){
+    if (!empty($employeeMonth)) {
         $employeeQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
     }
 
@@ -1218,10 +1218,11 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder, $emp
             <td>' . $row['employement_type'] . '</td>
             <td>' . $row['department'] . '</td>
             <td>
-           <a href="includes/pdf_maker?employee_id=' . $row['employee_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
-                            <i class="fas fa-file text-white m-0 p-1">Print</i>
-                            </span></a>  
-                    </td>
+                <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none text-danger" 
+                    href="includes/pdf_maker?employee_id=' . $row['employee_id'] . '&ACTION=VIEW" target="_blank" >
+                    <span><i class="fas fa-print mt-2"></i></span>
+                </a>  
+            </td>
 
      
             <td>
@@ -1265,7 +1266,7 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder, $emp
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database. '. $employeeMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database. ' . $employeeMonth . '</td>
                 </tr>';
     }
 
@@ -1375,7 +1376,7 @@ function filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utili
     // Modify the query based on your database structure
     $houseQuery = "SELECT * FROM utility_charges";
 
-    if(!empty($Utility_chargesMonth)){
+    if (!empty($Utility_chargesMonth)) {
         $houseQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
     }
 
@@ -1436,7 +1437,7 @@ function filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utili
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database. '. $Utility_chargesMonth .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Employee data in the database. ' . $Utility_chargesMonth . '</td>
                 </tr>';
     }
 
@@ -1526,7 +1527,7 @@ function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMain
     // Modify the query based on your database structure
     $houseQuery = "SELECT * FROM society_maintenance";
 
-    if(!empty($societyMaintDate)) {
+    if (!empty($societyMaintDate)) {
         $houseQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
     }
 
@@ -1588,7 +1589,7 @@ function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMain
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no suciety maintenance data in the database. '. $societyMaintDate .'</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no suciety maintenance data in the database. ' . $societyMaintDate . '</td>
                 </tr>';
     }
 
@@ -2425,7 +2426,8 @@ if (isset($_POST['action'])) {
     if ($action == 'load-events_booking-Data') {
         $eventsLimited = $_POST['eventsLimited'];
         $eventsOrder = $_POST['eventsOrder'];
-        $eventsMonth = $_POST['eventsMonth'];;
+        $eventsMonth = $_POST['eventsMonth'];
+        ;
         $result = filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $eventsMonth);
 
         $response = array('data' => $result);
