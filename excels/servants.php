@@ -26,8 +26,7 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                     <th>House Number</th>
                                     <th>Servant Designation</th>
                                     <th>Servant Fees</th>
-                                    <th>Payment Type</th>
-                                    
+                                    <th>Payment Type</th>           
                 </tr>
             </thead>
             <tbody id="data-table">';
