@@ -77,28 +77,54 @@ include ("includes/sidebar.php");
     <div class="row">
         <div class="col-lg-12">
             <div class="card h-auto d2c_projects_datatable">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="card-header">
+                            Reports
+                        </h4>
+                    </div>
+                    <div class="col-md-6 text-end card-header">
+                        <div class="btn-group">
+                            <!-- Utility Charges -->
+                            <div class="me-2 excelUtilityCharges" style="display: none;">
+                                <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
+                                    href="excels/utilityChargesExcel" target="_blank">
+                                    <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                </a>
+                            </div>
+                            <!-- Maintenance -->
+                            <div class="me-2 excelSocietyMaintenance" style="display: none;">
+                                <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
+                                    href="excels/societyMaintenanceExcel" target="_blank">
+                                    <span><i class="fas fa-file-pdf mt-2"></i></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive table-responsive">
                         <table class="table" id="d2c_advanced_table_2">
                             <thead>
                                 <tr>
-                                    <th id="snoID" style="display: none;">S.No</th>
-                                    <th id="utilityTypeID" style="display: none;">Utility Type</th>
-                                    <th id="utilityAmountID" style="display: none;">Amount</th>
-                                    <th id="utilityDueDateID" style="display: none;">Billing Month</th>
-                                    <th id="utilityLocationID" style="display: none;">Location</th>
-                                    <th id="maintTypeID" style="display: none;">Maintenance Type</th>
-                                    <th id="maintAmountID" style="display: none;">Amount</th>
-                                    <th id="maintDueDateID" style="display: none;">Due Date</th>
-                                    <th id="maintPaymentDateID" style="display: none;">Payment Date</th>
-                                    <th id="maintCommentsID" style="display: none;">Comments</th>
-                                    <th id="maintActionID" style="display: none;">Action</th>
+                                    <!-- --------------------all----------------- -->
+                                    <th class="snoID" style="display: none;">S.No</th>
+                                    <!-- --------------------Utility----------------- -->
+                                    <th class="utilityID" style="display: none;">Utility Type</th>
+                                    <th class="utilityID" style="display: none;">Amount</th>
+                                    <th class="utilityID" style="display: none;">Billing Month</th>
+                                    <th class="utilityID" style="display: none;">Location</th>
+                                    <!-- --------------------Maintenace----------------- -->
+                                    <th class="maintID" style="display: none;">Maintenance Type</th>
+                                    <th class="maintID" style="display: none;">Amount</th>
+                                    <th class="maintID" style="display: none;">Due Date</th>
+                                    <th class="maintID" style="display: none;">Payment Date</th>
+                                    <th class="maintID" style="display: none;">Comments</th>
+                                    <!-- --------------------All----------------- -->
+                                    <th class="actionID" style="display: none;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="expensesReportsData">
-                                <!-- <div id="successAlert" class="alert alert-warning text-warning text-center alert-dismissible" role="alert">
-                                            Select Utility/Maintenance & Search the data .
-                                        </div> -->
                             </tbody>
                         </table>
                     </div>
@@ -111,83 +137,62 @@ include ("includes/sidebar.php");
 </div>
 
 <!-- Start: Footer -->
-<?php include_once('includes/footer.php'); ?>
+<?php include_once ('includes/footer.php'); ?>
 <!-- End: Footer -->
+
 
 <script>
     function handleSelectionChange() {
-        const selectUtilityMaint = document.getElementById('selectUtilityMaint');
-        const utilityTypeContainer = document.getElementById('utilityTypeContainer');
-        const locationContainer = document.getElementById('locationContainer');
-        const maintTypeContainer = document.getElementById('maintTypeContainer');
+        var select = document.getElementById("selectUtilityMaint");
+        var selectedValue = select.value;
 
-        const snoID = document.getElementById('snoID');
-        const utilityTypeID = document.getElementById('utilityTypeID');
-        const utilityAmountID = document.getElementById('utilityAmountID');
-        const utilityDueDateID = document.getElementById('utilityDueDateID');
-        const utilityLocationID = document.getElementById('utilityLocationID');
-        const maintTypeID = document.getElementById('maintTypeID');
-        const maintAmountID = document.getElementById('maintAmountID');
-        const maintDueDateID = document.getElementById('maintDueDateID');
-        const maintPaymentDateID = document.getElementById('maintPaymentDateID');
-        const maintCommentsID = document.getElementById('maintCommentsID');
-        const maintActionID = document.getElementById('maintActionID');
+        // Hide all columns first
+        var allColumns = document.querySelectorAll('th, td');
+        allColumns.forEach(function (col) {
+            col.style.display = 'none';
+        });
 
-        if (selectUtilityMaint.value === "Society Maintenance") {
-            utilityTypeContainer.style.display = 'none';
-            locationContainer.style.display = 'none';
-            maintTypeContainer.style.display = 'block';
+        // Hide all buttons first
+        var allButtons = document.querySelectorAll('.excelUtilityCharges, .excelSocietyMaintenance');
+        allButtons.forEach(function (btn) {
+            btn.style.display = 'none';
+        });
 
-            snoID.style.display = 'table-cell';
-            utilityTypeID.style.display = 'none';
-            utilityAmountID.style.display = 'none';
-            utilityDueDateID.style.display = 'none';
-            utilityLocationID.style.display = 'none';
-            maintTypeID.style.display = 'table-cell';
-            maintAmountID.style.display = 'table-cell';
-            maintDueDateID.style.display = 'table-cell';
-            maintPaymentDateID.style.display = 'table-cell';
-            maintCommentsID.style.display = 'table-cell';
-            maintActionID.style.display = 'table-cell';
-
-        } else if (selectUtilityMaint.value === "Utility Charges") {
-            utilityTypeContainer.style.display = 'block';
-            locationContainer.style.display = 'block';
-            maintTypeContainer.style.display = 'none';
-
-            snoID.style.display = 'table-cell';
-            utilityTypeID.style.display = 'table-cell';
-            utilityAmountID.style.display = 'table-cell';
-            utilityDueDateID.style.display = 'table-cell';
-            utilityLocationID.style.display = 'table-cell';
-            maintTypeID.style.display = 'none';
-            maintAmountID.style.display = 'none';
-            maintDueDateID.style.display = 'none';
-            maintPaymentDateID.style.display = 'none';
-            maintCommentsID.style.display = 'none';
-            maintActionID.style.display = 'table-cell';
-        } else {
-            utilityTypeContainer.style.display = 'none';
-            locationContainer.style.display = 'none';
-            maintTypeContainer.style.display = 'none';
-
-            snoID.style.display = 'none';
-            utilityTypeID.style.display = 'none';
-            utilityAmountID.style.display = 'none';
-            utilityDueDateID.style.display = 'none';
-            utilityLocationID.style.display = 'none';
-            maintTypeID.style.display = 'none';
-            maintAmountID.style.display = 'none';
-            maintDueDateID.style.display = 'none';
-            maintPaymentDateID.style.display = 'none';
-            maintCommentsID.style.display = 'none';
-            maintActionID.style.display = 'none';
+        // Show relevant columns and buttons based on selection
+        if (selectedValue === "Utility Charges") {
+            showColumns(['snoID', 'utilityID', 'actionID']);
+            showButtons(['excelUtilityCharges']);
+        } else if (selectedValue === "Society Maintenance") {
+            showColumns(['snoID', 'maintID', 'actionID']);
+            showButtons(['excelSocietyMaintenance']);
         }
     }
 
-    
+    function showColumns(classList) {
+        classList.forEach(function (className) {
+            var columns = document.querySelectorAll('.' + className);
+            columns.forEach(function (col) {
+                col.style.display = '';
+            });
+        });
+    }
 
-    // =========== function searching =============
+    function showButtons(buttonList) {
+        buttonList.forEach(function (btnClass) {
+            var buttons = document.querySelectorAll('.' + btnClass);
+            buttons.forEach(function (btn) {
+                btn.style.display = 'block';
+            });
+        });
+    }
+
+    // Initialize by calling handleSelectionChange on page load to ensure the correct columns and buttons are shown based on any pre-selected value.
+    document.addEventListener('DOMContentLoaded', handleSelectionChange);
+</script>
+
+
+<script>
+
     function search_expensesReports_Data() {
 
         let selectUtilityMaint = document.getElementById('selectUtilityMaint').value;

@@ -19,51 +19,35 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                 $html = '<table class="contain-table" >
                             <thead>
                                 <tr>
-                                    <th class="fs-4" colspan="14">Employee Deatails</th>
+                                    <th class="fs-4" colspan="14">Utility Charges Deatails</th>
                                 </tr>
                                 <tr>
                                     <th>S/NO</th>
-                                    <th>Employee ID</th>
-                                    <th>Employee Name</th>
-                                    <th>CNIC</th>
-                                    <th>Qualification</th>
-                                    <th>Phone Number</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
-                                    <th>Appointment Date</th>
-                                    <th>Employee Type</th>
-                                    <th>Department</th>
-                                    <th>Designation</th>
-                                    <th>Salary</th>
+                                    <th>Utility Type</th>
+                                    <th>Amount</th>
+                                    <th>Billing Month</th>
+                                    <th>Location</th>
                                     <th>Entry Date</th>
                                 </tr>
                             </thead>
                             <tbody id="data-table">';
 
                                 // Execute the query
-                                $query = "SELECT * FROM  `employees`";
+                                $query = "SELECT * FROM  `utility_charges`";
                                 $result = mysqli_query($conn, $query);
 
                                 if (mysqli_num_rows($result) > 0) {
                                     $no = 1;
                                     while ($item = mysqli_fetch_assoc($result)) {
+                                        $billing_month = date('Y/F', strtotime($item['utility_billing_month']));
                                         $created_date = date('Y/F/d', strtotime($item['added_on']));
                                         $html .= '<tr>';
-                                        $html .= '<td class="font">' . $no++ . '</td>';
-                                        $html .= '<td>' . $item['employeeID'] . '</td>';
-                                        $html .= '<td>' . $item['employee_full_name'] . '</td>';
-                                        $html .= '<td>' . $item['employee_cnic'] . '</td>';
-                                        $html .= '<td>' . $item['employee_qualification'] . '</td>';
-                                        $html .= '<td>' . $item['employee_contact'] . '</td>';
-                                        $html .= '<td>' . $item['employee_email'] . '</td>';
-                                        $html .= '<td>' . $item['employee_address'] . '</td>';
-                                        $html .= '<td>' . $item['appointment_date'] . '</td>';
-                                        $html .= '<td>' . $item['employement_type'] . '</td>';
-                                        $html .= '<td>' . $item['department'] . '</td>';
-                                        $html .= '<td>' . $item['designation'] . '</td>';
-                                        $html .= '<td>' . $item['salary'] . '</td>';
-                                        $html .= '<td>' . $created_date . '</td>';
-
+                                            $html .= '<td class="font">' . $no++ . '</td>';
+                                            $html .= '<td>' . $item['utility_type'] . '</td>';
+                                            $html .= '<td>' . $item['utility_amount'] . '</td>';
+                                            $html .= '<td>' . $billing_month . '</td>';
+                                            $html .= '<td>' . $item['utility_location'] . '</td>';
+                                            $html .= '<td>' . $created_date . '</td>';
                                         $html .= '</tr>';
                                     }
                                 } else {
@@ -75,7 +59,7 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
 
                                 // Set the appropriate headers for Excel download
                                 header('Content-Type: application/vnd.ms-excel');
-                                header('Content-Disposition: attachment; filename=employees.xls');
+                                header('Content-Disposition: attachment; filename=utilityCharges.xls');
                                 echo $html;
                                 ?>
                             </div>

@@ -94,7 +94,7 @@ include ("includes/sidebar.php");
                             </div>
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
-                                    href="excels/payrollExcel">
+                                    href="excels/payrollExcel" target="_blank">
                                     <span><i class="fas fa-file-pdf mt-2"></i></span>
                                 </a>
                             </div>
