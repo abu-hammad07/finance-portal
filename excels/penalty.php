@@ -19,20 +19,21 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                 $html = '<table class="contain-table" >
             <thead>
                 <tr>
-                    <th class="fs-4" colspan="14">Servant Deatails</th>
+                    <th class="fs-4" colspan="14">Penalty Deatails</th>
                 </tr>
                 <tr>
                                    <th>S.No</th>
-                                    <th>House Number</th>
-                                    <th>Servant Designation</th>
-                                    <th>Servant Fees</th>
-                                    <th>Payment Type</th>           
+                                    <th>Penalty type</th>
+                                    <th>Penalty CNIC</th>
+                                    <th>Penalty Charges</th>
+                                    <th>Payment Type</th>
+                                    <th>Penalty Date</th>   
                 </tr>
             </thead>
             <tbody id="data-table">';
 
                                 // Execute the query
-                                $query = "SELECT * FROM  `servants` ";
+                                $query = "SELECT * FROM  `penalty` ";
                                 $result = mysqli_query($conn, $query);
 
                                 if (mysqli_num_rows($result) > 0) {
@@ -40,20 +41,11 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                     while ($item = mysqli_fetch_assoc($result)) {
                                         $html .= '<tr>';
                                         $html .= '<td class="font">' . $no++ . '</td>';
-                                       
-                                            $house_shop_ids = explode(',', $item['house_id']);
-                                            foreach ($house_shop_ids as $house_shop_id) {
-                                                $seql_dep = mysqli_query($conn, "SELECT * FROM `houses` WHERE `house_id` ='$house_shop_id'");
-                                                $dep = mysqli_fetch_object($seql_dep);
-                                                if ($dep) {
-                                                    $_SESSION['house_number'] = $dep->house_number; 
-                                                }
-                                            }
-                                            $html .= '<td>' . $_SESSION['house_number']. '</td>';
-                                    
-                                        $html .= '<td>' . $item['servantDesignation'] . '</td>';
-                                        $html .= '<td>' . $item['servantFees'] . '</td>';
+                                        $html .= '<td>' . $item['penalty_type'] . '</td>';
+                                        $html .= '<td>' . $item['penalty_cnic'] . '</td>';
+                                        $html .= '<td>' . $item['penalty_charges'] . '</td>';
                                         $html .= '<td>' . $item['payment_type'] . '</td>';
+                                        $html .= '<td>' . $item['created_date'] . '</td>';
                                         $html .= '</tr>';
                                     }
                                 } else {
@@ -65,7 +57,7 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
 
                                 // Set the appropriate headers for Excel download
                                 header('Content-Type: application/vnd.ms-excel');
-                                header('Content-Disposition: attachment; filename=servant_Details.xls');
+                                header('Content-Disposition: attachment; filename=penalty_Details.xls');
                                 echo $html;
                                 ?>
                             </div>
