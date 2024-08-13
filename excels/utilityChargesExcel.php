@@ -17,46 +17,37 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                 <?php
                                 // Create a table in HTML and set it as a variable
                                 $html = '<table class="contain-table" >
-            <thead>
-                <tr>
-                    <th class="fs-4" colspan="14">Shop Deatails</th>
-                    <th class="fs-4" colspan="14">Shop Deatails</th>
-                </tr>
-                <tr>
-                      <th>S/NO</th>
-                                
-                                    <th>Shops Number</th>
-                                    <th>Owners Name</th>
-                                    <th>Owners Contact</th>
-                                    <th>Owners CNIC</th>
-                                    <th>Occupancy Status</th>
-                                    <th>Property Size</th>
-                                    <th>Floor</th>
-                                    <th>Property type</th>
-                                    <th>Maintenance Charges</th>
-                </tr>
-            </thead>
-            <tbody id="data-table">';
+                            <thead>
+                                <tr>
+                                    <th class="fs-4" colspan="14">Utility Charges Deatails</th>
+                                </tr>
+                                <tr>
+                                    <th>S/NO</th>
+                                    <th>Utility Type</th>
+                                    <th>Amount</th>
+                                    <th>Billing Month</th>
+                                    <th>Location</th>
+                                    <th>Entry Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-table">';
 
                                 // Execute the query
-                                $query = "SELECT * FROM  `shops` ";
+                                $query = "SELECT * FROM  `utility_charges`";
                                 $result = mysqli_query($conn, $query);
 
                                 if (mysqli_num_rows($result) > 0) {
                                     $no = 1;
                                     while ($item = mysqli_fetch_assoc($result)) {
+                                        $billing_month = date('Y/F', strtotime($item['utility_billing_month']));
+                                        $created_date = date('Y/F/d', strtotime($item['added_on']));
                                         $html .= '<tr>';
-                                        $html .= '<td class="font">' . $no++ . '</td>';
-                                        $html .= '<td>' . $item['shop_number'] . '</td>';
-                                        $html .= '<td>' . $item['owner_name'] . '</td>';
-                                        $html .= '<td>' . $item['owner_contact'] . '</td>';
-                                        $html .= '<td>' . $item['owner_cnic'] . '</td>';
-                                        $html .= '<td>' . $item['occupancy_status'] . '</td>';
-                                        $html .= '<td>' . $item['property_size'] . '</td>';
-                                        $html .= '<td>' . $item['floor'] . '</td>';
-                                        $html .= '<td>' . $item['property_type'] . '</td>';
-                                        $html .= '<td>' . $item['maintenance_charges'] . '</td>';
-
+                                            $html .= '<td class="font">' . $no++ . '</td>';
+                                            $html .= '<td>' . $item['utility_type'] . '</td>';
+                                            $html .= '<td>' . $item['utility_amount'] . '</td>';
+                                            $html .= '<td>' . $billing_month . '</td>';
+                                            $html .= '<td>' . $item['utility_location'] . '</td>';
+                                            $html .= '<td>' . $created_date . '</td>';
                                         $html .= '</tr>';
                                     }
                                 } else {
@@ -68,7 +59,7 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
 
                                 // Set the appropriate headers for Excel download
                                 header('Content-Type: application/vnd.ms-excel');
-                                header('Content-Disposition: attachment; filename=Shop_Details.xls');
+                                header('Content-Disposition: attachment; filename=utilityCharges.xls');
                                 echo $html;
                                 ?>
                             </div>

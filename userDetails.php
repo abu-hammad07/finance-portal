@@ -86,13 +86,13 @@ include ("includes/sidebar.php");
                             </div>
                             <div class="me-2">
                                 <select id="user-order" class="form-control" onchange="load_user_Data()">
-                                    <option value="ASC">Old</option>
                                     <option value="DESC">New</option>
+                                    <option value="ASC">Old</option>
                                 </select>
                             </div>
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
-                                    href="">
+                                    href="excels/usersExcel" target="_blank">
                                     <span><i class="fas fa-file-pdf mt-2"></i></span>
                                 </a>
                             </div>
