@@ -84,9 +84,9 @@ MaintenanceDelete();
                                     <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
                                 </form>
                             </div>
-                            <div class="col-md-8 col-xl-9 text-end">
+                            <!-- <div class="col-md-8 col-xl-9 text-end">
                                 <a href="addMaintenance" class="btn btn-primary"><i class="fas fa-plus"></i> Add Maintenace</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -131,6 +131,7 @@ MaintenanceDelete();
                                             <th>House / Shop</th>
                                             <th>Maintenance Month</th>
                                             <th>Maintenance Charges</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

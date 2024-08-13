@@ -92,24 +92,123 @@ updateMaintenance();
                                     <div class="row g-3">
                                         <input type="text" hidden name="maintenace_edit_id" value="<?= $row['maintenance_id'] ?>" class="form-control" placeholder="Penalty Charges" required>
 
-                                        <div class="col-md-6" >
+                                        <div class="col-md-6">
                                             <label class="form-label">House or Shop</label>
                                             <select name="house_or_shop" id="house_or_shop" class="form-select form-control house-id">
                                                 <option value="<?= $row['house_or_shop'] ?>"><?= $row['house_or_shop'] ?></option>
-                                                <option value="house">House</option>
-                                                <option value="shop">Shop</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">House Number / Shop Number</label>
-                                            <select name="house_shop_id" id="house_shop_id" class="form-select form-control house-id">
+                                            <select name="house_shop_id" class="form-select form-control house-id">
                                                 <?php
-                                                if ($row['house_or_shop'] == 'house') {
-                                                    echo '<option value="' . $row['house_id'] . '">' . $row['house_number'] . '</option>';
-                                                } elseif ($row['house_or_shop'] == 'shop') {
-                                                    echo '<option value="' . $row['shop_id'] . '">' . $row['shop_number'] . '</option>';
+                                                // Assuming $house_shop_id is an array
+                                                $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
+
+                                                if ($row['house_or_shop'] == "house") {
+                                                    foreach ($house_shop_ids as $house_shop_id_main) {
+                                                        $house_shop_id_main = intval($house_shop_id_main); // Ensure it's an integer to prevent SQL injection
+                                                        $select = "SELECT * FROM houses WHERE house_id = $house_shop_id_main";
+                                                        $result = mysqli_query($conn, $select);
+
+                                                        if ($result && mysqli_num_rows($result) > 0) {
+                                                            $house_row = mysqli_fetch_assoc($result);
+                                                ?>
+                                                            <option class="form-control" value="<?= $house_row['house_id'] ?>"><?= $house_row['house_number'] ?></option>
+                                                        <?php
+                                                        }
+                                                    }
+                                                } elseif ($row['house_or_shop'] == "shop") {
+                                                    foreach ($house_shop_ids as $shop_id_main) {
+                                                        $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
+                                                        $select = "SELECT * FROM houses WHERE house_id = $shop_id_main";
+                                                        $result = mysqli_query($conn, $select);
+
+                                                        if ($result && mysqli_num_rows($result) > 0) {
+                                                            $shop_row = mysqli_fetch_assoc($result);
+                                                        ?>
+                                                            <option class="form-control" value="<?= $house_row['shop_id'] ?>"><?= $house_row['shop_number'] ?></option>
+
+                                                <?php }
+                                                    }
                                                 }
-                                                ?> <!-- Options will be loaded here via AJAX -->
+                                                ?>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">House Owner name / Owner name </label>
+                                            <select  class="form-select form-control house-id">
+                                                <?php
+                                                // Assuming $house_shop_id is an array
+                                                $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
+
+                                                if ($row['house_or_shop'] == "house") {
+                                                    foreach ($house_shop_ids as $house_shop_id_main) {
+                                                        $house_shop_id_main = intval($house_shop_id_main); // Ensure it's an integer to prevent SQL injection
+                                                        $select = "SELECT * FROM houses WHERE house_id = $house_shop_id_main";
+                                                        $result = mysqli_query($conn, $select);
+
+                                                        if ($result && mysqli_num_rows($result) > 0) {
+                                                            $house_row = mysqli_fetch_assoc($result);
+                                                ?>
+                                                            <option class="form-control" value="<?= $house_row['owner_name'] ?>"><?= $house_row['owner_name'] ?></option>
+                                                        <?php
+                                                        }
+                                                    }
+                                                } elseif ($row['house_or_shop'] == "shop") {
+                                                    foreach ($house_shop_ids as $shop_id_main) {
+                                                        $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
+                                                        $select = "SELECT * FROM houses WHERE house_id = $shop_id_main";
+                                                        $result = mysqli_query($conn, $select);
+
+                                                        if ($result && mysqli_num_rows($result) > 0) {
+                                                            $shop_row = mysqli_fetch_assoc($result);
+                                                        ?>
+                                                            <option class="form-control" value="<?= $house_row['owner_name'] ?>"><?= $house_row['owner_name'] ?></option>
+
+                                                <?php }
+                                                    }
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">House Owner CNIC / Owner CNIC </label>
+                                            <select  class="form-select form-control house-id">
+                                                <?php
+                                                // Assuming $house_shop_id is an array
+                                                $house_shop_ids = explode(',', $row['house_shop_id']); // Convert the string of IDs to an array
+
+                                                if ($row['house_or_shop'] == "house") {
+                                                    foreach ($house_shop_ids as $house_shop_id_main) {
+                                                        $house_shop_id_main = intval($house_shop_id_main); // Ensure it's an integer to prevent SQL injection
+                                                        $select = "SELECT * FROM houses WHERE house_id = $house_shop_id_main";
+                                                        $result = mysqli_query($conn, $select);
+
+                                                        if ($result && mysqli_num_rows($result) > 0) {
+                                                            $house_row = mysqli_fetch_assoc($result);
+                                                ?>
+                                                            <option class="form-control" value="<?= $house_row['owner_cnic'] ?>"><?= $house_row['owner_cnic'] ?></option>
+                                                        <?php
+                                                        }
+                                                    }
+                                                } elseif ($row['house_or_shop'] == "shop") {
+                                                    foreach ($house_shop_ids as $shop_id_main) {
+                                                        $shop_id_main = intval($shop_id_main); // Ensure it's an integer to prevent SQL injection
+                                                        $select = "SELECT * FROM houses WHERE house_id = $shop_id_main";
+                                                        $result = mysqli_query($conn, $select);
+
+                                                        if ($result && mysqli_num_rows($result) > 0) {
+                                                            $shop_row = mysqli_fetch_assoc($result);
+                                                        ?>
+                                                            <option class="form-control" value="<?= $house_row['owner_cnic'] ?>"><?= $house_row['owner_cnic'] ?></option>
+
+                                                <?php }
+                                                    }
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
@@ -122,11 +221,11 @@ updateMaintenance();
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Maintenance Charges</label>
-                                            <input type="text" name="maintenace_charges" class="form-control" value="<?= $row['maintenance_peyment'] ?>" placeholder="Penalty Charges" required>
+                                            <input type="text" name="maintenace_charges" readonly class="form-control" value="<?= $row['maintenance_peyment'] ?>" placeholder="Penalty Charges" required>
                                             <span class="text-danger" id="Penal-charges_error"></span>
                                         </div>
                                         <div class="col-md-12">
-                                            <button class="btn btn-primary" id="submit_btn" type="submit" name="submit">Update Now</button>
+                                            <button class="btn btn-primary" id="submit_btn" type="submit" name="submit">Submit</button>
                                         </div>
                                     </div>
                         <?php

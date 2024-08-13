@@ -235,6 +235,8 @@ function addMaintenance()
     }
 }
 
+
+
 function updateMaintenance()
 {
     global $conn;
@@ -248,17 +250,35 @@ function updateMaintenance()
         $updated_by = $_SESSION['username'];
         $updated_on = date("Y-m-d");
 
+        if ($house_or_shop === 'house') {
             $updateQuery = "UPDATE maintenance_payments 
-                            SET status = 'Paid', 
+                            SET house_id = '$house_shop_id', 
+                                house_or_shop = '$house_or_shop', 
+                                maintenance_month = '$maintenance_month', 
+                                maintenance_peyment = '$maintenance_charges', 
                                 updated_on = '$updated_on', 
                                 updated_by = '$updated_by'
                             WHERE maintenance_id = '$edit_id'";
+        } elseif ($house_or_shop === 'shop') {
+            $updateQuery = "UPDATE maintenance_payments 
+                            SET shop_id = '$house_shop_id', 
+                                house_or_shop = '$house_or_shop', 
+                                maintenance_month = '$maintenance_month', 
+                                maintenance_peyment = '$maintenance_charges', 
+                                updated_on = '$updated_on', 
+                                updated_by = '$updated_by'
+                            WHERE maintenance_id = '$edit_id'";
+        } else {
+            $_SESSION['error_message_Maintenance'] = "Invalid house or shop selection.";
+            header('location: maintenanceCharges');
+            exit();
+        }
 
         // Debugging: Check if $updateQuery is set properly
         if (isset($updateQuery)) {
             $query = mysqli_query($conn, $updateQuery);
             if ($query) {
-                $_SESSION['success_updated_Maintenance'] = " $maintenance_month Maintenance Added successfully.";
+                $_SESSION['success_updated_Maintenance'] = "Maintenance record updated successfully.";
                 header('location: maintenanceCharges');
                 exit();
             } else {
