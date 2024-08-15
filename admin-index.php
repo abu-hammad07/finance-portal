@@ -652,14 +652,12 @@ function filter_tenant_data_In_Database($tenantLimited, $tenantOrder)
     global $conn;
 
     // Modify the query based on your database structure
-    $query = "
-        SELECT tenants.*, houses.house_number, shops.shop_number 
+    $query = "SELECT tenants.*, houses.house_number, houses.house_id, shops.shop_number, shops.shop_id 
         FROM tenants
         LEFT JOIN houses ON tenants.house_id = houses.house_id
         LEFT JOIN shops ON shops.shop_id = tenants.shop_id
         ORDER BY tenants.tenant_id $tenantOrder 
-        LIMIT $tenantLimited;
-    ";
+        LIMIT $tenantLimited";
 
     // Debug: Print the query (remove in production)
     error_log("SQL Query: $query");

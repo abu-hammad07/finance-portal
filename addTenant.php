@@ -121,16 +121,16 @@ include ("includes/sidebar.php");
 <!-- End:Main Body -->
 </div>
 
-<!-- Start: Footer -->
-<?php include_once('includes/footer.php'); ?>
-<!-- End: Footer -->
-
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#house_shop_id").select2();
     });
 </script>
+<!-- Start: Footer -->
+<?php include_once('includes/footer.php'); ?>
+<!-- End: Footer -->
+
 
 <script>
     // $(document).ready(function() {

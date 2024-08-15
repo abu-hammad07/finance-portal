@@ -292,6 +292,8 @@ include ("includes/sidebar.php");
 <!-- End:Main Body -->
 </div>
 
+<script src="assets/js/error/addUserError.js"></script>
+
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->

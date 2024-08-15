@@ -200,6 +200,7 @@ updateProfile();
 <!-- End:Main Body -->
 </div>
 
+<?php include_once('includes/footer.php'); ?>
 
 <script>
     document.getElementById("edit_btn").addEventListener('click', () => {

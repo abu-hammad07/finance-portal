@@ -22,7 +22,7 @@ if ($row['image'] == '') {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="assets/images/logo/logo-sm.png" type="image/gif" sizes="16x16">
+    <link rel="icon" href="./assets/images/logo/KDA.png" type="image/gif" sizes="16x16">
     <title>KDA Housing Society</title>
     <meta name="og:description" content="KDA Housing Society">
     <meta name="robots" content="index, follow">
@@ -312,7 +312,7 @@ if ($row['image'] == '') {
                                     <!-- End:Sub Menu Item -->
 
                                     <!-- Sub Menu Item -->
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <a class="sub-menu-link" data-bs-toggle="collapse"
                                             data-bs-target="#reconcilation" aria-expanded="false" href="#">
                                             <span class="d2c_icon">
@@ -321,7 +321,6 @@ if ($row['image'] == '') {
                                             <span>Reconcilation</span>
                                             <span class="fas fa-chevron-right ms-auto text-end"></span>
                                         </a>
-                                        <!-- Child Sub Menu -->
                                         <ul class="sub-menu collapse" id="reconcilation">
                                             <li class="nav-item">
                                                 <a class="sub-menu-link" href="./pages/investment.html">
@@ -329,8 +328,7 @@ if ($row['image'] == '') {
                                                 </a>
                                             </li>
                                         </ul>
-                                        <!-- End:Child Sub Menu -->
-                                    </li>
+                                    </li> -->
                                     <!-- End:Sub Menu Item -->
 
 

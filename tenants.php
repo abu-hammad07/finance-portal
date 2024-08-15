@@ -86,8 +86,8 @@ include ("includes/sidebar.php");
                             </div>
                             <div class="me-2">
                                 <select id="tenant-order" class="form-select" onchange="load_tenant_Data()">
-                                    <option value="ASC">Old</option>
                                     <option value="DESC">New</option>
+                                    <option value="ASC">Old</option>
                                 </select>
                             </div>
                             <div class="me-2">
@@ -158,7 +158,7 @@ include ("includes/sidebar.php");
         });
     }
 </script>
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Load data on page load with default value (10)
         search_tenant_Data();
@@ -184,4 +184,4 @@ include ("includes/sidebar.php");
             },
         });
     }
-</script>
+</script> -->

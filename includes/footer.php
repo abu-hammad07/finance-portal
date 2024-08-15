@@ -1,9 +1,4 @@
-<!-- Offcanvas Toggler -->
-<button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button"
-    data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar">
-    <i class="far fa-hand-point-right"></i>
-</button>
-<!-- End:Offcanvas Toggler -->
+
 
 
 <!-- Initial  Javascript -->
@@ -19,7 +14,7 @@
 <!-- custom js -->
 <script src="assets/js/main.js"></script>
 
-
+<!-- 
 <script>
     $("#alert15").click(function () {
         const Toast = Swal.mixin({
@@ -39,7 +34,7 @@
             title: 'Signed in successfully'
         })
     });
-</script>
+</script> -->
 
 
 

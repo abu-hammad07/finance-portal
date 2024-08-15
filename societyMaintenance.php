@@ -93,8 +93,8 @@ include ("includes/sidebar.php");
                             <div class="me-2">
                                 <select id="societyMaint-order" class="form-control"
                                     onchange="load_societyMaint_Data()">
-                                    <option value="ASC">Old</option>
                                     <option value="DESC">New</option>
+                                    <option value="ASC">Old</option>
                                 </select>
                             </div>
                             <div class="me-2">
