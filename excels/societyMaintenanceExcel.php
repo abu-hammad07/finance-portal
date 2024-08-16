@@ -25,7 +25,6 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                     <th>S/NO</th>
                                     <th>Maintenance Type</th>
                                     <th>Amount</th>
-                                    <th>Due Date</th>
                                     <th>Remarks/Comments</th>
                                     <th>Payment Date</th>
                                 </tr>
@@ -45,7 +44,6 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                         $html .= '<td class="font">' . $no++ . '</td>';
                                         $html .= '<td>' . $item['society_maint_type'] . '</td>';
                                         $html .= '<td>' . $item['society_maint_amount'] . '</td>';
-                                        $html .= '<td>' . $dueDate . '</td>';
                                         $html .= '<td>' . $item['society_maint_comments'] . '</td>';
                                         $html .= '<td>' . $paymentDate . '</td>';
 

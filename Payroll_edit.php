@@ -105,12 +105,12 @@ include ("includes/sidebar.php");
                                                     </div>
                                                     <div class=" col-md-6">
                                     <label class="form-label">Days Absent</label>
-                                    <input type="number" id="daysAbsent" name="days_absent" class="form-control" value="0" min="0"
+                                    <input type="text" id="daysAbsent" name="days_absent" class="form-control" value="0" min="0"
                                         value="<?= $row['days_absent']; ?>" required oninput="calculateDaysPresent()">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Days Leave</label>
-                                    <input type="number" id="daysLeave" name="days_leave" class="form-control" value="0" min="0"
+                                    <input type="text" id="daysLeave" name="days_leave" class="form-control" value="0" min="0"
                                         value="<?= $row['days_leave']; ?>" required oninput="calculateDaysPresent()">
                                 </div>
                                 <div class="col-md-6">
@@ -210,4 +210,17 @@ include ("includes/sidebar.php");
         const totalSalary = (basicSalary / totalWorkingDays1) * daysPresent1;
         document.getElementById('totalSalary').value = totalSalary.toFixed(2);
     }
+</script>
+
+
+<script>
+     var daysLeave = document.getElementById('daysLeave');
+     var daysAbsent = document.getElementById('daysAbsent');
+     daysLeave.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    daysAbsent.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
 </script>

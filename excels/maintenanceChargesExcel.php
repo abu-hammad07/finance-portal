@@ -25,8 +25,10 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                    <th>S.No</th>
                                      <th>House / Shop Number</th>
                                     <th>House/Shop</th>
-                                    <th>Month</th>
-                                    <th>Charges</th>
+                                    <th>Owner/Tenant Name</th>
+                                    <th>Owner/Tenant Contact</th>
+                                    <th>Maintenance Paid Date </th>
+                                    <th>Amount Paid</th>
                                     <th>Payment Type</th>
                                     <th>Status</th>          
                 </tr>
@@ -42,32 +44,25 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                     while ($item = mysqli_fetch_assoc($result)) {
                                         $html .= '<tr>';
                                         $html .= '<td class="font">' . $no++ . '</td>';
-                                        if($item['house_or_shop'] == 'house'){
-                                            $house_shop_ids = explode(',', $item['house_shop_id']);
-                                            foreach ($house_shop_ids as $house_shop_id) {
-                                                $seql_dep = mysqli_query($conn, "SELECT * FROM `houses` WHERE `house_id` ='$house_shop_id'");
-                                                $dep = mysqli_fetch_object($seql_dep);
-                                                if ($dep) {
-                                                    $_SESSION['house_number'] = $dep->house_number; 
-                                                }
-                                            }
-                                            $html .= '<td>' . $_SESSION['house_number']. '</td>';
-                                        }
-                                        else{
-                                            $shop_ids = explode(',', $item['shop_id']);
-                                            foreach ($shop_ids as $shop_id) {
-                                                $seql_dep = mysqli_query($conn, "SELECT * FROM `shops` WHERE `shop_id` ='$shop_id'");
-                                                $dep = mysqli_fetch_object($seql_dep);
-                                                if ($dep) {
-                                                    $_SESSION['shop_number'] = $dep->shop_number; 
-                                                }
-                                            }
 
-                                            $html .= '<td>' . $_SESSION['shop_number']. '</td>';
+                                        $house_shop_ids = explode(',', $item['house_shop_id']);
+                                        foreach ($house_shop_ids as $house_shop_id) {
+                                            $seql_dep = mysqli_query($conn, "SELECT * FROM `houses` WHERE `house_id` ='$house_shop_id'");
+                                            $dep = mysqli_fetch_object($seql_dep);
+                                            if ($dep) {
+                                                $_SESSION['house_number'] = $dep->house_number;
+                                                $_SESSION['owner_name'] = $dep->owner_name;
+                                                $_SESSION['owner_contact'] = $dep->owner_contact;
+                                            }
                                         }
-                                        
+                                        $html .= '<td>' . $_SESSION['house_number'] . '</td>';
                                         $html .= '<td>' . $item['house_or_shop'] . '</td>';
-                                        $html .= '<td>' . $item['maintenance_month'] . '</td>';
+                                        $html .= '<td>' . $_SESSION['owner_name'] . '</td>';
+                                        $html .= '<td>' . $_SESSION['owner_contact'] . '</td>';
+
+
+
+                                        $html .= '<td>' . $item['added_on'] . '</td>';
                                         $html .= '<td>' . $item['maintenance_peyment'] . '</td>';
                                         $html .= '<td>' . $item['payment_type'] . '</td>';
                                         $html .= '<td>' . $item['status'] . '</td>';
