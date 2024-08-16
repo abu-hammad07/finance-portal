@@ -83,12 +83,7 @@ include ("includes/sidebar.php");
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            <div class="me-2">
-                                <select id="houses-order" class="form-select" onchange="load_houses_Data()">
-                                    <option value="DESC">New</option>
-                                    <option value="ASC">Old</option>
-                                </select>
-                            </div>
+                           
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/houseExcel">
@@ -141,7 +136,7 @@ include ("includes/sidebar.php");
     function load_houses_Data() {
 
         let housesLimited = $("#houses-limit").val();
-        let housesOrder = $("#houses-order").val();
+       
 
         $.ajax({
             url: 'admin-index.php',
@@ -149,8 +144,7 @@ include ("includes/sidebar.php");
             dataType: 'json',
             data: {
                 action: 'load-houses-Data',
-                housesLimited: housesLimited,
-                housesOrder: housesOrder
+                housesLimited: housesLimited
             },
             success: function (response) {
                 console.log(response);

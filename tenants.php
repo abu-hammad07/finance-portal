@@ -6,7 +6,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     // Redirect to login page
     header('location: login');
 }
-// deleteHouse();
+deleteTenant();
 ?>
 
 
@@ -84,12 +84,7 @@ include ("includes/sidebar.php");
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            <div class="me-2">
-                                <select id="tenant-order" class="form-select" onchange="load_tenant_Data()">
-                                    <option value="DESC">New</option>
-                                    <option value="ASC">Old</option>
-                                </select>
-                            </div>
+                            
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/tenantsExcel">
@@ -106,6 +101,7 @@ include ("includes/sidebar.php");
                                 <tr>
                                     <th>S.No</th>
                                     <th>House/Shop Number</th>
+                                    <th>Type</th>
                                     <th>Tenant Name</th>
                                     <th>Tenant Contact</th>
                                     <th>Tenant CNIC</th>
@@ -139,7 +135,7 @@ include ("includes/sidebar.php");
     function load_tenant_Data() {
 
         let tenantLimited = $("#tenant-limit").val();
-        let tenantOrder = $("#tenant-order").val();
+       
 
         $.ajax({
             url: 'admin-index.php',
@@ -148,7 +144,6 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-tenant-Data',
                 tenantLimited: tenantLimited,
-                tenantOrder: tenantOrder
             },
             success: function (response) {
                 console.log(response);

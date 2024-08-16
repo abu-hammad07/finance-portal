@@ -27,7 +27,7 @@ include ("includes/sidebar.php");
     <?php
     if (isset($_SESSION['success_message_servant'])) {
         echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_servant'] . '
+                    ' . $_SESSION['success_message_servant'] . '<a href="servants" class="btn btn-success" style="float: right; margin-top: -8px;">View Details</a>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
         unset($_SESSION['success_message_servant']);
@@ -51,10 +51,10 @@ include ("includes/sidebar.php");
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">House/Unit Number</label>
-                        <select name="house_id" id="house_id" class="form-select form-control house-id" required>
+                        <select name="house_id" id="house_id" class="form-select form-control " required>
                             <option value="">--- Select House No ---</option>
                         </select>
-                        <span class="text-danger" id="house_id_error"></span>
+                       
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Owner's Name</label>
@@ -110,12 +110,12 @@ include ("includes/sidebar.php");
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
 
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
+<!-- <script>
     $(document).ready(function () {
         $("#house_id").select2();
     });
-</script>
+</script> -->
 <script>
     $(document).ready(function () {
         function loadData(type, id) {

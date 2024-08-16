@@ -26,7 +26,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
             <?php
             if (isset($_SESSION['success_added_employee'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_added_employee'] . '
+                    ' . $_SESSION['success_added_employee'] . ' <a href="employee" class="btn btn-success" style="float: right; margin-top: -8px;">View Details</a>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
                 unset($_SESSION['success_added_employee']);
@@ -85,7 +85,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                 <label class="form-label">CNIC
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="number" name="cnic" id="cnic" class="form-control"
+                                <input type="text" name="cnic" id="EmployeeCnic" class="form-control"
                                     placeholder="XXXXX-XXXXXXX-X" required>
                                 <span class="text-danger" id="cnic_error"></span>
                             </div>
@@ -101,7 +101,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
                                 <label class="form-label">Phone Number
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="number" name="phone_number" id="phone_number" class="form-control"
+                                <input type="text"  name="phone_number" id="EmployeeContact" class="form-control"
                                     placeholder="03XXXXXXXXX" required>
                                 <span class="text-danger" id="phone_number_error"></span>
                             </div>
@@ -186,3 +186,24 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
+
+<script>
+    var EmployeeContact = document.getElementById('EmployeeContact');
+    EmployeeContact.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    var EmployeeCnic = document.getElementById('EmployeeCnic');
+
+    EmployeeCnic.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9-]/g, '');
+        if (this.value.length > 5 && this.value[5] !== '-') {
+            this.value = this.value.slice(0, 5) + '-' + this.value.slice(5);
+        }
+        if (this.value.length > 13 && this.value[13] !== '-') {
+            this.value = this.value.slice(0, 13) + '-' + this.value.slice(13);
+        }
+        if (this.value.length > 15) {
+            this.value = this.value.slice(0, 15);
+        }
+    });
+</script>

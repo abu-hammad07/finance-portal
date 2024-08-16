@@ -7,7 +7,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
     header('location: login');
 }
 
-// deleteBookingeGate();
+deleteEgate();
 ?>
 
 
@@ -89,12 +89,12 @@ include ("includes/sidebar.php");
                                     <option value="125">125</option>
                                 </select>
                             </div>
-                            <div class="me-2">
+                            <!-- <div class="me-2">
                                 <select id="eGate-order" class="form-control" onchange="load_eGate_Data()">
                                     <option value="DESC">New</option>
                                     <option value="ASC">Old</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/eGateExcel">
@@ -149,7 +149,7 @@ include ("includes/sidebar.php");
 
         let eGateMonth = $("#eGate-month").val();
         let eGateLimited = $("#eGate-limit").val();
-        let eGateOrder = $("#eGate-order").val();
+        // let eGateOrder = $("#eGate-order").val();
 
         $.ajax({
             url: 'admin-index.php',
@@ -158,7 +158,7 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-eGate_booking-Data',
                 eGateLimited: eGateLimited,
-                eGateOrder: eGateOrder,
+                // eGateOrder: eGateOrder,
                 eGateMonth: eGateMonth
             },
             success: function (response) {
@@ -169,30 +169,3 @@ include ("includes/sidebar.php");
         });
     }
 </script>
-<!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Load data on page load with default value (10)
-            search_eGate_Data();
-
-        });
-
-        function search_eGate_Data() {
-
-            let eGateSearch = document.getElementById('eGateSearch').value;
-
-            $.ajax({
-                url: 'admin-index.php',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    action: 'search-eGate-Data',
-                    eGateSearch: eGateSearch
-                },
-                success: function (response) {
-                    console.log(response);
-                    // Update the result div with the loaded data
-                    $("#eGateDetails").html(response.data);
-                },
-            });
-        }
-    </script> -->

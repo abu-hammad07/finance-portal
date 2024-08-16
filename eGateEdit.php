@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function.php");
+include_once("includes/config.php");
+include_once("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -15,7 +15,7 @@ eGateUpdate();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -42,7 +42,7 @@ include ("includes/sidebar.php");
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    ?>
+        ?>
 
                     <div class="card h-auto">
                         <div class="card-body">
@@ -50,27 +50,30 @@ include ("includes/sidebar.php");
                             <hr class="my-4">
                             <div class="row g-3">
                                 <input type="text" hidden name="eGate_id" class="form-control" value="<?= $row['eGate_id'] ?>">
+
+                                <div class="col-md-6 ">
+                                    <label for="propertytype" class="form-label">Please Select Type</label>
+                                    <select id="propertytype" name="house_or_shop" required class="form-select form-control">
+                                        <option <?php echo ($row['house_or_shop'] == "shop") ? 'selected' : ''; ?> value="Shop">Shop</option>
+                                        <option <?php echo ($row['house_or_shop'] == "house") ? 'selected' : ''; ?> value="House">House</option>
+
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label">House Number / Shop Number</label>
-                                    <select name="house_id" id="house_id" class="form-select form-control house-id" required>
+                                    <select name="house_id" id="house_shop_id" class="form-select form-control house-id" required>
                                         <!-- <option value="">--- Select House/Shop No ---</option> -->
                                         <?php
-                                        if ($row['house_or_shop'] == 'house') {
-                                            echo '<option value="' . $row['house_id'] . '">' . $row['house_number'] . '</option>';
-                                        } elseif ($row['house_or_shop'] == 'shop') {
-                                            echo '<option value="' . $row['shop_id'] . '">' . $row['shop_number'] . '</option>';
-                                        }
+
+                                        echo '<option value="' . $row['house_id'] . '">' . $row['house_number'] . '</option>';
+
                                         ?>
                                     </select>
                                     <!-- <span class="text-danger" id="house_id_error"></span> -->
                                 </div>
-                                <div class="col-md-6" style="display:none">
-                                    <label class="form-label">House or Shop</label>
-                                    <select name="house_or_shop" id="house_or_shop" class="form-select form-control house-or-shop"
-                                        required>
-                                        <option value="<?= $row['house_or_shop'] ?>"><?= $row['house_or_shop'] ?></option>
-                                    </select>
-                                </div>
+                               
                                 <div class="col-md-6 ">
                                     <label class="form-label">Vehicle Name</label>
                                     <input type="text" id="vehicle_name" name="vehicle_name" class="form-control"
@@ -107,9 +110,9 @@ include ("includes/sidebar.php");
                                         required>
                                         <option value="">--- Select Charges Type ---</option>
                                         <option value="New Card" <?php if ($row['eGate_charges_type'] == 'New Card')
-                                            echo 'selected'; ?>>New Card</option>
+                                                                        echo 'selected'; ?>>New Card</option>
                                         <option value="Renew" <?php if ($row['eGate_charges_type'] == 'Renew')
-                                            echo 'selected'; ?>>Renew</option>
+                                                                    echo 'selected'; ?>>Renew</option>
                                     </select>
                                     <!-- <span class="text-danger" id="charges_type_error"></span> -->
                                 </div>
@@ -123,10 +126,10 @@ include ("includes/sidebar.php");
                                     <select class="form-select form-control" id="pymentType" required name="pymentType">
                                         <option value=""> Select Payment Type</option>
                                         <option value="Cash" <?php if ($row['payment_type'] == 'Cash')
-                                            echo 'selected'; ?>>Cash
+                                                                    echo 'selected'; ?>>Cash
                                         </option>
                                         <option value="Bank" <?php if ($row['payment_type'] == 'Bank')
-                                            echo 'selected'; ?>>Bank
+                                                                    echo 'selected'; ?>>Bank
                                         </option>
                                     </select>
                                 </div>
@@ -138,7 +141,7 @@ include ("includes/sidebar.php");
                                 </div>
                             </div>
                         </div>
-                        <?php
+            <?php
                 }
             } else {
                 echo '<div class="alert alert-warning text-center" role="alert">There are no data Found!</div>';
@@ -146,9 +149,9 @@ include ("includes/sidebar.php");
         } else {
             echo '<div class="alert alert-warning text-center" role="alert">There are no ID Found!</div>';
         }
-        ?>
+            ?>
 
-        </div>
+                    </div>
     </form>
 
 
@@ -161,3 +164,59 @@ include ("includes/sidebar.php");
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
+
+<script>
+    $(document).ready(function() {
+        function loadData(type, id) {
+            $.ajax({
+                url: 'ajax.php',
+                type: 'POST',
+                data: {
+                    type: type,
+                    id: id
+                },
+                dataType: 'html',
+                success: function(data) {
+                    if (type === "propertytype") {
+                        $('#propertytype').append(data);
+                    } else if (type === "house_shop_id") {
+                        $('#house_shop_id').html(data);
+                    }
+                }
+            });
+        }
+
+        // loadData("propertytype");
+
+        $("#propertytype").on("change", function() {
+            var department = $("#propertytype").val();
+            if (department != "") {
+                loadData("house_shop_id", department);
+            } else {
+                $('#house_shop_id').html("");
+
+            }
+        });
+    });
+</script>
+
+<script>
+    // var TenantContact = document.getElementById('TenantContact');
+    // TenantContact.addEventListener('input', function() {
+    //     this.value = this.value.replace(/[^0-9]/g, '');
+    // });
+    var TenantCnic = document.getElementById('TenantCnic');
+
+    TenantCnic.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9-]/g, '');
+        if (this.value.length > 5 && this.value[5] !== '-') {
+            this.value = this.value.slice(0, 5) + '-' + this.value.slice(5);
+        }
+        if (this.value.length > 13 && this.value[13] !== '-') {
+            this.value = this.value.slice(0, 13) + '-' + this.value.slice(13);
+        }
+        if (this.value.length > 15) {
+            this.value = this.value.slice(0, 15);
+        }
+    });
+</script>

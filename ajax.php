@@ -168,6 +168,38 @@ if (isset($_POST['type'])) {
 
 echo $eGateData;
 
+// ======================== add tenants
+
+if (isset($_POST['type'])) {
+    if ($_POST['type'] == "propertytype") {
+        $sql = "SELECT DISTINCT property_type FROM houses";
+        $query = mysqli_query($conn, $sql) or die('Query unsuccessful');
+        $tenant = '';
+        while ($row = mysqli_fetch_assoc($query)) {
+            $tenant .= "<option value='{$row['property_type']}'>{$row['property_type']}</option>";
+        }
+    } elseif ($_POST['type'] == "house_shop_id") {
+        if (isset($_POST['id'])) {
+            $house_data = $_POST['id'];
+            $query = mysqli_query($conn, "SELECT * FROM `houses` WHERE `property_type` = '$house_data'");
+            $tenant .= "<option value=''>---</option>";
+            while ($row = mysqli_fetch_assoc($query)) {
+                $tenant .= "<option value='{$row['house_id']}'>{$row['house_number']}</option>";
+            }
+        } else {
+            $tenant = 'ID not provided for House & Shop';
+        }
+    } else {
+        $tenant = 'Invalid type parameter';
+    }
+} else {
+    $tenant = 'Type parameter not set';
+}
+
+echo $tenant;
+
+
+
 // =======================Maintenance page =======================
 if (isset($_POST['type'])) {
     if ($_POST['type'] == "eGate_id_Data1") {
@@ -277,8 +309,7 @@ if (isset($_POST['type'])) {
             $monthOptions .= "<option value='{$row['maintenance_charges']}'>{$row['maintenance_charges']}</option>";
         }
         echo $monthOptions;
-    } 
-    else {
+    } else {
         echo 'Invalid request';
     }
 } else {

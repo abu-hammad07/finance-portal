@@ -28,7 +28,7 @@ eventBookingInsert();
             <?php
             if (isset($_SESSION['success_message_eventBooking'])) {
                 echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_eventBooking'] . '
+                    ' . $_SESSION['success_message_eventBooking'] . '<a href="eventsDetails" class="btn btn-success" style="float: right; margin-top: -8px;">View Details</a>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
                 unset($_SESSION['success_message_eventBooking']);
@@ -96,13 +96,13 @@ eventBookingInsert();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Customer Contact</label>
-                                <input type="number" class="form-control" id="customerContact" name="customerContact"
+                                <input type="text" class="form-control" id="EventContact" name="customerContact"
                                     placeholder="03XXXXXXXXX">
                                 <span class="text-danger" id="customerContact_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Customer CNIC</label>
-                                <input type="number" class="form-control" id="customerCnic" name="customerCnic"
+                                <input type="text" class="form-control" id="EventCnic" name="customerCnic"
                                     placeholder="XXXXXXXXXXXXX">
                                 <span class="text-danger" id="customerCnic_error"></span>
                             </div>
@@ -114,7 +114,7 @@ eventBookingInsert();
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Payment</label>
-                                <input type="number" class="form-control" id="bookingPayment" name="bookingPayment"
+                                <input type="text" class="form-control" id="bookingPayment" name="bookingPayment"
                                     placeholder="999">
                                 <span class="text-danger" id="bookingPayment_error"></span>
                             </div>
@@ -145,3 +145,28 @@ eventBookingInsert();
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
+
+<script>
+    var eventContact = document.getElementById('EventContact');
+    var EventCnic = document.getElementById('EventCnic');
+    var bookingPayment = document.getElementById('bookingPayment');
+    eventContact.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    bookingPayment.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    EventCnic.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9-]/g, '');
+        if (this.value.length > 5 && this.value[5] !== '-') {
+            this.value = this.value.slice(0, 5) + '-' + this.value.slice(5);
+        }
+        if (this.value.length > 13 && this.value[13] !== '-') {
+            this.value = this.value.slice(0, 13) + '-' + this.value.slice(13);
+        }
+        if (this.value.length > 15) {
+            this.value = this.value.slice(0, 15);
+        }
+    });
+</script>

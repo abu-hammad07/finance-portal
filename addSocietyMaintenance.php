@@ -27,7 +27,7 @@ include ("includes/sidebar.php");
     <?php
     if (isset($_SESSION['success_message_societyMaint'])) {
         echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_societyMaint'] . '
+                    ' . $_SESSION['success_message_societyMaint'] . '<a href="societyMaintenance" class="btn btn-success" style="float: right; margin-top: -8px;">View Details</a>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
         unset($_SESSION['success_message_societyMaint']);
@@ -55,9 +55,9 @@ include ("includes/sidebar.php");
                         <span class="text-danger" id="society_maint_type_error"></span>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Amount</label>
-                        <input type="number" name="society_maint_amount" id="society_maint_amount" class="form-control"
-                            placeholder="$100" required>
+                        <label for="Amount" class="form-label">Amount</label>
+                        <input type="text" name="society_maint_amount" id="Amount" class="form-control"
+                            placeholder="100" required>
                         <span class="text-danger" id="society_maint_amount_error"></span>
                     </div>
                     <div class="col-md-6">
@@ -95,3 +95,13 @@ include ("includes/sidebar.php");
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
+
+<script>
+     var Amount = document.getElementById('Amount');
+    Amount.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+   
+
+   
+</script>

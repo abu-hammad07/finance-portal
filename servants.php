@@ -85,12 +85,12 @@ include ("includes/sidebar.php");
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            <div class="me-2">
+                            <!-- <div class="me-2">
                                 <select id="servant-order" class="form-control" onchange="load_servant_Data()">
                                     <option value="DESC">New</option>
                                     <option value="ASC">Old</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/servantsExcel">
@@ -141,7 +141,7 @@ include ("includes/sidebar.php");
     function load_servant_Data() {
 
         let servantLimited = $("#servant-limit").val();
-        let servantOrder = $("#servant-order").val();
+        // let servantOrder = $("#servant-order").val();
         let servantMonth = $("#servant-month").val();
 
         $.ajax({
@@ -151,7 +151,7 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-servant-Data',
                 servantLimited: servantLimited,
-                servantOrder: servantOrder,
+                // servantOrder: servantOrder,
                 servantMonth: servantMonth
             },
             success: function (response) {

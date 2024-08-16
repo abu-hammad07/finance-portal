@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once ("includes/config.php");
+include_once("includes/config.php");
 include "includes/function.php";
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
@@ -12,7 +12,7 @@ updateTenants();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -35,7 +35,7 @@ include ("includes/sidebar.php");
         if (mysqli_num_rows($edit_result) > 0) {
             $no = 1;
             while ($row = mysqli_fetch_assoc($edit_result)) {
-                ?>
+    ?>
 
                 <form action="" method="post" id="add_houses_form" enctype="multipart/form-data">
                     <div class="card h-auto">
@@ -44,9 +44,18 @@ include ("includes/sidebar.php");
                             <hr class="my-4">
                             <div class="row g-3">
                                 <input type="text" hidden name="tenant_id" class="form-control" value="<?= $row['tenant_id'] ?>">
+
+                                <div class="col-md-6 ">
+                                    <label for="propertytype" class="form-label">Type of Property</label>
+                                    <select id="propertytype"   name="house_or_shop" class="form-select form-control">
+                                        <option  value="<?= $row['house_or_shop'] ?>"><?= $row['house_or_shop'] ?></option>
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+
                                 <div class="col-md-6">
-                                    <label class="form-label">House/Unit Number</label>
-                                    <select name="house_id" id="house_id" class="form-select form-control house-id" required>
+                                    <label class="form-label">House/Shop Number</label>
+                                    <select name="house_id"  id="house_shop_id" class="form-select form-control house-id" required>
                                         <option value="<?= $row['house_id'] ?>"><?= $row['house_number'] ?></option>
                                     </select>
                                     <!-- <span class="text-danger" id="house_id_error"></span> -->
@@ -65,19 +74,19 @@ include ("includes/sidebar.php");
                                 </div>
                                 <div class="col-md-6 ">
                                     <label class="form-label">Tenant's Name</label>
-                                    <input type="text" id="tenant-name" name="tenant_name" class="form-control"
+                                    <input type="text"  id="tenant-name" name="tenant_name" class="form-control"
                                         placeholder="Enter Tenant's Name" value="<?= $row['tenant_name'] ?>" required>
                                     <!-- <span class="text-danger" id="tenants-name_error"></span> -->
                                 </div>
                                 <div class="col-md-6 ">
                                     <label class="form-label">Tenant's Contact Number</label>
-                                    <input type="number" id="tenant-contact" name="tenant_contact" class="form-control"
+                                    <input type="text" id="tenant-contact" name="tenant_contact" class="form-control"
                                         placeholder="03XXXXXXXXX" value="<?= $row['tenant_contact_no'] ?>" required>
                                     <!-- <span class="text-danger" id="tenant-contact_error"></span> -->
                                 </div>
                                 <div class="col-md-6 ">
                                     <label class="form-label">Tenant's CNIC</label>
-                                    <input type="number" id="tenant-contact" name="tenant_cnic" class="form-control"
+                                    <input type="text" id="tenant-contact" name="tenant_cnic" class="form-control"
                                         placeholder="XXXXX-XXXXXXX-X" value="<?= $row['tenant_cnic'] ?>" required>
                                     <!-- <span class="text-danger" id="tenant-cnic_error"></span> -->
                                 </div>
@@ -95,7 +104,7 @@ include ("includes/sidebar.php");
                         </div>
                     </div>
                 </form>
-                <?php
+    <?php
             }
         } else {
             echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -113,8 +122,7 @@ include ("includes/sidebar.php");
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
 
-
-<!-- <script>
+<script>
     $(document).ready(function() {
         function loadData(type, id) {
             $.ajax({
@@ -126,34 +134,93 @@ include ("includes/sidebar.php");
                 },
                 dataType: 'html',
                 success: function(data) {
-                    if (type === "house_id_Data") {
-                        $('#house_id').append(data);
-                    } else if (type === "owner_name_Data") {
-                        $('#owner_name').html(data);
-                    } else if (type === "owner_contact_Data") {
-                        $('#owner_contact').html(data);
+                    if (type === "propertytype") {
+                        $('#propertytype').append(data);
+                    } else if (type === "house_shop_id") {
+                        $('#house_shop_id').html(data);
                     }
                 }
             });
         }
 
-        loadData("house_id_Data");
+        loadData("propertytype");
 
-        $("#house_id").on("change", function() {
-            var customer = $("#house_id").val();
-            if (customer != "") {
-                loadData("owner_name_Data", customer);
+        $("#propertytype").on("change", function() {
+            var department = $("#propertytype").val();
+            if (department != "") {
+                loadData("house_shop_id", department);
             } else {
-                $('#owner_name').html("");
-            }
-        });
-        $("#house_id").on("change", function() {
-            var customer = $("#house_id").val();
-            if (customer != "") {
-                loadData("owner_contact_Data", customer);
-            } else {
-                $('#owner_contact').html("");
+                $('#house_shop_id').html("");
+
             }
         });
     });
+</script>
+
+
+<!-- Start: Footer -->
+<script>
+    var TenantContact = document.getElementById('TenantContact');
+    var TenantCnic = document.getElementById('TenantCnic');
+    TenantContact.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    var TenantCnic = document.getElementById('TenantCnic');
+
+    TenantCnic.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9-]/g, '');
+        if (this.value.length > 5 && this.value[5] !== '-') {
+            this.value = this.value.slice(0, 5) + '-' + this.value.slice(5);
+        }
+        if (this.value.length > 13 && this.value[13] !== '-') {
+            this.value = this.value.slice(0, 13) + '-' + this.value.slice(13);
+        }
+        if (this.value.length > 15) {
+            this.value = this.value.slice(0, 15);
+        }
+    });
+</script>
+
+
+$(document).ready(function() {
+function loadData(type, id) {
+$.ajax({
+url: 'ajax.php',
+type: 'POST',
+data: {
+type: type,
+id: id
+},
+dataType: 'html',
+success: function(data) {
+if (type === "house_id_Data") {
+$('#house_id').append(data);
+} else if (type === "owner_name_Data") {
+$('#owner_name').html(data);
+} else if (type === "owner_contact_Data") {
+$('#owner_contact').html(data);
+}
+}
+});
+}
+
+loadData("house_id_Data");
+
+$("#house_id").on("change", function() {
+var customer = $("#house_id").val();
+if (customer != "") {
+loadData("owner_name_Data", customer);
+} else {
+$('#owner_name').html("");
+}
+});
+$("#house_id").on("change", function() {
+var customer = $("#house_id").val();
+if (customer != "") {
+loadData("owner_contact_Data", customer);
+} else {
+$('#owner_contact').html("");
+}
+});
+});
 </script> -->

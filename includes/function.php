@@ -750,31 +750,36 @@ function addTenants()
 
 
         // Validate house_shop_id against the correct table
-        $valid_id = false;
-        if ($house_or_shop === 'house') {
-            $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
-        } elseif ($house_or_shop === 'shop') {
-            $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
-        } else {
-            $_SESSION['error_message_Tenant'] = "Invalid house_or_shop value.";
-            header('location: addTenant');
-            exit();
-        }
+        // $valid_id = false;
+        // if ($house_or_shop === 'house') {
+        //     $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
+        // }
+        //  elseif ($house_or_shop === 'shop') {
+        //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
+        // } 
+        //  elseif ($house_or_shop === 'Apartment') {
+        //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
+        // } 
+        // else {
+        //     $_SESSION['error_message_Tenant'] = "Invalid house_or_shop value.";
+        //     header('location: addTenant');
+        //     exit();
+        // }
 
-        $checkResult = mysqli_query($conn, $checkQuery);
-        if (!$checkResult) {
-            error_log("Error executing check query: " . mysqli_error($conn));
-        }
+        // $checkResult = mysqli_query($conn, $checkQuery);
+        // if (!$checkResult) {
+        //     error_log("Error executing check query: " . mysqli_error($conn));
+        // }
 
-        if (mysqli_num_rows($checkResult) > 0) {
-            $valid_id = true;
-        }
+        // if (mysqli_num_rows($checkResult) > 0) {
+        //     $valid_id = true;
+        // }
 
-        if (!$valid_id) {
-            $_SESSION['error_message_Tenant'] = "Invalid house_shop_id for the given house_or_shop.";
-            header('location: addTenant');
-            exit();
-        }
+        // if (!$valid_id) {
+        //     $_SESSION['error_message_Tenant'] = "Invalid house_shop_id for the given house_or_shop.";
+        //     header('location: addTenant');
+        //     exit();
+        // }
 
 
         // image upload
@@ -794,21 +799,14 @@ function addTenants()
         //         )";
 
         // Build insert query dynamically based on house_or_shop
-        if ($house_or_shop === 'house') {
-            $insertTenants = "INSERT INTO tenants (
+
+        $insertTenants = "INSERT INTO tenants (
                 house_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
             ) VALUES (
                 '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', 
                 '$added_by', '$added_on'
             )";
-        } elseif ($house_or_shop === 'shop') {
-            $insertTenants = "INSERT INTO tenants (
-                shop_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
-            ) VALUES (
-                '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', 
-                '$added_by', '$added_on'
-            )";
-        }
+
 
 
         $insertTenants_res = mysqli_query($conn, $insertTenants);
@@ -832,6 +830,7 @@ function updateTenants()
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tenant_id = mysqli_real_escape_string($conn, $_POST['tenant_id']);
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
+        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
         $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
         $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
@@ -852,6 +851,7 @@ function updateTenants()
         $updateTenants = "UPDATE tenants SET 
         house_id='$house_id',
         tenant_name='$tenant_name',
+        house_or_shop='$house_or_shop',
         tenant_contact_no='$tenant_contact',
         tenant_cnic='$tenant_cnic',
         updated_by='$updated_by',
@@ -877,6 +877,27 @@ function updateTenants()
     }
 }
 
+
+
+// ========== deleteEmployee ===========
+function deleteTenant()
+{
+    global $conn;
+    if (isset($_GET['tenant_delete_id'])) {
+        $tenant_id = mysqli_real_escape_string($conn, $_GET['tenant_delete_id']);
+        $delete_query = "DELETE FROM `tenants` WHERE `tenant_id` = '$tenant_id'";
+        $delete_query_res = mysqli_query($conn, $delete_query);
+        if ($delete_query_res) {
+            $_SESSION['success_updated_tenant'] = "Tenant has been deleted.";
+            header('location: tenants');
+            exit();
+        } else {
+            $_SESSION['error_updated_tenant'] = "Tenant not deleted.";
+            header('location: tenants');
+            exit();
+        }
+    }
+}
 
 
 function addShopInsert()
@@ -1021,39 +1042,39 @@ function eGateInsert()
         $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
 
         // Validate house_shop_id against the correct table
-        $valid_id = false;
-        if ($house_or_shop === 'house') {
-            $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
-        } elseif ($house_or_shop === 'shop') {
-            $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
-        } else {
-            $_SESSION['error_insert_egate'] = "Invalid house_or_shop value.";
-            header('location: addeGate');
-            exit();
-        }
+        // $valid_id = false;
+        // if ($house_or_shop === 'house') {
+        //     $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
+        // } elseif ($house_or_shop === 'shop') {
+        //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
+        // } else {
+        //     $_SESSION['error_insert_egate'] = "Invalid house_or_shop value.";
+        //     header('location: addeGate');
+        //     exit();
+        // }
 
-        $checkResult = mysqli_query($conn, $checkQuery);
-        if (!$checkResult) {
-            error_log("Error executing check query: " . mysqli_error($conn));
-        }
+        // $checkResult = mysqli_query($conn, $checkQuery);
+        // if (!$checkResult) {
+        //     error_log("Error executing check query: " . mysqli_error($conn));
+        // }
 
-        if (mysqli_num_rows($checkResult) > 0) {
-            $valid_id = true;
-        }
+        // if (mysqli_num_rows($checkResult) > 0) {
+        //     $valid_id = true;
+        // }
 
-        if (!$valid_id) {
-            $_SESSION['error_insert_egate'] = "Invalid house_shop_id for the given house_or_shop.";
-            header('location: addeGate');
-            exit();
-        }
+        // if (!$valid_id) {
+        //     $_SESSION['error_insert_egate'] = "Invalid house_shop_id for the given house_or_shop.";
+        //     header('location: addeGate');
+        //     exit();
+        // }
 
         // added_by & added_on
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
 
         // Build insert query dynamically based on house_or_shop
-        if ($house_or_shop === 'house') {
-            $insertEGate = "INSERT INTO egate (
+
+        $insertEGate = "INSERT INTO egate (
                 house_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
                 eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, payment_type, 
                 added_on, added_by
@@ -1062,17 +1083,6 @@ function eGateInsert()
                 '$person_name', '$cnic_number', '$charges_type', '$charges', '$pymentType',
                 '$added_on', '$added_by'
             )";
-        } elseif ($house_or_shop === 'shop') {
-            $insertEGate = "INSERT INTO egate (
-                shop_id, house_or_shop, vehicle_number, vehicle_name, vehicle_color, 
-                eGateperson_name, eGate_cnic, eGate_charges_type, eGate_charges, payment_type,
-                added_on, added_by
-            ) VALUES (
-                '$house_shop_id', '$house_or_shop', '$vehicle_number', '$vehicle_name', '$vehicle_color', 
-                '$person_name', '$cnic_number', '$charges_type', '$charges', '$pymentType',
-                '$added_on', '$added_by'
-            )";
-        }
 
         $insertEGate_res = mysqli_query($conn, $insertEGate);
 
@@ -1240,42 +1250,43 @@ function eGateUpdate()
         $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
 
         // Validate house_id against the correct table
-        $valid_id = false;
-        if ($house_or_shop === 'house') {
-            $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_id'";
-        } elseif ($house_or_shop === 'shop') {
-            $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_id'";
-        } else {
-            $_SESSION['error_updated_eGate'] = "Invalid house_or_shop value.";
-            header('location: eGate');
-            exit();
-        }
+        // $valid_id = false;
+        // if ($house_or_shop === 'house') {
+        //     $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_id'";
+        // } elseif ($house_or_shop === 'shop') {
+        //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_id'";
+        // } else {
+        //     $_SESSION['error_updated_eGate'] = "Invalid house_or_shop value.";
+        //     header('location: eGate');
+        //     exit();
+        // }
 
-        $checkResult = mysqli_query($conn, $checkQuery);
-        if (mysqli_num_rows($checkResult) > 0) {
-            $valid_id = true;
-        }
+        // $checkResult = mysqli_query($conn, $checkQuery);
+        // if (mysqli_num_rows($checkResult) > 0) {
+        //     $valid_id = true;
+        // }
 
-        if (!$valid_id) {
-            $_SESSION['error_updated_eGate'] = "Invalid house_id or shop_id for the given house_or_shop.";
-            header('location: eGate');
-            exit();
-        }
+        // if (!$valid_id) {
+        //     $_SESSION['error_updated_eGate'] = "Invalid house_id or shop_id for the given house_or_shop.";
+        //     header('location: eGate');
+        //     exit();
+        // }
 
         // updated_by & updated_on
         $updated_by = $_SESSION['username'];
         $updated_on = date("Y-m-d");
 
         // Build the update query based on house_or_shop
-        if ($house_or_shop === 'house') {
-            $updateField = "`house_id` = '$house_id', `shop_id` = NULL";
-        } elseif ($house_or_shop === 'shop') {
-            $updateField = "`shop_id` = '$house_id', `house_id` = NULL";
-        }
+        // if ($house_or_shop === 'house') {
+        //     $updateField = "`house_id` = '$house_id', `shop_id` = NULL";
+        // } elseif ($house_or_shop === 'shop') {
+        //     $updateField = "`shop_id` = '$house_id', `house_id` = NULL";
+        // }
 
         // updated data into e-gate table
         $updatedEGate = "UPDATE `egate` SET
-            $updateField,
+         `house_id` ='$house_id',
+          `house_or_shop` = '$house_or_shop',
             `vehicle_number` = '$vehicle_number',
             `vehicle_name` = '$vehicle_name',
             `vehicle_color` = '$vehicle_color',
@@ -1302,7 +1313,24 @@ function eGateUpdate()
     }
 }
 
-
+function deleteEgate()
+{
+    global $conn;
+    if (isset($_GET['eGate_delete_id'])) {
+        $eGate_id = mysqli_real_escape_string($conn, $_GET['eGate_delete_id']);
+        $delete_query = "DELETE FROM `egate` WHERE `eGate_id` = '$eGate_id'";
+        $delete_query_res = mysqli_query($conn, $delete_query);
+        if ($delete_query_res) {
+            $_SESSION['success_updated_eGate'] = "eGate has been deleted.";
+            header('location: eGate');
+            exit();
+        } else {
+            $_SESSION['error_updated_eGate'] = "eGate not deleted.";
+            header('location: eGate');
+            exit();
+        }
+    }
+}
 
 // ========== addEmployee ==========
 function InsertEmployees()

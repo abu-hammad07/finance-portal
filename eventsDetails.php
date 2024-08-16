@@ -87,12 +87,12 @@ include ("includes/sidebar.php");
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            <div class="me-2">
+                            <!-- <div class="me-2">
                                 <select id="events-order" class="form-control" onchange="load_events_Data()">
                                     <option value="DESC">New</option>
                                     <option value="ASC">Old</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/eventsDetailsExcel">
@@ -112,7 +112,8 @@ include ("includes/sidebar.php");
                                     <th>Location</th>
                                     <th>Customer Name</th>
                                     <!-- <th>Customer CNIC</th> -->
-                                    <th>Date Time</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
                                     <th>Booking Payment</th>
                                     <th>Payment Type</th>
                                     <th>Action</th>
@@ -147,7 +148,7 @@ include ("includes/sidebar.php");
     function load_events_Data() {
 
         let eventsLimited = $("#events-limit").val();
-        let eventsOrder = $("#events-order").val();
+        // let eventsOrder = $("#events-order").val();
         let eventsMonth = $("#events-month").val();
 
         $.ajax({
@@ -157,7 +158,7 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-events_booking-Data',
                 eventsLimited: eventsLimited,
-                eventsOrder: eventsOrder,
+                // eventsOrder: eventsOrder,
                 eventsMonth: eventsMonth
             },
             success: function (response) {

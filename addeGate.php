@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function.php");
+include_once("includes/config.php");
+include_once("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -13,7 +13,7 @@ eGateInsert();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -22,6 +22,7 @@ include ("includes/sidebar.php");
     <!-- Title -->
     <h4 class="mb-4 text-capitalize">Add e-Gate</h4>
     <!-- End:Title -->
+
 
     <!-- Alert -->
     <?php
@@ -34,7 +35,7 @@ include ("includes/sidebar.php");
     }
     if (isset($_SESSION['error_insert_egate'])) {
         echo '<div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error_insert_egate'] . '
+                    ' . $_SESSION['error_insert_egate'] . '<a href="eGate" class="btn btn-success" style="float: right; margin-top: -8px;">View Details</a>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
         unset($_SESSION['error_insert_egate']);
@@ -49,21 +50,21 @@ include ("includes/sidebar.php");
                 <h3 class="card-header">Information</h3>
                 <hr class="my-4">
                 <div class="row g-3">
+                    <div class="col-md-6 ">
+                        <label for="propertytype" class="form-label">Please Select Type</label>
+                        <select id="propertytype" name="house_or_shop" required class="form-select form-control">
+                            <option value="">-----</option>
+                            <option value="Shop">Shop</option>
+                            <option value="House">House</option>
+                        </select>
+                        <span class="text-danger"></span>
+                    </div>
                     <div class="col-md-6">
                         <label class="form-label">House Number / Shop Number</label>
                         <select name="house_shop_id" id="house_shop_id" class="form-select form-control house-id"
                             required>
                             <option value="">--- Select House/Shop No ---</option>
                             <!-- Add your house/shop options here -->
-                        </select>
-                    </div>
-                    <div class="col-md-6" style="display:none">
-                        <label class="form-label">House or Shop</label>
-                        <select name="house_or_shop" id="house_or_shop" class="form-select form-control house-id"
-                            required>
-                            <option value="">--- Select House/Shop ---</option>
-                            <option value="house">House</option>
-                            <option value="shop">Shop</option>
                         </select>
                     </div>
 
@@ -89,7 +90,7 @@ include ("includes/sidebar.php");
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">CNIC Number</label>
-                        <input type="text" id="cnic_number" name="cnic_number" class="form-control"
+                        <input type="text" id="TenantCnic" name="cnic_number" class="form-control"
                             placeholder="XXXXX-XXXXXXX-X">
                     </div>
                     <div class="col-md-6">
@@ -135,48 +136,19 @@ include ("includes/sidebar.php");
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#house_shop_id").select2();
     });
 </script>
 <!-- Start: Footer -->
-<?php include_once ('includes/footer.php'); ?>
+<?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
 
 
+
 <script>
-    // $(document).ready(function() {
-    //     function loadData(type, id = null) {
-    //         $.ajax({
-    //             url: 'ajax.php',
-    //             type: 'POST',
-    //             data: {
-    //                 type: type,
-    //                 id: id
-    //             },
-    //             dataType: 'html',
-    //             success: function(data) {
-    //                 if (type === "eGate_id_Data") {
-    //                     // Clear the existing options except the placeholders
-    //                     $('#house_id optgroup[label="House Number"]').empty().append('<option value="">--- Select House No ---</option>');
-    //                     $('#house_id optgroup[label="Shop Number"]').empty().append('<option value="">--- Select Shop No ---</option>');
-
-    //                     // Append the new data to the select element
-    //                     $('#house_id').append(data);
-    //                 }
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 console.error('AJAX Error:', status, error);
-    //             }
-    //         });
-    //     }
-
-    //     loadData("eGate_id_Data");
-    // });
-
-
-    $(document).ready(function () {
-        function loadData(type, id = null) {
+    $(document).ready(function() {
+        function loadData(type, id) {
             $.ajax({
                 url: 'ajax.php',
                 type: 'POST',
@@ -185,26 +157,47 @@ include ("includes/sidebar.php");
                     id: id
                 },
                 dataType: 'html',
-                success: function (data) {
-                    if (type === "eGate_id_Data") {
+                success: function(data) {
+                    if (type === "propertytype") {
+                        $('#propertytype').append(data);
+                    } else if (type === "house_shop_id") {
                         $('#house_shop_id').html(data);
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.error('AJAX Error:', status, error);
                 }
             });
         }
 
-        loadData("eGate_id_Data");
+        // loadData("propertytype");
 
-        $('#house_shop_id').change(function () {
-            var selectedOption = $(this).find('option:selected').parent().attr('label');
-            if (selectedOption === 'House Number') {
-                $('#house_or_shop').val('house');
-            } else if (selectedOption === 'Shop Number') {
-                $('#house_or_shop').val('shop');
+        $("#propertytype").on("change", function() {
+            var department = $("#propertytype").val();
+            if (department != "") {
+                loadData("house_shop_id", department);
+            } else {
+                $('#house_shop_id').html("");
+
             }
         });
+    });
+</script>
+
+<script>
+    // var TenantContact = document.getElementById('TenantContact');
+    // TenantContact.addEventListener('input', function() {
+    //     this.value = this.value.replace(/[^0-9]/g, '');
+    // });
+    var TenantCnic = document.getElementById('TenantCnic');
+
+    TenantCnic.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9-]/g, '');
+        if (this.value.length > 5 && this.value[5] !== '-') {
+            this.value = this.value.slice(0, 5) + '-' + this.value.slice(5);
+        }
+        if (this.value.length > 13 && this.value[13] !== '-') {
+            this.value = this.value.slice(0, 13) + '-' + this.value.slice(13);
+        }
+        if (this.value.length > 15) {
+            this.value = this.value.slice(0, 15);
+        }
     });
 </script>

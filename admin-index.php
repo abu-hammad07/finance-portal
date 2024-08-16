@@ -1,6 +1,6 @@
 <?php
-include_once ('includes/config.php');
-require_once ('includes/phpqrcode/qrlib.php');
+include_once('includes/config.php');
+require_once('includes/phpqrcode/qrlib.php');
 
 
 // Feature Function to filter and display data in the table based on user input or database data depending on your database structure and requirements  
@@ -163,7 +163,7 @@ function search_user_data_In_Database($userSearch)
     return $data;
 }
 
-function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $eventsMonth)
+function filter_events_booking_data_In_Database($eventsLimited, $eventsMonth)
 {
     global $conn;
 
@@ -177,7 +177,7 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $e
         $eventsQuery .= " WHERE MONTH(added_on) = '$month' AND YEAR(added_on) = '$year'";
     }
 
-    $eventsQuery .= " ORDER BY event_id $eventsOrder LIMIT $eventsLimited";
+    $eventsQuery .= " ORDER BY event_id DESC LIMIT $eventsLimited";
 
     $eventsResult = mysqli_query($conn, $eventsQuery);
 
@@ -196,7 +196,8 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $e
             <td>' . $row['eventName'] . '</td>
             <td>' . $row['location'] . '</td>
             <td>' . $row['customerName'] . '</td>
-            <td>' . $date . '<br>' . $startTime . ' To ' . $endTime . '</td>
+            <td>' . $date .'</td>
+            <td>' .$startTime . ' To ' . $endTime . '</td>
             <td>' . $row['bookingPayment'] . '</td>
             <td>' . $row['payment_type'] . '</td>
             <td>
@@ -330,13 +331,13 @@ function search_events_booking_data_In_Database($eventsSearch)
     return $data;
 }
 
-function filter_houses_data_In_Database($housesLimited, $housesOrder)
+function filter_houses_data_In_Database($housesLimited)
 {
     global $conn;
 
     // Modify the query based on your database structure
     $houseQuery = "SELECT * FROM houses
-    ORDER BY house_id $housesOrder LIMIT $housesLimited";
+    ORDER BY house_id DESC LIMIT $housesLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -481,7 +482,7 @@ function search_houses_data_In_Database($housesSearch)
 }
 
 
-function filter_servant_data_In_Database($servantLimited, $servantOrder, $servantMonth)
+function filter_servant_data_In_Database($servantLimited, $servantMonth)
 {
     global $conn;
 
@@ -496,7 +497,7 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder, $servan
         $query .= " WHERE MONTH(servants.added_on) = '$month' AND YEAR(servants.added_on) = '$year'";
     }
 
-    $query .= " ORDER BY servants.servant_id $servantOrder LIMIT $servantLimited";
+    $query .= " ORDER BY servants.servant_id DESC LIMIT $servantLimited";
 
 
     $result = mysqli_query($conn, $query);
@@ -514,8 +515,8 @@ function filter_servant_data_In_Database($servantLimited, $servantOrder, $servan
             <td>' . $row['servantFees'] . '</td>
             <td>' . $row['payment_type'] . '</td>
               <td>
-           <a href="includes/pdf_maker?servants_id=' . $row['servant_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
-                            <i class="fas fa-file text-white m-0 p-1">Print</i>
+           <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none " href="includes/pdf_maker?servants_id=' . $row['servant_id'] . '&ACTION=VIEW" target="_blank" >  <span >
+                            <i class="fas fa-print mt-2" style="color: red;"></i>
                             </span></a>  
                     </td>
             <td>
@@ -647,16 +648,15 @@ function search_servant_data_In_Database($servantSearch)
 }
 
 
-function filter_tenant_data_In_Database($tenantLimited, $tenantOrder)
+function filter_tenant_data_In_Database($tenantLimited)
 {
     global $conn;
 
     // Modify the query based on your database structure
-    $query = "SELECT tenants.*, houses.house_number, houses.house_id, shops.shop_number, shops.shop_id 
+    $query = "SELECT tenants.*, houses.house_number, houses.house_id
         FROM tenants
         LEFT JOIN houses ON tenants.house_id = houses.house_id
-        LEFT JOIN shops ON shops.shop_id = tenants.shop_id
-        ORDER BY tenants.tenant_id $tenantOrder 
+        ORDER BY tenants.tenant_id DESC
         LIMIT $tenantLimited";
 
     // Debug: Print the query (remove in production)
@@ -690,7 +690,10 @@ function filter_tenant_data_In_Database($tenantLimited, $tenantOrder)
             $data .= '<td>-</td>'; // Show a placeholder if neither house_number nor shop_number is available
         }
 
-        $data .= '<td>' . $row['tenant_name'] . '</td>
+        $data .= '
+        <td>' . $row['house_or_shop'] . '</td>
+        <td>' . $row['tenant_name'] . '</td>
+            
             <td>' . $row['tenant_contact_no'] . '</td>
             <td>' . $row['tenant_cnic'] . '</td>
             <td>
@@ -980,7 +983,7 @@ function search_shops_data_In_Database($shopsSearch)
 }
 
 
-function filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth)
+function filter_eGate_data_In_Database($eGateLimited, $eGateMonth)
 {
     global $conn;
 
@@ -996,7 +999,7 @@ function filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth)
         $houseQuery .= " WHERE MONTH(egate.added_on) = '$month' AND YEAR(egate.added_on) = '$year'";
     }
 
-    $houseQuery .= " ORDER BY egate.eGate_id $eGateOrder 
+    $houseQuery .= " ORDER BY egate.eGate_id DESC
                  LIMIT $eGateLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
@@ -1028,8 +1031,8 @@ function filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth)
          
 
         <td>
-        <a href="includes/pdf_maker?eGate_id=' . $row['eGate_id'] . '&ACTION=VIEW" target="_blank" >  <span style="padding: 5px 1px; border-radius: 5px; color: white; background-color:lightcoral;">
-                            <i class="fas fa-file text-white m-0 p-1">Print</i>
+        <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none " href="includes/pdf_maker?eGate_id=' . $row['eGate_id'] . '&ACTION=VIEW" target="_blank" >  <span >
+                            <i class="fas fa-print mt-2" style="color: red;"></i>
                             </span></a>  
                     </td>
 
@@ -1169,7 +1172,7 @@ function search_eGate_data_In_Database($eGateSearch)
 }
 
 
-function filter_employee_data_In_Database($employeeLimited, $employeeOrder, $employeeMonth)
+function filter_employee_data_In_Database($employeeLimited, $employeeMonth)
 {
     global $conn;
 
@@ -1183,7 +1186,7 @@ function filter_employee_data_In_Database($employeeLimited, $employeeOrder, $emp
         $employeeQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
     }
 
-    $employeeQuery .= " ORDER BY employee_id $employeeOrder LIMIT $employeeLimited";
+    $employeeQuery .= " ORDER BY employee_id DESC LIMIT $employeeLimited";
 
     $employeeResult = mysqli_query($conn, $employeeQuery);
 
@@ -1364,7 +1367,7 @@ function search_employee_data_In_Database($employeeSearch)
 }
 
 
-function filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utility_chargesOrder, $Utility_chargesMonth)
+function filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utility_chargesMonth)
 {
     global $conn;
 
@@ -1378,7 +1381,7 @@ function filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utili
         $houseQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
     }
 
-    $houseQuery .= " ORDER BY utility_id $Utility_chargesOrder LIMIT $Utility_chargesLimited";
+    $houseQuery .= " ORDER BY utility_id DESC LIMIT $Utility_chargesLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -1515,7 +1518,7 @@ function search_Utility_charges_data_In_Database($Utility_chargesSearch)
 
 
 
-function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMaintOrder, $societyMaintDate)
+function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMaintDate)
 {
     global $conn;
 
@@ -1529,7 +1532,7 @@ function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMain
         $houseQuery .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
     }
 
-    $houseQuery .= " ORDER BY society_maint_id $societyMaintOrder LIMIT $societyMaintLimited";
+    $houseQuery .= " ORDER BY society_maint_id DESC LIMIT $societyMaintLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -2423,10 +2426,9 @@ if (isset($_POST['action'])) {
     // filter events booking
     if ($action == 'load-events_booking-Data') {
         $eventsLimited = $_POST['eventsLimited'];
-        $eventsOrder = $_POST['eventsOrder'];
-        $eventsMonth = $_POST['eventsMonth'];
-        ;
-        $result = filter_events_booking_data_In_Database($eventsLimited, $eventsOrder, $eventsMonth);
+        // $eventsOrder = $_POST['eventsOrder'];
+        $eventsMonth = $_POST['eventsMonth'];;
+        $result = filter_events_booking_data_In_Database($eventsLimited, $eventsMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2445,9 +2447,9 @@ if (isset($_POST['action'])) {
     // filter Society Houses 
     if ($action == 'load-houses-Data') {
         $housesLimited = $_POST['housesLimited'];
-        $housesOrder = $_POST['housesOrder'];
 
-        $result = filter_houses_data_In_Database($housesLimited, $housesOrder);
+
+        $result = filter_houses_data_In_Database($housesLimited);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2466,10 +2468,10 @@ if (isset($_POST['action'])) {
     // Filter servant load
     if ($action == 'load-servant-Data') {
         $servantLimited = $_POST['servantLimited'];
-        $servantOrder = $_POST['servantOrder'];
+        // $servantOrder = $_POST['servantOrder'];
         $servantMonth = $_POST['servantMonth'];
 
-        $result = filter_servant_data_In_Database($servantLimited, $servantOrder, $servantMonth);
+        $result = filter_servant_data_In_Database($servantLimited, $servantMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2487,9 +2489,9 @@ if (isset($_POST['action'])) {
     // Filter tenants load
     if ($action == 'load-tenant-Data') {
         $tenantLimited = $_POST['tenantLimited'];
-        $tenantOrder = $_POST['tenantOrder'];
 
-        $result = filter_tenant_data_In_Database($tenantLimited, $tenantOrder);
+
+        $result = filter_tenant_data_In_Database($tenantLimited);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2530,10 +2532,10 @@ if (isset($_POST['action'])) {
     // filter E-gate 
     if ($action == 'load-eGate_booking-Data') {
         $eGateLimited = $_POST['eGateLimited'];
-        $eGateOrder = $_POST['eGateOrder'];
+        // $eGateOrder = $_POST['eGateOrder'];
         $eGateMonth = $_POST['eGateMonth'];
 
-        $result = filter_eGate_data_In_Database($eGateLimited, $eGateOrder, $eGateMonth);
+        $result = filter_eGate_data_In_Database($eGateLimited, $eGateMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2553,10 +2555,10 @@ if (isset($_POST['action'])) {
     // filter employee booking
     if ($action == 'load-employee-Data') {
         $employeeLimited = $_POST['employeeLimited'];
-        $employeeOrder = $_POST['employeeOrder'];
+        // $employeeOrder = $_POST['employeeOrder'];
         $employeeMonth = $_POST['employeeMonth'];
 
-        $result = filter_employee_data_In_Database($employeeLimited, $employeeOrder, $employeeMonth);
+        $result = filter_employee_data_In_Database($employeeLimited, $employeeMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2577,10 +2579,10 @@ if (isset($_POST['action'])) {
     // filter Utility_charges
     if ($action == 'load-Utility_charges-Data') {
         $Utility_chargesLimited = $_POST['Utility_chargesLimited'];
-        $Utility_chargesOrder = $_POST['Utility_chargesOrder'];
+        // $Utility_chargesOrder = $_POST['Utility_chargesOrder'];
         $Utility_chargesMonth = $_POST['Utility_chargesMonth'];
 
-        $result = filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utility_chargesOrder, $Utility_chargesMonth);
+        $result = filter_Utility_charges_data_In_Database($Utility_chargesLimited, $Utility_chargesMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2599,10 +2601,10 @@ if (isset($_POST['action'])) {
     // filter events booking
     if ($action == 'load-societyMaint-Data') {
         $societyMaintLimited = $_POST['societyMaintLimited'];
-        $societyMaintOrder = $_POST['societyMaintOrder'];
+        // $societyMaintOrder = $_POST['societyMaintOrder'];
         $societyMaintDate = $_POST['societyMaintDate'];
 
-        $result = filter_societyMaint_data_In_Database($societyMaintLimited, $societyMaintOrder, $societyMaintDate);
+        $result = filter_societyMaint_data_In_Database($societyMaintLimited, $societyMaintDate);
 
         $response = array('data' => $result);
         echo json_encode($response);

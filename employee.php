@@ -95,12 +95,12 @@ include ("includes/sidebar.php");
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            <div class="me-2">
+                            <!-- <div class="me-2">
                                 <select id="employee-order" class="form-control" onchange="load_employee_Data()">
                                     <option value="ASC">Old</option>
                                     <option value="DESC">New</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/employeesExcel" target="_blank">
@@ -157,7 +157,7 @@ include ("includes/sidebar.php");
     function load_employee_Data() {
 
         let employeeLimited = $("#employee-limit").val();
-        let employeeOrder = $("#employee-order").val();
+        // let employeeOrder = $("#employee-order").val();
         let employeeMonth = $("#employee-month").val();
 
         $.ajax({
@@ -167,7 +167,7 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-employee-Data',
                 employeeLimited: employeeLimited,
-                employeeOrder: employeeOrder,
+                // employeeOrder: employeeOrder,
                 employeeMonth: employeeMonth
             },
             success: function (response) {

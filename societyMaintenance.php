@@ -90,13 +90,13 @@ include ("includes/sidebar.php");
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            <div class="me-2">
+                            <!-- <div class="me-2">
                                 <select id="societyMaint-order" class="form-control"
                                     onchange="load_societyMaint_Data()">
                                     <option value="DESC">New</option>
                                     <option value="ASC">Old</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/societyMaintenanceExcel" target="_blank">
@@ -148,7 +148,7 @@ include ("includes/sidebar.php");
     function load_societyMaint_Data() {
 
         let societyMaintLimited = $("#societyMaint-limit").val();
-        let societyMaintOrder = $("#societyMaint-order").val();
+        // let societyMaintOrder = $("#societyMaint-order").val();
         let societyMaintDate = $("#societyMaint-date").val();
 
         $.ajax({
@@ -158,7 +158,7 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-societyMaint-Data',
                 societyMaintLimited: societyMaintLimited,
-                societyMaintOrder: societyMaintOrder,
+                // societyMaintOrder: societyMaintOrder,
                 societyMaintDate: societyMaintDate
             },
             success: function (response) {

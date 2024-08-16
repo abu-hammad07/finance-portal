@@ -28,7 +28,7 @@ include ("includes/sidebar.php");
     <?php
     if (isset($_SESSION['success_message_house'])) {
         echo '<div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success_message_house'] . '
+                    ' . $_SESSION['success_message_house'] . '<a href="penalty" class="btn btn-success" style="float: right; margin-top: -8px;">View Details</a>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
         unset($_SESSION['success_message_house']);
@@ -56,15 +56,15 @@ include ("includes/sidebar.php");
                         <span class="text-danger" id="penalty-type_error"></span>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Penalty CINC</label>
-                        <input type="number" required name="penalty_cnic" class="form-control"
+                        <label for="PenaltyCnic" class="form-label">Penalty CINC</label>
+                        <input type="text" required name="penalty_cnic" id="PenaltyCnic" class="form-control"
                             placeholder="Penalty CINC" required>
                         <span class="text-danger" id="Penal-Cnic_error"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">Penalty Charges</label>
-                        <input type="number" required name="penalty_charges" class="form-control"
+                        <label for="PenaltyCharge" class="form-label">Penalty Charges</label>
+                        <input type="text" required name="penalty_charges" id="PenaltyCharge" class="form-control"
                             placeholder="Penalty Charges" required>
                         <span class="text-danger" id="Penal-charges_error"></span>
                     </div>
@@ -91,3 +91,23 @@ include ("includes/sidebar.php");
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
+<script>
+    var PenaltyCharge = document.getElementById('PenaltyCharge');
+    PenaltyCharge.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    var PenaltyCnic = document.getElementById('PenaltyCnic');
+
+    PenaltyCnic.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9-]/g, '');
+        if (this.value.length > 5 && this.value[5] !== '-') {
+            this.value = this.value.slice(0, 5) + '-' + this.value.slice(5);
+        }
+        if (this.value.length > 13 && this.value[13] !== '-') {
+            this.value = this.value.slice(0, 13) + '-' + this.value.slice(13);
+        }
+        if (this.value.length > 15) {
+            this.value = this.value.slice(0, 15);
+        }
+    });
+</script>

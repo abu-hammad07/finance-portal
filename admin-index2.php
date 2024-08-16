@@ -1,7 +1,7 @@
 <?php
-include_once ('includes/config.php');
+include_once('includes/config.php');
 // ------------filter penalty-----------
-function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder, $penaltyMonth)
+function filter_penalty_data_In_Database($penaltyLimited, $penaltyMonth)
 {
     global $conn;
 
@@ -15,7 +15,7 @@ function filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder, $penalt
         $query .= " WHERE month(created_date) = '$month' AND year(created_date) = '$year'";
     }
 
-    $query .= " ORDER BY id $penaltyOrder LIMIT $penaltyLimited";
+    $query .= " ORDER BY id DESC LIMIT $penaltyLimited";
 
     $result = mysqli_query($conn, $query);
 
@@ -216,7 +216,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                 <td>' . htmlspecialchars($row['payment_type']) . '</td>
                 <td>
                     <a href="maintenanceAdd.php?maintenance_add_id=' . htmlspecialchars($row['maintenance_id']) . '">
-                        <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: ' . ($row['status'] == 'unpaid' ? 'lightcoral' : 'lightgreen') . ';">
+                        <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: ' . ($row['status'] == 'unpaid' ? 'red' : '#00C161') . ';">
                             ' . htmlspecialchars($row['status']) . '
                         </span>
                     </a>
@@ -224,7 +224,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                 <td>';
         if ($row['status'] != 'unpaid') {
             $data .= '
-            <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none text-danger" href="includes/pdf_maker?MAT_ID=' . $row['maintenance_id'] . '&ACTION=VIEW" target="_blank">
+            <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none " style="color: red;" href="includes/pdf_maker?MAT_ID=' . $row['maintenance_id'] . '&ACTION=VIEW" target="_blank">
                 <span><i class="fas fa-print mt-2"></i></span>
             </a>';
         }
@@ -336,6 +336,15 @@ function search_maintenace_data_In_Database($manitenaceSearch)
                         </span>
                     </a>
                 </td>
+                          <td>';
+        if ($row['status'] != 'unpaid') {
+            $data .= '
+            <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none " style="color: red;" href="includes/pdf_maker?MAT_ID=' . $row['maintenance_id'] . '&ACTION=VIEW" target="_blank">
+                <span><i class="fas fa-print mt-2"></i></span>
+                </a>
+                <td>';
+        }
+        $data .= '   
                 <td>
                     <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deletepenalty' . htmlspecialchars($row['maintenance_id']) . '" data-bs-placement="top" title="Delete">
                         <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete">
@@ -583,10 +592,10 @@ if (isset($_POST['action'])) {
     // ------------filter penalty-----------
     if ($action == 'load-penalty-Data') {
         $penaltyLimited = $_POST['penaltyLimited'];
-        $penaltyOrder = $_POST['penaltyOrder'];
+        // $penaltyOrder = $_POST['penaltyOrder'];
         $penaltyMonth = $_POST['penaltyMonth'];
 
-        $result = filter_penalty_data_In_Database($penaltyLimited, $penaltyOrder, $penaltyMonth);
+        $result = filter_penalty_data_In_Database($penaltyLimited, $penaltyMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);

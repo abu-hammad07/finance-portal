@@ -72,11 +72,11 @@ function penaltyDelete()
         $deleteQuery = "DELETE FROM penalty where id = ('{$delete_id}')";
         $deleteSQL = mysqli_query($conn, $deleteQuery);
         if ($deleteSQL) {
-            $_SESSION['success_updated_penalty'] = "Servant Deleted Successfully";
+            $_SESSION['success_updated_penalty'] = "Penalty Deleted Successfully";
             header('location: penalty');
             exit();
         } else {
-            $_SESSION['success_updated_penalty'] = "Servant Not Deleted";
+            $_SESSION['success_updated_penalty'] = "Penalty Not Deleted";
             header('location: penalty');
             exit();
         }

@@ -78,10 +78,10 @@ include ("includes/sidebar.php");
                                     <span class="text-danger" id="full_name_error"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">CNIC
+                                    <label for="EmployeeCnic" class="form-label">CNIC
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input type="number" name="cnic" id="cnic" class="form-control" placeholder="XXXXX-XXXXXXX-X"
+                                    <input type="number" name="cnic" id="EmployeeCnic" class="form-control" placeholder="XXXXX-XXXXXXX-X"
                                         required value="<?= $row['employee_cnic'] ?>">
                                     <span class="text-danger" id="cnic_error"></span>
                                 </div>
@@ -94,10 +94,10 @@ include ("includes/sidebar.php");
                                     <span class="text-danger" id="qualification_error"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Phone Number
+                                    <label for="EmployeeContact" class="form-label">Phone Number
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input type="number" name="phone_number" id="phone_number" class="form-control"
+                                    <input type="number" name="phone_number" id="EmployeeContact" class="form-control"
                                         placeholder="03XXXXXXXXX" required value="<?= $row['employee_contact'] ?>">
                                     <span class="text-danger" id="phone_number_error"></span>
                                 </div>
@@ -200,3 +200,24 @@ include ("includes/sidebar.php");
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
+
+<script>
+    var EmployeeContact = document.getElementById('EmployeeContact');
+    EmployeeContact.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    var EmployeeCnic = document.getElementById('EmployeeCnic');
+
+    EmployeeCnic.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9-]/g, '');
+        if (this.value.length > 5 && this.value[5] !== '-') {
+            this.value = this.value.slice(0, 5) + '-' + this.value.slice(5);
+        }
+        if (this.value.length > 13 && this.value[13] !== '-') {
+            this.value = this.value.slice(0, 13) + '-' + this.value.slice(13);
+        }
+        if (this.value.length > 15) {
+            this.value = this.value.slice(0, 15);
+        }
+    });
+</script>
