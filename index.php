@@ -2,6 +2,7 @@
 session_start();
 include_once ("includes/config.php");
 include_once ("includes/function.php");
+include_once ("includes/auto_addMontainace.php");
 // include_once("includes/fetch_data.php");
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {

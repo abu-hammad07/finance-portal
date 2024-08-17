@@ -52,11 +52,7 @@ updateSocietyMaintenance();
                                             <input type="number" name="society_maint_amount" id="society_maint_amount" class="form-control" placeholder="$100" required value="<?= $row['society_maint_amount']; ?>">
                                             <span class="text-danger" id="society_maint_amount_error"></span>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Due Date</label>
-                                            <input type="date" name="society_maint_dueDate" id="society_maint_dueDate" class="form-control" required value="<?= $row['society_maint_dueDate']; ?>">
-                                            <span class="text-danger" id="society_maint_dueDate_error"></span>
-                                        </div>
+                                       
                                         <div class="col-md-6">
                                             <label class="form-label">Payment Date</label>
                                             <input type="date" name="society_maint_paymentDate" id="society_maint_paymentDate" class="form-control" value="<?= $row['society_maint_paymentDate']; ?>" required>

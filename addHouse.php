@@ -151,7 +151,6 @@ include("includes/sidebar.php");
     OwnerContact.addEventListener('input', function() {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
-    var OwnerCnic = document.getElementById('OwnerCnic');
 
     OwnerCnic.addEventListener('input', function() {
         this.value = this.value.replace(/[^0-9-]/g, '');

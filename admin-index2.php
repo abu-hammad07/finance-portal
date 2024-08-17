@@ -151,7 +151,7 @@ function search_penalty_data_In_Database($penaltySearch)
 // ==========================maintenace===================
 // =======================
 // ------------filter penalty-----------
-function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrder, $maintenaceMonth)
+function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceMonth)
 {
     global $conn;
 
@@ -165,7 +165,7 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
         $query .= " WHERE MONTH(added_on) = $month AND YEAR(added_on) = $year";
     }
 
-    $query .= " ORDER BY maintenance_id $maintenaceOrder LIMIT $maintenaiceLimited";
+    $query .= " ORDER BY maintenance_id DESC LIMIT $maintenaiceLimited";
 
     $result = mysqli_query($conn, $query);
 
@@ -214,13 +214,23 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                 <td>' . htmlspecialchars($row['maintenance_month']) . '</td>
                 <td>' . htmlspecialchars($row['maintenance_peyment']) . '</td>
                 <td>' . htmlspecialchars($row['payment_type']) . '</td>
-                <td>
+                <td>';
+        if ($row["status"] == 'unpaid') {
+            $data .= '  
                     <a href="maintenanceAdd.php?maintenance_add_id=' . htmlspecialchars($row['maintenance_id']) . '">
-                        <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: ' . ($row['status'] == 'unpaid' ? 'red' : '#00C161') . ';">
+                        <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color: red;">
                             ' . htmlspecialchars($row['status']) . '
                         </span>
                     </a>
-                </td>
+                </td>';
+        } else {
+            $data .= '  
+                        <span style="padding: 5px 10px; border-radius: 5px; color: white; background-color:  #00C161;">
+                            ' . htmlspecialchars($row['status']) . '
+                        </span>
+                ';
+        }
+        $data .= '  
                 <td>';
         if ($row['status'] != 'unpaid') {
             $data .= '
@@ -228,35 +238,47 @@ function filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrde
                 <span><i class="fas fa-print mt-2"></i></span>
             </a>';
         }
-        $data .= '    
-                <td>
-                    <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deletepenalty' . htmlspecialchars($row['maintenance_id']) . '" data-bs-placement="top" title="Delete">
-                        <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete">
-                            <i class="fas fa-trash text-danger p-1"></i>
-                        </span>
-                    </button>
-                    <div class="modal fade" id="deletepenalty' . htmlspecialchars($row['maintenance_id']) . '" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? ID: <span class="text-danger">' . htmlspecialchars($row['maintenance_id']) . '</span></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-start">
-                                    <p>Please confirm that you want to delete your entry. <br>
-                                        Once deleted, you won\'t be able to recover it. <br>
-                                        Please proceed with caution.
-                                    </p>
-                                </div>
-                                <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                    <a href="?Maintenance_delete_id=' . htmlspecialchars($row['maintenance_id']) . '" class="btn btn-danger" name="delete_penalty">Delete</a>
-                                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>';
+        if ($row['status'] != 'unpaid') {
+            $data .= '
+         <td>
+         <a href="MaintenanceEdit.php?MaintenanceEdit=' . htmlspecialchars($row['maintenance_id']) . '"  name="delete_penalty">
+         <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deletepenalty' . htmlspecialchars($row['maintenance_id']) . '" data-bs-placement="top" title="Delete">
+                      <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete">
+                           <i class="fas fa-edit text-success p-1"></i>
+                       </span>
+                   </button></a>
+         </td>
+         ';
+        }
+        // $data .= '    
+        //         <td>
+        //             <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deletepenalty' . htmlspecialchars($row['maintenance_id']) . '" data-bs-placement="top" title="Delete">
+        //                 <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete">
+        //                     <i class="fas fa-trash text-danger p-1"></i>
+        //                 </span>
+        //             </button>
+        //             <div class="modal fade" id="deletepenalty' . htmlspecialchars($row['maintenance_id']) . '" tabindex="-1" aria-hidden="true">
+        //                 <div class="modal-dialog" role="document">
+        //                     <div class="modal-content">
+        //                         <div class="modal-header">
+        //                             <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? ID: <span class="text-danger">' . htmlspecialchars($row['maintenance_id']) . '</span></h5>
+        //                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        //                         </div>
+        //                         <div class="modal-body text-start">
+        //                             <p>Please confirm that you want to delete your entry. <br>
+        //                                 Once deleted, you won\'t be able to recover it. <br>
+        //                                 Please proceed with caution.
+        //                             </p>
+        //                         </div>
+        //                         <div class="modal-footer justify-content-start" style="margin-top: -20px;">
+        //                             <a href="?Maintenance_delete_id=' . htmlspecialchars($row['maintenance_id']) . '" class="btn btn-danger" name="delete_penalty">Delete</a>
+        //                             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </td>
+        $data .= '   </tr>';
     }
     // Check if $data is empty
     if (empty($data)) {
@@ -613,10 +635,10 @@ if (isset($_POST['action'])) {
     // ------------filter maintenace-----------
     if ($action == 'load-maintenance-Data') {
         $maintenaiceLimited = $_POST['maintenaiceLimited'];
-        $maintenaceOrder = $_POST['maintenaceOrder'];
+        // $maintenaceOrder = $_POST['maintenaceOrder'];
         $maintenaceMonth = $_POST['maintenaceMonth'];
 
-        $result = filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceOrder, $maintenaceMonth);
+        $result = filter_maintenace_data_In_Database($maintenaiceLimited, $maintenaceMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);

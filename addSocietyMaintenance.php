@@ -61,12 +61,6 @@ include ("includes/sidebar.php");
                         <span class="text-danger" id="society_maint_amount_error"></span>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Due Date</label>
-                        <input type="date" name="society_maint_dueDate" id="society_maint_dueDate" class="form-control"
-                            required>
-                        <span class="text-danger" id="society_maint_dueDate_error"></span>
-                    </div>
-                    <div class="col-md-6">
                         <label class="form-label">Payment Date</label>
                         <input type="date" name="society_maint_paymentDate" id="society_maint_paymentDate"
                             class="form-control" value="<?php echo date('Y-m-d'); ?>" required>

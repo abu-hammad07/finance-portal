@@ -91,150 +91,41 @@ use Dompdf\Dompdf;
 function addMaintenance()
 {
     global $conn;
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $edit_id = mysqli_real_escape_string($conn, $_POST['maintenace_edit_id']);
         $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
-        $maintenance_month = mysqli_real_escape_string($conn, $_POST['maintenance_month']);
-        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenance_charges']);
+        $maintenance_month = mysqli_real_escape_string($conn, $_POST['maintenace_month']);
+        $maintenance_charges = mysqli_real_escape_string($conn, $_POST['maintenace_charges']);
+        $payment_type = mysqli_real_escape_string($conn, $_POST['pymentType']);
 
         $added_by = $_SESSION['username'];
-        $added_on = date("Y-m-d");
+        $added_on = date("d-F-Y, H:i A");
 
-        if ($house_or_shop === 'house') {
-            $insertQuery = "INSERT INTO maintenance_payments (house_id, house_or_shop, maintenance_month, maintenance_peyment, added_on, added_by) 
-                            VALUES ('$house_shop_id', '$house_or_shop', '$maintenance_month', '$maintenance_charges', '$added_on', '$added_by')";
-        } elseif ($house_or_shop === 'shop') {
-            $insertQuery = "INSERT INTO maintenance_payments (shop_id, house_or_shop, maintenance_month, maintenance_peyment, added_on, added_by) 
-                            VALUES ('$house_shop_id', '$house_or_shop', '$maintenance_month', '$maintenance_charges', '$added_on', '$added_by')";
-        } else {
-            $_SESSION['error_message_house'] = "Invalid house or shop selection.";
-            header('location: addMaintenance');
-            exit();
-        }
+        $updateQuery = "UPDATE maintenance_payments 
+                            SET status = 'Paid', 
+                                payment_type = '$payment_type',
+                                added_on = '$added_on', 
+                                added_by = '$added_by' 
+                            WHERE maintenance_id = '$edit_id'";
 
-        if (isset($insertQuery)) {
-            $query = mysqli_query($conn, $insertQuery);
+        // Debugging: Check if $updateQuery is set properly
+        if (isset($updateQuery)) {
+            $query = mysqli_query($conn, $updateQuery);
             if ($query) {
-                $_SESSION['success_message_house'] = "$maintenance_month Added Successfully";
-
-                // PDF generation
-                $dompdf = new Dompdf();
-                $html = "
-                <html>
-                <head>
-                    <style>
-                        .main_header {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            flex-direction: row;
-                            border-bottom: 1px solid #ccc;
-                        }
-                        .main_header .title h2 {
-                            font-size: 20px;
-                            font-weight: bold;
-                        }
-                        .main_header .contact p {
-                            margin: 0 0;
-                        }
-                        .main_form {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                        }
-                        .info {
-                            margin-bottom: 10px;
-                        }
-                        .info .label {
-                            font-weight: bold;
-                            display: inline-block;
-                            width: 150px;
-                        }
-                        .info .value {
-                            display: inline-block;
-                        }
-                        .footer {
-                            text-align: center;
-                            margin-top: 20px;
-                        }
-                        ol li {
-                            margin-bottom: 15px;
-                        }
-                    </style>
-                </head>
-                <body>
-                     <div class='main_header'>
-                            <img src='./KDA.png' alt='Logo'/>
-                            <h2>KDA Officer Co-Operative Housing Society<br/>Residents Welfare Association</h2>
-                            <div class='contact'>
-                            <p>Email: <span>info@gmail.com</span></p>
-                            <p>Website: <span>www.example.com</span></p>
-                            <p>Phone: <span>034567238</span></p>
-                        </div>
-                    </div>
-                    
-
-                    <div class='main_form'>
-                        <div class='data'>
-                            <div class='info'>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-                            </div>
-                            <div class='info'>
-                                <span class='label'>House Number:</span>
-                                <span class='value'>$house_shop_id</span>
-                            </div>
-                            <div class='info'>
-                                <span class='label'>Maintenance Date:</span>
-                                <span class='value'>$maintenance_month</span>
-                            </div>
-                            <div class='info'>
-                                <span class='label'>Maintenance Payment:</span>
-                                <span class='value'>$maintenance_charges</span>
-                            </div>
-                            <div class='info'>
-                                <span class='label'>Added By:</span>
-                                <span class='value'>$added_by</span>
-                            </div>
-                        </div>
-                        <div class='description'>
-                            <ol>
-                                <li>All Funds are to be used for Society's Welfare.</li>
-                                <li>Residents paying partial monthly Payments would be referred as defaulters.</li>
-                                <li>Donations are most welcome, ask for receipt when donating.</li>
-                                <li>Association could not be held responsible for any mishap.</li>
-                                <li>Complaints and Suggestions will only be entertained in written form.</li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <div class='footer'>
-                        <p>This is a computer-generated receipt, no signature required.</p>
-                    </div>
-                </body>
-                </html>
-                ";
-
-                $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'landscape');
-                $dompdf->render();
-
-                // Save the PDF to a temporary file
-                $output = $dompdf->output();
-                $pdfFilePath = 'maintenance_payment_receipt.pdf';
-                file_put_contents($pdfFilePath, $output);
-
-                // Redirect to the temporary file to open it in a new tab
-                header('Location: ' . $pdfFilePath);
+                $_SESSION['success_updated_Maintenance'] = " $maintenance_month Maintenance Added successfully.";
+                $_SESSION['maintainace_id'] = "$edit_id ";
+                header('Location:maintenanceCharges ' );
                 exit();
+
             } else {
-                $_SESSION['error_message_house'] = "Something went wrong. Please try again.";
-                header('location: addMaintenance');
+                $_SESSION['error_message_Maintenance'] = "Something went wrong. Please try again.";
+                header('location: maintenanceCharges');
                 exit();
             }
         } else {
-            $_SESSION['error_message_house'] = "Insert query not set. Please check your input.";
-            header('location: addMaintenance');
+            $_SESSION['error_message_Maintenance'] = "Update query not set. Please check your input.";
+            header('location: maintenanceCharges');
             exit();
         }
     }
@@ -253,6 +144,7 @@ function updateMaintenance()
 
         $updated_by = $_SESSION['username'];
         $updated_on = date("Y-m-d");
+        $added_on = date("d-F-Y, H:i A");
 
         $updateQuery = "UPDATE maintenance_payments 
                             SET status = 'Paid', 
@@ -265,96 +157,96 @@ function updateMaintenance()
         if (isset($updateQuery)) {
             $query = mysqli_query($conn, $updateQuery);
             if ($query) {
-                $_SESSION['success_updated_Maintenance'] = " $maintenance_month Maintenance Added successfully.";
+                $_SESSION['success_updated_Maintenance'] = " $maintenance_month Maintenance Updated successfully.";
+                $_SESSION['maintainace_id'] = "$edit_id ";
 
-
-                $dompdf = new Dompdf();
-                $html = "
-                <html>
-                <head>
-                <style type='text/css'>
-                    body {
-                        line-height: 24px;
-                        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-                        color: #000;
-                    }
-                </style>
-                </head>
-                <body>
-                   <table width='100%' border='0' cellpadding='0' cellspacing='0'>
-                       <tr>
-                           <td style='border-bottom: 1px solid #000;' align='left'>
-                               <img src='KDA.png' alt='Logo' />
-                           </td>
-                           <td style='border-bottom: 1px solid #000;' align='center'>
-                               <h2>KDA Officer Co-Operative Housing Society<br/>Residents Welfare Association</h2>
-                           </td>
-                           <td align='right' style='border-bottom: 1px solid #000;'>
-                               <p>Email: <span>info@gmail.com</span></p>
-                               <p>Website: <span>www.example.com</span></p>
-                               <p>Phone: <span>034567238</span></p>
-                           </td>
-                       </tr>
-                       <tr><br>
-                           <td colspan='3'>
-                               <p>Received with thanks the sum of Rupees <strong> Only (" . $maintenance_charges . ")</strong> from</p>
-                           </td>
-                       </tr>
-                       <br><br>
-                       <tr>
-                           <td colspan='2'>
-                               <span style='font-weight:bold;'>House or Shop:</span>
-                               <span class='value'>" . $house_or_shop . "</span>
-                               <br><br>
-                               <span style='font-weight:bold;'>House Number:</span>
-                               <span class='value'>" . $house_shop_id . "</span>
-                               <br><br>
-                               <span style='font-weight:bold;'>Maintenance Date:</span>
-                               <span class='value'>" . $maintenance_month . "</span>
-                               <br><br>
-                               <span style='font-weight:bold;'>Payment Type:</span>
-                               <span class='value'>" . $payment_type . "</span>
-                               <br><br>
-                               <span style='font-weight:bold;'>Maintenance Payment:</span>
-                               <span class='value'>" . $maintenance_charges . "</span>
-                               <br><br>
-                               <span style='font-weight:bold;'>Added By:</span>
-                               <span class='value'>" . $updated_by . "</span>
-                               <br><br>
-                           </td>
-                           <td align='right' text-align='left'>
-                               <ol>
-                                   <li>All Funds are to be used for Society's Welfare.</li>
-                                   <li>Residents paying partial monthly Payments would be referred to as defaulters.</li>
-                                   <li>Donations are most welcome, ask for receipt when donating.</li>
-                                   <li>Association could not be held responsible for any mishap.</li>
-                                   <li>Complaints and Suggestions will only be entertained in written form.</li>
-                               </ol>
-                           </td>
-                       </tr>
-                       <tfoot>
-                           <tr>
-                               <td colspan='3' align='center'>
-                                   <p>This is a computer-generated receipt, no signature required.</p>
-                               </td>
-                           </tr>
-                       </tfoot>
-                   </table>
-                </body>
-                </html>
-                ";
+                // $dompdf = new Dompdf();
+                // $html = "
+                // <html>
+                // <head>
+                // <style type='text/css'>
+                //     body {
+                //         line-height: 24px;
+                //         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                //         color: #000;
+                //     }
+                // </style>
+                // </head>
+                // <body>
+                //    <table width='100%' border='0' cellpadding='0' cellspacing='0'>
+                //        <tr>
+                //            <td style='border-bottom: 1px solid #000;' align='left'>
+                //                <img src='KDA.png' alt='Logo' />
+                //            </td>
+                //            <td style='border-bottom: 1px solid #000;' align='center'>
+                //                <h2>KDA Officer Co-Operative Housing Society<br/>Residents Welfare Association</h2>
+                //            </td>
+                //            <td align='right' style='border-bottom: 1px solid #000;'>
+                //                <p>Email: <span>info@gmail.com</span></p>
+                //                <p>Website: <span>www.example.com</span></p>
+                //                <p>Phone: <span>034567238</span></p>
+                //            </td>
+                //        </tr>
+                //        <tr><br>
+                //            <td colspan='3'>
+                //                <p>Received with thanks the sum of Rupees <strong> Only (" . $maintenance_charges . ")</strong> from</p>
+                //            </td>
+                //        </tr>
+                //        <br><br>
+                //        <tr>
+                //            <td colspan='2'>
+                //                <span style='font-weight:bold;'>House or Shop:</span>
+                //                <span class='value'>" . $house_or_shop . "</span>
+                //                <br><br>
+                //                <span style='font-weight:bold;'>House Number:</span>
+                //                <span class='value'>" . $house_shop_id . "</span>
+                //                <br><br>
+                //                <span style='font-weight:bold;'>Maintenance Date:</span>
+                //                <span class='value'>" . $maintenance_month . "</span>
+                //                <br><br>
+                //                <span style='font-weight:bold;'>Payment Type:</span>
+                //                <span class='value'>" . $payment_type . "</span>
+                //                <br><br>
+                //                <span style='font-weight:bold;'>Maintenance Payment:</span>
+                //                <span class='value'>" . $maintenance_charges . "</span>
+                //                <br><br>
+                //                <span style='font-weight:bold;'>Added By:</span>
+                //                <span class='value'>" . $updated_by . "</span>
+                //                <br><br>
+                //            </td>
+                //            <td align='right' text-align='left'>
+                //                <ol>
+                //                    <li>All Funds are to be used for Society's Welfare.</li>
+                //                    <li>Residents paying partial monthly Payments would be referred to as defaulters.</li>
+                //                    <li>Donations are most welcome, ask for receipt when donating.</li>
+                //                    <li>Association could not be held responsible for any mishap.</li>
+                //                    <li>Complaints and Suggestions will only be entertained in written form.</li>
+                //                </ol>
+                //            </td>
+                //        </tr>
+                //        <tfoot>
+                //            <tr>
+                //                <td colspan='3' align='center'>
+                //                    <p>This is a computer-generated receipt, no signature required.</p>
+                //                </td>
+                //            </tr>
+                //        </tfoot>
+                //    </table>
+                // </body>
+                // </html>
+                // ";
                 
 
-                $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'landscape');
-                $dompdf->render();
-                $dompdf->stream("maintenance_payment_receipt.pdf", array("Attachment" => false));
+                // $dompdf->loadHtml($html);
+                // $dompdf->setPaper('A4', 'landscape');
+                // $dompdf->render();
+                // $dompdf->stream("maintenance_payment_receipt.pdf", array("Attachment" => false));
 
-                $insert = "INSERT INTO print (
-                    print_name,
-                )";
+                // $insert = "INSERT INTO print (
+                //     print_name,
+                // )";
                 // --------insert print-------
-
+                header('Location:maintenanceCharges ' );
                 exit();
             } else {
                 $_SESSION['error_message_Maintenance'] = "Something went wrong. Please try again.";

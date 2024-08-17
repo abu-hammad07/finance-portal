@@ -206,12 +206,12 @@ if ($row['image'] == '') {
                                                     <span>Tenents</span>
                                                 </a>
                                             </li>
-                                            <li class="nav-item <?php if ($page == 'shops.php' || $page == 'addShop.php' || $page == 'shopView.php' || $page == 'shopEdit.php')
+                                            <!-- <li class="nav-item <?php if ($page == 'shops.php' || $page == 'addShop.php' || $page == 'shopView.php' || $page == 'shopEdit.php')
                                                 echo ('active'); ?>">
                                                 <a class="nav-link" href="shops">
                                                     <span>Shops</span>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             <li class="nav-item <?php if ($page == 'eGate.php' || $page == 'addeGate.php' || $page == 'eGateView.php' || $page == 'eGateEdit.php')
                                                 echo ('active'); ?>">
                                                 <a class="nav-link" href="eGate">
