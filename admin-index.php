@@ -196,8 +196,8 @@ function filter_events_booking_data_In_Database($eventsLimited, $eventsMonth)
             <td>' . $row['eventName'] . '</td>
             <td>' . $row['location'] . '</td>
             <td>' . $row['customerName'] . '</td>
-            <td>' . $date .'</td>
-            <td>' .$startTime . ' To ' . $endTime . '</td>
+            <td>' . $date . '</td>
+            <td>' . $startTime . ' To ' . $endTime . '</td>
             <td>' . $row['bookingPayment'] . '</td>
             <td>' . $row['payment_type'] . '</td>
             <td>
@@ -331,13 +331,21 @@ function search_events_booking_data_In_Database($eventsSearch)
     return $data;
 }
 
-function filter_houses_data_In_Database($housesLimited)
+function filter_houses_data_In_Database($housesLimited, $housesMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($housesMonth));
+    $year = date('Y', strtotime($housesMonth));
+
     // Modify the query based on your database structure
-    $houseQuery = "SELECT * FROM houses
-    ORDER BY house_id DESC LIMIT $housesLimited";
+    $houseQuery = "SELECT * FROM houses";
+
+    if (!empty($housesMonth)) {
+        $houseQuery .= " WHERE MONTH(added_on) = " . $month . " AND YEAR(added_on) = " . $year;
+    }
+
+    $houseQuery .= " ORDER BY house_id DESC LIMIT $housesLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -345,49 +353,27 @@ function filter_houses_data_In_Database($housesLimited)
     $count = 1;
     while ($row = mysqli_fetch_assoc($houseResult)) {
 
-        $data .= '
+        $date = date("d-F-Y", strtotime($row['added_on']));
 
+        $data .= '
         <tr>
             <td>' . $count++ . '</td>
             <td>' . $row['house_number'] . '</td>
+            <td>' . $row['house_or_shop'] . '</td>
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['owner_contact'] . '</td>
-            <td>' . $row['owner_cnic'] . '</td>
-            <td>' . $row['occupancy_status'] . '</td>
             <td>' . $row['maintenance_charges'] . '</td>
-            <td>' . $row['added_on'] . '</td>
+            <td>' . $date . '</td>
             <td>
-                <a href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">
-                    <span>
-                        <i class="fas fa-pencil-alt me-1 text-success"></i>
-                    </span>
-                </a>
-                <a class="" href="houseView.php?house_view_id=' . $row['house_id'] . '">
-                    <i class="fas fa-eye me-1 text-info"></i>
-                </a>
-                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteHouse' . $row['house_id'] . '" data-bs-placement="top" title="Delete">
-                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
-                </button>
-                <div class="modal fade" id="deleteHouse' . $row['house_id'] . '" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? House Number: <span class="text-danger">' . $row['house_number'] . '</span></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-start">
-                                <p>Please confirm that you want to delete your Incometion. <br>
-                                    Once deleted, you won\'t be able to recover it. <br>
-                                    Please proceed with caution.
-                                </p>
-                            </div>
-                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                <a href="?house_delete_id=' . $row['house_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
-                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                    <ul class="dropdown-menu text-center">
+                        <li><a class="dropdown-item" href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">Edit</a></li>
+                        <li><a class="dropdown-item" href="houseView.php?house_view_id=' . $row['house_id'] . '">View</a></li>
+                        <li><a class="dropdown-item" href="?house_delete_id=' . $row['house_id'] . '">Delete</a></li>
+                    </ul>
                 </div>
+                
             </td>
         </tr>
         
@@ -403,19 +389,31 @@ function filter_houses_data_In_Database($housesLimited)
     return $data;
 }
 
-function search_houses_data_In_Database($housesSearch)
+function search_houses_data_In_Database($houseShopNoSearch, $houseShopType, $housesLimited, $housesMonth)
 {
     global $conn;
+
+    $month = date('m', strtotime($housesMonth));
+    $year = date('Y', strtotime($housesMonth));
+
+    $houseShopNoSearch = mysqli_real_escape_string($conn, $houseShopNoSearch);
 
     // Modify the query based on your database structure
     $houseQuery = "SELECT * FROM houses";
 
-    if (!empty($housesSearch)) {
-        $houseQuery .= " WHERE house_number LIKE '%" . $housesSearch . "%'
-        OR owner_name LIKE '%" . $housesSearch . "%'
-        OR owner_contact LIKE '%" . $housesSearch . "%'
-        OR owner_cnic LIKE '%" . $housesSearch . "%'";
+    if (!empty($houseShopNoSearch)) {
+        $houseQuery .= " WHERE house_number LIKE '%" . $houseShopNoSearch . "%'";
     }
+
+    if (!empty($houseShopType)) {
+        $houseQuery .= " WHERE house_or_shop LIKE '%" . $houseShopType . "%'";
+    }
+
+    if (!empty($housesMonth)) {
+        $houseQuery .= " WHERE MONTH(added_on) = " . $month . " AND YEAR(added_on) = " . $year;
+    }
+
+    $houseQuery .= " ORDER BY house_id DESC LIMIT $housesLimited";
 
     $houseResult = mysqli_query($conn, $houseQuery);
 
@@ -423,49 +421,27 @@ function search_houses_data_In_Database($housesSearch)
     $count = 1;
     while ($row = mysqli_fetch_assoc($houseResult)) {
 
-        $data .= '
+        $date = date("d-F-Y", strtotime($row['added_on']));
 
+        $data .= '
         <tr>
             <td>' . $count++ . '</td>
             <td>' . $row['house_number'] . '</td>
+            <td>' . $row['house_or_shop'] . '</td>
             <td>' . $row['owner_name'] . '</td>
             <td>' . $row['owner_contact'] . '</td>
-            <td>' . $row['owner_cnic'] . '</td>
-            <td>' . $row['occupancy_status'] . '</td>
             <td>' . $row['maintenance_charges'] . '</td>
-            <td>' . $row['added_on'] . '</td>
+            <td>' . $date . '</td>
             <td>
-                <a href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">
-                    <span>
-                        <i class="fas fa-pencil-alt me-1 text-success"></i>
-                    </span>
-                </a>
-                <a class="" href="houseView.php?house_view_id=' . $row['house_id'] . '">
-                    <i class="fas fa-eye me-1 text-info"></i>
-                </a>
-                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteHouse' . $row['house_id'] . '" data-bs-placement="top" title="Delete">
-                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
-                </button>
-                <div class="modal fade" id="deleteHouse' . $row['house_id'] . '" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? House Number: <span class="text-danger">' . $row['house_number'] . '</span></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-start">
-                                <p>Please confirm that you want to delete your Incometion. <br>
-                                    Once deleted, you won\'t be able to recover it. <br>
-                                    Please proceed with caution.
-                                </p>
-                            </div>
-                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                <a href="?house_delete_id=' . $row['house_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
-                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                    <ul class="dropdown-menu text-center">
+                        <li><a class="dropdown-item" href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">Edit</a></li>
+                        <li><a class="dropdown-item" href="houseView.php?house_view_id=' . $row['house_id'] . '">View</a></li>
+                        <li><a class="dropdown-item" href="?house_delete_id=' . $row['house_id'] . '">Delete</a></li>
+                    </ul>
                 </div>
+                
             </td>
         </tr>
         
@@ -474,7 +450,7 @@ function search_houses_data_In_Database($housesSearch)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no matching data in the database. ' . $housesSearch . '</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Found data in the database. ' . $houseShopNoSearch . '</td>
                 </tr>';
     }
 
@@ -648,16 +624,23 @@ function search_servant_data_In_Database($servantSearch)
 }
 
 
-function filter_tenant_data_In_Database($tenantLimited)
+function filter_tenant_data_In_Database($tenantLimited, $tenantMonth)
 {
     global $conn;
 
+    $month = date('m', strtotime($tenantMonth));
+    $year = date('Y', strtotime($tenantMonth));
+
     // Modify the query based on your database structure
-    $query = "SELECT tenants.*, houses.house_number, houses.house_id
+    $query = "SELECT tenants.*, houses.house_number
         FROM tenants
-        LEFT JOIN houses ON tenants.house_id = houses.house_id
-        ORDER BY tenants.tenant_id DESC
-        LIMIT $tenantLimited";
+        LEFT JOIN houses ON tenants.house_id = houses.house_id";
+
+    if (!empty($tenantMonth)) {
+        $query .= " WHERE MONTH(tenants.added_on) = $month AND YEAR(tenants.added_on) = $year";
+    }
+
+    $query .= " ORDER BY tenants.tenant_id DESC LIMIT $tenantLimited";
 
     // Debug: Print the query (remove in production)
     error_log("SQL Query: $query");
@@ -677,54 +660,23 @@ function filter_tenant_data_In_Database($tenantLimited)
     while ($row = mysqli_fetch_assoc($result)) {
         // Debug: Print each row's data (remove in production)
         error_log("Row Data: " . print_r($row, true));
+        $date = date('d-F-Y', strtotime($row['added_on']));
 
         $data .= '<tr>
-            <td>' . $count++ . '</td>';
-
-        // Determine whether to show house_number or shop_number
-        if (!empty($row['house_id'])) {
-            $data .= '<td>' . $row['house_number'] . '</td>';
-        } elseif (!empty($row['shop_id'])) {
-            $data .= '<td>' . $row['shop_number'] . '</td>';
-        } else {
-            $data .= '<td>-</td>'; // Show a placeholder if neither house_number nor shop_number is available
-        }
-
-        $data .= '
-        <td>' . $row['house_or_shop'] . '</td>
-        <td>' . $row['tenant_name'] . '</td>
-            
+            <td>' . $count++ . '</td>
+            <td>' . $row['house_number'] . '</td>
+            <td>' . $row['tenant_name'] . '</td>
             <td>' . $row['tenant_contact_no'] . '</td>
             <td>' . $row['tenant_cnic'] . '</td>
+            <td>' . $date . '</td>
             <td>
-                <a href="tenantEdit.php?tenant_edit_id=' . $row['tenant_id'] . '">
-                    <span><i class="fas fa-pencil-alt me-1 text-success"></i></span>
-                </a>
-                <a class="" href="tenantView.php?tenant_view_id=' . $row['tenant_id'] . '">
-                    <i class="fas fa-eye me-1 text-info"></i>
-                </a>
-                <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteTenant' . $row['tenant_id'] . '" data-bs-placement="top" title="Delete">
-                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1"></i></span>
-                </button>
-                <div class="modal fade" id="deleteTenant' . $row['tenant_id'] . '" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['tenant_name'] . '</span></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-start">
-                                <p>Please confirm that you want to delete this entry. <br>
-                                    Once deleted, you won\'t be able to recover it. <br>
-                                    Please proceed with caution.
-                                </p>
-                            </div>
-                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                <a href="?tenant_delete_id=' . $row['tenant_id'] . '" class="btn btn-danger" name="delete_tenant">Delete</a>
-                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                    <ul class="dropdown-menu text-center">
+                        <li><a class="dropdown-item" href="tenantEdit.php?tenant_edit_id=' . $row['tenant_id'] . '">Edit</a></li>
+                        <li><a class="dropdown-item" href="tenantView.php?tenant_view_id=' . $row['tenant_id'] . '">View</a></li>
+                        <li><a class="dropdown-item" href="?tenant_delete_id=' . $row['tenant_id'] . '">Delete</a></li>
+                    </ul>
                 </div>
             </td>
         </tr>';
@@ -733,92 +685,73 @@ function filter_tenant_data_In_Database($tenantLimited)
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Tenants data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Tenants data in the database. '. $tenantMonth .'</td>
                 </tr>';
     }
 
     return $data;
 }
 
-function search_tenant_data_In_Database($tenantSearch)
+function search_tenant_data_In_Database($houseShopNoSearch, $phoneNoType, $tenantLimited, $tenantMonth)
 {
     global $conn;
 
-    $tenantSearch = mysqli_real_escape_string($conn, $tenantSearch);
+    $month = date('m', strtotime($tenantMonth));
+    $year = date('Y', strtotime($tenantMonth));
+
+    $houseShopNoSearch = mysqli_real_escape_string($conn, $houseShopNoSearch);
+    $phoneNoType = mysqli_real_escape_string($conn, $phoneNoType);
 
     // Modify the query based on your database structure
-    $query = "SELECT tenants.*, houses.house_number, shops.shop_number From tenants
-    LEFT JOIN houses ON tenants.house_id = houses.house_id
-    LEFT JOIN shops ON shops.shop_id = tenants.shop_id";
+    $query = "SELECT tenants.*, houses.house_number
+    From tenants
+    LEFT JOIN houses ON tenants.house_id = houses.house_id";
 
-    if (!empty($tenantSearch)) {
-        $query .= " WHERE houses.house_number LIKE '%" . $tenantSearch . "%'
-        OR tenants.tenant_name LIKE '%" . $tenantSearch . "%'
-        OR tenants.tenant_contact_no LIKE '%" . $tenantSearch . "%'
-        OR tenants.tenant_cnic LIKE '%" . $tenantSearch . "%'";
+    if (!empty($houseShopNoSearch)) {
+        $query .= " WHERE houses.house_number LIKE '%" . $houseShopNoSearch . "%'";
     }
 
+    if (!empty($phoneNoType)) {
+        $query .= " WHERE tenants.tenant_contact_no LIKE '" . $phoneNoType . "'";
+    }
+
+    if(!empty($tenantMonth)){
+        $query .= " WHERE MONTH(tenants.added_on) = $month AND YEAR(tenants.added_on) = $year";
+    }
+
+    $query .= " ORDER BY tenants.tenant_id DESC LIMIT $tenantLimited";
 
     $result = mysqli_query($conn, $query);
 
     $data = '';
     $count = 1;
     while ($row = mysqli_fetch_assoc($result)) {
-        $data .= '
+        $date = date('d-F-Y', strtotime($row['added_on']));
 
-        <tr>
-            <td>' . $count++ . '</td>';
-
-
-        if (($row['house_or_shop'] == 'house')) {
-            $data .= '<td>' . $row['house_number'] . '</td>';
-        } elseif (($row['house_or_shop'] == 'shop')) {
-            $data .= '<td>' . $row['shop_number'] . '</td>';
-        }
-        $data .= '<td>' . $row['tenant_name'] . '</td>
+        $data .= '<tr>
+            <td>' . $count++ . '</td>
+            <td>' . $row['house_number'] . '</td>
+            <td>' . $row['tenant_name'] . '</td>
             <td>' . $row['tenant_contact_no'] . '</td>
             <td>' . $row['tenant_cnic'] . '</td>
+            <td>' . $date . '</td>
             <td>
-                <a href="tenantEdit.php?tenant_edit_id=' . $row['tenant_id'] . '">
-                    <span>
-                        <i class="fas fa-pencil-alt me-1 text-success"></i>
-                    </span>
-                </a>
-                <a class="" href="tenantView.php?tenant_view_id=' . $row['tenant_id'] . '">
-                    <i class="fas fa-eye me-1 text-info"></i>
-                </a>
-                <button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteTenant' . $row['tenant_id'] . '" data-bs-placement="top" title="Delete">
-                    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash  text-danger p-1 "></i></span>
-                </button>
-                <div class="modal fade" id="deleteTenant' . $row['tenant_id'] . '" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Name: <span class="text-danger">' . $row['house_number'] . '</span></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-start">
-                                <p>Please confirm that you want to delete your Incometion. <br>
-                                    Once deleted, you won\'t be able to recover it. <br>
-                                    Please proceed with caution.
-                                </p>
-                            </div>
-                            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                <a href="?tenant_delete_id=' . $row['tenant_id'] . '" class="btn btn-danger" name="delete_tenant">Delete</a>
-                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                    <ul class="dropdown-menu text-center">
+                        <li><a class="dropdown-item" href="tenantEdit.php?tenant_edit_id=' . $row['tenant_id'] . '">Edit</a></li>
+                        <li><a class="dropdown-item" href="tenantView.php?tenant_view_id=' . $row['tenant_id'] . '">View</a></li>
+                        <li><a class="dropdown-item" href="?tenant_delete_id=' . $row['tenant_id'] . '">Delete</a></li>
+                    </ul>
                 </div>
             </td>
-        </tr>
-        
-        ';
+        </tr>';
+
     }
     // Check if $data is empty
     if (empty($data)) {
         $data = '<tr>
-                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Tenants data in the database.</td>
+                    <td colspan="7" class="fw-semibold bg-light-warning text-warning text-center">There are no Found data in the database. '. $houseShopNoSearch .' '. $tenantMonth  .' '. $phoneNoType .'</td>
                 </tr>';
     }
 
@@ -2427,7 +2360,8 @@ if (isset($_POST['action'])) {
     if ($action == 'load-events_booking-Data') {
         $eventsLimited = $_POST['eventsLimited'];
         // $eventsOrder = $_POST['eventsOrder'];
-        $eventsMonth = $_POST['eventsMonth'];;
+        $eventsMonth = $_POST['eventsMonth'];
+        ;
         $result = filter_events_booking_data_In_Database($eventsLimited, $eventsMonth);
 
         $response = array('data' => $result);
@@ -2447,9 +2381,10 @@ if (isset($_POST['action'])) {
     // filter Society Houses 
     if ($action == 'load-houses-Data') {
         $housesLimited = $_POST['housesLimited'];
+        $housesMonth = $_POST['housesMonth'];
 
 
-        $result = filter_houses_data_In_Database($housesLimited);
+        $result = filter_houses_data_In_Database($housesLimited, $housesMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2457,9 +2392,12 @@ if (isset($_POST['action'])) {
 
     // filter Society Houses search
     if ($action == 'search-houses-Data') {
-        $housesSearch = $_POST['housesSearch'];
+        $houseShopNoSearch = $_POST['houseShopNoSearch'];
+        $houseShopType = $_POST['houseShopType'];
+        $housesLimited = $_POST['housesLimited'];
+        $housesMonth = $_POST['housesMonth'];
 
-        $result = search_houses_data_In_Database($housesSearch);
+        $result = search_houses_data_In_Database($houseShopNoSearch, $houseShopType, $housesLimited, $housesMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2489,9 +2427,10 @@ if (isset($_POST['action'])) {
     // Filter tenants load
     if ($action == 'load-tenant-Data') {
         $tenantLimited = $_POST['tenantLimited'];
+        $tenantMonth = $_POST['tenantMonth'];
 
 
-        $result = filter_tenant_data_In_Database($tenantLimited);
+        $result = filter_tenant_data_In_Database($tenantLimited, $tenantMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);
@@ -2499,9 +2438,12 @@ if (isset($_POST['action'])) {
 
     // Filter tenant search
     if ($action == 'search-tenant-Data') {
-        $tenantSearch = $_POST['tenantSearch'];
+        $houseShopNoSearch = $_POST['houseShopNoSearch'];
+        $phoneNoType = $_POST['phoneNoType'];
+        $tenantLimited = $_POST['tenantLimited'];
+        $tenantMonth = $_POST['tenantMonth'];
 
-        $result = search_tenant_data_In_Database($tenantSearch);
+        $result = search_tenant_data_In_Database($houseShopNoSearch, $phoneNoType, $tenantLimited, $tenantMonth);
 
         $response = array('data' => $result);
         echo json_encode($response);

@@ -182,6 +182,7 @@ function addHouse()
     global $conn;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $houseNumber = mysqli_real_escape_string($conn, $_POST['house-number']);
+        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $ownerName = mysqli_real_escape_string($conn, $_POST['owner-name']);
         $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
         $ownerCNIC = mysqli_real_escape_string($conn, $_POST['owner-cinc']);
@@ -194,9 +195,17 @@ function addHouse()
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
 
-        $insertQuery = "INSERT INTO houses(house_number, owner_name, owner_contact, owner_cnic,
+        // unique house number check
+        $sql = "SELECT * FROM houses WHERE house_number = '$houseNumber'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            $_SESSION['error_message_house'] = "House Number Already Exists, ($houseNumber) Please Try Another Number";
+            return;
+        }
+
+        $insertQuery = "INSERT INTO houses(house_number, house_or_shop, owner_name, owner_contact, owner_cnic,
          occupancy_status, property_size, floor, property_type, maintenance_charges,added_on,
-          added_by) VALUES ('$houseNumber','$ownerName','$ownerContact', '$ownerCNIC',
+          added_by) VALUES ('$houseNumber', '$house_or_shop','$ownerName','$ownerContact', '$ownerCNIC',
           '$occupanceStatus','$propertySize','$floor',
           '$propertyType','$maintenanceCharges',
           '$added_on','$added_by')";
@@ -232,6 +241,7 @@ function updateHouse()
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
         $houseNumber = mysqli_real_escape_string($conn, $_POST['house-number']);
+        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $ownerName = mysqli_real_escape_string($conn, $_POST['owner-name']);
         $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
         $ownerCNIC = mysqli_real_escape_string($conn, $_POST['owner-cinc']);
@@ -242,11 +252,12 @@ function updateHouse()
         $maintenanceCharges = mysqli_real_escape_string($conn, $_POST['maintenance-charges']);
 
         $updated_by = $_SESSION['username'];
-        $updated_on = date("Y-m-d");
+        $updated_on = date("d-F-Y, h:i A");
 
         $insertQuery = "
         UPDATE houses SET 
         house_number = '{$houseNumber}',
+        house_or_shop = '{$house_or_shop}',
         owner_name = '{$ownerName}', 
         owner_contact = '{$ownerContact}',
         owner_cnic = '{$ownerCNIC}',
@@ -255,7 +266,7 @@ function updateHouse()
         floor = '{$floor}', 
         property_type = '{$propertyType}',
         maintenance_charges = '{$maintenanceCharges}', 
-        updated_on = NOW(), 
+        updated_on = {$updated_on}, 
         updated_by = '{$updated_by}'
         WHERE house_id = '{$house_id}'";
 
@@ -743,44 +754,9 @@ function addTenants()
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
-        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
         $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
         $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
-
-
-        // Validate house_shop_id against the correct table
-        // $valid_id = false;
-        // if ($house_or_shop === 'house') {
-        //     $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
-        // }
-        //  elseif ($house_or_shop === 'shop') {
-        //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
-        // } 
-        //  elseif ($house_or_shop === 'Apartment') {
-        //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
-        // } 
-        // else {
-        //     $_SESSION['error_message_Tenant'] = "Invalid house_or_shop value.";
-        //     header('location: addTenant');
-        //     exit();
-        // }
-
-        // $checkResult = mysqli_query($conn, $checkQuery);
-        // if (!$checkResult) {
-        //     error_log("Error executing check query: " . mysqli_error($conn));
-        // }
-
-        // if (mysqli_num_rows($checkResult) > 0) {
-        //     $valid_id = true;
-        // }
-
-        // if (!$valid_id) {
-        //     $_SESSION['error_message_Tenant'] = "Invalid house_shop_id for the given house_or_shop.";
-        //     header('location: addTenant');
-        //     exit();
-        // }
-
 
         // image upload
         $tenant_image = rand(111111111, 999999999) . '_' . $_FILES['tenant_image']['name'];
@@ -791,19 +767,10 @@ function addTenants()
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
 
-        // Insert data into tenants table
-        // $insertTenants = "INSERT INTO tenants (
-        //     house_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
-        //     ) VALUES(
-        //         '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', '$added_by', '$added_on'
-        //         )";
-
-        // Build insert query dynamically based on house_or_shop
-
         $insertTenants = "INSERT INTO tenants (
-                house_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
+                house_id, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
             ) VALUES (
-                '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', 
+                '$house_shop_id', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', 
                 '$added_by', '$added_on'
             )";
 
@@ -830,7 +797,6 @@ function updateTenants()
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tenant_id = mysqli_real_escape_string($conn, $_POST['tenant_id']);
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
-        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
         $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
         $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
@@ -851,7 +817,6 @@ function updateTenants()
         $updateTenants = "UPDATE tenants SET 
         house_id='$house_id',
         tenant_name='$tenant_name',
-        house_or_shop='$house_or_shop',
         tenant_contact_no='$tenant_contact',
         tenant_cnic='$tenant_cnic',
         updated_by='$updated_by',
