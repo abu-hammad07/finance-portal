@@ -168,6 +168,81 @@ function get_total_combined_expences()
     return number_format($total_combined_expences);
 }
 
+// Function to get total income count from income table
+function get_all_total_income()
+{
+    global $conn;
+
+    // Get the current month and year
+    // $current_month = date('m');
+    // $current_year = date('Y');
+
+    // // Set the start and end date of the current month
+    // $start_date = "$current_year-$current_month-01";
+    // $end_date = date('Y-m-t', strtotime($start_date)); // Get the last day of the current month
+
+    // Define the queries to get total income from each table
+    $queries = [
+        "SELECT SUM(maintenance_charges) AS total_income FROM `houses`",
+        "SELECT SUM(maintenance_charges) AS total_income FROM `shops`",
+        "SELECT SUM(eGate_charges) AS total_income FROM `egate`",
+        "SELECT SUM(servantFees) AS total_income FROM `servants`",
+        "SELECT SUM(bookingPayment) AS total_income FROM `events_booking`",
+        "SELECT SUM(maintenance_peyment) AS total_income FROM `maintenance_payments`",
+        "SELECT SUM(penalty_charges) AS total_income FROM `penalty`"
+    ];
+
+    $total_combined_income = 0;
+
+    // Execute each query and accumulate the total income
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            return "Error: " . mysqli_error($conn);
+        }
+        $row = mysqli_fetch_assoc($result);
+        $total_combined_income += $row['total_income'];
+    }
+
+    // Format the combined total income amount with commas
+    return number_format($total_combined_income);
+}
+
+// Function to get total expences count from expences table
+function get_all_total_expences()
+{
+    global $conn;
+
+    // Get the current month and year
+    // $current_month = date('m');
+    // $current_year = date('Y');
+
+    // // Set the start and end date of the current month
+    // $start_date = "$current_year-$current_month-01";
+    // $end_date = date('Y-m-t', strtotime($start_date)); // Get the last day of the current month
+
+    // Define the queries to get total expences from each table
+    $queries = [
+        "SELECT SUM(utility_amount) AS total_expences FROM `utility_charges`",
+        "SELECT SUM(society_maint_amount) AS total_expences FROM `society_maintenance`",
+    ];
+
+    $total_combined_expences = 0;
+
+    // Execute each query and accumulate the total expences
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            return "Error: " . mysqli_error($conn);
+        }
+        $row = mysqli_fetch_assoc($result);
+        $total_combined_expences += $row['total_expences'];
+    }
+
+    // Format the combined total expences amount with commas
+    return number_format($total_combined_expences);
+}
+
 
 
 
@@ -624,7 +699,6 @@ function eventBookingInsert()
         $customerName = mysqli_real_escape_string($conn, $_POST['customerName']);
         $customerContact = mysqli_real_escape_string($conn, $_POST['customerContact']);
         $customerCnic = mysqli_real_escape_string($conn, $_POST['customerCnic']);
-        $eventType = mysqli_real_escape_string($conn, $_POST['eventType']);
         $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
         $paymentType = mysqli_real_escape_string($conn, $_POST['paymentType']);
 
@@ -645,11 +719,11 @@ function eventBookingInsert()
         // insert data into event_booking table
         $insertEventBooking = "INSERT INTO `events_booking`(
             `eventName`, `location`, `date`, `startTiming`, `endTiming`, `noOfPersons`, 
-            `eventType`, `customerCnic`, `customerContact`, `customerName`, 
+            `customerCnic`, `customerContact`, `customerName`, 
             `bookingPayment`, `payment_type`, `added_by`, `added_on`) 
         VALUES(
             '{$eventName}', '{$location}', '{$date}', '{$startTiming}', '{$endTiming}', '{$noOfPersons}',
-            '{$eventType}', '{$customerCnic}', '{$customerContact}', '{$customerName}', '{$bookingPayment}', '{$paymentType}', '{$added_by}', '{$added_on}'
+            '{$customerCnic}', '{$customerContact}', '{$customerName}', '{$bookingPayment}', '{$paymentType}', '{$added_by}', '{$added_on}'
         )";
 
 
@@ -686,7 +760,6 @@ function eventBookingUpdate()
         $customerName = mysqli_real_escape_string($conn, $_POST['customerName']);
         $customerContact = mysqli_real_escape_string($conn, $_POST['customerContact']);
         $customerCnic = mysqli_real_escape_string($conn, $_POST['customerCnic']);
-        $eventType = mysqli_real_escape_string($conn, $_POST['eventType']);
         $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
         $paymentType = mysqli_real_escape_string($conn, $_POST['paymentType']);
 
@@ -706,7 +779,6 @@ function eventBookingUpdate()
         `customerName` = '$customerName',
         `customerContact` = '$customerContact',
         `customerCnic` = '$customerCnic',
-        `eventType` = '$eventType',
         `bookingPayment` = '$bookingPayment',
         `payment_type` = '$paymentType',
         `updated_on` = '$updated_on',
@@ -1510,6 +1582,7 @@ function insertUtilityCharges()
         $utility_amount = mysqli_real_escape_string($conn, $_POST['utility_amount']);
         $utility_billing_month = mysqli_real_escape_string($conn, $_POST['utility_billing_month']);
         $utility_location = mysqli_real_escape_string($conn, $_POST['utility_location']);
+        $payment_type = mysqli_real_escape_string($conn, $_POST['payment_type']);
 
         // Check if utility type already exists for the same billing month and location
         $utility_checking = "SELECT * FROM `utility_charges` 
@@ -1529,9 +1602,9 @@ function insertUtilityCharges()
 
             // Insert data into utility_charges table
             $insert_query = "INSERT INTO `utility_charges` 
-                             (`utility_type`, `utility_amount`, `utility_billing_month`, `utility_location`, `added_by`, `added_on`) 
+                             (`utility_type`, `utility_amount`, `utility_billing_month`, `utility_location`, `payment_type`, `added_by`, `added_on`) 
                              VALUES 
-                             ('$utility_type', '$utility_amount', '$utility_billing_month', '$utility_location', '$added_by', '$added_on')";
+                             ('$utility_type', '$utility_amount', '$utility_billing_month', '$utility_location', '$payment_type', '$added_by', '$added_on')";
 
             $insert_query_res = mysqli_query($conn, $insert_query);
 
@@ -1561,6 +1634,7 @@ function updatedUtilityCharges()
         $utility_amount = mysqli_real_escape_string($conn, $_POST['utility_amount']);
         $utility_billing_month = mysqli_real_escape_string($conn, $_POST['utility_billing_month']);
         $utility_location = mysqli_real_escape_string($conn, $_POST['utility_location']);
+        $payment_type = mysqli_real_escape_string($conn, $_POST['payment_type']);
 
         // updated_on & updated_by
         $updated_by = $_SESSION['username'];
@@ -1572,6 +1646,7 @@ function updatedUtilityCharges()
         `utility_amount`='$utility_amount',
         `utility_billing_month`='$utility_billing_month',
         `utility_location`='$utility_location',
+        `payment_type`='$payment_type',
         `updated_by`='$updated_by',
         `updated_on`='$updated_on' 
         WHERE `utility_id`='$utility_id'";

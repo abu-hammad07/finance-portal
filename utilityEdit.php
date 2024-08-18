@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function.php");
+include_once("includes/config.php");
+include_once("includes/function.php");
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
@@ -12,7 +12,7 @@ updatedUtilityCharges();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -57,7 +57,7 @@ include ("includes/sidebar.php");
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Billing Month</label>
-                                    <input type="month" name="utility_billing_month" id="utility_billing_month" class="form-control"
+                                    <input type="date" name="utility_billing_month" id="utility_billing_month" class="form-control"
                                         required value="<?= $row['utility_billing_month'] ?>">
                                     <span class="text-danger" id="utility_billing_month_error"></span>
                                 </div>
@@ -79,6 +79,15 @@ include ("includes/sidebar.php");
                                         </option>
                                     </select>
                                     <span class="text-danger" id="utility_location_error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Payment Type</label>
+                                    <select name="payment_type" id="payment_type" class="form-select form-control" required>
+                                        <option value="">Select Payment Type</option>
+                                        <option value="Cash" <?php if ($row['payment_type'] == 'Cash') echo 'selected'; ?>>Cash</option>
+                                        <option value="Bank" <?php if ($row['payment_type'] == 'Bank') echo 'selected'; ?>>Bank</option>
+                                    </select>
+                                    <span class="text-danger" id="payment_type_error"></span>
                                 </div>
 
                                 <!-- Button -->
@@ -111,7 +120,7 @@ include ("includes/sidebar.php");
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
- 
+
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function () {

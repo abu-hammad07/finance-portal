@@ -28,18 +28,18 @@ include("includes/sidebar.php");
             <div class="card card-body h-auto d2c_projects_datatable">
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
-                        <form class="position-relative">
+                        <div class="position-relative">
                             <input type="text" class="form-control product-search ps-5 word-spacing-2px"
                                 id="house_shop_no-search_tenant" placeholder="Search House & Shop Number &nbsp;..." />
                             <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                        </form>
+                        </div>
                     </div>
                     <div class="col-md-4 col-12 mt-2">
-                    <form class="position-relative">
+                        <div class="position-relative">
                             <input type="text" class="form-control product-search ps-5 word-spacing-2px"
                                 id="phone_number-search_tenant" placeholder="Search Phone Number &nbsp;..." />
                             <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                        </form>
+                        </div>
                     </div>
                     <div class="col-md-4 col mt-2">
                         <input type="month" class="form-control" id="tenant-month" onchange="load_tenant_Data()">
@@ -89,19 +89,6 @@ include("includes/sidebar.php");
                     </div>
                     <div class="col-md-6 text-end card-header">
                         <div class="btn-group">
-                            <!-- <div class="me-2">
-                                <input type="month" class="form-control" id="">
-                            </div>
-                            <div class="me-2">
-                                <select id="tenant-limit" class="form-control" onchange="load_tenant_Data()">
-                                    <option value="15">15</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="75">75</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div> -->
-
                             <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/tenantsExcel">

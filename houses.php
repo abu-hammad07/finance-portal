@@ -27,14 +27,14 @@ include("includes/sidebar.php");
             <div class="card card-body h-auto d2c_projects_datatable">
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
-                        <form class="position-relative">
+                        <div class="position-relative">
                             <input type="text" class="form-control product-search ps-5 word-spacing-2px"
                                 id="house_shop_no-search" placeholder="Search House & Shop Number &nbsp;..." />
                             <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                        </form>
+                        </div>
                     </div>
                     <div class="col-md-4 col-12 mt-2">
-                        <select id="house_shop-type" class="form-select form-control">
+                        <select id="house_shop-type" class="form-select form-control" onchange="load_houses_Data()">
                             <option value="">--- House OR Shop --</option>
                             <option value="House">House</option>
                             <option value="Shop">Shop</option>
@@ -150,6 +150,7 @@ include("includes/sidebar.php");
 
         let housesLimited = $("#houses-limit").val();
         let housesMonth = $("#houses-month").val();
+        let houseShopType = document.getElementById('house_shop-type').value;
 
 
         $.ajax({
@@ -159,7 +160,8 @@ include("includes/sidebar.php");
             data: {
                 action: 'load-houses-Data',
                 housesLimited: housesLimited,
-                housesMonth: housesMonth
+                housesMonth: housesMonth,
+                houseShopType: houseShopType
             },
             success: function (response) {
                 console.log(response);
@@ -206,39 +208,4 @@ include("includes/sidebar.php");
         <li><a class="dropdown-item" href="#">Edit</a></li>
         <li><a class="dropdown-item" href="#">Delete</a></li>
     </ul>
-</div> -->
-
-<!-- <a href="houseEdit.php?house_edit_id=' . $row['house_id'] . '">
-    <span>
-        <i class="fas fa-pencil-alt me-1 text-success"></i>
-    </span>
-</a>
-<a class="" href="houseView.php?house_view_id=' . $row['house_id'] . '">
-    <i class="fas fa-eye me-1 text-info"></i>
-</a>
-<button type="button" class="border-0  rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal"
-    data-bs-target="#deleteHouse' . $row['house_id'] . '" data-bs-placement="top" title="Delete">
-    <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i
-            class="fas fa-trash  text-danger p-1 "></i></span>
-</button>
-<div class="modal fade" id="deleteHouse' . $row['house_id'] . '" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? House Number: <span
-                        class="text-danger">' . $row['house_number'] . '</span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-start">
-                <p>Please confirm that you want to delete your Incometion. <br>
-                    Once deleted, you won\'t be able to recover it. <br>
-                    Please proceed with caution.
-                </p>
-            </div>
-            <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                <a href="?house_delete_id=' . $row['house_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
-                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
 </div> -->

@@ -318,11 +318,11 @@ if (isset($_POST['type'])) {
 // ==========================payroll page=====================
 if (isset($_POST['type'])) {
     if ($_POST['type'] == "Employee_ID") {
-        $sql = "SELECT employee_id FROM employees";
+        $sql = "SELECT employee_id, employeeID FROM employees";
         $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
         $fetchEmpolyeeData = '---';
         while ($row = mysqli_fetch_assoc($query)) {
-            $fetchEmpolyeeData .= "<option value='{$row['employee_id']}'>{$row['employee_id']}</option>";
+            $fetchEmpolyeeData .= "<option value='{$row['employee_id']}'>{$row['employeeID']}</option>";
         }
     } elseif ($_POST['type'] == "Employee_Name") {
         if (isset($_POST['id'])) {
