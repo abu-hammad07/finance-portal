@@ -1196,6 +1196,7 @@ function filter_employee_data_In_Database($employeeLimited, $employeeMonth)
         header("Location: employee");
         exit();
     }
+    
 
     $data = '';
     $count = 1;
