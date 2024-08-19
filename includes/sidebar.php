@@ -53,7 +53,6 @@ if ($row['image'] == '') {
                 <!-- Logo -->
                 <a href="index" class="mb-5 brand-icon">
                     <img class="navbar-brand" src="./assets/images/logo/KDA.png" alt="logo">
-
                 </a>
                 <!-- End:Logo -->
 
@@ -70,7 +69,6 @@ if ($row['image'] == '') {
                         <h6 class="fw-bold mb-3"><?= $row['full_name']; ?></h6>
                         <span class="d2c_role"><?= $row['role']; ?></span>
                         <ul class="list-inline">
-
                             <!-- Notification -->
                             <li class="list-inline-item position-relative me-3">
                                 <a class="nav-link p-0" href="#" role="button" data-bs-toggle="dropdown"
@@ -101,36 +99,37 @@ if ($row['image'] == '') {
                                     <?php
 
                                     if ($total_messages > 0) {
-                                        $query = mysqli_query($conn, "SELECT mp.maintenance_id, mp.house_or_shop, mp.shop_id, mp.house_shop_id, mp.status, 
-                                houses.house_number, shops.shop_number
-                                FROM `maintenance_payments` as mp
-                                LEFT JOIN houses ON houses.house_id = mp.house_shop_id
-                                LEFT JOIN shops ON shops.shop_id = mp.shop_id
-                                WHERE mp.status = 'unpaid' order by mp.maintenance_id DESC");
+                                        $query = mysqli_query($conn, "SELECT mp.maintenance_id, mp.status, mp.house_shop_id, mp.maintenance_month
+                                                FROM `maintenance_payments` as mp
+                                                WHERE mp.status = 'unpaid' order by mp.maintenance_id DESC LIMIT 5");
 
                                         while ($row = mysqli_fetch_assoc($query)) {
-                                            $identifierNumber = $row['house_or_shop'] === 'house' ? $row['house_number'] : $row['shop_number'];
-                                            echo "<a class='dropdown-item d-flex align-items-center text-center small text-gray-500 py-2' href='maintenanceAdd.php?maintenance_add_id={$row['maintenance_id']}'>
-                                            <div class='text-truncate d-block'>
-                                                <p class='mb-0'><small>{$row['status']}</small></p>
-                                                <h6 class='mb-0'>{$row['house_or_shop']} Number: {$identifierNumber}</h6>
-                                            </div>
-                                        </a>";
+
+                                            $house_or_shopID = $row['house_shop_id'];
+
+                                            $select_query = mysqli_query($conn, "SELECT house_or_shop, house_number FROM houses
+                                                WHERE house_id = '$house_or_shopID'");
+
+                                            $select_row = mysqli_fetch_assoc($select_query);
+
+                                            // Check if $select_row is not null
+                                            if ($select_row) {
+                                                $house_or_shop = $select_row['house_or_shop'];
+                                                $house_number = $select_row['house_number'];
+
+                                                echo "<a class='dropdown-item d-flex align-items-center text-center small text-gray-500 py-2' href='maintenanceAdd.php?maintenance_add_id={$row['maintenance_id']}'>
+                                                        <div class='text-truncate d-block'>
+                                                            <p class='mb-0 fs-6'><small>Maintenance Charges</small></p>
+                                                            <h6 class='mb-0'>Due of: {$house_number} Month: {$row['maintenance_month']}</h6>
+                                                        </div>
+                                                    </a>";
+                                            } else {
+                                                echo "<a class='dropdown-item d-flex align-items-center text-center small text-gray-500 py-2' href='#'>No house/shop data found</a>";
+                                            }
                                         }
-                                    } else {
-                                        echo "<a class='dropdown-item d-flex align-items-center text-center small text-gray-500 py-2' href='#'>No Notifications</a>";
                                     }
+
                                     ?>
-
-
-                                    <!-- <a class="dropdown-item d-flex align-items-center"
-                                href="../pages/elements/notification.html">
-                                <div class="text-truncate d-block">
-                                    <p class="mb-0"><small>House/Shop Number: 0167</small></p>
-                                    <h6 class="mb-0">Unpaid</h6>
-                                </div>
-                            </a> -->
-
                                     <a class="dropdown-item text-center small text-gray-500 py-2"
                                         href="maintenanceCharges">See
                                         All
@@ -140,7 +139,6 @@ if ($row['image'] == '') {
                                 </div>
                             </li>
                             <!-- End:Notification -->
-
                             <!-- Profile -->
                             <li class="list-inline-item position-relative me-3">
                                 <a class="dropdown-item d-flex align-items-center py-2" href="profile">
@@ -150,7 +148,6 @@ if ($row['image'] == '') {
 
                             </li>
                             <!-- Profile -->
-
                         </ul>
                     </div>
                 </div>
@@ -169,7 +166,7 @@ if ($row['image'] == '') {
                                 <ul class="sub-menu collapse show">
                                     <!-- Sub Menu Item -->
                                     <li class="nav-item <?php if ($page == 'index.php')
-                                        echo ('active'); ?>">
+                                        echo 'active'; ?>">
                                         <a class="sub-menu-link" href="index">
                                             <span class="d2c_icon">
                                                 <i class="fas fa-home"></i>
@@ -206,12 +203,12 @@ if ($row['image'] == '') {
                                                     <span>Tenents</span>
                                                 </a>
                                             </li>
-                                            <li class="nav-item <?php if ($page == 'shops.php' || $page == 'addShop.php' || $page == 'shopView.php' || $page == 'shopEdit.php')
+                                            <!-- <li class="nav-item <?php if ($page == 'shops.php' || $page == 'addShop.php' || $page == 'shopView.php' || $page == 'shopEdit.php')
                                                 echo ('active'); ?>">
                                                 <a class="nav-link" href="shops">
                                                     <span>Shops</span>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             <li class="nav-item <?php if ($page == 'eGate.php' || $page == 'addeGate.php' || $page == 'eGateView.php' || $page == 'eGateEdit.php')
                                                 echo ('active'); ?>">
                                                 <a class="nav-link" href="eGate">
@@ -285,56 +282,36 @@ if ($row['image'] == '') {
                                     <!-- End:Sub Menu Item -->
 
                                     <!-- Sub Menu Item -->
-                                    <li class="nav-item">
-                                        <a class="sub-menu-link" data-bs-toggle="collapse"
-                                            data-bs-target="#employeeManagementSystem" aria-expanded="false" href="#">
-                                            <span class="d2c_icon">
-                                                <i class="fas fa-money-check-alt"></i>
-                                            </span>
-                                            <span>Employees & Payroll</span>
-                                            <span class="fas fa-chevron-right ms-auto text-end"></span>
-                                        </a>
-                                        <!-- Child Sub Menu -->
-                                        <ul class="sub-menu collapse" id="employeeManagementSystem">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="employee">
-                                                    <span>Employee</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="payroll">
-                                                    <span>Payroll</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <!-- End:Child Sub Menu -->
-                                    </li>
-                                    <!-- End:Sub Menu Item -->
+                                    <li class="nav-item <?php if ($page == "employee.php" || $page == "employeeEdit.php" || $page == "employeeView")
+                                        echo 'active'; ?>">
+                                            <a class="sub-menu-link" data-bs-toggle="collapse"
+                                                data-bs-target="#employeeManagementSystem" aria-expanded="false" href="#">
+                                                <span class="d2c_icon">
+                                                    <i class="fas fa-money-check-alt"></i>
+                                                </span>
+                                                <span>Employees & Payroll</span>
+                                                <span class="fas fa-chevron-right ms-auto text-end"></span>
+                                            </a>
+                                            <!-- Child Sub Menu -->
+                                            <ul class="sub-menu collapse" id="employeeManagementSystem">
+                                                <li class="nav-item">
+                                                    <a class="nav-link <?php if ($page == "employee.php" || $page == "employeeEdit.php" || $page == "employeeView")
+                                        echo 'active'; ?>" href="employee">
+                                                        <span>Employee</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="payroll">
+                                                        <span>Payroll</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <!-- End:Child Sub Menu -->
+                                        </li>
+                                        <!-- End:Sub Menu Item -->
 
-                                    <!-- Sub Menu Item -->
-                                    <!-- <li class="nav-item">
-                                        <a class="sub-menu-link" data-bs-toggle="collapse"
-                                            data-bs-target="#reconcilation" aria-expanded="false" href="#">
-                                            <span class="d2c_icon">
-                                                <i class="fas fa-money-check-alt"></i>
-                                            </span>
-                                            <span>Reconcilation</span>
-                                            <span class="fas fa-chevron-right ms-auto text-end"></span>
-                                        </a>
-                                        <ul class="sub-menu collapse" id="reconcilation">
-                                            <li class="nav-item">
-                                                <a class="sub-menu-link" href="./pages/investment.html">
-                                                    <span>Reports</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li> -->
-                                    <!-- End:Sub Menu Item -->
-
-
-
-                                    <!-- Sub Menu Item -->
-                                    <li class="nav-item <?php if ($page == "userDetails.php" || $page == "addUser.php")
+                                        <!-- Sub Menu Item -->
+                                        <li class="nav-item <?php if ($page == "userDetails.php" || $page == "addUser.php")
                                         echo "active"; ?>">
                                         <a class="sub-menu-link" href="userDetails">
                                             <span class="d2c_icon">

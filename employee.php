@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function.php");
+include_once("includes/config.php");
+include_once("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -21,7 +21,7 @@ deleteEmployeeID();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -36,15 +36,35 @@ include ("includes/sidebar.php");
         <div class="col-lg-12 mb-4">
             <div class="card card-body h-auto d2c_projects_datatable">
                 <div class="row">
-                    <div class="col-md-4 col-xl-3">
-                        <form class="position-relative">
+                    <div class="col-md-4 col-12 mt-2">
+                        <div class="position-relative">
                             <input type="text" class="form-control product-search ps-5 word-spacing-2px"
-                                id="employeeSearch" onkeyup="search_employee_Data()" placeholder="Search &nbsp;..." />
+                                id="id-search_employee" placeholder="Search Employee ID &nbsp;..." />
                             <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                        </form>
+                        </div>
                     </div>
-                    <div class="col-md-8 col-xl-9 text-end">
-                        <a href="addEmployeeQRCode" class="btn btn-primary"><i class="fas fa-plus"></i> Employee</a>
+                    <div class="col-md-4 col-12 mt-2">
+                        <div class="position-relative">
+                            <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                id="name-search_employee" placeholder="Search Employee Name &nbsp;..." />
+                            <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <input type="month" class="form-control" id="employee-month" onchange="load_employee_Data()">
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <select id="employee-limit" class="form-control form-select" onchange="load_employee_Data()">
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12 mt-2">
+                        <button type="button" class="btn btn-primary w-100"
+                            onclick="search_employee_Data()">Search</button>
                     </div>
                 </div>
             </div>
@@ -82,23 +102,16 @@ include ("includes/sidebar.php");
                     </div>
                     <div class="col-md-6 text-end card-header">
                         <div class="btn-group">
-                            <div class="me-2">
-                                <input type="month" class="form-control" id="employee-month"
-                                    onchange="load_employee_Data()">
+                            <!-- <div class="me-2">
+                                <input type="month" class="form-control" id="employee-month" onchange="load_employee_Data()">
                             </div>
                             <div class="me-2">
-                                <select id="employee-limit" class="form-control" onchange="load_employee_Data()">
+                                <select id="employee-limit" class="form-control form-select" onchange="load_employee_Data()">
                                     <option value="15">15</option>
                                     <option value="25">25</option>
                                     <option value="50">50</option>
                                     <option value="75">75</option>
                                     <option value="100">100</option>
-                                </select>
-                            </div>
-                            <!-- <div class="me-2">
-                                <select id="employee-order" class="form-control" onchange="load_employee_Data()">
-                                    <option value="ASC">Old</option>
-                                    <option value="DESC">New</option>
                                 </select>
                             </div> -->
                             <div class="me-2">
@@ -106,6 +119,10 @@ include ("includes/sidebar.php");
                                     href="excels/employeesExcel" target="_blank">
                                     <span><i class="fas fa-file-pdf mt-2"></i></span>
                                 </a>
+                            </div>
+                            <div class="mb-2">
+                                <a href="addEmployeeQRCode" class="btn btn-primary"><i class="fas fa-plus"></i>
+                                    Employee</a>
                             </div>
                         </div>
                     </div>
@@ -116,11 +133,11 @@ include ("includes/sidebar.php");
                             <thead>
                                 <tr>
                                     <th>S.No</th>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>CNIC</th>
                                     <th>Employee Type</th>
                                     <th>Deparment</th>
-                                    <!-- <th>QR Code</th> -->
                                     <th>Print</th>
 
                                     <th>Action</th>
@@ -143,7 +160,7 @@ include ("includes/sidebar.php");
 </div>
 
 <!-- Start: Footer -->
-<?php include_once ('includes/footer.php'); ?>
+<?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
 
 
@@ -157,7 +174,6 @@ include ("includes/sidebar.php");
     function load_employee_Data() {
 
         let employeeLimited = $("#employee-limit").val();
-        // let employeeOrder = $("#employee-order").val();
         let employeeMonth = $("#employee-month").val();
 
         $.ajax({
@@ -167,7 +183,6 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-employee-Data',
                 employeeLimited: employeeLimited,
-                // employeeOrder: employeeOrder,
                 employeeMonth: employeeMonth
             },
             success: function (response) {
@@ -177,31 +192,31 @@ include ("includes/sidebar.php");
             },
         });
     }
-</script>
-<!-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Load data on page load with default value (10)
-            search_employee_Data();
 
+
+
+    function search_employee_Data() {
+
+        let nameEmployeeSearch = document.getElementById('id-search_employee').value;
+        let IDemployeeSearch = document.getElementById('name-search_employee').value;
+        let employeeLimited = $("#employee-limit").val();
+        let employeeMonth = $("#employee-month").val();
+
+        $.ajax({
+            url: 'admin-index.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'search-employee-Data',
+                nameEmployeeSearch: nameEmployeeSearch,
+                IDemployeeSearch: IDemployeeSearch,
+                employeeLimited: employeeLimited,
+                employeeMonth: employeeMonth,            },
+            success: function (response) {
+                console.log(response);
+                // Update the result div with the loaded data
+                $("#employeeDetails").html(response.data);
+            },
         });
-
-        function search_employee_Data() {
-
-            let employeeSearch = document.getElementById('employeeSearch').value;
-
-            $.ajax({
-                url: 'admin-index.php',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    action: 'search-employee-Data',
-                    employeeSearch: employeeSearch
-                },
-                success: function(response) {
-                    console.log(response);
-                    // Update the result div with the loaded data
-                    $("#employeeDetails").html(response.data);
-                },
-            });
-        }
-    </script> -->
+    }
+</script>

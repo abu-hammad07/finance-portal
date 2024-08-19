@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function.php");
+include_once("includes/config.php");
+include_once("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -13,7 +13,7 @@ servantSubmit();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -54,7 +54,7 @@ include ("includes/sidebar.php");
                         <select name="house_id" id="house_id" class="form-select form-control " required>
                             <option value="">--- Select House No ---</option>
                         </select>
-                       
+
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Owner's Name</label>
@@ -76,8 +76,8 @@ include ("includes/sidebar.php");
                     </div>
 
                     <div class="col-md-6 ">
-                        <label class="form-label">Fees</label>
-                        <input type="number" id="servant_fees" name="servant_fees" class="form-control"
+                        <label for="servantFees" class="form-label">Fees</label>
+                        <input type="text" id="servantFees" name="servant_fees" class="form-control"
                             placeholder="999" required>
                         <span class="text-danger" id="servant_fees_error"></span>
                     </div>
@@ -117,7 +117,7 @@ include ("includes/sidebar.php");
     });
 </script> -->
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         function loadData(type, id) {
             $.ajax({
                 url: 'ajax.php',
@@ -127,7 +127,7 @@ include ("includes/sidebar.php");
                     id: id
                 },
                 dataType: 'html',
-                success: function (data) {
+                success: function(data) {
                     if (type === "house_id_Data") {
                         $('#house_id').append(data);
                     } else if (type === "owner_name_Data") {
@@ -141,7 +141,7 @@ include ("includes/sidebar.php");
 
         loadData("house_id_Data");
 
-        $("#house_id").on("change", function () {
+        $("#house_id").on("change", function() {
             var customer = $("#house_id").val();
             if (customer != "") {
                 loadData("owner_name_Data", customer);
@@ -149,7 +149,7 @@ include ("includes/sidebar.php");
                 $('#owner_name').html("");
             }
         });
-        $("#house_id").on("change", function () {
+        $("#house_id").on("change", function() {
             var customer = $("#house_id").val();
             if (customer != "") {
                 loadData("owner_contact_Data", customer);
@@ -157,5 +157,12 @@ include ("includes/sidebar.php");
                 $('#owner_contact').html("");
             }
         });
+    });
+</script>
+
+<script>
+    var servantFees = document.getElementById('servantFees');
+    servantFees.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
     });
 </script>

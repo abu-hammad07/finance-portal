@@ -2,6 +2,7 @@
 session_start();
 include_once ("includes/config.php");
 include_once ("includes/function.php");
+include_once ("includes/auto_addMontainace.php");
 // include_once("includes/fetch_data.php");
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
@@ -376,7 +377,7 @@ include ("includes/sidebar.php");
                             <h6>Income</h6>
                             <div id="incomeDataMonth">
                                 <p><?= date('F, Y') ?></p>
-                                <h4 class="text-primary mb-0"><?= get_total_combined_income() ?></h4>
+                                <h4 class="text-primary mb-0">PK<?= get_total_combined_income() ?></h4>
                             </div>
                         </div>
                     </div>
@@ -441,7 +442,7 @@ include ("includes/sidebar.php");
                             <h6>Expenses</h6>
                             <div id="expencesDataMonth">
                                 <p><?= date('F, Y') ?></p>
-                                <h4 class="text-primary mb-0"><?= get_total_combined_expences() ?></h4>
+                                <h4 class="text-primary mb-0">PK<?= get_total_combined_expences() ?></h4>
                             </div>
                         </div>
                     </div>
@@ -539,7 +540,7 @@ include ("includes/sidebar.php");
             <div class="card h-100">
                 <div class="card-header">
                     <h6>Balance Summary</h6>
-                    <h4 class="text-primary">$12,389.54</h4>
+                    <h4 class="text-primary">PK<?= get_all_total_income() ?></h4>
                 </div>
                 <div class="card-body">
                     <div id="d2c_lineChart">
@@ -555,7 +556,7 @@ include ("includes/sidebar.php");
             <div class="card">
                 <div class="card-header">
                     <h6>Expenses</h6>
-                    <h4 class="text-primary">$12,389.54</h4>
+                    <h4 class="text-primary">PK<?= get_all_total_expences() ?></h4>
                 </div>
                 <div class="card-body">
                     <div id="d2c_barChart"></div>

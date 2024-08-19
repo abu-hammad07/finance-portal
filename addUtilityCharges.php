@@ -62,8 +62,8 @@ include ("includes/sidebar.php");
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Billing Month</label>
-                        <input type="month" name="utility_billing_month" id="utility_billing_month" class="form-control"
-                            required value="<?php echo date('Y-m'); ?>">
+                        <input type="date" name="utility_billing_month" id="utility_billing_month" class="form-control"
+                            required value="<?php echo date('Y-m-d'); ?>">
                         <span class="text-danger" id="utility_billing_month_error"></span>
                     </div>
                     <div class="col-md-6">
@@ -77,6 +77,16 @@ include ("includes/sidebar.php");
                         </select>
                         <span class="text-danger" id="utility_location_error"></span>
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Payment Type</label>
+                        <select name="payment_type" id="payment_type" class="form-select form-control" required>
+                            <option value="">Select Payment Type</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank</option>
+                        </select>
+                        <span class="text-danger" id="payment_type_error"></span>
+                    </div>
+                    
 
                     <!-- Button -->
                     <div class="col-md-12">

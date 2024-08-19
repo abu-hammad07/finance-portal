@@ -51,12 +51,11 @@ include("includes/sidebar.php");
                 <hr class="my-4">
                 <div class="row g-3">
                     <div class="col-md-6 ">
-                        <label for="propertytype" class="form-label">Type of Property</label>
-                        <select id="propertytype" name="property-type" class="form-select form-control">
+                        <label for="house_or_shop" class="form-label">House OR Shop</label>
+                        <select id="house_or_shop" name="house_or_shop" class="form-select form-control">
                             <option value="">-----</option>
                             <option value="House">House</option>
                             <option value="Shop">Shop</option>
-                            <option value="Apartment">Apartment</option>
                         </select>
                         <span class="text-danger" id="property-type_error"></span>
                     </div>
@@ -84,7 +83,6 @@ include("includes/sidebar.php");
                             required>
                         <span class="text-danger" id="owner-cinc_error"></span>
                     </div>
-
                     <div class="col-md-6" id="Shopstatus">
                         <label for="owner" class="form-label">Occupancy Status</label>
                         <select id="occupance-status" name="occupance-status" class="form-select form-control">
@@ -94,7 +92,6 @@ include("includes/sidebar.php");
                         </select>
                         <span class="text-danger" id="occupance-status_error"></span>
                     </div>
-
                     <div class="col-md-6 ">
                         <label for="floor" class="form-label">Floor</label>
                         <select id="floor" name="floor" class="form-select form-control">
@@ -107,7 +104,14 @@ include("includes/sidebar.php");
                         </select>
                         <span class="text-danger" id="floor_error"></span>
                     </div>
-
+                    <div class="col-md-6 ">
+                        <label for="propertytype" class="form-label">Type of Property</label>
+                        <select id="propertytype" name="property-type" class="form-select form-control">
+                            <option value="">-----</option>
+                            <option value="Apartment">Apartment</option>
+                        </select>
+                        <span class="text-danger" id="property-type_error"></span>
+                    </div>
                     <div class="col-md-6 ">
                         <label class="form-label">Size/Area of the Property</label>
                         <select id="size" name="property-size" class="form-select form-control">
@@ -147,7 +151,6 @@ include("includes/sidebar.php");
     OwnerContact.addEventListener('input', function() {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
-    var OwnerCnic = document.getElementById('OwnerCnic');
 
     OwnerCnic.addEventListener('input', function() {
         this.value = this.value.replace(/[^0-9-]/g, '');

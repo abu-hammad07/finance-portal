@@ -26,8 +26,8 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                     <th>House/Shop Number</th>
                                     <th>Type</th>
                                     <th>Vehicle Number</th>
-                                    <th>Nehicle Name</th>
-                                    <th>Nehicle Color</th>
+                                    <th>Vehicle Name</th>
+                                    <th>Vehicle Color</th>
                                     <th>Egate Person Name</th>
                                     <th>Egate Cnic</th>
                                     <th>Egate Charges Type</th>

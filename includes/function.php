@@ -168,6 +168,81 @@ function get_total_combined_expences()
     return number_format($total_combined_expences);
 }
 
+// Function to get total income count from income table
+function get_all_total_income()
+{
+    global $conn;
+
+    // Get the current month and year
+    // $current_month = date('m');
+    // $current_year = date('Y');
+
+    // // Set the start and end date of the current month
+    // $start_date = "$current_year-$current_month-01";
+    // $end_date = date('Y-m-t', strtotime($start_date)); // Get the last day of the current month
+
+    // Define the queries to get total income from each table
+    $queries = [
+        "SELECT SUM(maintenance_charges) AS total_income FROM `houses`",
+        "SELECT SUM(maintenance_charges) AS total_income FROM `shops`",
+        "SELECT SUM(eGate_charges) AS total_income FROM `egate`",
+        "SELECT SUM(servantFees) AS total_income FROM `servants`",
+        "SELECT SUM(bookingPayment) AS total_income FROM `events_booking`",
+        "SELECT SUM(maintenance_peyment) AS total_income FROM `maintenance_payments`",
+        "SELECT SUM(penalty_charges) AS total_income FROM `penalty`"
+    ];
+
+    $total_combined_income = 0;
+
+    // Execute each query and accumulate the total income
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            return "Error: " . mysqli_error($conn);
+        }
+        $row = mysqli_fetch_assoc($result);
+        $total_combined_income += $row['total_income'];
+    }
+
+    // Format the combined total income amount with commas
+    return number_format($total_combined_income);
+}
+
+// Function to get total expences count from expences table
+function get_all_total_expences()
+{
+    global $conn;
+
+    // Get the current month and year
+    // $current_month = date('m');
+    // $current_year = date('Y');
+
+    // // Set the start and end date of the current month
+    // $start_date = "$current_year-$current_month-01";
+    // $end_date = date('Y-m-t', strtotime($start_date)); // Get the last day of the current month
+
+    // Define the queries to get total expences from each table
+    $queries = [
+        "SELECT SUM(utility_amount) AS total_expences FROM `utility_charges`",
+        "SELECT SUM(society_maint_amount) AS total_expences FROM `society_maintenance`",
+    ];
+
+    $total_combined_expences = 0;
+
+    // Execute each query and accumulate the total expences
+    foreach ($queries as $query) {
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            return "Error: " . mysqli_error($conn);
+        }
+        $row = mysqli_fetch_assoc($result);
+        $total_combined_expences += $row['total_expences'];
+    }
+
+    // Format the combined total expences amount with commas
+    return number_format($total_combined_expences);
+}
+
 
 
 
@@ -182,6 +257,7 @@ function addHouse()
     global $conn;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $houseNumber = mysqli_real_escape_string($conn, $_POST['house-number']);
+        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $ownerName = mysqli_real_escape_string($conn, $_POST['owner-name']);
         $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
         $ownerCNIC = mysqli_real_escape_string($conn, $_POST['owner-cinc']);
@@ -194,9 +270,17 @@ function addHouse()
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
 
-        $insertQuery = "INSERT INTO houses(house_number, owner_name, owner_contact, owner_cnic,
+        // unique house number check
+        $sql = "SELECT * FROM houses WHERE house_number = '$houseNumber'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            $_SESSION['error_message_house'] = "House Number Already Exists, ($houseNumber) Please Try Another Number";
+            return;
+        }
+
+        $insertQuery = "INSERT INTO houses(house_number, house_or_shop, owner_name, owner_contact, owner_cnic,
          occupancy_status, property_size, floor, property_type, maintenance_charges,added_on,
-          added_by) VALUES ('$houseNumber','$ownerName','$ownerContact', '$ownerCNIC',
+          added_by) VALUES ('$houseNumber', '$house_or_shop','$ownerName','$ownerContact', '$ownerCNIC',
           '$occupanceStatus','$propertySize','$floor',
           '$propertyType','$maintenanceCharges',
           '$added_on','$added_by')";
@@ -232,6 +316,7 @@ function updateHouse()
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
         $houseNumber = mysqli_real_escape_string($conn, $_POST['house-number']);
+        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $ownerName = mysqli_real_escape_string($conn, $_POST['owner-name']);
         $ownerContact = mysqli_real_escape_string($conn, $_POST['owner-contact']);
         $ownerCNIC = mysqli_real_escape_string($conn, $_POST['owner-cinc']);
@@ -242,11 +327,12 @@ function updateHouse()
         $maintenanceCharges = mysqli_real_escape_string($conn, $_POST['maintenance-charges']);
 
         $updated_by = $_SESSION['username'];
-        $updated_on = date("Y-m-d");
+        $updated_on = date("d-F-Y, h:i A");
 
         $insertQuery = "
         UPDATE houses SET 
         house_number = '{$houseNumber}',
+        house_or_shop = '{$house_or_shop}',
         owner_name = '{$ownerName}', 
         owner_contact = '{$ownerContact}',
         owner_cnic = '{$ownerCNIC}',
@@ -255,7 +341,7 @@ function updateHouse()
         floor = '{$floor}', 
         property_type = '{$propertyType}',
         maintenance_charges = '{$maintenanceCharges}', 
-        updated_on = NOW(), 
+        updated_on = {$updated_on}, 
         updated_by = '{$updated_by}'
         WHERE house_id = '{$house_id}'";
 
@@ -613,7 +699,6 @@ function eventBookingInsert()
         $customerName = mysqli_real_escape_string($conn, $_POST['customerName']);
         $customerContact = mysqli_real_escape_string($conn, $_POST['customerContact']);
         $customerCnic = mysqli_real_escape_string($conn, $_POST['customerCnic']);
-        $eventType = mysqli_real_escape_string($conn, $_POST['eventType']);
         $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
         $paymentType = mysqli_real_escape_string($conn, $_POST['paymentType']);
 
@@ -634,11 +719,11 @@ function eventBookingInsert()
         // insert data into event_booking table
         $insertEventBooking = "INSERT INTO `events_booking`(
             `eventName`, `location`, `date`, `startTiming`, `endTiming`, `noOfPersons`, 
-            `eventType`, `customerCnic`, `customerContact`, `customerName`, 
+            `customerCnic`, `customerContact`, `customerName`, 
             `bookingPayment`, `payment_type`, `added_by`, `added_on`) 
         VALUES(
             '{$eventName}', '{$location}', '{$date}', '{$startTiming}', '{$endTiming}', '{$noOfPersons}',
-            '{$eventType}', '{$customerCnic}', '{$customerContact}', '{$customerName}', '{$bookingPayment}', '{$paymentType}', '{$added_by}', '{$added_on}'
+            '{$customerCnic}', '{$customerContact}', '{$customerName}', '{$bookingPayment}', '{$paymentType}', '{$added_by}', '{$added_on}'
         )";
 
 
@@ -675,7 +760,6 @@ function eventBookingUpdate()
         $customerName = mysqli_real_escape_string($conn, $_POST['customerName']);
         $customerContact = mysqli_real_escape_string($conn, $_POST['customerContact']);
         $customerCnic = mysqli_real_escape_string($conn, $_POST['customerCnic']);
-        $eventType = mysqli_real_escape_string($conn, $_POST['eventType']);
         $bookingPayment = mysqli_real_escape_string($conn, $_POST['bookingPayment']);
         $paymentType = mysqli_real_escape_string($conn, $_POST['paymentType']);
 
@@ -695,7 +779,6 @@ function eventBookingUpdate()
         `customerName` = '$customerName',
         `customerContact` = '$customerContact',
         `customerCnic` = '$customerCnic',
-        `eventType` = '$eventType',
         `bookingPayment` = '$bookingPayment',
         `payment_type` = '$paymentType',
         `updated_on` = '$updated_on',
@@ -743,44 +826,9 @@ function addTenants()
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $house_shop_id = mysqli_real_escape_string($conn, $_POST['house_shop_id']);
-        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
         $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
         $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
-
-
-        // Validate house_shop_id against the correct table
-        // $valid_id = false;
-        // if ($house_or_shop === 'house') {
-        //     $checkQuery = "SELECT house_id FROM houses WHERE house_id = '$house_shop_id'";
-        // }
-        //  elseif ($house_or_shop === 'shop') {
-        //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
-        // } 
-        //  elseif ($house_or_shop === 'Apartment') {
-        //     $checkQuery = "SELECT shop_id FROM shops WHERE shop_id = '$house_shop_id'";
-        // } 
-        // else {
-        //     $_SESSION['error_message_Tenant'] = "Invalid house_or_shop value.";
-        //     header('location: addTenant');
-        //     exit();
-        // }
-
-        // $checkResult = mysqli_query($conn, $checkQuery);
-        // if (!$checkResult) {
-        //     error_log("Error executing check query: " . mysqli_error($conn));
-        // }
-
-        // if (mysqli_num_rows($checkResult) > 0) {
-        //     $valid_id = true;
-        // }
-
-        // if (!$valid_id) {
-        //     $_SESSION['error_message_Tenant'] = "Invalid house_shop_id for the given house_or_shop.";
-        //     header('location: addTenant');
-        //     exit();
-        // }
-
 
         // image upload
         $tenant_image = rand(111111111, 999999999) . '_' . $_FILES['tenant_image']['name'];
@@ -791,19 +839,10 @@ function addTenants()
         $added_by = $_SESSION['username'];
         $added_on = date("Y-m-d");
 
-        // Insert data into tenants table
-        // $insertTenants = "INSERT INTO tenants (
-        //     house_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
-        //     ) VALUES(
-        //         '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', '$added_by', '$added_on'
-        //         )";
-
-        // Build insert query dynamically based on house_or_shop
-
         $insertTenants = "INSERT INTO tenants (
-                house_id, house_or_shop, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
+                house_id, tenant_name, tenant_contact_no, tenant_cnic, tenant_image, added_by, added_on
             ) VALUES (
-                '$house_shop_id', '$house_or_shop', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', 
+                '$house_shop_id', '$tenant_name', '$tenant_contact', '$tenant_cnic', '$tenant_image', 
                 '$added_by', '$added_on'
             )";
 
@@ -830,7 +869,6 @@ function updateTenants()
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tenant_id = mysqli_real_escape_string($conn, $_POST['tenant_id']);
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
-        $house_or_shop = mysqli_real_escape_string($conn, $_POST['house_or_shop']);
         $tenant_name = mysqli_real_escape_string($conn, $_POST['tenant_name']);
         $tenant_contact = mysqli_real_escape_string($conn, $_POST['tenant_contact']);
         $tenant_cnic = mysqli_real_escape_string($conn, $_POST['tenant_cnic']);
@@ -851,7 +889,6 @@ function updateTenants()
         $updateTenants = "UPDATE tenants SET 
         house_id='$house_id',
         tenant_name='$tenant_name',
-        house_or_shop='$house_or_shop',
         tenant_contact_no='$tenant_contact',
         tenant_cnic='$tenant_cnic',
         updated_by='$updated_by',
@@ -1545,6 +1582,7 @@ function insertUtilityCharges()
         $utility_amount = mysqli_real_escape_string($conn, $_POST['utility_amount']);
         $utility_billing_month = mysqli_real_escape_string($conn, $_POST['utility_billing_month']);
         $utility_location = mysqli_real_escape_string($conn, $_POST['utility_location']);
+        $payment_type = mysqli_real_escape_string($conn, $_POST['payment_type']);
 
         // Check if utility type already exists for the same billing month and location
         $utility_checking = "SELECT * FROM `utility_charges` 
@@ -1564,9 +1602,9 @@ function insertUtilityCharges()
 
             // Insert data into utility_charges table
             $insert_query = "INSERT INTO `utility_charges` 
-                             (`utility_type`, `utility_amount`, `utility_billing_month`, `utility_location`, `added_by`, `added_on`) 
+                             (`utility_type`, `utility_amount`, `utility_billing_month`, `utility_location`, `payment_type`, `added_by`, `added_on`) 
                              VALUES 
-                             ('$utility_type', '$utility_amount', '$utility_billing_month', '$utility_location', '$added_by', '$added_on')";
+                             ('$utility_type', '$utility_amount', '$utility_billing_month', '$utility_location', '$payment_type', '$added_by', '$added_on')";
 
             $insert_query_res = mysqli_query($conn, $insert_query);
 
@@ -1596,6 +1634,7 @@ function updatedUtilityCharges()
         $utility_amount = mysqli_real_escape_string($conn, $_POST['utility_amount']);
         $utility_billing_month = mysqli_real_escape_string($conn, $_POST['utility_billing_month']);
         $utility_location = mysqli_real_escape_string($conn, $_POST['utility_location']);
+        $payment_type = mysqli_real_escape_string($conn, $_POST['payment_type']);
 
         // updated_on & updated_by
         $updated_by = $_SESSION['username'];
@@ -1607,6 +1646,7 @@ function updatedUtilityCharges()
         `utility_amount`='$utility_amount',
         `utility_billing_month`='$utility_billing_month',
         `utility_location`='$utility_location',
+        `payment_type`='$payment_type',
         `updated_by`='$updated_by',
         `updated_on`='$updated_on' 
         WHERE `utility_id`='$utility_id'";

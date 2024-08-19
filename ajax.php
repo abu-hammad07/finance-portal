@@ -172,16 +172,16 @@ echo $eGateData;
 
 if (isset($_POST['type'])) {
     if ($_POST['type'] == "propertytype") {
-        $sql = "SELECT DISTINCT property_type FROM houses";
+        $sql = "SELECT DISTINCT house_or_shop FROM houses";
         $query = mysqli_query($conn, $sql) or die('Query unsuccessful');
         $tenant = '';
         while ($row = mysqli_fetch_assoc($query)) {
-            $tenant .= "<option value='{$row['property_type']}'>{$row['property_type']}</option>";
+            $tenant .= "<option value='{$row['house_or_shop']}'>{$row['house_or_shop']}</option>";
         }
     } elseif ($_POST['type'] == "house_shop_id") {
         if (isset($_POST['id'])) {
             $house_data = $_POST['id'];
-            $query = mysqli_query($conn, "SELECT * FROM `houses` WHERE `property_type` = '$house_data'");
+            $query = mysqli_query($conn, "SELECT * FROM `houses` WHERE `house_or_shop` = '$house_data'");
             $tenant .= "<option value=''>---</option>";
             while ($row = mysqli_fetch_assoc($query)) {
                 $tenant .= "<option value='{$row['house_id']}'>{$row['house_number']}</option>";
@@ -318,11 +318,11 @@ if (isset($_POST['type'])) {
 // ==========================payroll page=====================
 if (isset($_POST['type'])) {
     if ($_POST['type'] == "Employee_ID") {
-        $sql = "SELECT employee_id FROM employees";
+        $sql = "SELECT employee_id, employeeID FROM employees";
         $query = mysqli_query($conn, $sql) or die('Query unsuccessful: ' . mysqli_error($conn));
         $fetchEmpolyeeData = '---';
         while ($row = mysqli_fetch_assoc($query)) {
-            $fetchEmpolyeeData .= "<option value='{$row['employee_id']}'>{$row['employee_id']}</option>";
+            $fetchEmpolyeeData .= "<option value='{$row['employee_id']}'>{$row['employeeID']}</option>";
         }
     } elseif ($_POST['type'] == "Employee_Name") {
         if (isset($_POST['id'])) {
