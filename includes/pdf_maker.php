@@ -180,60 +180,58 @@ if ($count > 0) {
     $inv_det_results = mysqli_query($conn, $inv_det_query);
     while ($inv_det_data_row = mysqli_fetch_array($inv_det_results, MYSQLI_ASSOC)) {
         $content .= '
-        <style>
+       <style>
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+    }   
+    .id-card {
+        border: 2px solid #00796b;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #ffffff;
+        width: 343px; /* Wallet-sized width in pixels */
+        height: 150px; /* Wallet-sized height in pixels */
+        margin: 0 auto;
+        table-layout: fixed;
+        padding: 10px;
+        font-size: 8px; /* Adjusted font size to fit the smaller card */
+        text-align: center;
+    }
+    .id-card td {
+        padding: 5px;
+    }
+    .left {
+        border-right: 2px solid #00796b;
+        width: 50%;
+        text-align: center;
+    }
+    .logo {
+        width: 100px; /* Adjusted logo size */
+        height: auto;
+        margin-bottom: 5px;
+    }
+    .details p {
+        margin: 3px 0;
+        text-align: left;
+        font-size: 7px; /* Smaller font size to fit text */
+    }
+    .signature {
+        margin-top: 5px;
+        font-size: 7px;
+    }
+    .qrcode {
+        width: 60px; /* Adjusted QR code size */
+        height: auto;
+        margin-top: 5px;
+    }
+</style>
 
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-        }   
-            .id-card {
-                border: 2px solid #00796b;
-                border-radius: 10px;
-                overflow: hidden;
-                background-color: #ffffff;
-                width: 300px; /* ID card width in points */
-                height: 200px; /* ID card height in points */
-                margin: 0 auto;
-                table-layout: fixed;
-                padding: 10px;
-                font-size: 10px;
-                text-align: center;
-                
-
-            }
-            .id-card td {
-                padding: 5px;
-            }
-            .left {
-                border-right: 2px solid #00796b;
-                width: 50%;
-                text-align: center;
-            }
-            .logo {
-                width: 100px;
-                height: auto;
-                margin-bottom: 10px;
-            }
-            .details p {
-                margin: 3px 0;
-                text-align: left;
-                font-size: 9px;
-            }
-            .signature {
-                margin-top: 10px;
-                font-size: 9px;
-            }
-            .qrcode {
-                width: 120px;
-                height: auto;
-                margin-top: 10px;
-            }
-        </style>
         <table class="id-card">
             <tr>
                 <td class="left">
@@ -256,9 +254,9 @@ if ($count > 0) {
                     <h3 style="font-size: 14px;">E-Gate Pass</h3>
                     <div class="signature">
                         <p>Authorised Signature</p>
-                        <img src="qrcode.png" alt="Barcode" class="qrcode">
+                       
                     </div>
-                    <p style="font-size: 9px;">Property of Masm3</p>
+                  
                 </td>
             </tr>
         </table>';
@@ -323,56 +321,54 @@ if ($count > 0) {
         <style>
 
         body {
-            font-family: Arial, sans-serif;
-            font-size: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-        }   
-            .id-card {
-                border: 2px solid #00796b;
-                border-radius: 10px;
-                overflow: hidden;
-                background-color: #ffffff;
-                width: 300px; /* ID card width in points */
-                height: 200px; /* ID card height in points */
-                margin: 0 auto;
-                table-layout: fixed;
-                padding: 10px;
-                font-size: 10px;
-                text-align: center;
-                
-
-            }
-            .id-card td {
-                padding: 5px;
-            }
-            .left {
-                border-right: 2px solid #00796b;
-                width: 50%;
-                text-align: center;
-            }
-            .logo {
-                width: 100px;
-                height: auto;
-                margin-bottom: 10px;
-            }
-            .details p {
-                margin: 3px 0;
-                text-align: left;
-                font-size: 9px;
-            }
-            .signature {
-                margin-top: 10px;
-                font-size: 9px;
-            }
-            .qrcode {
-                width: 150px;
-                height: auto;
-                margin-top: 10px;
-            }
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+    }   
+    .id-card {
+        border: 2px solid #00796b;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #ffffff;
+        width: 343px; /* Wallet-sized width in pixels */
+        height: 150px; /* Wallet-sized height in pixels */
+        margin: 0 auto;
+        table-layout: fixed;
+        padding: 10px;
+        font-size: 8px; /* Adjusted font size to fit the smaller card */
+        text-align: center;
+    }
+    .id-card td {
+        padding: 5px;
+    }
+    .left {
+        border-right: 2px solid #00796b;
+        width: 50%;
+        text-align: center;
+    }
+    .logo {
+        width: 100px; /* Adjusted logo size */
+        height: auto;
+        margin-bottom: 5px;
+    }
+    .details p {
+        margin: 3px 0;
+        text-align: left;
+        font-size: 7px; /* Smaller font size to fit text */
+    }
+    .signature {
+        margin-top: 5px;
+        font-size: 7px;
+    }
+    .qrcode {
+        width: 60px; /* Adjusted QR code size */
+        height: auto;
+        margin-top: 5px;
+    }
         </style>
         <table class="id-card">
             <tr>
@@ -396,9 +392,9 @@ if ($count > 0) {
                     <h3 style="font-size: 14px;">Employee</h3>
                     <div class="signature">
                         <p>Authorised Signature</p>
-                        <img src="qrcode.png" alt="Barcode" class="qrcode">
+                       
                     </div>
-                    <p style="font-size: 9px;">Property of Masm3</p>
+                  
                 </td>
             </tr>
         </table>';
@@ -463,57 +459,55 @@ if ($count > 0) {
         $content .= '
         <style>
 
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-        }   
-            .id-card {
-                border: 2px solid #00796b;
-                border-radius: 10px;
-                overflow: hidden;
-                background-color: #ffffff;
-                width: 300px; /* ID card width in points */
-                height: 200px; /* ID card height in points */
-                margin: 0 auto;
-                table-layout: fixed;
-                padding: 10px;
-                font-size: 10px;
-                text-align: center;
-                
-
-            }
-            .id-card td {
-                padding: 5px;
-            }
-            .left {
-                border-right: 2px solid #00796b;
-                width: 50%;
-                text-align: center;
-            }
-            .logo {
-                width: 100px;
-                height: auto;
-                margin-bottom: 10px;
-            }
-            .details p {
-                margin: 3px 0;
-                text-align: left;
-                font-size: 9px;
-            }
-            .signature {
-                margin-top: 10px;
-                font-size: 9px;
-            }
-            .qrcode {
-                width: 150px;
-                height: auto;
-                margin-top: 10px;
-            }
+       body {
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+    }   
+    .id-card {
+        border: 2px solid #00796b;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #ffffff;
+        width: 343px; /* Wallet-sized width in pixels */
+        height: 150px; /* Wallet-sized height in pixels */
+        margin: 0 auto;
+        table-layout: fixed;
+        padding: 10px;
+        font-size: 8px; /* Adjusted font size to fit the smaller card */
+        text-align: center;
+    }
+    .id-card td {
+        padding: 5px;
+    }
+    .left {
+        border-right: 2px solid #00796b;
+        width: 50%;
+        text-align: center;
+    }
+    .logo {
+        width: 100px; /* Adjusted logo size */
+        height: auto;
+        margin-bottom: 5px;
+    }
+    .details p {
+        margin: 3px 0;
+        text-align: left;
+        font-size: 7px; /* Smaller font size to fit text */
+    }
+    .signature {
+        margin-top: 5px;
+        font-size: 7px;
+    }
+    .qrcode {
+        width: 60px; /* Adjusted QR code size */
+        height: auto;
+        margin-top: 5px;
+    }
         </style>
         <table class="id-card">
             <tr>
@@ -536,9 +530,9 @@ if ($count > 0) {
                     <h3 style="font-size: 14px;">Servant</h3>
                     <div class="signature">
                         <p>Authorised Signature</p>
-                        <img src="qrcode.png" alt="Barcode" class="qrcode">
+                       
                     </div>
-                    <p style="font-size: 9px;">Property of Masm3</p>
+                  
                 </td>
             </tr>
         </table>';

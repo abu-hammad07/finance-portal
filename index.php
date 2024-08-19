@@ -27,7 +27,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {
 
 
 ?>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <!-- Main sidebar -->
 <?php
@@ -369,7 +369,7 @@ include ("includes/sidebar.php");
                                 <div class="col-12">
                                     <a href="viewIncomeReports">
                                         <div class="btn rounded shadow text-primary fs-3">
-                                            <i class="fas fa-comments-dollar"></i>
+                                        <i class="fa-solid fa-rupee-sign"></i>
                                         </div>
                                     </a>
                                 </div>
@@ -434,7 +434,7 @@ include ("includes/sidebar.php");
                                 <div class="col-12">
                                     <a href="viewexpensesReports">
                                         <div class="btn rounded shadow text-primary fs-3">
-                                            <i class="fas fa-comment-dollar"></i>
+                                        <i class="fa-solid fa-rupee-sign"></i>
                                         </div>
                                     </a>
                                 </div>
@@ -460,7 +460,7 @@ include ("includes/sidebar.php");
                             <div class="card mb-4">
                                 <div class="card-body d-flex align-items-center">
                                     <div class="d2c_icon btn bg-primary text-primary rounded-circle bg-opacity-10">
-                                        <i class="fas fa-dollar-sign"></i>
+                                    <i class="fa-solid fa-rupee-sign"></i>
                                     </div>
                                     <div class="flex-1 w-100 ms-3">
                                         <div class="d-flex justify-content-between mb-2">
@@ -494,7 +494,7 @@ include ("includes/sidebar.php");
                             <div class="card mb-4">
                                 <div class="card-body d-flex align-items-center">
                                     <div class="d2c_icon btn bg-info text-info rounded-circle bg-opacity-10">
-                                        <i class="fas fa-dollar-sign"></i>
+                                    <i class="fa-solid fa-rupee-sign"></i>
                                     </div>
                                     <div class="flex-1 w-100 ms-3">
                                         <div class="d-flex justify-content-between mb-2">
@@ -540,7 +540,7 @@ include ("includes/sidebar.php");
             <div class="card h-100">
                 <div class="card-header">
                     <h6>Balance Summary</h6>
-                    <h4 class="text-primary">$12,389.54</h4>
+                    <h4 class="text-primary"><i class="fa-solid fa-rupee-sign"></i> 12,389.54</h4>
                 </div>
                 <div class="card-body">
                     <div id="d2c_lineChart">
@@ -556,7 +556,7 @@ include ("includes/sidebar.php");
             <div class="card">
                 <div class="card-header">
                     <h6>Expenses</h6>
-                    <h4 class="text-primary">$12,389.54</h4>
+                    <h4 class="text-primary"><i class="fa-solid fa-rupee-sign"></i> 12,389.54</h4>
                 </div>
                 <div class="card-body">
                     <div id="d2c_barChart"></div>
