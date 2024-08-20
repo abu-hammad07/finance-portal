@@ -106,7 +106,7 @@ include("includes/sidebar.php");
                                 </a>
                             </div>
                             <div class="mb-2">
-                                <a href="addeGate" class="btn btn-primary"><i class="fas fa-plus"></i> E-Gate</a>
+                                <a href="addServant" class="btn btn-primary"><i class="fas fa-plus"></i> Servant</a>
                             </div>
                         </div>
                     </div>

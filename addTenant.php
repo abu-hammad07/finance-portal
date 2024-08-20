@@ -54,6 +54,8 @@ include("includes/sidebar.php");
                         <label for="propertytype" class="form-label">Please Select type</label>
                         <select id="propertytype" name="house_or_shop" required class="form-select form-control">
                             <option value="">-----</option>
+                            <option value="house">House</option>
+                            <option value="shop">Shop</option>
                         </select>
                         <span class="text-danger" ></span>
                     </div>
@@ -132,7 +134,6 @@ include("includes/sidebar.php");
             });
         }
 
-        loadData("propertytype");
 
         $("#propertytype").on("change", function() {
             var department = $("#propertytype").val();
