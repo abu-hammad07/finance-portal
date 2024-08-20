@@ -117,7 +117,6 @@ include ("includes/sidebar.php");
                                     <!-- --------------------Maintenace----------------- -->
                                     <th class="maintID" style="display: none;">Maintenance Type</th>
                                     <th class="maintID" style="display: none;">Amount</th>
-                                    <th class="maintID" style="display: none;">Due Date</th>
                                     <th class="maintID" style="display: none;">Payment Date</th>
                                     <th class="maintID" style="display: none;">Comments</th>
                                     <!-- --------------------All----------------- -->

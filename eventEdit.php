@@ -102,12 +102,6 @@ include ("includes/sidebar.php");
                                     <span class="text-danger" id="customerCnic_error"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Event Type</label>
-                                    <input type="text" class="form-control" id="eventType" name="eventType"
-                                        placeholder="Enter Contact" value="<?= $row['eventType'] ?>">
-                                    <span class="text-danger" id="eventType_error"></span>
-                                </div>
-                                <div class="col-md-6">
                                     <label class="form-label">Payment</label>
                                     <input type="number" class="form-control" id="bookingPayment" name="bookingPayment"
                                         placeholder="999" value="<?= $row['bookingPayment'] ?>">

@@ -52,9 +52,18 @@ include ("includes/sidebar.php");
                             <hr class="my-4">
                             <div class="row g-3">
                                 <input type="text" hidden name="house_id" value="<?= $row['house_id'] ?>">
+                                <div class="col-md-6 ">
+                                    <label for="house_or_shop" class="form-label">House OR Shop</label>
+                                    <select id="house_or_shop" name="house_or_shop" class="form-select form-control">
+                                        <option value="">-----</option>
+                                        <option value="House" <?php if ($row['house_or_shop'] == 'House') echo 'selected' ?>>House</option>
+                                        <option value="Shop" <?php if ($row['house_or_shop'] == 'Shop') echo 'selected' ?>>Shop</option>
+                                    </select>
+                                    <span class="text-danger" id="property-type_error"></span>
+                                </div>
                                 <div class="col-md-6">
                                     <label class="form-label">House/Unit Number</label>
-                                    <input type="number" readonly name="house-number" class="form-control"
+                                    <input type="text" readonly name="house-number" class="form-control"
                                         placeholder="Enter House/Unit Number" required value="<?= $row['house_number'] ?>">
                                 </div>
                                 <div class="col-md-6">
@@ -64,13 +73,13 @@ include ("includes/sidebar.php");
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Owner's Contact</label>
-                                    <input type="number" readonly name="owner-contact" class="form-control"
+                                    <input type="text" readonly name="owner-contact" class="form-control"
                                         placeholder="Enter Owner's Contact Information" required
                                         value="<?= $row['owner_contact'] ?>">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Owner's CINC</label>
-                                    <input type="number" readonly name="owner-cinc" class="form-control"
+                                    <input type="text" readonly name="owner-cinc" class="form-control"
                                         placeholder="XXXXX-XXXXXXX-X" value="<?= $row['owner_cnic'] ?>" required>
                                 </div>
                                 <div class="col-md-6">

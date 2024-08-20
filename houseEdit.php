@@ -40,10 +40,19 @@ include("includes/sidebar.php");
                             <hr class="my-4">
                             <div class="row g-3">
                                 <input type="text" hidden name="house_id" value="<?= $row['house_id'] ?>">
+                                <div class="col-md-6 ">
+                                    <label for="house_or_shop" class="form-label">House OR Shop</label>
+                                    <select id="house_or_shop" name="house_or_shop" class="form-select form-control">
+                                        <option value="">-----</option>
+                                        <option value="House" <?php if ($row['house_or_shop'] == 'House') echo 'selected' ?>>House</option>
+                                        <option value="Shop" <?php if ($row['house_or_shop'] == 'Shop') echo 'selected' ?>>Shop</option>
+                                    </select>
+                                    <span class="text-danger" id="property-type_error"></span>
+                                </div>
                                 <div class="col-md-6">
                                     <label class="form-label">House/Unit Number</label>
-                                    <input type="number" name="house-number" class="form-control"
-                                        placeholder="Enter House/Unit Number" required value="<?= $row['house_number'] ?>">
+                                    <input type="text" name="house-number" class="form-control"
+                                        placeholder="House/Shop Number" required value="<?= $row['house_number'] ?>">
                                     <span class="text-danger" id="house-number_error"></span>
                                 </div>
                                 <div class="col-md-6">

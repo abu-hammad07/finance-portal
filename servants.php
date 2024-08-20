@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function.php");
+include_once("includes/config.php");
+include_once("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -12,7 +12,7 @@ deleteServants();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -46,15 +46,42 @@ include ("includes/sidebar.php");
         <div class="col-lg-12 mb-4">
             <div class="card card-body h-auto d2c_projects_datatable">
                 <div class="row">
-                    <div class="col-md-4 col-xl-3">
+                    <div class="col-md-4 col-12 mt-2">
                         <form class="position-relative">
                             <input type="text" class="form-control product-search ps-5 word-spacing-2px"
-                                id="servantSearch" onkeyup="search_servant_Data()" placeholder="Search &nbsp;..." />
+                                id="house_no-search_servant" placeholder="Search House Number &nbsp;..." />
                             <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
                         </form>
                     </div>
-                    <div class="col-md-8 col-xl-9 text-end">
-                        <a href="addServant" class="btn btn-primary"><i class="fas fa-plus"></i> Add Servant</a>
+                    <!-- <div class="col-md-4 col-12 mt-2">
+                        <form class="position-relative">
+                            <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                id="owner_name-search_servant" placeholder="Search Owner Name &nbsp;..." />
+                            <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                        </form>
+                    </div> -->
+                    <div class="col-md-4 col mt-2">
+                        <select id="payment_type-search_servant" class="form-control form-select" onchange="load_servant_Data()">
+                            <option value="">--- Select Payment Type ---</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <input type="month" id="servant-month" class="form-control" onchange="load_servant_Data()">
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <select id="servant-limit" class="form-control form-select" onchange="load_servant_Data()">
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12 mt-2">
+                        <button type="button" class="btn btn-primary w-100"
+                            onclick="search_servant_Data()">Search</button>
                     </div>
                 </div>
             </div>
@@ -73,29 +100,13 @@ include ("includes/sidebar.php");
                     <div class="col-md-6 text-end card-header">
                         <div class="btn-group">
                             <div class="me-2">
-                                <input type="month" id="servant-month" class="form-control"
-                                    onchange="load_servant_Data()">
-                            </div>
-                            <div class="me-2">
-                                <select id="servant-limit" class="form-control" onchange="load_servant_Data()">
-                                    <option value="15">15</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="75">75</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
-                            <!-- <div class="me-2">
-                                <select id="servant-order" class="form-control" onchange="load_servant_Data()">
-                                    <option value="DESC">New</option>
-                                    <option value="ASC">Old</option>
-                                </select>
-                            </div> -->
-                            <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/servantsExcel">
                                     <span><i class="fas fa-file-pdf mt-2"></i></span>
                                 </a>
+                            </div>
+                            <div class="mb-2">
+                                <a href="addeGate" class="btn btn-primary"><i class="fas fa-plus"></i> E-Gate</a>
                             </div>
                         </div>
                     </div>
@@ -130,7 +141,7 @@ include ("includes/sidebar.php");
 <!-- Start: Footer -->
 <?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
- 
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Load data on page load with default value (10)
@@ -141,8 +152,8 @@ include ("includes/sidebar.php");
     function load_servant_Data() {
 
         let servantLimited = $("#servant-limit").val();
-        // let servantOrder = $("#servant-order").val();
         let servantMonth = $("#servant-month").val();
+        let paymentTypeSearch = document.getElementById('payment_type-search_servant').value;
 
         $.ajax({
             url: 'admin-index.php',
@@ -151,7 +162,35 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-servant-Data',
                 servantLimited: servantLimited,
-                // servantOrder: servantOrder,
+                servantMonth: servantMonth,
+                paymentTypeSearch: paymentTypeSearch,
+            },
+            success: function (response) {
+                console.log(response);
+                // Update the result div with the loaded data
+                $("#servantDetails").html(response.data);
+            },
+        });
+    }
+
+
+    function search_servant_Data() {
+
+        let houseNoSearch = document.getElementById('house_no-search_servant').value;
+        let paymentTypeSearch = document.getElementById('payment_type-search_servant').value;
+        let servantLimited = $("#servant-limit").val();
+        let servantMonth = $("#servant-month").val();
+
+
+        $.ajax({
+            url: 'admin-index.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'search-servant-Data',
+                houseNoSearch: houseNoSearch,
+                paymentTypeSearch: paymentTypeSearch,
+                servantLimited: servantLimited,
                 servantMonth: servantMonth
             },
             success: function (response) {
@@ -162,30 +201,3 @@ include ("includes/sidebar.php");
         });
     }
 </script>
-<!-- <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Load data on page load with default value (10)
-                search_servant_Data();
-
-            });
-
-            function search_servant_Data() {
-
-                let servantSearch = document.getElementById('servantSearch').value;
-
-                $.ajax({
-                    url: 'admin-index.php',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        action: 'search-servant-Data',
-                        servantSearch: servantSearch
-                    },
-                    success: function (response) {
-                        console.log(response);
-                        // Update the result div with the loaded data
-                        $("#servantDetails").html(response.data);
-                    },
-                });
-            }
-        </script> -->

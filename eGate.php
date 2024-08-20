@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function.php");
+include_once("includes/config.php");
+include_once("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -13,7 +13,7 @@ deleteEgate();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -28,18 +28,42 @@ include ("includes/sidebar.php");
         <div class="col-lg-12 mb-4">
             <div class="card card-body h-auto d2c_projects_datatable">
                 <div class="row">
-                    <div class="col-md-8 col-12">
-                        <div class="col-md-4">
-                            <form class="position-relative">
-                                <input type="text" class="form-control product-search ps-5 word-spacing-2px"
-                                    id="eGateSearch" onkeyup="search_eGate_Data()" placeholder="Search &nbsp;..." />
-                                <i
-                                    class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                            </form>
-                        </div>
+                    <div class="col-md-4 col-12 mt-2">
+                        <form class="position-relative">
+                            <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                id="house_shop_no-search_eGate" placeholder="Search House & Shop Number &nbsp;..." />
+                            <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                        </form>
                     </div>
-                    <div class="col-md-4 col-12 text-end">
-                        <a href="addeGate" class="btn btn-primary"><i class="fas fa-plus"></i> E-Gate</a>
+                    <div class="col-md-4 col-12 mt-2">
+                        <form class="position-relative">
+                            <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                id="vehicle_number-search_eGate" placeholder="Search Vehicle Number &nbsp;..." />
+                            <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                        </form>
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <select id="payment_type-search_eGate" class="form-control form-select" onchange="load_eGate_Data()">
+                            <option value="">---- Select Payment Type --</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <input type="month" id="eGate-month" class="form-control" onchange="load_eGate_Data()">
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <select id="eGate-limit" class="form-control form-select" onchange="load_eGate_Data()">
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12 mt-2">
+                        <button type="button" class="btn btn-primary w-100"
+                            onclick="search_eGate_Data()">Search</button>
                     </div>
                 </div>
             </div>
@@ -78,28 +102,13 @@ include ("includes/sidebar.php");
                     <div class="col-md-6 text-end card-header">
                         <div class="btn-group">
                             <div class="me-2">
-                                <input type="month" id="eGate-month" class="form-control" onchange="load_eGate_Data()">
-                            </div>
-                            <div class="me-2">
-                                <select id="eGate-limit" class="form-control" onchange="load_eGate_Data()">
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="75">75</option>
-                                    <option value="100">100</option>
-                                    <option value="125">125</option>
-                                </select>
-                            </div>
-                            <!-- <div class="me-2">
-                                <select id="eGate-order" class="form-control" onchange="load_eGate_Data()">
-                                    <option value="DESC">New</option>
-                                    <option value="ASC">Old</option>
-                                </select>
-                            </div> -->
-                            <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/eGateExcel">
                                     <span><i class="fas fa-file-pdf mt-2"></i></span>
                                 </a>
+                            </div>
+                            <div class="mb-2">
+                                <a href="addeGate" class="btn btn-primary"><i class="fas fa-plus"></i> E-Gate</a>
                             </div>
                         </div>
                     </div>
@@ -149,7 +158,7 @@ include ("includes/sidebar.php");
 
         let eGateMonth = $("#eGate-month").val();
         let eGateLimited = $("#eGate-limit").val();
-        // let eGateOrder = $("#eGate-order").val();
+        let paymentTypeSearch = document.getElementById('payment_type-search_eGate').value;
 
         $.ajax({
             url: 'admin-index.php',
@@ -158,8 +167,8 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-eGate_booking-Data',
                 eGateLimited: eGateLimited,
-                // eGateOrder: eGateOrder,
-                eGateMonth: eGateMonth
+                eGateMonth: eGateMonth,
+                paymentTypeSearch: paymentTypeSearch
             },
             success: function (response) {
                 console.log(response);
@@ -168,4 +177,39 @@ include ("includes/sidebar.php");
             },
         });
     }
+
+
+
+    function search_eGate_Data() {
+
+        let houseShopNoSearch = document.getElementById('house_shop_no-search_eGate').value;
+        let paymentTypeSearch = document.getElementById('payment_type-search_eGate').value;
+        let vehicleNoSearch = document.getElementById('vehicle_number-search_eGate').value;
+        let eGateMonth = $("#eGate-month").val();
+        let eGateLimited = $("#eGate-limit").val();
+
+        $.ajax({
+            url: 'admin-index.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'search-eGate-Data',
+                houseShopNoSearch: houseShopNoSearch,
+                paymentTypeSearch: paymentTypeSearch,
+                vehicleNoSearch: vehicleNoSearch,
+                eGateMonth: eGateMonth,
+                eGateLimited: eGateLimited
+            },
+            success: function (response) {
+                console.log(response);
+                // Update the result div with the loaded data
+                $("#eGateDetails").html(response.data);
+            },
+        });
+    }
+
+
+
+
+
 </script>

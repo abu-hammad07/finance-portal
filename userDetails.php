@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function.php");
+include_once("includes/config.php");
+include_once("includes/function.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -12,7 +12,7 @@ userDelete();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -46,15 +46,34 @@ include ("includes/sidebar.php");
         <div class="col-lg-12 mb-4">
             <div class="card card-body h-auto d2c_projects_datatable">
                 <div class="row">
-                    <div class="col-md-4 col-xl-3">
-                        <form class="position-relative">
-                            <input type="text" class="form-control product-search ps-5 word-spacing-2px" id="userSearch"
-                                onkeyup="search_user_Data()" placeholder="Search &nbsp;..." />
+                    <div class="col-md-4 col-12 mt-2">
+                        <div class="position-relative">
+                            <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                id="username-search_user" placeholder="Search Username &nbsp;..." />
                             <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                        </form>
+                        </div>
                     </div>
-                    <div class="col-md-8 col-xl-9 text-end">
-                        <a href="addUser" class="btn btn-primary"><i class="fas fa-plus"></i> User</a>
+                    <div class="col-md-4 col-12 mt-2">
+                        <div class="position-relative">
+                            <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                id="email-search_user" placeholder="Search Email &nbsp;..." />
+                            <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <input type="month" class="form-control" id="user-month" onchange="load_user_Data()">
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <select id="user-limit" class="form-control form-select" onchange="load_user_Data()">
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12 mt-2">
+                        <button type="button" class="btn btn-primary w-100" onclick="search_user_Data()">Search</button>
                     </div>
                 </div>
             </div>
@@ -72,22 +91,9 @@ include ("includes/sidebar.php");
                     </div>
                     <div class="col-md-6 text-end card-header">
                         <div class="btn-group">
-                            <div class="me-2">
-                                <input type="month" class="form-control" id="user-month" onchange="load_user_Data()">
-                            </div>
-                            <div class="me-2">
-                                <select id="user-limit" class="form-control" onchange="load_user_Data()">
-                                    <option value="15">15</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="75">75</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
-                            <div class="me-2">
+                            <div class="me-2" style="display:none">
                                 <select id="user-order" class="form-control" onchange="load_user_Data()">
                                     <option value="DESC">New</option>
-                                    <option value="ASC">Old</option>
                                 </select>
                             </div>
                             <div class="me-2">
@@ -95,6 +101,9 @@ include ("includes/sidebar.php");
                                     href="excels/usersExcel" target="_blank">
                                     <span><i class="fas fa-file-pdf mt-2"></i></span>
                                 </a>
+                            </div>
+                            <div class="mb-2">
+                                <a href="addUser" class="btn btn-primary"><i class="fas fa-plus"></i> User</a>
                             </div>
                         </div>
                     </div>
@@ -127,7 +136,7 @@ include ("includes/sidebar.php");
 </div>
 
 <!-- Start: Footer -->
-<?php include_once ('includes/footer.php'); ?>
+<?php include_once('includes/footer.php'); ?>
 <!-- End: Footer -->
 
 
@@ -161,17 +170,14 @@ include ("includes/sidebar.php");
             },
         });
     }
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Load data on page load with default value (10)
-        search_user_Data();
 
-    });
 
     function search_user_Data() {
 
-        let userSearch = document.getElementById('userSearch').value;
+        let usernameSearch = document.getElementById('username-search_user').value;
+        let emailSearch = document.getElementById('email-search_user').value;
+        let userLimited = $("#user-limit").val();
+        let userMonth = $("#user-month").val();
 
         $.ajax({
             url: 'admin-index.php',
@@ -179,7 +185,10 @@ include ("includes/sidebar.php");
             dataType: 'json',
             data: {
                 action: 'search-user-Data',
-                userSearch: userSearch
+                usernameSearch: usernameSearch,
+                emailSearch: emailSearch,
+                userLimited: userLimited,
+                userMonth: userMonth
             },
             success: function (response) {
                 console.log(response);
@@ -188,4 +197,6 @@ include ("includes/sidebar.php");
             },
         });
     }
+
+
 </script>

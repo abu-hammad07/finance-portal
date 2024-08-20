@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once ("includes/config.php");
-include_once ("includes/function2.php");
+include_once("includes/config.php");
+include_once("includes/function2.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -13,7 +13,7 @@ penaltyDelete();
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -47,15 +47,42 @@ include ("includes/sidebar.php");
         <div class="col-lg-12 mb-4">
             <div class="card card-body h-auto d2c_projects_datatable">
                 <div class="row">
-                    <div class="col-md-4 col-xl-3">
-                        <form class="position-relative">
+                    <div class="col-md-4 col-12 mt-2">
+                        <div class="position-relative">
                             <input type="text" class="form-control product-search ps-5 word-spacing-2px"
-                                id="penaltySearch" onkeyup="search_penalty_Data()" placeholder="Search &nbsp;..." />
+                                id="penaltyType-search_penalty" placeholder="Search Penalty Type &nbsp;..." />
                             <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
-                        </form>
+                        </div>
                     </div>
-                    <div class="col-md-8 col-xl-9 text-end">
-                        <a href="addPenalty" class="btn btn-primary"><i class="fas fa-plus"></i> Add Penalty</a>
+                    <!-- <div class="col-md-4 col-12 mt-2">
+                        <div class="position-relative">
+                            <input type="text" class="form-control product-search ps-5 word-spacing-2px"
+                                id="cnic-search_penalty" placeholder="Search Penalty CNIC &nbsp;..." />
+                            <i class="fas fa-search position-absolute top-50 start-1 translate-middle-y fs-6 mx-3"></i>
+                        </div>
+                    </div> -->
+                    <div class="col-md-4 col mt-2">
+                        <select id="paymentPenaltySearch" class="form-control form-select" onchange="load_penalty_Data()">
+                            <option value="">---- Select Payment Type --</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <input type="month" class="form-control" id="penalty-month" onchange="load_penalty_Data()">
+                    </div>
+                    <div class="col-md-4 col mt-2">
+                        <select id="penalty-limit" class="form-control form-select" onchange="load_penalty_Data()">
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12 mt-2">
+                        <button type="button" class="btn btn-primary w-100"
+                            onclick="search_penalty_Data()">Search</button>
                     </div>
                 </div>
             </div>
@@ -74,29 +101,13 @@ include ("includes/sidebar.php");
                     <div class="col-md-6 text-end card-header">
                         <div class="btn-group">
                             <div class="me-2">
-                                <input type="month" class="form-control" id="penalty-month"
-                                    onchange="load_penalty_Data()">
-                            </div>
-                            <div class="me-2">
-                                <select id="penalty-limit" class="form-control" onchange="load_penalty_Data()">
-                                    <option value="15">15</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="75">75</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
-                            <!-- <div class="me-2">
-                                <select id="penalty-order" class="form-control" onchange="load_penalty_Data()">
-                                    <option value="DESC">New</option>
-                                    <option value="ASC">Old</option>
-                                </select>
-                            </div> -->
-                            <div class="me-2">
                                 <a class="d2c_pdf_btn text-center justify-content-center text-decoration-none text-primary"
                                     href="excels/penaltyExcel">
                                     <span><i class="fas fa-file-pdf mt-2"></i></span>
                                 </a>
+                            </div>
+                            <div class="mb-2">
+                                <a href="addPenalty" class="btn btn-primary"><i class="fas fa-plus"></i> Add Penalty</a>
                             </div>
                         </div>
                     </div>
@@ -141,8 +152,8 @@ include ("includes/sidebar.php");
     function load_penalty_Data() {
 
         let penaltyLimited = $("#penalty-limit").val();
-        // let penaltyOrder = $("#penalty-order").val();
         let penaltyMonth = $("#penalty-month").val();
+        let paymentPenaltySearch = document.getElementById('paymentPenaltySearch').value;
 
         $.ajax({
             url: 'admin-index2.php',
@@ -151,7 +162,36 @@ include ("includes/sidebar.php");
             data: {
                 action: 'load-penalty-Data',
                 penaltyLimited: penaltyLimited,
-                // penaltyOrder: penaltyOrder,
+                penaltyMonth: penaltyMonth,
+                paymentPenaltySearch: paymentPenaltySearch,
+            },
+            success: function (response) {
+                console.log(response);
+                // Update the result div with the loaded data
+                $("#penaltyDetails").html(response.data);
+            },
+        });
+    }
+
+
+
+
+    function search_penalty_Data() {
+
+        let penaltyTypeSearch = document.getElementById('penaltyType-search_penalty').value;
+        let paymentPenaltySearch = document.getElementById('paymentPenaltySearch').value;
+        let penaltyLimited = $("#penalty-limit").val();
+        let penaltyMonth = $("#penalty-month").val();
+
+        $.ajax({
+            url: 'admin-index2.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'search-penalty-Data',
+                penaltyTypeSearch: penaltyTypeSearch,
+                paymentPenaltySearch: paymentPenaltySearch,
+                penaltyLimited: penaltyLimited,
                 penaltyMonth: penaltyMonth
             },
             success: function (response) {
@@ -162,30 +202,3 @@ include ("includes/sidebar.php");
         });
     }
 </script>
-<!-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Load data on page load with default value (10)
-            search_penalty_Data();
-
-        });
-
-        function search_penalty_Data() {
-
-            let penaltySearch = document.getElementById('penaltySearch').value;
-
-            $.ajax({
-                url: 'admin-index2.php',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    action: 'search-penalty-Data',
-                    penaltySearch: penaltySearch
-                },
-                success: function(response) {
-                    console.log(response);
-                    // Update the result div with the loaded data
-                    $("#penaltyDetails").html(response.data);
-                },
-            });
-        }
-    </script> -->

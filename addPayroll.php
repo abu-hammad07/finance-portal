@@ -73,7 +73,7 @@ include ("includes/sidebar.php");
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Month-Year</label>
-                        <input type="month" id="monthYear" name="month_year" class="form-control" required>
+                        <input type="month" id="monthYear" name="month_year" class="form-control" required value="<?= date('Y-m'); ?>">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Total Working Days</label>
