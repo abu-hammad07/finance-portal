@@ -518,6 +518,9 @@ if ($count > 0) {
                         <p><strong>House/Shop Number:</strong> ' . $inv_det_data_row['house_id'] . '</p>
                         <p><strong>Phone Number:</strong> ' . $inv_det_data_row['employee_cnic'] . '</p>
                         <p><strong>Designation:</strong> ' . $inv_det_data_row['servantDesignation'] . '</p>
+                        <p><strong>Masi Name:</strong> ' . $inv_det_data_row['masi_name'] . '</p>
+                        <p><strong>Masi Contact:</strong> ' . $inv_det_data_row['masi_contact'] . '</p>
+                        <p><strong>Masi CNIC:</strong> ' . $inv_det_data_row['masi_cnic'] . '</p>
                         <p><strong>Fees:</strong> ' . $inv_det_data_row['servantFees'] . '</p>
                         <p><strong>Payment Type</strong> ' . $inv_det_data_row['payment_type'] . '</p>
                         <p><strong>Issue Date</strong> ' . $inv_det_data_row['added_on'] . '</p>

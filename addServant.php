@@ -74,7 +74,25 @@ include("includes/sidebar.php");
                             placeholder="Enter Designation" required>
                         <span class="text-danger" id="designation_error"></span>
                     </div>
-
+                    <div class="col-md-6 ">
+                        <label class="form-label">Masi Name</label>
+                        <input type="text" name="masi_name" class="form-control"
+                            placeholder="Enter masi name" required>
+                    </div>
+                    <div class="col-md-6 ">
+                        <label class="form-label">Masi Contact</label>
+                        <input type="text" name="masi_contact" class="form-control"
+                            placeholder="Enter masi contact" required>
+                    </div>
+                    <div class="col-md-6 ">
+                        <label class="form-label">Masi CNIC</label>
+                        <input type="text" name="masi_cnic" class="form-control"
+                            placeholder="Enter masi CNIC" required>
+                    </div>
+                    <div class="col-md-6 ">
+                        <label class="form-label">Masi Picture</label>
+                        <input type="file" name="image" class="form-control" required>
+                    </div>
                     <div class="col-md-6 ">
                         <label for="servantFees" class="form-label">Fees</label>
                         <input type="text" id="servantFees" name="servant_fees" class="form-control"

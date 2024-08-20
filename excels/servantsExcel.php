@@ -25,6 +25,9 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                    <th>S.No</th>
                                     <th>House Number</th>
                                     <th>Servant Designation</th>
+                                    <th>Masi Name</th>
+                                    <th>Masi Contact</th>
+                                    <th>Masi CNIC</th>
                                     <th>Servant Fees</th>
                                     <th>Payment Type</th>           
                 </tr>
@@ -52,6 +55,9 @@ if (isset($_SESSION['login']) === true && $_SESSION['role'] === 'Admin') {
                                             $html .= '<td>' . $_SESSION['house_number']. '</td>';
                                     
                                         $html .= '<td>' . $item['servantDesignation'] . '</td>';
+                                        $html .= '<td>' . $item['masi_name'] . '</td>';
+                                        $html .= '<td>' . $item['masi_contact'] . '</td>';
+                                        $html .= '<td>' . $item['masi_cnic'] . '</td>';
                                         $html .= '<td>' . $item['servantFees'] . '</td>';
                                         $html .= '<td>' . $item['payment_type'] . '</td>';
                                         $html .= '</tr>';

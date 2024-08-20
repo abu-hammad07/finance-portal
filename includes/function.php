@@ -6,7 +6,7 @@ include "config.php";
 function totalHouses()
 {
     global $conn;
-    $sql = "SELECT * FROM houses";
+    $sql = "SELECT * FROM houses WHERE house_or_shop = 'House'";
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {
@@ -21,7 +21,8 @@ function totalHousesPaid()
 {
     global $conn;
 
-    $sql = "SELECT * FROM maintenance_payments WHERE status = 'paid' AND house_or_shop = 'house'";
+    $sql = "SELECT * FROM maintenance_payments 
+    WHERE status = 'paid' AND house_or_shop = 'House'";
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {
@@ -36,7 +37,8 @@ function totalSHopsPaid()
 {
     global $conn;
 
-    $sql = "SELECT * FROM maintenance_payments WHERE status = 'paid' AND house_or_shop = 'shop'";
+    $sql = "SELECT * FROM maintenance_payments 
+    WHERE status = 'paid' AND house_or_shop = 'Shop'";
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {
@@ -51,7 +53,7 @@ function totalSHopsPaid()
 function totalShops()
 {
     global $conn;
-    $sql = "SELECT * FROM shops";
+    $sql = "SELECT * FROM houses WHERE house_or_shop = 'Shop'";
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {
@@ -292,7 +294,7 @@ function addHouse()
         // --------------insert maintanace table--------------
         $sql_maintenance = "INSERT INTO maintenance_payments(house_shop_id, house_or_shop, maintenance_month,
           maintenance_peyment,added_on,
-          added_by) VALUES ('$house_id' ,'house','$current_month',
+          added_by) VALUES ('$house_id' ,'$house_or_shop','$current_month',
          '$maintenanceCharges',
           '$added_on','$added_by')";
         $query = mysqli_query($conn, $sql_maintenance);
@@ -572,8 +574,18 @@ function servantSubmit()
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
         $designation = mysqli_real_escape_string($conn, $_POST['designation']);
+        $masi_name = mysqli_real_escape_string($conn, $_POST['masi_name']);
+        $masi_contact = mysqli_real_escape_string($conn, $_POST['masi_contact']);
+        $masi_cnic = mysqli_real_escape_string($conn, $_POST['masi_cnic']);
         $servant_fees = mysqli_real_escape_string($conn, $_POST['servant_fees']);
         $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
+
+        // image upload
+        $image = '';
+        if (!empty($_FILES['image']['name'])) {
+            $image = mysqli_real_escape_string($conn, rand(111111111, 999999999) . '_' . $_FILES['image']['name']);
+            move_uploaded_file($_FILES['image']['tmp_name'], "media/images/{$image}");
+        }
 
         // select house details
         $selectHouse = "SELECT house_number FROM houses WHERE house_id = '$house_id'";
@@ -591,9 +603,11 @@ function servantSubmit()
 
         // Insert data into user_details table first
         $insert_details = "INSERT INTO servants(
-            house_id, servantDesignation, servantFees, payment_type, added_by, added_on) 
+            house_id, servantDesignation, masi_name, masi_contact, masi_cnic, masi_picture, 
+            servantFees, payment_type, added_by, added_on) 
         VALUES (
-            '$house_id', '$designation', '$servant_fees', '$pymentType'  ,'$added_by', '$added_on'
+            '$house_id', '$designation', '$masi_name', '$masi_contact', '$masi_cnic', '$image', 
+            '$servant_fees', '$pymentType'  ,'$added_by', '$added_on'
         )";
 
         $insert_udetails_res = mysqli_query($conn, $insert_details);
@@ -624,8 +638,19 @@ function serventUpdate()
         $servant_id = mysqli_real_escape_string($conn, $_POST['servant_id']);
         $house_id = mysqli_real_escape_string($conn, $_POST['house_id']);
         $designation = mysqli_real_escape_string($conn, $_POST['designation']);
+        $masi_name = mysqli_real_escape_string($conn, $_POST['masi_name']);
+        $masi_contact = mysqli_real_escape_string($conn, $_POST['masi_contact']);
+        $masi_cnic = mysqli_real_escape_string($conn, $_POST['masi_cnic']);
         $servant_fees = mysqli_real_escape_string($conn, $_POST['servant_fees']);
         $pymentType = mysqli_real_escape_string($conn, $_POST['pymentType']);
+
+
+        // image upload
+        $image = '';
+        if (!empty($_FILES['image']['name'])) {
+            $image = mysqli_real_escape_string($conn, rand(111111111, 999999999) . '_' . $_FILES['image']['name']);
+            move_uploaded_file($_FILES['image']['tmp_name'], "media/images/{$image}");
+        }
 
         // select house details
         $selectHouse = "SELECT house_number FROM houses WHERE house_id = '$house_id'";
@@ -642,6 +667,15 @@ function serventUpdate()
         $servant_update = "UPDATE servants SET
             house_id = '$house_id',
             servantDesignation = '$designation',
+            masi_name = '$masi_name',
+            masi_contact = '$masi_contact',
+            masi_cnic = '$masi_cnic',";
+
+        if (!empty($image)) {
+            $servant_update .= "masi_picture = '$image',";
+        }
+
+        $servant_update .= "
             servantFees = '$servant_fees',
             payment_type = '$pymentType',
             updated_by = '$updated_by',
@@ -1399,33 +1433,34 @@ function InsertEmployees()
             $_SESSION['error_added_employee'] = "($cnic) cnic already exists.";
             header('location: addEmployee');
             exit();
-        } else {
+        }
 
-            // unique email
-            $email_check = "SELECT * FROM `employees` WHERE `employee_email` = '$email'";
-            $email_check_result = mysqli_query($conn, $email_check);
-            if (mysqli_num_rows($email_check_result) > 0) {
-                $_SESSION['error_added_employee'] = "($email) email already exists.";
-                header('location: addEmployee');
-                exit();
-            } else {
+        // unique email
+        $email_check = "SELECT * FROM `employees` WHERE `employee_email` = '$email'";
+        $email_check_result = mysqli_query($conn, $email_check);
+        if (mysqli_num_rows($email_check_result) > 0) {
+            $_SESSION['error_added_employee'] = "($email) email already exists.";
+            header('location: addEmployee');
+            exit();
+        }
 
 
-                // unique phone number
-                $phone_check = "SELECT * FROM `employees` WHERE `employee_contact` = '$phone_number'";
-                $phone_check_result = mysqli_query($conn, $phone_check);
-                if (mysqli_num_rows($phone_check_result) > 0) {
-                    $_SESSION['error_added_employee'] = "($phone_number) phone number already exists.";
-                    header('location: addEmployee');
-                    exit();
-                } else {
+        // unique phone number
+        $phone_check = "SELECT * FROM `employees` WHERE `employee_contact` = '$phone_number'";
+        $phone_check_result = mysqli_query($conn, $phone_check);
+        if (mysqli_num_rows($phone_check_result) > 0) {
+            $_SESSION['error_added_employee'] = "($phone_number) phone number already exists.";
+            header('location: addEmployee');
+            exit();
+        }
 
-                    // Upload image
-                    $employee_image = rand(111111111, 999999999) . '_' . $_FILES['employee_image']['name'];
-                    move_uploaded_file($_FILES['employee_image']['tmp_name'], 'media/images/' . $employee_image);
 
-                    // insert data into employee table
-                    $insert_query = "INSERT INTO `employees`(
+        // Upload image
+        $employee_image = rand(111111111, 999999999) . '_' . $_FILES['employee_image']['name'];
+        move_uploaded_file($_FILES['employee_image']['tmp_name'], 'media/images/' . $employee_image);
+
+        // insert data into employee table
+        $insert_query = "INSERT INTO `employees`(
                         `employeeID`,`employee_full_name`, `employee_cnic`, `employee_qualification`, `employee_contact`, 
                         `employee_email`, `employee_address`, `employee_image`, `appointment_date`, 
                         `employement_type`, `department`, `designation`, `salary`, `added_on`, `added_by`) 
@@ -1436,19 +1471,16 @@ function InsertEmployees()
                         '$added_on', '$added_by'
                     )";
 
-                    $insert_query_res = mysqli_query($conn, $insert_query);
+        $insert_query_res = mysqli_query($conn, $insert_query);
 
-                    if ($insert_query_res) {
-                        $_SESSION['success_added_employee'] = "($full_name) employee has been added.";
-                        header('location: addEmployee');
-                        exit();
-                    } else {
-                        $_SESSION['error_added_employee'] = "($full_name) employee not added.";
-                        header('location: addEmployee');
-                        exit();
-                    }
-                }
-            }
+        if ($insert_query_res) {
+            $_SESSION['success_added_employee'] = "($full_name) employee has been added.";
+            header('location: addEmployee');
+            exit();
+        } else {
+            $_SESSION['error_added_employee'] = "($full_name) employee not added.";
+            header('location: addEmployee');
+            exit();
         }
     }
 }
@@ -1485,34 +1517,33 @@ function updateEmployees()
             $_SESSION['error_updated_employee'] = "($cnic) cnic already exists.";
             header('location: employee');
             exit();
-        } else {
+        }
 
-            // unique email
-            $email_check = "SELECT * FROM `employees` WHERE `employee_email` = '$email' AND `employee_id` != '$employee_id'";
-            $email_check_result = mysqli_query($conn, $email_check);
-            if (mysqli_num_rows($email_check_result) > 0) {
-                $_SESSION['error_updated_employee'] = "($email) email already exists.";
-                header('location: employee');
-                exit();
-            } else {
+        // unique email
+        $email_check = "SELECT * FROM `employees` WHERE `employee_email` = '$email' AND `employee_id` != '$employee_id'";
+        $email_check_result = mysqli_query($conn, $email_check);
+        if (mysqli_num_rows($email_check_result) > 0) {
+            $_SESSION['error_updated_employee'] = "($email) email already exists.";
+            header('location: employee');
+            exit();
+        }
 
+        // unique phone number
+        $phone_check = "SELECT * FROM `employees` WHERE `employee_contact` = '$phone_number' AND `employee_id` != '$employee_id'";
+        $phone_check_result = mysqli_query($conn, $phone_check);
+        if (mysqli_num_rows($phone_check_result) > 0) {
+            $_SESSION['error_updated_employee'] = "($phone_number) phone number already exists.";
+            header('location: employee');
+            exit();
+        }
 
-                // unique phone number
-                $phone_check = "SELECT * FROM `employees` WHERE `employee_contact` = '$phone_number' AND `employee_id` != '$employee_id'";
-                $phone_check_result = mysqli_query($conn, $phone_check);
-                if (mysqli_num_rows($phone_check_result) > 0) {
-                    $_SESSION['error_updated_employee'] = "($phone_number) phone number already exists.";
-                    header('location: employee');
-                    exit();
-                } else {
+        // Upload image
+        $employee_image = '';
+        $employee_image = rand(111111111, 999999999) . '_' . $_FILES['employee_image']['name'];
+        move_uploaded_file($_FILES['employee_image']['tmp_name'], 'media/images/' . $employee_image);
 
-                    // Upload image
-                    $employee_image = '';
-                    $employee_image = rand(111111111, 999999999) . '_' . $_FILES['employee_image']['name'];
-                    move_uploaded_file($_FILES['employee_image']['tmp_name'], 'media/images/' . $employee_image);
-
-                    // update data into employee table
-                    $update_query = "UPDATE `employees` SET 
+        // update data into employee table
+        $update_query = "UPDATE `employees` SET 
                     `employeeID`='$employeeID',
                     `employee_full_name`='$full_name',
                     `employee_cnic`='$cnic',
@@ -1530,22 +1561,20 @@ function updateEmployees()
                     WHERE `employee_id`='$employee_id'
                     ";
 
-                    $update_query_res = mysqli_query($conn, $update_query);
+        $update_query_res = mysqli_query($conn, $update_query);
 
-                    if ($update_query_res) {
-                        $_SESSION['success_updated_employee'] = "($full_name) employee has been Updated.";
-                        header('location: employee');
-                        exit();
-                    } else {
-                        $_SESSION['error_updated_employee'] = "($full_name) employee not Updated.";
-                        header('location: employee');
-                        exit();
-                    }
-                }
-            }
+        if ($update_query_res) {
+            $_SESSION['success_updated_employee'] = "($full_name) employee has been Updated.";
+            header('location: employee');
+            exit();
+        } else {
+            $_SESSION['error_updated_employee'] = "($full_name) employee not Updated.";
+            header('location: employee');
+            exit();
         }
     }
 }
+
 
 
 // ========== deleteEmployee ===========

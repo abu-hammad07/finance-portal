@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once ("includes/config.php");
+include_once("includes/config.php");
 if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role'] !== 'Admin') {
     // Redirect to login page
     header('location: login');
@@ -11,7 +11,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true || $_SESSION['role
 
 <!-- Main sidebar -->
 <?php
-include ("includes/sidebar.php");
+include("includes/sidebar.php");
 ?>
 <!-- End:Sidebar -->
 
@@ -67,6 +67,21 @@ include ("includes/sidebar.php");
                                     <span class="text-danger" id="designation_error"></span>
                                 </div>
                                 <div class="col-md-6 ">
+                                    <label class="form-label">Masi Name</label>
+                                    <input type="text" name="masi_name" class="form-control" placeholder="Enter masi name" required
+                                        value="<?= $row['masi_name'] ?>">
+                                </div>
+                                <div class="col-md-6 ">
+                                    <label class="form-label">Masi Contact</label>
+                                    <input type="text" name="masi_contact" class="form-control" placeholder="Enter masi contact"
+                                        required value="<?= $row['masi_contact'] ?>">
+                                </div>
+                                <div class="col-md-6 ">
+                                    <label class="form-label">Masi CNIC</label>
+                                    <input type="text" name="masi_cnic" class="form-control" placeholder="Enter masi CNIC" required
+                                        value="<?= $row['masi_cnic'] ?>">
+                                </div>
+                                <div class="col-md-6 ">
                                     <label class="form-label">Fees</label>
                                     <input type="text" readonly id="servant_fees" name="servant_fees" class="form-control"
                                         placeholder="999" value="<?= $row['servantFees'] ?>" required>
@@ -77,6 +92,14 @@ include ("includes/sidebar.php");
                                     <input type="text" readonly id="pymentType" name="pymentType" class="form-control"
                                         value="<?= $row['payment_type'] ?>" required>
                                     <span class="text-danger" id="pymentType"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="form-file">Masi Picture</label><br>
+                                    <div class="justify-content-center text-center">
+                                        <img src="media/images/<?= $row['masi_picture'] ?>"
+                                            class="img-fluid img-thumbnail" alt="picture" height="200px"
+                                            width="200px">
+                                    </div>
                                 </div>
 
                                 <!-- Button -->
@@ -105,5 +128,5 @@ include ("includes/sidebar.php");
 </div>
 
 <!-- Start: Footer -->
-<?php include_once('includes/footer.php'); ?>
+<?php include_once 'includes/footer.php'; ?>
 <!-- End: Footer -->

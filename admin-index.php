@@ -866,7 +866,7 @@ function filter_eGate_data_In_Database($eGateLimited, $eGateMonth, $paymentTypeS
     if (!empty($eGateMonth)) {
         $houseQuery .= " WHERE MONTH(egate.added_on) = '$month' AND YEAR(egate.added_on) = '$year'";
     }
-    if(!empty($paymentTypeSearch)){
+    if (!empty($paymentTypeSearch)) {
         $houseQuery .= " WHERE payment_type LIKE '%$paymentTypeSearch%'";
     }
 
@@ -1018,7 +1018,7 @@ function filter_employee_data_In_Database($employeeLimited, $employeeMonth)
         header("Location: employee");
         exit();
     }
-    
+
 
     $data = '';
     $count = 1;
@@ -1306,36 +1306,15 @@ function filter_societyMaint_data_In_Database($societyMaintLimited, $societyMain
             <td>' . $row['society_maint_paymentDate'] . '</td>
             <td>' . $row['society_maint_comments'] . '</td>
             <td>
-                      <a href="societyMaintEdit?societyMaint_edit_id=' . $row['society_maint_id'] . '">
-                          <span>
-                              <i class="fas fa-pencil-alt me-1 text-success"></i>
-                          </span>
-                      </a>
-                      <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteSocietyMaint' . $row['society_maint_id'] . '" data-bs-placement="top" title="Delete">
-                          <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
-                      </button>
-                      <div class="modal fade" id="deleteSocietyMaint' . $row['society_maint_id'] . '" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Society Maintenance Name: <span class="text-danger">' . $row['society_maint_type'] . '</span></h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body text-start">
-                                      <p>Please confirm that you want to delete this entry. <br>
-                                          Once deleted, you won\'t be able to recover it. <br>
-                                          Please proceed with caution.
-                                      </p>
-                                  </div>
-                                  <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                      <a href="?societyMaint_delete_id=' . $row['society_maint_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
-                                      <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </td>
-              </tr>';
+                <div class="dropdown"><button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">Action</button>
+                    <ul class="dropdown-menu text-center">
+                        <li><a class="dropdown-item" href="societyMaintEdit?societyMaint_edit_id=' . $row['society_maint_id'] . '">Edit</a></li>
+                        <li><a class="dropdown-item" href="?societyMaint_delete_id=' . $row['society_maint_id'] . '">Delete</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>';
     }
 
     // Check if $data is empty
@@ -1385,36 +1364,15 @@ function search_societyMaint_data_In_Database($societyMaintSearch, $societyMaint
             <td>' . $row['society_maint_paymentDate'] . '</td>
             <td>' . $row['society_maint_comments'] . '</td>
             <td>
-                      <a href="societyMaintEdit?societyMaint_edit_id=' . $row['society_maint_id'] . '">
-                          <span>
-                              <i class="fas fa-pencil-alt me-1 text-success"></i>
-                          </span>
-                      </a>
-                      <button type="button" class="border-0 rounded-2 p-0 py-1 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteSocietyMaint' . $row['society_maint_id'] . '" data-bs-placement="top" title="Delete">
-                          <span data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="Delete"><i class="fas fa-trash text-danger p-1 "></i></span>
-                      </button>
-                      <div class="modal fade" id="deleteSocietyMaint' . $row['society_maint_id'] . '" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel1">Confirm Delete? Society Maintenance Name: <span class="text-danger">' . $row['society_maint_type'] . '</span></h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body text-start">
-                                      <p>Please confirm that you want to delete this entry. <br>
-                                          Once deleted, you won\'t be able to recover it. <br>
-                                          Please proceed with caution.
-                                      </p>
-                                  </div>
-                                  <div class="modal-footer justify-content-start" style="margin-top: -20px;">
-                                      <a href="?societyMaint_delete_id=' . $row['society_maint_id'] . '" class="btn btn-danger" name="deleteUser">Delete</a>
-                                      <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </td>
-              </tr>';
+                <div class="dropdown"><button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">Action</button>
+                    <ul class="dropdown-menu text-center">
+                        <li><a class="dropdown-item" href="societyMaintEdit?societyMaint_edit_id=' . $row['society_maint_id'] . '">Edit</a></li>
+                        <li><a class="dropdown-item" href="?societyMaint_delete_id=' . $row['society_maint_id'] . '">Delete</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>';
     }
     // Check if $data is empty
     if (empty($data)) {
