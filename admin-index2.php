@@ -422,7 +422,7 @@ function filter_payroll_data_In_Database($payrollLimited, $payrollMonth)
             <td>' . $row['days_leave'] . '</td>
             <td>' . $row['month_year'] . '</td>
             <td>
-                <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none text-danger" href="">
+                <a class="d2c_danger_print_btn text-center justify-content-center text-decoration-none text-danger" href="includes/pdf_maker?PAY_ID=' . $row['payroll_id'] . '&ACTION=VIEW">
                     <span><i class="fas fa-print mt-2"></i></span>
                 </a>
             </td>

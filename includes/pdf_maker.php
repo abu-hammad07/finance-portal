@@ -560,3 +560,217 @@ if ($count > 0) {
 } else {
     echo 'Record not found for PDF.';
 }
+
+
+// ----------------------payment pdf---------------------
+
+$pay_id = $_GET['PAY_ID'];
+
+$inv_mst_query = "SELECT * FROM payroll WHERE payroll_id='" . $pay_id . "' ";
+$inv_mst_results = mysqli_query($conn, $inv_mst_query);
+$count = mysqli_num_rows($inv_mst_results);
+
+if ($count > 0) {
+    $inv_mst_data_row = mysqli_fetch_array($inv_mst_results, MYSQLI_ASSOC);
+
+    //----- Code for generate pdf
+    $pdf = new TCPDF('L', PDF_UNIT, 'A4', true, 'UTF-8', false);
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);
+    $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+    $pdf->SetDefaultMonospacedFont('helvetica');
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+    $pdf->SetMargins(PDF_MARGIN_LEFT, '10', PDF_MARGIN_RIGHT);
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+    $pdf->SetAutoPageBreak(TRUE, 10);
+    $pdf->SetFont('helvetica', '', 12);
+    $pdf->AddPage(); //default A4 landscape
+
+    $content = '';
+
+    $inv_det_query = "
+    SELECT emp.employee_cnic, emp.employee_full_name, emp.employeeID, pay.* 
+    FROM payroll AS pay
+    LEFT JOIN employees AS emp 
+    ON emp.employee_id = pay.employee_id 
+    WHERE pay.payroll_id = '" . $pay_id . "'
+";
+    $inv_det_results = mysqli_query($conn, $inv_det_query);
+    while ($inv_det_data_row = mysqli_fetch_array($inv_det_results, MYSQLI_ASSOC)) {
+        $content .= '
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+        }   
+        .salary-sheet {
+            border: 1px solid #00796b;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            background-color: #ffffff;
+            margin: 0 auto;
+            font-size: 10px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #00796b;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 150px;
+            height: auto;
+        }
+        .header h3 {
+            margin: 5px 0;
+            font-size: 18px;
+            color: #00796b;
+        }
+        .header p {
+            font-size: 12px;
+            color: #555;
+        }
+        .employee-details, .salary-details {
+            margin-bottom: 20px;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .details-table th, .details-table td {
+            padding: 15px;
+            border: 1px solid #00796b;
+            text-align: left;
+            font-size: 12px;
+        }
+        .details-table th {
+            background-color: #e0f2f1;
+            font-size: 11px;
+        }
+        .salary-details td:first-child {
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 9px;
+            color: #555;
+        }
+        .signature-section {
+            text-align: right;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #00796b;
+        }
+        .signature-section p {
+            margin: 0;
+            font-size: 10px;
+        }
+        .signature-line {
+            margin-top: 5px;
+            width: 120px;
+            border-top: 1px solid #000;
+            float: right;
+        }
+    </style>
+    
+    <div class="salary-sheet">
+        <div class="header">
+            <img src="KDA.png" alt="Company Logo">
+            <h3>Salary Sheet - ' . $inv_det_data_row['month_year'] . '</h3>
+            <p>KDA Housing Society</p>
+        </div>
+        
+        <div class="employee-details">
+            <table class="details-table">
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Employee CNIC</th>
+                    <th>Designation</th>
+                </tr>
+                <tr>
+                    <td>' . $inv_det_data_row['employeeID'] . '</td>
+                    <td>' . $inv_det_data_row['employee_full_name'] . '</td>
+                    <td>' . $inv_det_data_row['employee_cnic'] . '</td>
+                    <td>Servant</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="salary-details">
+            <table class="details-table">
+                <tr>
+                    <th>Description</th>
+                    <th>Details</th>
+                </tr>
+                <tr>
+                    <td>Basic Salary</td>
+                    <td>' . $inv_det_data_row['employee_salary'] . '</td>
+                </tr>
+                <tr>
+                    <td>Total Working Days</td>
+                    <td>' . $inv_det_data_row['total_working_days'] . '</td>
+                </tr>
+                <tr>
+                    <td>Absent Days</td>
+                    <td>' . $inv_det_data_row['days_absent'] . '</td>
+                </tr>
+                <tr>
+                    <td>Leave Days</td>
+                    <td>' . $inv_det_data_row['days_leave'] . '</td>
+                </tr>
+                <tr>
+                    <td>Present Days</td>
+                    <td>' . $inv_det_data_row['days_present'] . '</td>
+                </tr>
+                <tr>
+                    <td>Total Salary</td>
+                    <td>' . $inv_det_data_row['total_salary'] . '</td>
+                </tr>
+                <tr>
+                    <td>Payment Type</td>
+                    <td>' . $inv_det_data_row['payment_type'] . '</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="signature-section">
+            <p>Authorized Signature</p>
+            <div class="signature-line"></div>
+        </div>
+        
+        <div class="footer">
+            <p>KDA Housing Society - Confidential</p>
+        </div>
+    </div>';
+    }
+
+
+    $pdf->writeHTML($content);
+
+    $file_location = "/home/fbi1glfa0j7p/public_html/examples/generate_pdf/uploads/"; //add your full path of your server
+    //$file_location = "/opt/lampp/htdocs/examples/generate_pdf/uploads/"; //for local xampp server
+
+    $datetime = date('dmY_hms');
+    $file_name = "INV_" . $datetime . ".pdf";
+    ob_end_clean();
+
+    if ($_GET['ACTION'] == 'VIEW') {
+        $pdf->Output($file_name, 'I'); // I means Inline view
+    } else if ($_GET['ACTION'] == 'DOWNLOAD') {
+        $pdf->Output($file_name, 'D'); // D means download
+    } else if ($_GET['ACTION'] == 'UPLOAD') {
+        $pdf->Output($file_location . $file_name, 'F'); // F means upload PDF file on some folder
+        echo "Upload successfully!!";
+    }
+
+    //----- End Code for generate pdf
+} else {
+    echo 'Record not found for PDF.';
+}
