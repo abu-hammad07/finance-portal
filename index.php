@@ -540,7 +540,7 @@ include ("includes/sidebar.php");
             <div class="card h-100">
                 <div class="card-header">
                     <h6>Balance Summary</h6>
-                    <h4 class="text-primary">$12,389.54</h4>
+                    <h4 class="text-primary">PK<?= get_total_combined_income() ?></h4>
                 </div>
                 <div class="card-body">
                     <div id="d2c_lineChart">
@@ -556,7 +556,7 @@ include ("includes/sidebar.php");
             <div class="card">
                 <div class="card-header">
                     <h6>Expenses</h6>
-                    <h4 class="text-primary">$12,389.54</h4>
+                    <h4 class="text-primary">PK<?= get_total_combined_expences() ?></h4>
                 </div>
                 <div class="card-body">
                     <div id="d2c_barChart"></div>
