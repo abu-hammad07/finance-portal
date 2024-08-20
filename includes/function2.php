@@ -346,7 +346,7 @@ function addPayroll()
                     // Set the URLs for download and view
                     $pdfDownloadUrl = "download_pdf.php?payroll_id=$payroll_id"; // Ensure this script handles the PDF download
                     $pdfViewUrl = "view_pdf.php?payroll_id=$payroll_id"; // Ensure this script handles PDF viewing
-
+                    
                     // Set the JavaScript message
                     $_SESSION['alert_script'] = "
                         <script>
